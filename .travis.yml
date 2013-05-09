@@ -15,3 +15,8 @@ notifications:
             - 'ircnet.eversible.com#codebrowser'
         use_notice: true
         skip_join: true
+        template:
+            - '%{message}'
+            - '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{commit_message}'
+            - 'Change view : %{compare_url}'
+            - 'Build details : %{build_url}'
