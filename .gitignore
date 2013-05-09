@@ -1,0 +1,8 @@
+# OS X
+
+.DS_Store
+
+# Project
+
+.grunt/
+node_modules/
