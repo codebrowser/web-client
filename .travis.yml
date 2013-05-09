@@ -13,6 +13,7 @@ notifications:
     irc:
         channels:
             - 'ircnet.eversible.com#codebrowser'
+        on_success: never
         use_notice: true
         skip_join: true
         template:
