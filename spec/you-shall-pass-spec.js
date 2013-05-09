@@ -2,6 +2,6 @@ describe('A Jasmine spec', function () {
 
     it('should pass', function () {
 
-        expect(true).toBe(true);
+        expect(true).toBe(false);
     });
 });
