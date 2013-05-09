@@ -5,3 +5,13 @@ node_js:
 
 before_script:
     - npm install -g grunt-cli
+
+notifications:
+
+    email: false
+
+    irc:
+        channels:
+            - 'irc.cc.tut.fi#codebrowser'
+        use_notice: true
+        skip_join: true
