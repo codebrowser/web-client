@@ -12,6 +12,6 @@ notifications:
 
     irc:
         channels:
-            - 'irc.cc.tut.fi#codebrowser'
+            - 'ircnet.eversible.com#codebrowser'
         use_notice: true
         skip_join: true
