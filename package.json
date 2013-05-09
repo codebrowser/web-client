@@ -1,6 +1,7 @@
 {
     "name": "codebrowser-web-client",
     "version": "1.0.0-SNAPSHOT",
+    "private": true,
 
     "engines": {
 
