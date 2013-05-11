@@ -13,7 +13,7 @@ Run tests with:
 
     grunt test
 
-# Run Server
+## Run Server
 
 Run server with:
 
