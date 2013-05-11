@@ -3,8 +3,23 @@ language: node_js
 node_js:
     - '0.10'
 
+env:
+    global:
+        - secure: 'dSEXWS2+Iyou0aZ+LuHOZysri5U+Ob2vXHsLue5F8aqRJiB4A70hHUpFVZ2W\ni1BjXxsXjQv6uHRJFd6lMHA6yubKXYo13uvIm6oY8LiEhM3Ktgo3z+/wl/YW\nQVTh/5tFRMykGVf82DLGtDu/HfWnCXNBMwVQFjsSQ1ZSwltJaZo='
+
 before_script:
     - npm install -g grunt-cli
+
+after_success:
+    - gem install heroku
+    - git remote add heroku git@heroku.com:codebrowser.git
+    - echo 'Host heroku.com' >> ~/.ssh/config
+    - echo '    StrictHostKeyChecking no' >> ~/.ssh/config
+    - echo '    CheckHostIP no' >> ~/.ssh/config
+    - echo '    UserKnownHostsFile=/dev/null' >> ~/.ssh/config
+    - heroku keys:clear
+    - yes | heroku keys:add
+    - yes | git push heroku master
 
 notifications:
 
