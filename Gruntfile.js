@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 
                 src: ['Gruntfile.js', 'src/*.js'],
                 options: {
+
                     jshintrc: 'jshint.json'
                 }
             },
@@ -20,6 +21,7 @@ module.exports = function(grunt) {
 
                 src: 'spec/*.js',
                 options: {
+
                     jshintrc: 'spec/jshint.json'
                 }
             }
@@ -29,6 +31,7 @@ module.exports = function(grunt) {
 
             src : 'src/*.js',
             options : {
+
                 specs : 'spec/*-spec.js'
             }
         }
