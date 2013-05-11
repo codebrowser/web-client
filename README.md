@@ -12,3 +12,9 @@ dependencies by running `npm install -d`.
 Run tests with:
 
     grunt test
+
+# Run Server
+
+Run server with:
+
+    node web.js
