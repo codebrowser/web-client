@@ -2,6 +2,9 @@
 
 Web client for Code Browser (HTML5 + CSS3 + JavaScript + Node.js + Grunt).
 
+CI: https://travis-ci.org/codebrowser/web-client
+Deployed on: http://codebrowser.herokuapp.com
+
 ## Install Dependencies
 
 Install Grunt's command line interface globally if necessary with `npm install -g grunt-cli`. Download development 
