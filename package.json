@@ -5,7 +5,8 @@
 
     "dependencies": {
 
-        "node-static": "0.6.9"
+        "node-static": "0.6.9",
+        "mustache": "0.7.2"
     },
 
     "devDependencies": {
