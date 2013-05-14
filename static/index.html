@@ -1,8 +1,35 @@
 <!DOCTYPE html>
 <html>
     <head>
+
         <meta charset='UTF-8'>
         <title>Code Browser</title>
+
+        <!-- JS -->
+        <script src='http://code.jquery.com/jquery-2.0.0.min.js'></script>
+
+        <script>
+
+            console.log('Connecting to Code Browser backend...');
+
+            var request = $.getJSON('http://t-avihavai.users.cs.helsinki.fi/cb-back/app/students', function (data) {
+
+                console.log('Received data from backend...');
+                console.log(data);
+            });
+
+            request.done(function () {
+
+                console.log('Done.');
+            });
+
+            request.fail(function () {
+
+                console.log('Request failed.');
+            });
+
+        </script>
+
     </head>
     <body>
         <p>Code Browser!</p>
