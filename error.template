@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <title>{{status}}</title>
+    </head>
+    <body>
+
+        <center><h1>{{status}}</h1></center>
+
+        <hr>
+
+    </body>
+</html>

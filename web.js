@@ -6,7 +6,7 @@ var mustache = require('mustache');
 var environment = process.env.NODE_ENV;
 var port = process.env.PORT || 8080;
 var serverOptions = {};
-var errorTemplate = '<html><head><title>{{status}}</title></head><body><center><h1>{{status}}</h1></center><hr></body></html>';
+var errorTemplate;
 
 // Default to development environment
 if (!environment) {
@@ -19,6 +19,17 @@ if (!environment) {
         'Cache-Control': 'no-cache, must-revalidate'
     }
 }
+
+// Read template for errors
+fs.readFile('error.template', function (error, data) {
+
+    if (error) {
+        console.error('Can\'t read error template. Ensure you have a file "error.template" in the root directory.');
+        throw error;
+    }
+
+    errorTemplate = data.toString();
+});
 
 var fileServer = new static.Server('./static', serverOptions);
 
