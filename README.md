@@ -16,8 +16,8 @@ Run tests with:
 
     grunt test
 
-## Run Server
+## Start Server
 
-Run server with:
+Start server with:
 
     node web.js
