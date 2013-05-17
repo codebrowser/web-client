@@ -1,0 +1,1 @@
+var config={apiRoot:"http://t-avihavai.users.cs.helsinki.fi/cb-back/app/"},codebrowser={models:{}};codebrowser.models.Student=Backbone.Model.extend({urlRoot:config.apiRoot+"students"});

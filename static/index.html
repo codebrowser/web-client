@@ -6,26 +6,42 @@
         <title>Code Browser</title>
 
         <!-- JS -->
-        <script src='http://code.jquery.com/jquery-2.0.0.min.js'></script>
+        <script src='assets/js/jquery-2.0.0.min.js'></script>
+        <script src='assets/js/underscore-min.js'></script>
+        <script src='assets/js/backbone-min.js'></script>
+        <script src='assets/js/codebrowser.js'></script>        
 
         <script>
 
-            console.log('Connecting to Code Browser backend...');
+            console.log('Fetching data from the Code Browser backend...');
 
             var request = $.getJSON('http://t-avihavai.users.cs.helsinki.fi/cb-back/app/students', function (data) {
 
                 console.log('Received data from backend...');
                 console.log(data);
-            });
-
-            request.done(function () {
-
                 console.log('Done.');
             });
 
             request.fail(function () {
 
                 console.log('Request failed.');
+            });
+
+            var student = new codebrowser.models.Student({ id: 1 });
+
+            student.fetch({
+
+                success: function () {
+
+                    console.log('Received data from backend...');
+                    console.log(student);
+                    console.log('Done.');
+                },
+
+                error: function () {
+
+                    console.log('Request failed.');
+                }
             });
 
         </script>
