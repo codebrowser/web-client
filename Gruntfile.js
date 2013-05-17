@@ -16,6 +16,7 @@ module.exports = function(grunt) {
 
                     separator: ';',
                     stripBanners: true
+
                 }
             }
         },
@@ -27,11 +28,13 @@ module.exports = function(grunt) {
                 files: {
 
                     'static/assets/js/codebrowser.js': ['static/assets/js/codebrowser.js']
+
                 },
 
                 options: {
 
                     report: 'min'
+
                 }
             }
         },
@@ -44,6 +47,7 @@ module.exports = function(grunt) {
                 options: {
 
                     jshintrc: 'jshint.json'
+
                 }
             },
 
@@ -53,6 +57,7 @@ module.exports = function(grunt) {
                 options: {
 
                     jshintrc: 'spec/jshint.json'
+
                 }
             }
         },
@@ -63,6 +68,7 @@ module.exports = function(grunt) {
             options : {
 
                 specs : 'spec/*-spec.js'
+
             }
         }
     });

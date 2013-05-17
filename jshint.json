@@ -20,5 +20,6 @@
         "Backbone": true,
         "config": true,
         "codebrowser": true
+
     }
 }
