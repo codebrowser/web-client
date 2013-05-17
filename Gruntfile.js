@@ -14,8 +14,7 @@ module.exports = function(grunt) {
                 dest: 'static/assets/js/codebrowser.js',
                 options: {
 
-                    separator: ';',
-                    stripBanners: true
+                    separator: ';'
 
                 }
             }
