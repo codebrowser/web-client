@@ -18,6 +18,12 @@ Run tests with:
 
     grunt test
 
+## Build
+
+Build from source with:
+
+    grunt build
+
 ## Start Server
 
 Start server with:
