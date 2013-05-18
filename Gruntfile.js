@@ -77,10 +77,13 @@ module.exports = function(grunt) {
 
         jasmine: {
 
-            src : 'src/*.js',
-            options : {
+            src: ['config/*.js', 'src/**/*.js'],
+            options: {
 
-                specs : 'spec/*-spec.js'
+                vendor: ['static/assets/js/jquery-2.0.0.min.js',
+                         'static/assets/js/underscore-min.js',
+                         'static/assets/js/backbone-min.js'],
+                specs: 'spec/*-spec.js'
 
             }
         }
