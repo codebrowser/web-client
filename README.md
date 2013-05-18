@@ -14,24 +14,16 @@ dependencies by running `npm install -d`.
 
 ## Run Tests
 
-Run tests with:
-
-    grunt test
+Run tests with `grunt test`.
 
 ## Build
 
-Build from source with:
-
-    grunt build
+Build from source with `grunt build`.
 
 ## Watch
 
-To build from source automatically when files are changed run:
-
-    grunt watch
+To build from source automatically when files are changed run `grunt watch`.
 
 ## Start Server
 
-Start server with:
-
-    node web.js
+Start server with `node web.js`. The app will deploy to http://localhost:8080/.
