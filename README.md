@@ -24,6 +24,12 @@ Build from source with:
 
     grunt build
 
+## Watch
+
+To build from source automatically when files are changed run:
+
+    grunt watch
+
 ## Start Server
 
 Start server with:

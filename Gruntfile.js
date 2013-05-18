@@ -6,6 +6,20 @@ module.exports = function(grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
+        watch: {
+
+            src: {
+
+                files: ['config/*.js', 'src/**/*.js'],
+                tasks: ['jshint:src', 'build'],
+                options: {
+
+                    nospawn: true
+
+                }
+            }
+        },
+
         concat: {
 
             dist: {
@@ -74,6 +88,7 @@ module.exports = function(grunt) {
 
     /* Load tasks */
 
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
