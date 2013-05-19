@@ -4,6 +4,6 @@
 
 # Project
 
-node_modules/
 .grunt/
 _SpecRunner.html
+node_modules/
