@@ -7,3 +7,4 @@
 .grunt/
 _SpecRunner.html
 node_modules/
+/nbproject/private/
