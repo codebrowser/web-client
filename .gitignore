@@ -2,10 +2,13 @@
 
 .DS_Store
 
+# Temporary files
+
+*~
+
 # Project
 
 .grunt/
 _SpecRunner.html
+nbproject/private/
 node_modules/
-/nbproject/private/
-*~
