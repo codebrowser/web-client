@@ -14,6 +14,7 @@ var codebrowser = {
     app: {},
     models: {},
     collections: {},
+    views: {},
     routers: {},
 
     initialize: function () {
