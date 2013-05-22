@@ -6,8 +6,8 @@ codebrowser.models.Snapshot = Backbone.RelationalModel.extend({
 
         type: Backbone.HasMany,
         key: 'files',
-        relatedModel: 'codebrowser.models.SnapshotFile',
-        collectionType: 'codebrowser.collections.SnapshotFiles',
+        relatedModel: 'codebrowser.models.File',
+        collectionType: 'codebrowser.collections.Files',
         reverseRelation: {
 
             key: 'snapshot'

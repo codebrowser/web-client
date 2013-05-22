@@ -1,4 +1,4 @@
-codebrowser.models.SnapshotFile = Backbone.RelationalModel.extend({
+codebrowser.models.File = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 

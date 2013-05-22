@@ -1,6 +1,6 @@
-codebrowser.collections.SnapshotFiles = Backbone.Collection.extend({
+codebrowser.collections.Files = Backbone.Collection.extend({
 
-    model: codebrowser.models.SnapshotFile,
+    model: codebrowser.models.File,
 
     url: function () {
 
