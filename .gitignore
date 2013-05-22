@@ -10,5 +10,5 @@
 
 .grunt/
 _SpecRunner.html
-nbproject/private/
+nbproject/
 node_modules/
