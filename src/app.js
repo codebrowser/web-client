@@ -11,6 +11,7 @@ $(document).ready(function() {
 
 var codebrowser = {
 
+    app: {},
     models: {},
     collections: {},
     routers: {},
