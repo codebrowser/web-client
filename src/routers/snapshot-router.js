@@ -2,28 +2,32 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
-        'snapshots/:id': 'getSnapshot'
+        'snapshots/:id': 'read'
 
     },
 
-    getSnapshot: function (id) {
+    read: function (id) {
 
-        var snapshot = new codebrowser.models.Snapshot({id: id});
+        var snapshot = new codebrowser.models.Snapshot({ id: id });
 
+        // Get snapshot
         snapshot.fetch({
 
             success: function () {
 
-                console.log('Received data from backend...');
-
+                console.log('Received snapshot from backend...');
                 console.log(snapshot);
 
                 var template = $('#snapshot-template').html();
-                var output = Mustache.render(template, { data: 'Test' });
 
-                $('#container').html(output);
+                // Get first file associated with the snapshot
+                snapshot.get('files').at(0).fetchContent(function (data) {
 
-                console.log('Done.');
+                    var output = Mustache.render(template, { data: data });
+                    $('#container').html(output);
+
+                    console.log('Done.');
+                });
             },
 
             error: function () {
@@ -32,5 +36,4 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
             }
         });
     }
-
 });

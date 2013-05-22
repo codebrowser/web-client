@@ -1,9 +1,13 @@
 /* exported codebrowser */
 
+/* DOM ready */
+
 $(document).ready(function() {
 
     codebrowser.initialize();
 });
+
+/* App */
 
 var codebrowser = {
 
@@ -13,8 +17,7 @@ var codebrowser = {
 
     initialize: function () {
 
-        codebrowser.snapshot = new codebrowser.routers.SnapshotRouter();
+        codebrowser.app.snapshot = new codebrowser.routers.SnapshotRouter();
         Backbone.history.start();
     }
-
 }
