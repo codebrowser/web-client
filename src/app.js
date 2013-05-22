@@ -2,6 +2,7 @@
 
 var codebrowser = {
 
-    models: {}
+    models: {},
+    collections: {}
 
 }

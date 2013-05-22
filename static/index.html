@@ -9,6 +9,7 @@
         <script src='assets/js/jquery-2.0.0.min.js'></script>
         <script src='assets/js/underscore-min.js'></script>
         <script src='assets/js/backbone-min.js'></script>
+        <script src='assets/js/backbone-relational.js'></script>
         <script src='assets/js/codebrowser.js'></script>        
 
         <script>
@@ -27,14 +28,14 @@
                 console.log('Request failed.');
             });
 
-            var student = new codebrowser.models.Student({ id: 1 });
+            var snapshot = new codebrowser.models.Snapshot({id: 17});
 
-            student.fetch({
+            snapshot.fetch({
 
                 success: function () {
 
                     console.log('Received data from backend...');
-                    console.log(student);
+                    console.log(snapshot);
                     console.log('Done.');
                 },
 

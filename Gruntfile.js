@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 
             dist: {
 
-                src: ['config/*.js', 'src/app.js', 'src/models/*.js'],
+                src: ['config/*.js', 'src/app.js', 'src/models/*.js', 'src/collections/*.js'],
                 dest: 'static/assets/js/codebrowser.js',
                 options: {
 
