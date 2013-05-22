@@ -19,6 +19,7 @@
 
     "globals": {
 
+        "ace": true,
         "Backbone": true,
         "Mustache": true,
         "config": true,
