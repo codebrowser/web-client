@@ -10,45 +10,24 @@
         <script src='assets/js/underscore-min.js'></script>
         <script src='assets/js/backbone-min.js'></script>
         <script src='assets/js/backbone-relational.js'></script>
-        <script src='assets/js/codebrowser.js'></script>        
+        <script src='assets/js/mustache.js'></script>
+        <script src='assets/js/codebrowser.js'></script>
 
-        <script>
+        <!-- Templates -->
+        <script type='text/template' id='snapshot-template'>
 
-            console.log('Fetching data from the Code Browser backend...');
-
-            var request = $.getJSON('http://t-avihavai.users.cs.helsinki.fi/cb-back/app/students', function (data) {
-
-                console.log('Received data from backend...');
-                console.log(data);
-                console.log('Done.');
-            });
-
-            request.fail(function () {
-
-                console.log('Request failed.');
-            });
-
-            var snapshot = new codebrowser.models.Snapshot({id: 17});
-
-            snapshot.fetch({
-
-                success: function () {
-
-                    console.log('Received data from backend...');
-                    console.log(snapshot);
-                    console.log('Done.');
-                },
-
-                error: function () {
-
-                    console.log('Request failed.');
-                }
-            });
+            <pre>
+                {{data}}
+            </pre>
 
         </script>
 
     </head>
     <body>
-        <p>Code Browser!</p>
+
+        <h1>Code Browser!</h1>
+
+        <div id='container'></div>
+
     </body>
 </html>
