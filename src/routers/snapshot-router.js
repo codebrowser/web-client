@@ -6,14 +6,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     },
 
-    render: function (data) {
-
-        new codebrowser.views.SnapshotView({ el: $('#container'), model: data });
-    },
-
     read: function (id) {
-
-        var self = this;
 
         var snapshot = new codebrowser.models.Snapshot({ id: id });
 
@@ -28,7 +21,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
                 // Fetch first file associated with the snapshot
                 snapshot.get('files').at(0).fetchContent(function (data) {
 
-                    self.render(data);
+                    new codebrowser.views.SnapshotView({ el: $('#container'), model: data });
 
                     console.log('Done.');
                 });
