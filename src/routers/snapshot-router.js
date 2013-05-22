@@ -10,7 +10,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
         var snapshot = new codebrowser.models.Snapshot({ id: id });
 
-        // Get snapshot
+        // Fetch snapshot
         snapshot.fetch({
 
             success: function () {
@@ -20,7 +20,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
                 var template = $('#snapshot-template').html();
 
-                // Get first file associated with the snapshot
+                // Fetch first file associated with the snapshot
                 snapshot.get('files').at(0).fetchContent(function (data) {
 
                     var output = Mustache.render(template, { data: data });
