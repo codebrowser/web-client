@@ -4,23 +4,23 @@
 
 var config = {
 
-    apiRoot: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/'
+    apiRoot: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/',
 
-}
+    editor: {
 
-config.editor = {
+        configure: function (editor) {
 
-    initialize: function(editor) {
+            // Editor
+            editor.setReadOnly(true);
+            editor.setPrintMarginColumn(false);
+            editor.setDisplayIndentGuides(false);
 
-        editor.setTheme('ace/theme/github');
-        editor.getSession().setMode('ace/mode/java');
-        editor.getSession().setTabSize(4);
-        editor.setReadOnly(true);
-        editor.setFontSize(14);
-        editor.setDisplayIndentGuides(false);
-        editor.getSession().setUseWrapMode(true);
-        editor.getSession().setWrapLimitRange(120, 120); // line length
-        editor.setPrintMarginColumn(120);
+            // Text
+            editor.setTheme('ace/theme/github');
+            editor.setFontSize(12);
+            editor.getSession().setTabSize(4);
+            editor.getSession().setUseWrapMode(true);
+            editor.getSession().setWrapLimitRange(120, 120);
+        }
     }
-
 }

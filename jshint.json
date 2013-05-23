@@ -21,10 +21,10 @@
 
         "ace": true,
         "Backbone": true,
-        "Mustache": true,
-        "config": true,
         "codebrowser": true,
-        "editor": true
+        "config": true,
+        "editor": true,
+        "Mustache": true
 
     }
 }

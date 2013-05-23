@@ -4,7 +4,6 @@
 
 $(document).ready(function() {
 
-//    editor.config.initialize();
     codebrowser.initialize();
 });
 
@@ -24,4 +23,3 @@ var codebrowser = {
         Backbone.history.start();
     }
 }
-
