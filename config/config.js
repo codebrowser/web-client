@@ -24,14 +24,6 @@ editor.config = (function() {
         editor.getSession().setUseWrapMode(true);
         editor.getSession().setWrapLimitRange(120, 120); // line length
         editor.setPrintMarginColumn(120);
-
-        editor.setAnimatedScroll(false); // false by default
-        editor.setHighlightActiveLine(true); // true by default
-        editor.setHighlightSelectedWord(true); // true by default
-        editor.setShowPrintMargin(true); // true by default
-        editor.getSession().setUseSoftTabs(false); // false by default
-        editor.setShowInvisibles(false); // false by default
-        editor.setShowFoldWidgets(true); // true by default
     }
 
     function setCode(data) {
