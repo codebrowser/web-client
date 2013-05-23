@@ -1,7 +1,6 @@
 {
     "asi": true,
     "boss": true,
-    "browser": true,
     "camelcase": true,
     "curly": true,
     "eqeqeq": true,
@@ -9,9 +8,7 @@
     "expr": true,
     "immed": true,
     "indent": 4,
-    "jquery": true,
     "newcap": true,
-    "node": true,
     "quotmark": "single",
     "trailing": true,
     "undef": true,
