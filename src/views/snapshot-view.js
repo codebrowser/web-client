@@ -3,7 +3,7 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
     initialize: function () {
 
         this.editor = ace.edit(this.el);
-        editor.config.init(this.editor);
+        config.editor.initialize(this.editor);
     },
 
     render: function () {

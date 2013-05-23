@@ -8,11 +8,10 @@ var config = {
 
 }
 
-var editor = {};
+config.editor = {
 
-editor.config = (function() {
+    initialize: function(editor) {
 
-    function initialize(editor) {
         editor = ace.edit('container');
         editor.setTheme('ace/theme/github');
         editor.getSession().setMode('ace/mode/java');
@@ -20,14 +19,9 @@ editor.config = (function() {
         editor.setReadOnly(true);
         editor.setFontSize(14);
         editor.setDisplayIndentGuides(false);
-
         editor.getSession().setUseWrapMode(true);
         editor.getSession().setWrapLimitRange(120, 120); // line length
         editor.setPrintMarginColumn(120);
     }
 
-    return {
-        init: initialize
-    };
-
-})();
+}
