@@ -7,7 +7,7 @@
         <title>Code Browser</title>
 
         <!-- JS -->
-        <script src='assets/js/ace/ace.js'></script>
+        <script src='assets/js/ace/ace.js' type='text/javascript' charset='utf-8'></script>
         <script src='assets/js/jquery-2.0.0.min.js'></script>
         <script src='assets/js/underscore-min.js'></script>
         <script src='assets/js/backbone-min.js'></script>
@@ -20,7 +20,7 @@
 
         <h1>Code Browser</h1>
 
-        <div id='container'>import java.util.ArrayList; public class Arvosana { private ArrayList<Integer> arvosanaLista; private int osallistujat; private int hyvaksytyt; public Arvosana() { this.arvosanaLista = new ArrayList<Integer>(); this.osallistujat = 0; this.hyvaksytyt = 0; } public void lisaaArvosana(int pisteet) { if (pisteet >= 0 && pisteet <= 60) { this.osallistujat++; this.pisteetAvosanaksi(pisteet); } } public void pisteetAvosanaksi(int pisteet) { if (pisteet < 30) { pisteet = 0; } else if (pisteet < 35) { pisteet = 1; this.hyvaksytyt++; } else if (pisteet < 40) { pisteet = 2; this.hyvaksytyt++; } else if (pisteet < 45) { pisteet = 3; this.hyvaksytyt++; } else if (pisteet < 50) { pisteet = 4; this.hyvaksytyt++; } else { pisteet = 5; this.hyvaksytyt++; } arvosanaLista.add(pisteet); } public double hyvaksymisprosentti() { if (hyvaksytyt > 0){ return 100 * hyvaksytyt / osallistujat; } else { return 0.0; } } public String arvosanaTahtina(int maara) { String tahdet = ""; while (maara > 0) { tahdet = tahdet + "*"; maara--; } return tahdet; } public int arvosanojenMaara(int numero, ArrayList<Integer> lista){ int maara = 0; for (int i = 0 ; i < lista.size() ; i++){ if (lista.get(i) == numero){ maara++; } } return maara; } public void siistiTulostus(int arvosana){ System.out.println("Arvosanajakauma: "); for(int i = 0 ; i <= 5 ; i++){ System.out.println( i + ": " + arvosanaTahtina(arvosanojenMaara(arvosana, arvosanaLista))); } System.out.println("Hyväksymisprosentti: " + hyvaksymisprosentti()); } // public String toString() { // return "Arvosanajakauma: 5: " + arvosanaTahtina(5, arvosanojenMaara(5, arvosanaLista)) + " 4: " + arvosanojenMaara(4, arvosanaLista) + " 3: " + arvosanojenMaara(3, arvosanaLista) + " 2: " + arvosanojenMaara(2, arvosanaLista) + " 1: " + arvosanojenMaara(1, arvosanaLista) + " 0: " + arvosanojenMaara(0, arvosanaLista) + " Hyväksymisprosentti: " + hyvaksymisprosentti(); // } }</div>
+        <div id='container'></div>
 
         <!-- Templates -->
 

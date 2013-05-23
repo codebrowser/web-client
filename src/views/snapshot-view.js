@@ -7,9 +7,10 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
 
     render: function () {
 
-        var template = $('#snapshot-template').html();
-        var output = Mustache.render(template, { data: this.model });
+//        var template = $('#snapshot-template').html();
+//        var output = Mustache.render(template, { data: this.model });
 
-        $(this.el).html(output);
+        editor.config.setCode(this.model);
+//        $(this.el).html(output);
     }
 });

@@ -23,7 +23,8 @@
         "Backbone": true,
         "Mustache": true,
         "config": true,
-        "codebrowser": true
+        "codebrowser": true,
+        "editor": true
 
     }
 }

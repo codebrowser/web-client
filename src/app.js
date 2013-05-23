@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
 
-    editor.initialize();
+    editor.config.initialize();
     codebrowser.initialize();
 });
 
@@ -25,9 +25,11 @@ var codebrowser = {
     }
 }
 
-var editor = {
+var editor = {};
 
-    initialize: function() {
+editor.config = (function() {
+
+    function initialize() {
         var editor = ace.edit('container');
         editor.setTheme('ace/theme/terminal');
         editor.getSession().setMode('ace/mode/java');
@@ -43,7 +45,15 @@ var editor = {
         editor.getSession().setUseWrapMode(true);
         editor.getSession().setWrapLimitRange(120, 120); // line length
         editor.setPrintMarginColumn(120);
-        console.log(editor.getPrintMarginColumn());
     }
 
-}
+    function setCode(data) {
+        ace.edit('container').getSession().setValue(data);
+    }
+
+    return {
+        initialize: initialize,
+        setCode: setCode
+    };
+
+})();
