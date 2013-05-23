@@ -8,7 +8,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     read: function (id) {
 
-        var snapshot = new codebrowser.models.Snapshot({ id: id });
+        var snapshot = codebrowser.models.Snapshot.findOrCreate({ id: id });
 
         // Fetch snapshot
         snapshot.fetch({
