@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
 
-    editor.config.initialize();
+//    editor.config.initialize();
     codebrowser.initialize();
 });
 

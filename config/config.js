@@ -12,8 +12,8 @@ var editor = {};
 
 editor.config = (function() {
 
-    function initialize() {
-        var editor = ace.edit('container');
+    function initialize(editor) {
+        editor = ace.edit('container');
         editor.setTheme('ace/theme/github');
         editor.getSession().setMode('ace/mode/java');
         editor.getSession().setTabSize(4);
@@ -26,13 +26,8 @@ editor.config = (function() {
         editor.setPrintMarginColumn(120);
     }
 
-    function setCode(data) {
-        ace.edit('container').getSession().setValue(data);
-    }
-
     return {
-        initialize: initialize,
-        setCode: setCode
+        init: initialize
     };
 
 })();
