@@ -87,7 +87,10 @@ module.exports = function(grunt) {
 
                 vendor: ['static/assets/js/jquery-2.0.0.min.js',
                          'static/assets/js/underscore-min.js',
-                         'static/assets/js/backbone-min.js'],
+                         'static/assets/js/backbone-min.js',
+                         'static/assets/js/backbone-relational.js',
+                         'static/assets/js/mustache.js',
+                         'static/assets/js/ace/ace.js'],
                 specs: 'spec/**/*-spec.js'
 
             }
