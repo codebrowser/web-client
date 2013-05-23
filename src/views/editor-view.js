@@ -23,5 +23,7 @@ codebrowser.views.EditorView = Backbone.View.extend({
     setContent: function (content) {
 
         this.editor.setValue(content);
+        this.editor.navigateFileStart();
+        this.editor.clearSelection();
     }
 });
