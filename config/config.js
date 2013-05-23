@@ -12,7 +12,6 @@ config.editor = {
 
     initialize: function(editor) {
 
-        editor = ace.edit('container');
         editor.setTheme('ace/theme/github');
         editor.getSession().setMode('ace/mode/java');
         editor.getSession().setTabSize(4);
