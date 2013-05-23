@@ -34,17 +34,21 @@ editor.config = (function() {
         editor.setTheme('ace/theme/terminal');
         editor.getSession().setMode('ace/mode/java');
         editor.getSession().setTabSize(4);
-        editor.setReadOnly(false);  // false to make it editable
+        editor.setReadOnly(true);
         editor.setFontSize(14);
         editor.setDisplayIndentGuides(false);
+
         editor.getSession().setUseWrapMode(true);
         editor.getSession().setWrapLimitRange(120, 120); // line length
         editor.setPrintMarginColumn(120);
 
+        editor.setAnimatedScroll(false); // false by default
         editor.setHighlightActiveLine(true); // true by default
+        editor.setHighlightSelectedWord(true); // true by default
         editor.setShowPrintMargin(true); // true by default
         editor.getSession().setUseSoftTabs(false); // false by default
         editor.setShowInvisibles(false); // false by default
+        editor.setShowFoldWidgets(true); // true by default
     }
 
     function setCode(data) {
