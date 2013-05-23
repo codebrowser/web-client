@@ -5,28 +5,34 @@
         <meta charset='UTF-8'>
         <title>Code Browser</title>
 
+        <!-- CSS -->
+        <link rel='stylesheet' href='assets/css/style.css'>
+
         <!-- JS -->
         <script src='assets/js/jquery-2.0.0.min.js'></script>
         <script src='assets/js/underscore-min.js'></script>
         <script src='assets/js/backbone-min.js'></script>
         <script src='assets/js/backbone-relational.js'></script>
         <script src='assets/js/mustache.js'></script>
+        <script src='assets/js/ace/ace.js'></script>
         <script src='assets/js/codebrowser.js'></script>
 
     </head>
     <body>
 
-        <h1>Code Browser</h1>
+        <div id='wrapper'>
 
-        <div id='container'></div>
+            <h1>Code Browser</h1>
+    
+            <div id='container'></div>
+
+        </div>
 
         <!-- Templates -->
 
-        <script type='text/template' id='snapshot-template'>
+        <script type='text/template' id='editor-template'>
 
-            <pre>
-                {{data}}
-            </pre>
+            <div id='editor'></div>
 
         </script>
 

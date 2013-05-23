@@ -19,10 +19,12 @@
 
     "globals": {
 
+        "ace": true,
         "Backbone": true,
-        "Mustache": true,
+        "codebrowser": true,
         "config": true,
-        "codebrowser": true
+        "editor": true,
+        "Mustache": true
 
     }
 }
