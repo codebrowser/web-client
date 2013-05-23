@@ -4,6 +4,7 @@
 
 $(document).ready(function() {
 
+    editor.initialize();
     codebrowser.initialize();
 });
 
@@ -22,4 +23,15 @@ var codebrowser = {
         codebrowser.app.snapshot = new codebrowser.routers.SnapshotRouter();
         Backbone.history.start();
     }
+}
+
+var editor = {
+
+    initialize: function() {
+        var editor = ace.edit('container');
+        editor.setTheme('ace/theme/twilight');
+        editor.getSession().setMode('ace/mode/java');
+        editor.getSession().setTabSize(4);
+    }
+
 }
