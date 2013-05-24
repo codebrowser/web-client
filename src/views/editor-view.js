@@ -26,6 +26,7 @@ codebrowser.views.EditorView = Backbone.View.extend({
         this.editor.navigateFileStart();
 
         // Set syntax mode
-        this.editor.getSession().setMode('ace/mode/'+fileType);
+        var syntax = codebrowser.helpers.syntaxMapper.map(fileType);
+        this.editor.getSession().setMode('ace/mode/'+syntax);
     }
 });

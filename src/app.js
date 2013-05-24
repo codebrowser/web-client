@@ -13,6 +13,7 @@ var codebrowser = {
 
     app: {},
     models: {},
+    helpers: {},
     collections: {},
     views: {},
     routers: {},
