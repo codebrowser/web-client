@@ -15,7 +15,6 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
     read: function (id) {
 
         var snapshot = this.snapshotCollection.get(id);
-//        var snapshot = codebrowser.models.Snapshot.findOrCreate({ id: id });
 
         // Fetch snapshot
         snapshot.fetch({

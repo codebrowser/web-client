@@ -15,9 +15,6 @@ codebrowser.views.EditorView = Backbone.View.extend({
 
         // Configure editor
         config.editor.configure(this.editor);
-
-        // Set syntax mode
-//        this.editor.getSession().setMode('ace/mode/java');
     },
 
     setContent: function (content, fileType) {
