@@ -1,4 +1,4 @@
-codebrowser.helpers.syntaxMapper = {
+codebrowser.helpers.aceModeMapper = {
 
     mode: {
 

@@ -25,7 +25,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
                 console.log(snapshot);
 
                 var fileName = snapshot.get('files').at(0).get('name');
-                var syntaxMode = codebrowser.helpers.syntaxMapper.getMode(fileName);
+                var syntaxMode = codebrowser.helpers.aceModeMapper.getMode(fileName);
 
                 var editorView = new codebrowser.views.EditorView({ el: $('#container') });
 
