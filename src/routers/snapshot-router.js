@@ -25,12 +25,15 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
                 console.log('Received snapshot from backend...');
                 console.log(snapshot);
 
+                var fileType = snapshot.get('files').at(0).get('name'); // file extension for syntax mode
+                fileType = fileType.split('.')[1];
+
                 var editorView = new codebrowser.views.EditorView({ el: $('#container') });
 
                 // Fetch first file associated with the snapshot
                 snapshot.get('files').at(0).fetchContent(function (data) {
 
-                    editorView.setContent(data);
+                    editorView.setContent(data, fileType);
 
                     console.log('Done.');
                 });
