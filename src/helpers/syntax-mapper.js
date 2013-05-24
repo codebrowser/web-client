@@ -14,7 +14,7 @@ codebrowser.helpers.syntaxMapper = {
 
     getFiletype: function(fileName) {
 
-        return fileName.split('.')[1];
+        var fileType = fileName.split('.');
+        return fileType[fileType.length-1];
     }
-
 }
