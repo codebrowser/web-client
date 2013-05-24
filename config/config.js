@@ -16,7 +16,7 @@ var config = {
             editor.setDisplayIndentGuides(false);
 
             // Text
-            editor.setTheme('ace/theme/github');
+            editor.setTheme('ace/theme/crimson_editor');
             editor.setFontSize(12);
             editor.getSession().setTabSize(4);
             editor.getSession().setUseWrapMode(true);

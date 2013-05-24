@@ -1,5 +1,11 @@
 codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
+    initialize: function () {
+
+        this.snapshotCollection = new codebrowser.collections.SnapshotCollection();
+        this.snapshotCollection.fetch();
+    },
+
     routes: {
 
         'snapshots/:id': 'read'
@@ -8,7 +14,8 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     read: function (id) {
 
-        var snapshot = codebrowser.models.Snapshot.findOrCreate({ id: id });
+        var snapshot = this.snapshotCollection.get(id);
+//        var snapshot = codebrowser.models.Snapshot.findOrCreate({ id: id });
 
         // Fetch snapshot
         snapshot.fetch({
