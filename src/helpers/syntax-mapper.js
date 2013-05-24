@@ -10,4 +10,4 @@ codebrowser.helpers.syntaxMapper = {
         return codebrowser.helpers.syntaxMapper.mode[key];
     }
 
-};
+}
