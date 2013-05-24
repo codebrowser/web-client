@@ -7,14 +7,11 @@ codebrowser.helpers.syntaxMapper = {
         'py':'python'
     },
 
-    map: function(key) {
-
-        return codebrowser.helpers.syntaxMapper.mode[key];
-    },
-
-    getFiletype: function(fileName) {
+    getMode: function(fileName) {
 
         var fileType = fileName.split('.');
-        return fileType[fileType.length-1];
+        fileType = fileType[fileType.length-1];
+
+        return 'ace/mode/' + this.mode[fileType];
     }
 }
