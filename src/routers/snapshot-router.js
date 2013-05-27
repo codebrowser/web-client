@@ -2,8 +2,8 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotCollection = new codebrowser.collections.SnapshotCollection();
-        this.snapshotCollection.fetch({async:false});
+//        this.snapshotCollection = new codebrowser.collections.SnapshotCollection();
+//        this.snapshotCollection.fetch({async:false});
     },
 
     routes: {
