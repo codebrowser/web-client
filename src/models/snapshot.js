@@ -2,7 +2,8 @@ codebrowser.models.Snapshot = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
-        return this.get('exercises').urlRoot() + '/' + this.get('exercises').id + '/snapshots';
+        return config.apiRoot + 'students/1/courses/2/exercises/3/snapshots';
+//        return this.get('exercises').urlRoot() + '/' + this.get('exercises').id + '/snapshots';
     },
 
     relations: [{
