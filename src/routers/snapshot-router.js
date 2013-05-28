@@ -4,6 +4,8 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
         this.snapshotCollection = new codebrowser.collections.SnapshotCollection();
         this.snapshotCollection.fetch({async:false});
+
+        this.snapshotView = new codebrowser.views.SnapshotView({ el: $('#container'), collection: this.snapshotCollection });
     },
 
     routes: {
@@ -15,7 +17,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
     read: function (id) {
 
         var snapshot = this.snapshotCollection.get(id);
-        var snapshotView = new codebrowser.views.SnapshotView({ el: $('#container'), collection: this.snapshotCollection });
+        var self = this;
 
         // Fetch snapshot
         snapshot.fetch({
@@ -25,7 +27,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
                 console.log('Received snapshot from backend...');
                 console.log(snapshot);
 
-                snapshotView.setModel(snapshot);
+                self.snapshotView.setModel(snapshot);
 
                 var fileName = snapshot.get('files').at(0).get('name');
                 var syntaxMode = codebrowser.helpers.aceModeMapper.getMode(fileName);
