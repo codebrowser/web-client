@@ -2,14 +2,28 @@ codebrowser.models.File = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
-        return config.apiRoot + 'students/1/courses/2/exercises/3/snapshots/' + this.get('snapshot').id + '/files';
+        return config.apiRoot +
+               'students/' +
+               this.get('snapshot').studentId +
+               '/courses/' +
+               this.get('snapshot').courseId +
+               '/exercises/' +
+               this.get('snapshot').exerciseId +
+               '/snapshots/' +
+               this.get('snapshot').id +
+               '/files';
     },
 
     fetchContent: function (callback) {
 
-        $.get(this.urlRoot() + '/' + this.id, function (data) {
+        var request = $.get(this.urlRoot() + '/' + this.id, function (data) {
 
-            callback(data);
+            callback(data, null);
+        });
+
+        request.fail(function () {
+
+            console.log('File request failed.');
         });
     }
 });

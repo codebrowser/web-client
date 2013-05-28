@@ -1,6 +1,6 @@
-codebrowser.collections.FileCollection = Backbone.Collection.extend({
+codebrowser.collections.SnapshotCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.File,
+    model: codebrowser.models.Snapshot,
 
     initialize: function (models, options) {
 
@@ -18,8 +18,6 @@ codebrowser.collections.FileCollection = Backbone.Collection.extend({
                this.courseId +
                '/exercises/' +
                this.exerciseId +
-               '/snapshots/' +
-               this.snapshot.id +
-               '/files';
+               '/snapshots';
     }
 });
