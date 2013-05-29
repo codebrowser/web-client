@@ -14,6 +14,7 @@ var config = {
             editor.setReadOnly(true);
             editor.setPrintMarginColumn(false);
             editor.setDisplayIndentGuides(false);
+            editor.getSession().setFoldStyle('markbeginend');
 
             // Text
             editor.setTheme('ace/theme/github');
