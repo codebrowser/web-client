@@ -15,18 +15,14 @@ codebrowser.views.EditorView = Backbone.View.extend({
 
         // Configure editor
         config.editor.configure(this.editor);
-
-        // Set syntax mode
-//        this.editor.getSession().setMode('ace/mode/java');
     },
 
-    setContent: function (content, fileType) {
+    setContent: function (content, mode) {
 
         this.editor.setValue(content);
         this.editor.navigateFileStart();
 
         // Set syntax mode
-        var syntax = codebrowser.helpers.syntaxMapper.map(fileType);
-        this.editor.getSession().setMode('ace/mode/'+syntax);
+        this.editor.getSession().setMode(mode);
     }
 });

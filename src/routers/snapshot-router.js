@@ -2,8 +2,10 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotCollection = new codebrowser.collections.SnapshotCollection();
+        this.snapshotCollection = new codebrowser.collections.SnapshotCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
         this.snapshotCollection.fetch({async:false});
+
+        this.snapshotView = new codebrowser.views.SnapshotView({ el: $('#container'), collection: this.snapshotCollection });
     },
 
     routes: {
@@ -15,7 +17,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
     read: function (id) {
 
         var snapshot = this.snapshotCollection.get(id);
-//        var snapshot = codebrowser.models.Snapshot.findOrCreate({ id: id });
+        var self = this;
 
         // Fetch snapshot
         snapshot.fetch({
@@ -25,15 +27,17 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
                 console.log('Received snapshot from backend...');
                 console.log(snapshot);
 
-                var fileType = snapshot.get('files').at(0).get('name'); // file extension for syntax mode
-                fileType = fileType.split('.')[1];
+                self.snapshotView.setModel(snapshot);
 
-                var editorView = new codebrowser.views.EditorView({ el: $('#container') });
+                var fileName = snapshot.get('files').at(0).get('name');
+                var syntaxMode = codebrowser.helpers.aceModeMapper.getMode(fileName);
+
+                var editorView = new codebrowser.views.EditorView({ el: $('#view') });
 
                 // Fetch first file associated with the snapshot
                 snapshot.get('files').at(0).fetchContent(function (data) {
 
-                    editorView.setContent(data, fileType);
+                    editorView.setContent(data, syntaxMode);
 
                     console.log('Done.');
                 });
@@ -44,5 +48,10 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
                 console.log('Request failed.');
             }
         });
+    },
+
+    navigateTo: function (id) {
+
+        this.navigate('#/snapshots/' + id);
     }
 });
