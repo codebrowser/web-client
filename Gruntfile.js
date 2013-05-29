@@ -45,7 +45,7 @@ module.exports = function(grunt) {
 
                 files: {
 
-                    'static/assets/js/codebrowser.js': 'static/assets/js/codebrowser.js'
+                    'static/assets/js/codebrowser-min.js': 'static/assets/js/codebrowser.js'
 
                 },
 
