@@ -16,7 +16,7 @@ codebrowser.models.File = Backbone.RelationalModel.extend({
 
     fetchContent: function (callback) {
 
-        var request = $.get(this.urlRoot() + '/' + this.id, function (data) {
+        var request = $.get(this.urlRoot() + '/' + this.id + '/content', function (data) {
 
             callback(data, null);
         });
