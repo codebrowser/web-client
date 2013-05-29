@@ -15,6 +15,7 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
     setModel: function (model) {
 
         this.model = model;
+        this.model.convertTime();
         this.configURLs();
         this.render();
     },
@@ -51,8 +52,6 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
 
     render: function () {
 
-        this.model.convertTime();
-        console.log(this.model.get('files'));
         var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
         $(this.el).html(template);
     },
