@@ -3,6 +3,8 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
     initialize: function () {
 
         this.render();
+        $('#prevButton').hide();
+        $('#nextButton').hide();
     },
 
     events: {
@@ -13,7 +15,10 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
 
     setModel: function (model) {
 
+        $('#prevButton').show();
+        $('#nextButton').show();
         this.model = model;
+        this.render();
     },
 
     previous: function (eventInformation) {
@@ -34,9 +39,17 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
         eventInformation.preventDefault();
     },
 
-    render: function () {
+    render: function() {
 
-        var template = $('#snapshot-template').html();
-        $(this.el).html(template);
+        var data = {};
+
+        if (this.model) {
+            data.snapshotTime = new Date(this.model.attributes.snapshotTime).toLocaleString();
+        } else {
+            data.snapshotTime = '';
+        }
+
+        var html = Mustache.render($('#snapshot-template').html(), data);
+        $(this.el).html(html);
     }
 });
