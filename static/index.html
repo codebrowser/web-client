@@ -32,6 +32,7 @@
 
         <script type='text/template' id='editor-template'>
 
+            <h2> {{name}} </h2>
             <div id='editor'></div>
 
         </script>
@@ -39,6 +40,14 @@
         <script type='text/template' id='snapshot-template'>
 
             <div id='snapshot'>
+
+            <ul>
+                {{#files}}
+                    <li>
+                        <a href={{url}}> {{name}} </a>
+                    </li>
+                {{/files}}
+            </ul>
 
                 {{snapshotTime}}
 

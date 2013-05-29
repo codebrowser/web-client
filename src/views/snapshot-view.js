@@ -15,6 +15,7 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
     setModel: function (model) {
 
         this.model = model;
+        this.configURLs();
         this.render();
     },
 
@@ -50,10 +51,26 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
 
     render: function () {
 
-//        $(this.el).undelegate();
         this.model.convertTime();
-
+        console.log(this.model.get('files'));
         var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
         $(this.el).html(template);
+    },
+
+    configURLs: function () {
+
+        for (var i=0; i < this.model.get('files').length; ++i) {
+            var file = this.model.get('files').at(i);
+            file.set('url', '#/students/' +
+                            this.collection.studentId +
+                            '/courses/' +
+                            this.collection.courseId +
+                            '/exercises/' +
+                            this.collection.exerciseId +
+                            '/snapshots/' +
+                            this.model.id +
+                            '/files/' +
+                            file.get('id'));
+        }
     }
 });

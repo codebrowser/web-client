@@ -19,7 +19,6 @@
 
     "globals": {
 
-        "_": true,
         "ace": true,
         "Backbone": true,
         "codebrowser": true,
