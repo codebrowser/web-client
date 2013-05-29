@@ -4,6 +4,6 @@ codebrowser.collections.ExerciseCollection = Backbone.Collection.extend({
 
     url: function () {
 
-        return this.get('course').urlRoot() + '/' + this.get('course').id + '/exercises';
+        return this.course.urlRoot + '/' + this.course.id + '/exercises';
     }
 });

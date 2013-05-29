@@ -2,7 +2,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotCollection = new codebrowser.collections.SnapshotCollection();
+        this.snapshotCollection = new codebrowser.collections.SnapshotCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
         this.snapshotCollection.fetch({async:false});
 
         this.snapshotView = new codebrowser.views.SnapshotView({ el: $('#container'), collection: this.snapshotCollection });

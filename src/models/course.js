@@ -1,25 +1,19 @@
 codebrowser.models.Course = Backbone.RelationalModel.extend({
 
-    urlRoot: function () {
+    urlRoot: config.apiRoot + 'courses',
 
-        if (this.get('student')) {
-            return this.get('student').urlRoot + '/' + this.get('student').id + '/courses';
+    relations: [
+
+        {
+            type: Backbone.HasMany,
+            key: 'exercises',
+            relatedModel: 'codebrowser.models.Exercise',
+            collectionType: 'codebrowser.collections.ExerciseCollection',
+            reverseRelation: {
+
+                key: 'course'
+
+            }
         }
-
-        return config.apiRoot + 'courses';
-    },
-
-    relations: [{
-
-        type: Backbone.HasMany,
-        key: 'exercises',
-        relatedModel: 'codebrowser.models.Exercise',
-        collectionType: 'codebrowser.collections.ExerciseCollection',
-//        autoFetch: true,
-        reverseRelation: {
-
-            key: 'course'
-
-        }
-    }]
+    ]
 });

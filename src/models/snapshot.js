@@ -2,21 +2,28 @@ codebrowser.models.Snapshot = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
-        return config.apiRoot + 'students/1/courses/2/exercises/3/snapshots';
-//        return this.get('exercises').urlRoot() + '/' + this.get('exercises').id + '/snapshots';
+        return config.apiRoot +
+               'students/' +
+               this.get('studentId') +
+               '/courses/' +
+               this.get('courseId') +
+               '/exercises/' +
+               this.get('exerciseId') +
+               '/snapshots';
     },
 
-    relations: [{
+    relations: [
 
-        type: Backbone.HasMany,
-        key: 'files',
-        relatedModel: 'codebrowser.models.File',
-        collectionType: 'codebrowser.collections.FileCollection',
-//        autoFetch: true,
-        reverseRelation: {
+        {
+            type: Backbone.HasMany,
+            key: 'files',
+            relatedModel: 'codebrowser.models.File',
+            collectionType: 'codebrowser.collections.FileCollection',
+            reverseRelation: {
 
-            key: 'snapshot'
+                key: 'snapshot'
 
+            }
         }
-    }]
+    ]
 });

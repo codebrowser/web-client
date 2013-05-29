@@ -49,7 +49,7 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
             data.snapshotTime = '';
         }
 
-        var html = Mustache.render($('#snapshot-template').html(), data);
-        $(this.el).html(html);
+        var template = Mustache.render($('#snapshot-template').html(), data);
+        $(this.el).html(template);
     }
 });
