@@ -2,45 +2,31 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotCollection = new codebrowser.collections.SnapshotCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
-        this.snapshotCollection.fetch({async:false});
-
-        this.snapshotView = new codebrowser.views.SnapshotView({ el: $('#container'), collection: this.snapshotCollection });
+        this.snapshotView = new codebrowser.views.SnapshotView({ el: $('#container') });
     },
 
     routes: {
 
-        'snapshots/:id': 'read'
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:id': 'read'
 
     },
 
-    read: function (id) {
+    read: function (studentId, courseId, exerciseId, id) {
 
-        var snapshot = this.snapshotCollection.get(id);
+        var snapshotCollection = new codebrowser.collections.SnapshotCollection(null, { studentId: studentId, courseId: courseId, exerciseId: exerciseId });
+        this.snapshotView.collection = snapshotCollection;
+
         var self = this;
 
-        // Fetch snapshot
-        snapshot.fetch({
+        // Fetch snapshot collection
+        snapshotCollection.fetch({
 
             success: function () {
 
-                console.log('Received snapshot from backend...');
-                console.log(snapshot);
-
+                var snapshot = snapshotCollection.get(id);
                 self.snapshotView.setModel(snapshot);
 
-                var fileName = snapshot.get('files').at(0).get('name');
-                var syntaxMode = codebrowser.helpers.aceModeMapper.getMode(fileName);
-
-                var editorView = new codebrowser.views.EditorView({ el: $('#view') });
-
-                // Fetch first file associated with the snapshot
-                snapshot.get('files').at(0).fetchContent(function (data) {
-
-                    editorView.setContent(data, syntaxMode);
-
-                    console.log('Done.');
-                });
+                new codebrowser.views.EditorView({ el: $('#view'), model: snapshot.get('files').at(0) });
             },
 
             error: function () {
@@ -48,10 +34,5 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
                 console.log('Request failed.');
             }
         });
-    },
-
-    navigateTo: function (id) {
-
-        this.navigate('#/snapshots/' + id);
     }
 });

@@ -7,6 +7,16 @@ codebrowser.views.EditorView = Backbone.View.extend({
 
     render: function () {
 
+        var self = this;
+
+        // Fetch file
+        this.model.fetchContent(function(data) {
+
+            var fileName = self.model.get('name');
+            var syntaxMode = codebrowser.helpers.aceModeMapper.getMode(fileName);
+            self.setContent(data, syntaxMode);
+        });
+
         var template = $('#editor-template').html();
         $(this.el).html(template);
 

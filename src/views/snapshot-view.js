@@ -2,9 +2,8 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
+        this.model = new codebrowser.models.Snapshot();
         this.render();
-        $('#prevButton').hide();
-        $('#nextButton').hide();
     },
 
     events: {
@@ -15,8 +14,6 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
 
     setModel: function (model) {
 
-        $('#prevButton').show();
-        $('#nextButton').show();
         this.model = model;
         this.render();
     },
@@ -26,7 +23,7 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
         var index = this.collection.indexOf(this.model);
         var prevModel = this.collection.at(index-1);
 
-        codebrowser.app.snapshot.navigateTo(prevModel.id);
+        this.navigate(prevModel.id);
         eventInformation.preventDefault();
     },
 
@@ -35,21 +32,28 @@ codebrowser.views.SnapshotView = Backbone.View.extend({
         var index = this.collection.indexOf(this.model);
         var nextModel = this.collection.at(index+1);
 
-        codebrowser.app.snapshot.navigateTo(nextModel.id);
+        this.navigate(nextModel.id);
         eventInformation.preventDefault();
     },
 
-    render: function() {
+    navigate: function (id) {
 
-        var data = {};
+        codebrowser.app.snapshot.navigate('#/students/' +
+                                          this.collection.studentId +
+                                          '/courses/' +
+                                          this.collection.courseId +
+                                          '/exercises/' +
+                                          this.collection.exerciseId +
+                                          '/snapshots/' +
+                                          id);
+    },
 
-        if (this.model) {
-            data.snapshotTime = new Date(this.model.attributes.snapshotTime).toLocaleString();
-        } else {
-            data.snapshotTime = '';
-        }
+    render: function () {
 
-        var template = Mustache.render($('#snapshot-template').html(), data);
+//        $(this.el).undelegate();
+        this.model.convertTime();
+
+        var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
         $(this.el).html(template);
     }
 });
