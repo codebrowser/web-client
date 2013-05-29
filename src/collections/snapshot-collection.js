@@ -2,14 +2,11 @@ codebrowser.collections.SnapshotCollection = Backbone.Collection.extend({
 
     model: codebrowser.models.Snapshot,
 
-    initialize: function (models, options) {
-
-        this.studentId = options.studentId;
-        this.courseId = options.courseId;
-        this.exerciseId = options.exerciseId;
-    },
-
     url: function () {
+
+        if (!this.studentId || !this.courseId || !this.exerciseId) {
+            throw new Error('Options studentId, courseId and exerciseId are required to fetch snapshots.');
+        }
 
         return config.apiRoot +
                'students/' +
@@ -19,5 +16,14 @@ codebrowser.collections.SnapshotCollection = Backbone.Collection.extend({
                '/exercises/' +
                this.exerciseId +
                '/snapshots';
+    },
+
+    initialize: function (models, options) {
+
+        if (options) {
+            this.studentId = options.studentId;
+            this.courseId = options.courseId;
+            this.exerciseId = options.exerciseId;
+        }
     }
 });
