@@ -257,7 +257,7 @@ var codebrowser = {
 
     read: function (id) {
 
-        var snapshot = codebrowser.models.Snapshot.findOrCreate({ id: id });
+        var snapshot = codebrowser.models.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: id });
 
         // Fetch snapshot
         snapshot.fetch({
