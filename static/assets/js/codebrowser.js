@@ -458,7 +458,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     catch: function () {
 
-        $('#container').empty();
+        $(config.view.container).empty();
         console.log('Catched!');
     }
 });
@@ -474,7 +474,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotView = new codebrowser.view.SnapshotView({ el: $('#container') });
+        this.snapshotView = new codebrowser.view.SnapshotView({ el: $(config.view.container) });
     },
 
     snapshot: function (studentId, courseId, exerciseId, id) {
