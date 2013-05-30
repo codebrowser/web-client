@@ -333,7 +333,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     catch: function () {
 
-        $('#container').empty();
+        $(config.view.container).empty();
         console.log('Catched!');
     }
 });
