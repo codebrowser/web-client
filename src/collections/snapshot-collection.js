@@ -13,7 +13,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             throw new Error('Options studentId, courseId and exerciseId are required to fetch snapshots.');
         }
 
-        return config.apiRoot +
+        return config.api.main.root +
                'students/' +
                this.studentId +
                '/courses/' +

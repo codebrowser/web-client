@@ -6,7 +6,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
-        return config.apiRoot +
+        return config.api.main.root +
                'students/' +
                this.get('snapshot').get('studentId') +
                '/courses/' +
@@ -17,6 +17,8 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
                this.get('snapshot').id +
                '/files';
     },
+
+    /* Callback parameters (data, [error]) are the received data and possible error, respectively. */
 
     fetchContent: function (callback) {
 

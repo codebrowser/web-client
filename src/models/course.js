@@ -1,6 +1,6 @@
 codebrowser.model.Course = Backbone.RelationalModel.extend({
 
-    urlRoot: config.apiRoot + 'courses',
+    urlRoot: config.api.main.root + 'courses',
 
     relations: [
 
