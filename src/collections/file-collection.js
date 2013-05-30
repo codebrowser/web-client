@@ -1,3 +1,7 @@
+/*
+ * FileCollection is resolved through a snapshot.
+ */
+
 codebrowser.collection.FileCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.File,

@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 
-    /* Configuration */
+    /* Task configuration */
 
     grunt.initConfig({
 

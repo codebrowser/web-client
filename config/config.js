@@ -1,10 +1,14 @@
 /* exported config */
 
-/* Configuration */
+/* Global configuration */
 
 var config = {
 
+    /* API */
+
     apiRoot: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/',
+
+    /* Ace editor */
 
     editor: {
 

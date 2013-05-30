@@ -1,3 +1,7 @@
+/* 
+ * A file is resolved through a snapshot.
+ */
+
 codebrowser.model.File = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
