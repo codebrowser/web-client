@@ -33,7 +33,7 @@ module.exports = function(grunt) {
                 dest: 'static/assets/js/codebrowser.js',
                 options: {
 
-                    separator: ';'
+                    separator: ';\n\n'
 
                 }
             }

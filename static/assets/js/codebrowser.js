@@ -29,7 +29,9 @@ var config = {
         }
     }
 }
-;/* exported codebrowser */
+;
+
+/* exported codebrowser */
 
 /* DOM ready */
 
@@ -54,7 +56,9 @@ var codebrowser = {
         Backbone.history.start();
     }
 }
-;codebrowser.model.Course = Backbone.RelationalModel.extend({
+;
+
+codebrowser.model.Course = Backbone.RelationalModel.extend({
 
     urlRoot: config.apiRoot + 'courses',
 
@@ -73,7 +77,9 @@ var codebrowser = {
         }
     ]
 });
-;/* 
+;
+
+/* 
  * An exercise is resolved through a course.
  */
 
@@ -84,7 +90,9 @@ codebrowser.model.Exercise = Backbone.RelationalModel.extend({
         return this.get('course').urlRoot + '/' + this.get('course').id + '/exercises';
     }
 });
-;/* 
+;
+
+/* 
  * A file is resolved through a snapshot.
  */
 
@@ -117,7 +125,9 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
         });
     }
 });
-;/* 
+;
+
+/* 
  * Fetch a snapshot by passing a studentId, courseId and exerciseId as attributes for the model:
  * var snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: 4 });
  */
@@ -155,7 +165,9 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
         }
     ]
 });
-;codebrowser.model.Student = Backbone.RelationalModel.extend({
+;
+
+codebrowser.model.Student = Backbone.RelationalModel.extend({
 
     urlRoot: config.apiRoot + 'students',
 
@@ -169,13 +181,17 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
         }
     ]
 });
-;codebrowser.collection.CourseCollection = Backbone.Collection.extend({
+;
+
+codebrowser.collection.CourseCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.Course,
     url: config.apiRoot + 'courses'
 
 });
-;/* 
+;
+
+/* 
  * ExerciseCollection is resolved through a course.
  */
 
@@ -188,7 +204,9 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
         return this.course.urlRoot + '/' + this.course.id + '/exercises';
     }
 });
-;/*
+;
+
+/*
  * FileCollection is resolved through a snapshot.
  */
 
@@ -210,7 +228,9 @@ codebrowser.collection.FileCollection = Backbone.Collection.extend({
                '/files';
     }
 });
-;/* 
+;
+
+/* 
  * Fetch snapshots by passing a studentId, courseId and exerciseId as options for the collection:
  * var snapshots = new codebrowser.collection.SnapshotCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
  */
@@ -244,13 +264,17 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         }
     }
 });
-;codebrowser.collection.StudentCollection = Backbone.Collection.extend({
+;
+
+codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.Student,
     url: config.apiRoot + 'students'
 
 });
-;codebrowser.view.EditorView = Backbone.View.extend({
+;
+
+codebrowser.view.EditorView = Backbone.View.extend({
 
     initialize: function () {
 
@@ -278,7 +302,9 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         this.editor.navigateFileStart();
     }
 });
-;codebrowser.router.SnapshotRouter = Backbone.Router.extend({
+;
+
+codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
