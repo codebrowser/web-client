@@ -1,6 +1,10 @@
-codebrowser.collections.ExerciseCollection = Backbone.Collection.extend({
+/* 
+ * ExerciseCollection is resolved through a course.
+ */
 
-    model: codebrowser.models.Exercise,
+codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
+
+    model: codebrowser.model.Exercise,
 
     url: function () {
 

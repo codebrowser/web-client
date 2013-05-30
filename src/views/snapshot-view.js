@@ -1,8 +1,8 @@
-codebrowser.views.SnapshotView = Backbone.View.extend({
+codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
-        this.model = new codebrowser.models.Snapshot();
+        this.model = new codebrowser.model.Snapshot();
         this.render();
     },
 

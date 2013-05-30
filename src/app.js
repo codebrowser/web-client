@@ -12,15 +12,17 @@ $(document).ready(function() {
 var codebrowser = {
 
     app: {},
-    models: {},
-    helpers: {},
-    collections: {},
-    views: {},
-    routers: {},
+    helper: {},
+    model: {},
+    collection: {},
+    view: {},
+    router: {},
 
     initialize: function () {
 
-        codebrowser.app.snapshot = new codebrowser.routers.SnapshotRouter();
+        codebrowser.app.base = new codebrowser.router.BaseRouter();
+        codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
+
         Backbone.history.start();
     }
 }

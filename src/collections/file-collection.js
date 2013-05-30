@@ -1,23 +1,20 @@
-codebrowser.collections.FileCollection = Backbone.Collection.extend({
+/*
+ * FileCollection is resolved through a snapshot.
+ */
 
-    model: codebrowser.models.File,
+codebrowser.collection.FileCollection = Backbone.Collection.extend({
 
-    initialize: function (models, options) {
-
-        this.studentId = options.studentId;
-        this.courseId = options.courseId;
-        this.exerciseId = options.exerciseId;
-    },
+    model: codebrowser.model.File,
 
     url: function () {
 
         return config.apiRoot +
                'students/' +
-               this.studentId +
+               this.snapshot.get('studentId') +
                '/courses/' +
-               this.courseId +
+               this.snapshot.get('courseId') +
                '/exercises/' +
-               this.exerciseId +
+               this.snapshot.get('exerciseId') +
                '/snapshots/' +
                this.snapshot.id +
                '/files';

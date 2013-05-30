@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 
-    /* Configuration */
+    /* Task configuration */
 
     grunt.initConfig({
 
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
                 dest: 'static/assets/js/codebrowser.js',
                 options: {
 
-                    separator: ';'
+                    separator: ';\n\n'
 
                 }
             }
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
 
                 files: {
 
-                    'static/assets/js/codebrowser.js': 'static/assets/js/codebrowser.js'
+                    'static/assets/js/codebrowser-min.js': 'static/assets/js/codebrowser.js'
 
                 },
 

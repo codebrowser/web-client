@@ -1,10 +1,14 @@
 /* exported config */
 
-/* Configuration */
+/* Global configuration */
 
 var config = {
 
+    /* API */
+
     apiRoot: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/',
+
+    /* Ace editor */
 
     editor: {
 
@@ -14,6 +18,7 @@ var config = {
             editor.setReadOnly(true);
             editor.setPrintMarginColumn(false);
             editor.setDisplayIndentGuides(false);
+            editor.getSession().setFoldStyle('markbeginend');
 
             // Text
             editor.setTheme('ace/theme/crimson_editor');

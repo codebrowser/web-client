@@ -1,4 +1,4 @@
-codebrowser.views.EditorView = Backbone.View.extend({
+codebrowser.view.EditorView = Backbone.View.extend({
 
     initialize: function () {
 
@@ -13,7 +13,7 @@ codebrowser.views.EditorView = Backbone.View.extend({
         this.model.fetchContent(function(data) {
 
             var fileName = self.model.get('name');
-            var syntaxMode = codebrowser.helpers.aceModeMapper.getMode(fileName);
+            var syntaxMode = codebrowser.helper.AceModeMapper.getMode(fileName);
             self.setContent(data, syntaxMode);
         });
 

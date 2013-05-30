@@ -1,14 +1,18 @@
-codebrowser.models.File = Backbone.RelationalModel.extend({
+/* 
+ * A file is resolved through a snapshot.
+ */
+
+codebrowser.model.File = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
         return config.apiRoot +
                'students/' +
-               this.get('snapshot').studentId +
+               this.get('snapshot').get('studentId') +
                '/courses/' +
-               this.get('snapshot').courseId +
+               this.get('snapshot').get('courseId') +
                '/exercises/' +
-               this.get('snapshot').exerciseId +
+               this.get('snapshot').get('exerciseId') +
                '/snapshots/' +
                this.get('snapshot').id +
                '/files';
@@ -23,7 +27,7 @@ codebrowser.models.File = Backbone.RelationalModel.extend({
 
         request.fail(function () {
 
-            console.log('File request failed.');
+            callback(null, request);
         });
     }
 });

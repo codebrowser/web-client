@@ -1,6 +1,6 @@
-codebrowser.collections.StudentCollection = Backbone.Collection.extend({
+codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.Student,
+    model: codebrowser.model.Student,
     url: config.apiRoot + 'students'
 
 });

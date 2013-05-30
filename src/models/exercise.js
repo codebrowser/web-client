@@ -1,4 +1,8 @@
-codebrowser.models.Exercise = Backbone.RelationalModel.extend({
+/* 
+ * An exercise is resolved through a course.
+ */
+
+codebrowser.model.Exercise = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 

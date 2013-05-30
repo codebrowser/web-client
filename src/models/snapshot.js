@@ -1,15 +1,15 @@
-codebrowser.models.Snapshot = Backbone.RelationalModel.extend({
+/* 
+ * Fetch a snapshot by passing a studentId, courseId and exerciseId as attributes for the model:
+ * var snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: 4 });
+ */
 
-    convertTime: function () {
-
-        if (this.get('snapshotTime')) {
-
-            var snapshotTime = this.get('snapshotTime');
-            this.set('snapshotTime', new Date(snapshotTime).toLocaleString());
-        }
-    },
+codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
+
+        if (!this.get('studentId') || !this.get('courseId') || !this.get('exerciseId')) {
+            throw new Error('Attributes studentId, courseId and exerciseId are required to fetch a snapshot.');
+        }
 
         return config.apiRoot +
                'students/' +
@@ -26,13 +26,22 @@ codebrowser.models.Snapshot = Backbone.RelationalModel.extend({
         {
             type: Backbone.HasMany,
             key: 'files',
-            relatedModel: 'codebrowser.models.File',
-            collectionType: 'codebrowser.collections.FileCollection',
+            relatedModel: 'codebrowser.model.File',
+            collectionType: 'codebrowser.collection.FileCollection',
             reverseRelation: {
 
                 key: 'snapshot'
 
             }
         }
-    ]
+    ],
+
+    convertTime: function () {
+
+        if (this.get('snapshotTime')) {
+
+            var snapshotTime = this.get('snapshotTime');
+            this.set('snapshotTime', new Date(snapshotTime).toLocaleString());
+        }
+    }
 });

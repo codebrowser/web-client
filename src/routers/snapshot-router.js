@@ -1,9 +1,4 @@
-codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
-
-    initialize: function () {
-
-        this.snapshotView = new codebrowser.views.SnapshotView({ el: $('#container') });
-    },
+codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
@@ -11,9 +6,14 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     },
 
+    initialize: function () {
+
+        this.snapshotView = new codebrowser.view.SnapshotView({ el: $('#container') });
+    },
+
     read: function (studentId, courseId, exerciseId, id) {
 
-        var snapshotCollection = new codebrowser.collections.SnapshotCollection(null, { studentId: studentId, courseId: courseId, exerciseId: exerciseId });
+        var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId, courseId: courseId, exerciseId: exerciseId });
         this.snapshotView.collection = snapshotCollection;
 
         var self = this;
@@ -26,7 +26,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
                 var snapshot = snapshotCollection.get(id);
                 self.snapshotView.setModel(snapshot);
 
-                new codebrowser.views.EditorView({ el: $('#view'), model: snapshot.get('files').at(0) });
+                new codebrowser.view.EditorView({ el: $('#view'), model: snapshot.get('files').at(0) });
             },
 
             error: function () {

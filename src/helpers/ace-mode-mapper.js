@@ -1,4 +1,4 @@
-codebrowser.helpers.aceModeMapper = {
+codebrowser.helper.AceModeMapper = {
 
     mode: {
 
