@@ -19,7 +19,9 @@ var codebrowser = {
 
     initialize: function () {
 
+        codebrowser.app.base = new codebrowser.router.BaseRouter();
         codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
+
         Backbone.history.start();
     }
 }

@@ -52,7 +52,9 @@ var codebrowser = {
 
     initialize: function () {
 
+        codebrowser.app.base = new codebrowser.router.BaseRouter();
         codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
+
         Backbone.history.start();
     }
 }
@@ -300,6 +302,22 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         this.editor.setValue(content);
         this.editor.navigateFileStart();
+    }
+});
+;
+
+codebrowser.router.BaseRouter = Backbone.Router.extend({
+
+    routes: {
+
+        '*notFound': 'catch'
+
+    },
+
+    catch: function () {
+
+        $('#container').empty();
+        console.log('Catched!');
     }
 });
 ;
