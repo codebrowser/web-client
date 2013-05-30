@@ -481,7 +481,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
         var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
                                                                                        courseId: courseId,
-                                                                                       exerciseId: exerciseId });
+                                                                                       exerciseId: exerciseId });
         this.snapshotView.collection = snapshotCollection;
 
         var self = this;
