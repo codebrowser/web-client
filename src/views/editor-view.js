@@ -12,9 +12,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Fetch file
         this.model.fetchContent(function(data) {
 
-            var fileName = self.model.get('name');
-            var syntaxMode = codebrowser.helper.AceModeMapper.getMode(fileName);
-            self.setContent(data, syntaxMode);
+            var filename = self.model.get('name');
+            var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
+            self.setContent(data, mode);
         });
 
         var template = Mustache.render($('#editor-template').html(), this.model.toJSON());

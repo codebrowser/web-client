@@ -76,7 +76,7 @@ var codebrowser = {
 }
 ;
 
-codebrowser.helper.AceModeMapper = {
+codebrowser.helper.AceMode = {
 
     mode: {
 
@@ -84,19 +84,19 @@ codebrowser.helper.AceModeMapper = {
 
     },
 
-    getMode: function (fileName) {
+    getModeForFilename: function (filename) {
 
         // Fallback to text
         var mode = 'text';
 
         // Can determine file extension
-        if (fileName.indexOf('.') !== -1 && fileName.indexOf('.') !== 0) {
+        if (filename.indexOf('.') !== -1 && filename.indexOf('.') !== 0) {
 
-            var split = fileName.split('.');
-            var fileExtension = split[split.length - 1];
+            var split = filename.split('.');
+            var filenameExtension = split[split.length - 1];
 
             // Set mode or fallback to text if no mode is specified for file extension
-            mode = this.mode[fileExtension] || mode;
+            mode = this.mode[filenameExtension] || mode;
         }
 
         return 'ace/mode/' + mode;
@@ -345,9 +345,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Fetch file
         this.model.fetchContent(function(data) {
 
-            var fileName = self.model.get('name');
-            var syntaxMode = codebrowser.helper.AceModeMapper.getMode(fileName);
-            self.setContent(data, syntaxMode);
+            var filename = self.model.get('name');
+            var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
+            self.setContent(data, mode);
         });
 
         var template = Mustache.render($('#editor-template').html(), this.model.toJSON());
