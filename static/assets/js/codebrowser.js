@@ -8,6 +8,14 @@ var config = {
 
     apiRoot: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/',
 
+    /* Views */
+
+    view: {
+
+        container: '#container'
+
+    },
+
     /* Ace editor */
 
     editor: {
@@ -341,8 +349,10 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 console.log('Received snapshot from backend...');
                 console.log(snapshot);
+                console.log(config.view.container);
+                console.log($(config.view.container));
 
-                var editorView = new codebrowser.view.EditorView({ el: $('#container') });
+                var editorView = new codebrowser.view.EditorView({ el: $(config.view.container) });
 
                 // Fetch first file associated with the snapshot
                 snapshot.get('files').at(0).fetchContent(function (data) {

@@ -8,6 +8,14 @@ var config = {
 
     apiRoot: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/',
 
+    /* View */
+
+    view: {
+
+        container: '#container'
+
+    },
+
     /* Ace editor */
 
     editor: {
