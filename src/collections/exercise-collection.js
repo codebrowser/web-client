@@ -1,6 +1,6 @@
-codebrowser.collections.ExerciseCollection = Backbone.Collection.extend({
+codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.Exercise,
+    model: codebrowser.model.Exercise,
 
     url: function () {
 

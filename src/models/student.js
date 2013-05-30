@@ -1,4 +1,4 @@
-codebrowser.models.Student = Backbone.RelationalModel.extend({
+codebrowser.model.Student = Backbone.RelationalModel.extend({
 
     urlRoot: config.apiRoot + 'students',
 
@@ -7,8 +7,8 @@ codebrowser.models.Student = Backbone.RelationalModel.extend({
         {
             type: Backbone.HasMany,
             key: 'courses',
-            relatedModel: 'codebrowser.models.Course',
-            collectionType: 'codebrowser.collections.CourseCollection'
+            relatedModel: 'codebrowser.model.Course',
+            collectionType: 'codebrowser.collection.CourseCollection'
         }
     ]
 });

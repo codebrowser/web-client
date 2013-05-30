@@ -1,6 +1,6 @@
-codebrowser.collections.FileCollection = Backbone.Collection.extend({
+codebrowser.collection.FileCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.File,
+    model: codebrowser.model.File,
 
     url: function () {
 

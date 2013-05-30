@@ -1,4 +1,4 @@
-codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
+codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
@@ -8,7 +8,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
 
     read: function (id) {
 
-        var snapshot = codebrowser.models.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: id });
+        var snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: id });
 
         // Fetch snapshot
         snapshot.fetch({
@@ -18,7 +18,7 @@ codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
                 console.log('Received snapshot from backend...');
                 console.log(snapshot);
 
-                var editorView = new codebrowser.views.EditorView({ el: $('#container') });
+                var editorView = new codebrowser.view.EditorView({ el: $('#container') });
 
                 // Fetch first file associated with the snapshot
                 snapshot.get('files').at(0).fetchContent(function (data) {

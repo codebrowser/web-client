@@ -1,6 +1,6 @@
-codebrowser.collections.SnapshotCollection = Backbone.Collection.extend({
+codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.Snapshot,
+    model: codebrowser.model.Snapshot,
 
     url: function () {
 

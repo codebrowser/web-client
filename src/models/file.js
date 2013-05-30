@@ -1,4 +1,4 @@
-codebrowser.models.File = Backbone.RelationalModel.extend({
+codebrowser.model.File = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 

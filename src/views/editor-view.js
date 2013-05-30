@@ -1,4 +1,4 @@
-codebrowser.views.EditorView = Backbone.View.extend({
+codebrowser.view.EditorView = Backbone.View.extend({
 
     initialize: function () {
 

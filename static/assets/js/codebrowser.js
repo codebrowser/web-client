@@ -39,18 +39,18 @@ $(document).ready(function() {
 var codebrowser = {
 
     app: {},
-    models: {},
-    collections: {},
-    views: {},
-    routers: {},
+    model: {},
+    collection: {},
+    view: {},
+    router: {},
 
     initialize: function () {
 
-        codebrowser.app.snapshot = new codebrowser.routers.SnapshotRouter();
+        codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
         Backbone.history.start();
     }
 }
-;codebrowser.models.Course = Backbone.RelationalModel.extend({
+;codebrowser.model.Course = Backbone.RelationalModel.extend({
 
     urlRoot: config.apiRoot + 'courses',
 
@@ -59,8 +59,8 @@ var codebrowser = {
         {
             type: Backbone.HasMany,
             key: 'exercises',
-            relatedModel: 'codebrowser.models.Exercise',
-            collectionType: 'codebrowser.collections.ExerciseCollection',
+            relatedModel: 'codebrowser.model.Exercise',
+            collectionType: 'codebrowser.collection.ExerciseCollection',
             reverseRelation: {
 
                 key: 'course'
@@ -69,14 +69,14 @@ var codebrowser = {
         }
     ]
 });
-;codebrowser.models.Exercise = Backbone.RelationalModel.extend({
+;codebrowser.model.Exercise = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
         return this.get('course').urlRoot + '/' + this.get('course').id + '/exercises';
     }
 });
-;codebrowser.models.File = Backbone.RelationalModel.extend({
+;codebrowser.model.File = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
@@ -105,7 +105,7 @@ var codebrowser = {
         });
     }
 });
-;codebrowser.models.Snapshot = Backbone.RelationalModel.extend({
+;codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
@@ -128,8 +128,8 @@ var codebrowser = {
         {
             type: Backbone.HasMany,
             key: 'files',
-            relatedModel: 'codebrowser.models.File',
-            collectionType: 'codebrowser.collections.FileCollection',
+            relatedModel: 'codebrowser.model.File',
+            collectionType: 'codebrowser.collection.FileCollection',
             reverseRelation: {
 
                 key: 'snapshot'
@@ -138,7 +138,7 @@ var codebrowser = {
         }
     ]
 });
-;codebrowser.models.Student = Backbone.RelationalModel.extend({
+;codebrowser.model.Student = Backbone.RelationalModel.extend({
 
     urlRoot: config.apiRoot + 'students',
 
@@ -147,29 +147,29 @@ var codebrowser = {
         {
             type: Backbone.HasMany,
             key: 'courses',
-            relatedModel: 'codebrowser.models.Course',
-            collectionType: 'codebrowser.collections.CourseCollection'
+            relatedModel: 'codebrowser.model.Course',
+            collectionType: 'codebrowser.collection.CourseCollection'
         }
     ]
 });
-;codebrowser.collections.CourseCollection = Backbone.Collection.extend({
+;codebrowser.collection.CourseCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.Course,
+    model: codebrowser.model.Course,
     url: config.apiRoot + 'courses'
 
 });
-;codebrowser.collections.ExerciseCollection = Backbone.Collection.extend({
+;codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.Exercise,
+    model: codebrowser.model.Exercise,
 
     url: function () {
 
         return this.course.urlRoot + '/' + this.course.id + '/exercises';
     }
 });
-;codebrowser.collections.FileCollection = Backbone.Collection.extend({
+;codebrowser.collection.FileCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.File,
+    model: codebrowser.model.File,
 
     url: function () {
 
@@ -185,9 +185,9 @@ var codebrowser = {
                '/files';
     }
 });
-;codebrowser.collections.SnapshotCollection = Backbone.Collection.extend({
+;codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.Snapshot,
+    model: codebrowser.model.Snapshot,
 
     url: function () {
 
@@ -214,13 +214,13 @@ var codebrowser = {
         }
     }
 });
-;codebrowser.collections.StudentCollection = Backbone.Collection.extend({
+;codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
-    model: codebrowser.models.Student,
+    model: codebrowser.model.Student,
     url: config.apiRoot + 'students'
 
 });
-;codebrowser.views.EditorView = Backbone.View.extend({
+;codebrowser.view.EditorView = Backbone.View.extend({
 
     initialize: function () {
 
@@ -248,7 +248,7 @@ var codebrowser = {
         this.editor.navigateFileStart();
     }
 });
-;codebrowser.routers.SnapshotRouter = Backbone.Router.extend({
+;codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
@@ -258,7 +258,7 @@ var codebrowser = {
 
     read: function (id) {
 
-        var snapshot = codebrowser.models.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: id });
+        var snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: id });
 
         // Fetch snapshot
         snapshot.fetch({
@@ -268,7 +268,7 @@ var codebrowser = {
                 console.log('Received snapshot from backend...');
                 console.log(snapshot);
 
-                var editorView = new codebrowser.views.EditorView({ el: $('#container') });
+                var editorView = new codebrowser.view.EditorView({ el: $('#container') });
 
                 // Fetch first file associated with the snapshot
                 snapshot.get('files').at(0).fetchContent(function (data) {
