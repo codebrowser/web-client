@@ -3,7 +3,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     render: function (data, mode) {
 
         var template = Mustache.render($('#editor-template').html(), this.model.toJSON());
-        $('#editor-container').html(template);
+        this.$el.html(template);
 
         // Create editor
         this.editor = ace.edit('editor');
@@ -11,6 +11,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.editor);
 
+        // Set content for editor
         this.setContent(data, mode);
     },
 

@@ -336,7 +336,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     render: function (data, mode) {
 
         var template = Mustache.render($('#editor-template').html(), this.model.toJSON());
-        $('#editor-container').html(template);
+        this.$el.html(template);
 
         // Create editor
         this.editor = ace.edit('editor');
@@ -344,11 +344,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.editor);
 
+        // Set content for editor
         this.setContent(data, mode);
     },
 
     setModel: function (model) {
-
+        console.log('taaa');
         this.model = model;
         this.update();
     },
@@ -388,24 +389,30 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     initialize: function () {
 
         this.model = new codebrowser.model.Snapshot();
+//        this.model.bind('change', this.render, this);
         this.render();
-        this.editorView = new codebrowser.view.EditorView({ el: $('#editor-container') });
+
+        this.editorView = new codebrowser.view.EditorView({ el: '#editor-container' });
+    },
+
+    update: function() {
+        console.log('hello');
+//        this.editorView.setModel(this.model.get('files').at(0));
+//        this.render();
     },
 
     render: function () {
 
         var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
-        $(this.el).html(template);
+        this.$el.html(template);
     },
 
     setModel: function (model) {
 
         this.model = model;
         this.model.convertTime();
-        this.render();
 
         this.editorView.setModel(this.model.get('files').at(0));
-//        this.configURLs();
     },
 
     previous: function (eventInformation) {
@@ -461,11 +468,11 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     routes: {
 
-        '*notFound': 'catcha'
+        '*notFound': 'catch'
 
     },
 
-    catcha: function () {
+    catch: function () {
 
         $(config.view.container).empty();
         console.log('Catched!');
@@ -483,7 +490,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotView = new codebrowser.view.SnapshotView({ el: $(config.view.container) });
+        this.snapshotView = new codebrowser.view.SnapshotView({ el: config.view.container });
     },
 
     snapshot: function (studentId, courseId, exerciseId, id) {
@@ -501,6 +508,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             success: function () {
 
                 var snapshot = snapshotCollection.get(id);
+//                self.snapshotView.model = snapshot;
                 self.snapshotView.setModel(snapshot);
             },
 

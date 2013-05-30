@@ -9,24 +9,24 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     initialize: function () {
 
         this.model = new codebrowser.model.Snapshot();
+        this.model.bind('change', this.render, this);
         this.render();
-        this.editorView = new codebrowser.view.EditorView({ el: $('#editor-container') });
+
+        this.editorView = new codebrowser.view.EditorView({ el: '#editor-container' });
     },
 
     render: function () {
 
         var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
-        $(this.el).html(template);
+        this.$el.html(template);
     },
 
     setModel: function (model) {
 
         this.model = model;
         this.model.convertTime();
-        this.render();
 
         this.editorView.setModel(this.model.get('files').at(0));
-//        this.configURLs();
     },
 
     previous: function (eventInformation) {
