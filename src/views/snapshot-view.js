@@ -10,6 +10,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.model = new codebrowser.model.Snapshot();
         this.render();
+        this.editorView = new codebrowser.view.EditorView({ el: $('#editor-container') });
     },
 
     render: function () {
@@ -22,8 +23,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.model = model;
         this.model.convertTime();
-        this.configURLs();
         this.render();
+
+        this.editorView.setModel(this.model.get('files').at(0));
+//        this.configURLs();
     },
 
     previous: function (eventInformation) {

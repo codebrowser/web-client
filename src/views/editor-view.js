@@ -1,11 +1,26 @@
 codebrowser.view.EditorView = Backbone.View.extend({
 
-    initialize: function () {
+    render: function (data, mode) {
 
-        this.render();
+        var template = Mustache.render($('#editor-template').html(), this.model.toJSON());
+        $('#editor-container').html(template);
+
+        // Create editor
+        this.editor = ace.edit('editor');
+
+        // Configure editor
+        config.editor.configure(this.editor);
+
+        this.setContent(data, mode);
     },
 
-    render: function () {
+    setModel: function (model) {
+
+        this.model = model;
+        this.update();
+    },
+
+    update: function () {
 
         var self = this;
 
@@ -14,17 +29,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             var filename = self.model.get('name');
             var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
-            self.setContent(data, mode);
+            self.render(data, mode);
         });
-
-        var template = Mustache.render($('#editor-template').html(), this.model.toJSON());
-        $(this.el).html(template);
-
-        // Create editor
-        this.editor = ace.edit('editor');
-
-        // Configure editor
-        config.editor.configure(this.editor);
     },
 
     setContent: function (content, mode) {

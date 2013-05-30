@@ -27,8 +27,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 var snapshot = snapshotCollection.get(id);
                 self.snapshotView.setModel(snapshot);
-
-                new codebrowser.view.EditorView({ el: $('#editor-container'), model: snapshot.get('files').at(0) });
             },
 
             error: function () {
