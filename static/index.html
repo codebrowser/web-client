@@ -32,35 +32,31 @@
 
         <!-- Templates -->
 
+        <!-- Editor -->
         <script type='text/template' id='editor-template'>
 
-            <h2> {{name}} </h2>
+            <h2>{{name}}</h2>
             <div id='editor'></div>
 
         </script>
 
+        <!-- Snapshot -->
         <script type='text/template' id='snapshot-template'>
-
-            <div id='snapshot'>
 
             <ul>
                 {{#files}}
-                    <li>
-                        <a href={{url}}> {{name}} </a>
-                    </li>
+                <li><a href='{{url}}'>{{name}}</a></li>
                 {{/files}}
             </ul>
 
-                {{snapshotTime}}
+            {{snapshotTime}}
 
-                <div id='buttons'>
-                    <input type='button' value='Previous' id='prevButton'/>
-                    <input type='button' value='Next' id='nextButton'/>
-                </div>
-
-                <div id='view'></div>
-
+            <div id='buttons'>
+                <input type='button' id='previous' value='Previous'>
+                <input type='button' id='next' value='Next'>
             </div>
+
+            <div id='editor-container'></div>
 
         </script>
 

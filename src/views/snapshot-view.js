@@ -1,15 +1,21 @@
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
+    events: {
+
+        'click #previous': 'previous',
+        'click #next': 'next'
+    },
+
     initialize: function () {
 
         this.model = new codebrowser.model.Snapshot();
         this.render();
     },
 
-    events: {
+    render: function () {
 
-        'click #prevButton': 'previous',
-        'click #nextButton': 'next'
+        var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
+        $(this.el).html(template);
     },
 
     setModel: function (model) {
@@ -48,12 +54,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           this.collection.exerciseId +
                                           '/snapshots/' +
                                           id);
-    },
-
-    render: function () {
-
-        var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
-        $(this.el).html(template);
     },
 
     configURLs: function () {

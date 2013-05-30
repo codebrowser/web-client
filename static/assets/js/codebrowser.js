@@ -356,16 +356,22 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
+    events: {
+
+        'click #previous': 'previous',
+        'click #next': 'next'
+    },
+
     initialize: function () {
 
         this.model = new codebrowser.model.Snapshot();
         this.render();
     },
 
-    events: {
+    render: function () {
 
-        'click #prevButton': 'previous',
-        'click #nextButton': 'next'
+        var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
+        $(this.el).html(template);
     },
 
     setModel: function (model) {
@@ -404,12 +410,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           this.collection.exerciseId +
                                           '/snapshots/' +
                                           id);
-    },
-
-    render: function () {
-
-        var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
-        $(this.el).html(template);
     },
 
     configURLs: function () {
@@ -451,7 +451,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:id': 'read'
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:id': 'snapshot'
 
     },
 
@@ -460,7 +460,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         this.snapshotView = new codebrowser.view.SnapshotView({ el: $('#container') });
     },
 
-    read: function (studentId, courseId, exerciseId, id) {
+    snapshot: function (studentId, courseId, exerciseId, id) {
 
         var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId, courseId: courseId, exerciseId: exerciseId });
         this.snapshotView.collection = snapshotCollection;
@@ -475,7 +475,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 var snapshot = snapshotCollection.get(id);
                 self.snapshotView.setModel(snapshot);
 
-                new codebrowser.view.EditorView({ el: $('#view'), model: snapshot.get('files').at(0) });
+                new codebrowser.view.EditorView({ el: $('#editor-container'), model: snapshot.get('files').at(0) });
             },
 
             error: function () {
