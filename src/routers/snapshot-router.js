@@ -17,8 +17,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 console.log('Received snapshot from backend...');
                 console.log(snapshot);
-                console.log(config.view.container);
-                console.log($(config.view.container));
 
                 var editorView = new codebrowser.view.EditorView({ el: $(config.view.container) });
 

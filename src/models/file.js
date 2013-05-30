@@ -6,7 +6,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
-        return config.apiRoot +
+        return config.api.main.root +
                'students/' +
                this.get('snapshot').get('studentId') +
                '/courses/' +

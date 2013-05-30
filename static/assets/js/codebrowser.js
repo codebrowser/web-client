@@ -6,9 +6,16 @@ var config = {
 
     /* API */
 
-    apiRoot: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/',
+    api: {
 
-    /* Views */
+        main: {
+
+            root: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/'
+
+        }
+    },
+
+    /* View */
 
     view: {
 
@@ -70,7 +77,7 @@ var codebrowser = {
 
 codebrowser.model.Course = Backbone.RelationalModel.extend({
 
-    urlRoot: config.apiRoot + 'courses',
+    urlRoot: config.api.main.root + 'courses',
 
     relations: [
 
@@ -110,7 +117,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
-        return config.apiRoot +
+        return config.api.main.root +
                'students/' +
                this.get('snapshot').get('studentId') +
                '/courses/' +
@@ -150,7 +157,7 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
             throw new Error('Attributes studentId, courseId and exerciseId are required to fetch a snapshot.');
         }
 
-        return config.apiRoot +
+        return config.api.main.root +
                'students/' +
                this.get('studentId') +
                '/courses/' +
@@ -179,7 +186,7 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
 
 codebrowser.model.Student = Backbone.RelationalModel.extend({
 
-    urlRoot: config.apiRoot + 'students',
+    urlRoot: config.api.main.root + 'students',
 
     relations: [
 
@@ -196,7 +203,7 @@ codebrowser.model.Student = Backbone.RelationalModel.extend({
 codebrowser.collection.CourseCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.Course,
-    url: config.apiRoot + 'courses'
+    url: config.api.main.root + 'courses'
 
 });
 ;
@@ -226,7 +233,7 @@ codebrowser.collection.FileCollection = Backbone.Collection.extend({
 
     url: function () {
 
-        return config.apiRoot +
+        return config.api.main.root +
                'students/' +
                this.snapshot.get('studentId') +
                '/courses/' +
@@ -255,7 +262,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             throw new Error('Options studentId, courseId and exerciseId are required to fetch snapshots.');
         }
 
-        return config.apiRoot +
+        return config.api.main.root +
                'students/' +
                this.studentId +
                '/courses/' +
@@ -279,7 +286,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.Student,
-    url: config.apiRoot + 'students'
+    url: config.api.main.root + 'students'
 
 });
 ;
@@ -349,8 +356,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 console.log('Received snapshot from backend...');
                 console.log(snapshot);
-                console.log(config.view.container);
-                console.log($(config.view.container));
 
                 var editorView = new codebrowser.view.EditorView({ el: $(config.view.container) });
 

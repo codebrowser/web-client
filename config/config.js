@@ -6,7 +6,14 @@ var config = {
 
     /* API */
 
-    apiRoot: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/',
+    api: {
+
+        main: {
+
+            root: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/'
+
+        }
+    },
 
     /* View */
 

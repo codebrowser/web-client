@@ -8,7 +8,7 @@ codebrowser.collection.FileCollection = Backbone.Collection.extend({
 
     url: function () {
 
-        return config.apiRoot +
+        return config.api.main.root +
                'students/' +
                this.snapshot.get('studentId') +
                '/courses/' +

@@ -11,7 +11,7 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
             throw new Error('Attributes studentId, courseId and exerciseId are required to fetch a snapshot.');
         }
 
-        return config.apiRoot +
+        return config.api.main.root +
                'students/' +
                this.get('studentId') +
                '/courses/' +
