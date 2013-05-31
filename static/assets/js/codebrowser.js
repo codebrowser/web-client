@@ -335,7 +335,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     render: function (data, mode) {
 
-        var source   = $('#editor-template').html();
+        var source = $('#editor-template').html();
         var template = Handlebars.compile(source);
         template = template(this.model.toJSON());
         $(this.el).html(template);
@@ -398,7 +398,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     render: function () {
 
-        var source   = $('#snapshot-template').html();
+        var source = $('#snapshot-template').html();
         var template = Handlebars.compile(source);
         template = template(this.model.toJSON());
         this.$el.html(template);

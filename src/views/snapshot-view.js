@@ -16,7 +16,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     render: function () {
 
-        var source   = $('#snapshot-template').html();
+        var source = $('#snapshot-template').html();
         var template = Handlebars.compile(source);
         template = template(this.model.toJSON());
         this.$el.html(template);
