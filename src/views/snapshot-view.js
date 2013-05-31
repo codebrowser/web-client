@@ -16,7 +16,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     render: function () {
 
-        var template = Mustache.render($('#snapshot-template').html(), this.model.toJSON());
+        var source   = $('#snapshot-template').html();
+        var template = Handlebars.compile(source);
+        template = template(this.model.toJSON());
         this.$el.html(template);
     },
 

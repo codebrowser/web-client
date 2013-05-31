@@ -2,7 +2,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     render: function (data, mode) {
 
-        var template = Mustache.render($('#editor-template').html(), this.model.toJSON());
+        var source   = $('#editor-template').html();
+        var template = Handlebars.compile(source);
+        template = template(this.model.toJSON());
         $(this.el).html(template);
 
         // Create editor
