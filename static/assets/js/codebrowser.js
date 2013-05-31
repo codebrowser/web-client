@@ -336,7 +336,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     render: function (data, mode) {
 
         var template = Mustache.render($('#editor-template').html(), this.model.toJSON());
-        this.$el.html(template);
+        $(this.el).html(template);
 
         // Create editor
         this.editor = ace.edit('editor');
@@ -349,7 +349,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     },
 
     setModel: function (model) {
-        console.log('taaa');
+
         this.model = model;
         this.update();
     },
@@ -389,16 +389,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     initialize: function () {
 
         this.model = new codebrowser.model.Snapshot();
-//        this.model.bind('change', this.render, this);
         this.render();
 
         this.editorView = new codebrowser.view.EditorView({ el: '#editor-container' });
-    },
-
-    update: function() {
-        console.log('hello');
-//        this.editorView.setModel(this.model.get('files').at(0));
-//        this.render();
     },
 
     render: function () {
@@ -411,7 +404,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.model = model;
         this.model.convertTime();
+        this.render();
 
+        this.editorView.el = '#editor-container';
         this.editorView.setModel(this.model.get('files').at(0));
     },
 
@@ -508,7 +503,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             success: function () {
 
                 var snapshot = snapshotCollection.get(id);
-//                self.snapshotView.model = snapshot;
                 self.snapshotView.setModel(snapshot);
             },
 
