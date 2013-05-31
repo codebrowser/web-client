@@ -5,7 +5,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var source = $('#editor-template').html();
         var template = Handlebars.compile(source);
         template = template(this.model.toJSON());
-        $(this.el).html(template);
+        this.$el.html(template);
 
         // Create editor
         this.editor = ace.edit('editor');

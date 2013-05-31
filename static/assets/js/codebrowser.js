@@ -338,7 +338,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var source = $('#editor-template').html();
         var template = Handlebars.compile(source);
         template = template(this.model.toJSON());
-        $(this.el).html(template);
+        this.$el.html(template);
 
         // Create editor
         this.editor = ace.edit('editor');
@@ -380,6 +380,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
 });
 ;
 
+codebrowser.view.ErrorView = Backbone.View.extend({
+
+    render: function() {
+
+        $(this.el).empty();
+        $('<br/>').appendTo(this.el);
+        $('<h1/>').text('You didn\'t find what you were looking for, now good day.').appendTo(this.el);
+    }
+});
+;
+
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
@@ -410,7 +421,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.model.convertTime();
         this.render();
 
-        this.editorView.el = '#editor-container';
         this.editorView.setModel(this.model.get('files').at(0));
     },
 
@@ -465,6 +475,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
 codebrowser.router.BaseRouter = Backbone.Router.extend({
 
+    initialize: function () {
+
+        this.errorView = new codebrowser.view.ErrorView({ el: config.view.container });
+    },
+
     routes: {
 
         '*notFound': 'catch'
@@ -473,7 +488,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     catch: function () {
 
-        $(config.view.container).empty();
+        this.errorView.render();
         console.log('Catched!');
     }
 });
@@ -489,7 +504,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotView = new codebrowser.view.SnapshotView({ el: config.view.container });
+        this.snapshotView = new codebrowser.view.SnapshotView({ el: '#snapshot-container' });
     },
 
     snapshot: function (studentId, courseId, exerciseId, id) {
@@ -507,6 +522,13 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             success: function () {
 
                 var snapshot = snapshotCollection.get(id);
+
+                if (!snapshot) {
+
+                    self.navigate('#/error');
+                    return;
+                }
+
                 self.snapshotView.setModel(snapshot);
             },
 

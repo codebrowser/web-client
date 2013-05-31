@@ -8,7 +8,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotView = new codebrowser.view.SnapshotView({ el: config.view.container });
+        this.snapshotView = new codebrowser.view.SnapshotView({ el: '#snapshot-container' });
     },
 
     snapshot: function (studentId, courseId, exerciseId, id) {
@@ -26,6 +26,13 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             success: function () {
 
                 var snapshot = snapshotCollection.get(id);
+
+                if (!snapshot) {
+
+                    self.navigate('#/error');
+                    return;
+                }
+
                 self.snapshotView.setModel(snapshot);
             },
 
