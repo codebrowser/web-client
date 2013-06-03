@@ -104,9 +104,9 @@ codebrowser.helper.AceMode = {
 }
 ;
 
-Handlebars.registerHelper('snapshotTime', function () {
+Handlebars.registerHelper('convert', function (time) {
 
-    return new Date(this.snapshotTime).toLocaleString();
+    return new Date(time).toLocaleString();
 });
 ;
 
