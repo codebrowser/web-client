@@ -32,14 +32,19 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.html(output);
     },
 
-    setModel: function (model) {
+    setModel: function (model, fileId) {
 
         this.model = model;
         this.render();
 
         // Update editor
         this.editorView.setElement('#editor-container');
-        this.editorView.setModel(this.model.get('files').at(0));
+        
+        if (!fileId) {
+            this.editorView.setModel(this.model.get('files').at(0));
+        } else {
+            this.editorView.setModel(this.model.get('files').get(fileId));
+        }
     },
 
     navigate: function (id) {
