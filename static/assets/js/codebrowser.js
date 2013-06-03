@@ -338,7 +338,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var source = $('#editor-template').html();
         var template = Handlebars.compile(source);
         template = template(this.model.toJSON());
-        this.$el.html(template);
+        $(this.el).html(template);
 
         // Create editor
         this.editor = ace.edit('editor');
@@ -421,6 +421,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.model.convertTime();
         this.render();
 
+        this.editorView.el = '#editor-container';
         this.editorView.setModel(this.model.get('files').at(0));
     },
 
@@ -504,7 +505,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotView = new codebrowser.view.SnapshotView({ el: '#snapshot-container' });
+        this.snapshotView = new codebrowser.view.SnapshotView({ el: config.view.container });
     },
 
     snapshot: function (studentId, courseId, exerciseId, id) {
