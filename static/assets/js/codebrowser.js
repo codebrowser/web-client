@@ -413,7 +413,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     events: {
 
         'click #previous': 'previous',
-        'click #next': 'next'
+        'click #next':     'next'
     },
 
     initialize: function () {
