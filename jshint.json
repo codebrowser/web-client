@@ -24,8 +24,7 @@
         "codebrowser": true,
         "config": true,
         "editor": true,
-        "Handlebars": true,
-        "Mustache": true
+        "Handlebars": true
 
     }
 }
