@@ -108,11 +108,7 @@ Handlebars.registerHelper('convert', function (time) {
 
     return new Date(time).toLocaleString();
 });
-
-Handlebars.registerHelper('get', function () {
-
-    console.log(this);
-});;
+;
 
 codebrowser.model.Course = Backbone.RelationalModel.extend({
 
@@ -427,15 +423,17 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     render: function () {
 
-        var data = {
+        var attributes = {
+
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
             exerciseId: this.collection.exerciseId
-        };
+
+        }
 
         // Template
         var template = Handlebars.compile(this.template());
-        var output = template($.extend(this.model.toJSON(), data));
+        var output = template($.extend(this.model.toJSON(), attributes));
 
         this.$el.html(output);
     },
@@ -447,7 +445,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Update editor
         this.editorView.setElement('#editor-container');
-        
+
+        // Show first file if no fileId is specified
         if (!fileId) {
             this.editorView.setModel(this.model.get('files').at(0));
         } else {
