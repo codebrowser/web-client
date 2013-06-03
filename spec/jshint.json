@@ -16,6 +16,7 @@
 
     "globals": {
 
+        "codebrowser": true,
         "describe": true,
         "expect": true,
         "it": true
