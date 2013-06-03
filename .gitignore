@@ -10,5 +10,6 @@
 
 .grunt/
 _SpecRunner.html
+coverage/
 nbproject/
 node_modules/

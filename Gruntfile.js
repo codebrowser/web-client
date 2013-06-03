@@ -10,8 +10,8 @@ module.exports = function (grunt) {
 
             src: {
 
-                files: ['config/*.js', 'src/**/*.js'],
-                tasks: ['jshint:src', 'build'],
+                files: ['config/*.js', 'src/**/*.js', 'spec/**/*-spec.js', 'selenium/*.js'],
+                tasks: ['jshint', 'build'],
                 options: {
 
                     nospawn: true
@@ -70,12 +70,22 @@ module.exports = function (grunt) {
                 }
             },
 
-            tests: {
+            spec: {
 
                 src: 'spec/**/*.js',
                 options: {
 
                     jshintrc: 'spec/jshint.json'
+
+                }
+            },
+
+            selenium: {
+
+                src: 'selenium/*.js',
+                options: {
+
+                    jshintrc: 'selenium/jshint.json'
 
                 }
             }
@@ -92,7 +102,42 @@ module.exports = function (grunt) {
                          'static/assets/js/backbone-relational.js',
                          'static/assets/js/handlebars.js',
                          'static/assets/js/ace/ace.js'],
-                specs: 'spec/**/*-spec.js'
+                specs: 'spec/**/*-spec.js',
+                template: require('grunt-template-jasmine-istanbul'),
+                templateOptions: {
+
+                    coverage: 'coverage/coverage.json',
+                    report: 'coverage/'
+
+                }
+            }
+        },
+
+        connect: {
+
+            server: {
+
+                options: {
+
+                    base: 'static'
+
+                }
+            }
+        },
+
+        webdriver: {
+
+            dist: {
+
+                url: 'http://localhost:8000/',
+                tests: 'selenium/*.js'
+
+            },
+
+            options: {
+
+                browser: 'phantomjs',
+                reporter: 'specification'
 
             }
         }
@@ -105,10 +150,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-webdriver');
 
     /* Register tasks */
 
-    grunt.registerTask('test', ['jshint', 'jasmine']);
+    grunt.registerTask('test', ['jshint', 'jasmine', 'connect', 'webdriver']);
     grunt.registerTask('build', ['concat', 'uglify']);
     grunt.registerTask('default', ['test', 'build']);
 }
