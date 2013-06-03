@@ -154,11 +154,11 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
         return config.api.main.root +
                'students/' +
-               this.get('snapshot').get('studentId') +
+               this.get('snapshot').collection.studentId +
                '/courses/' +
-               this.get('snapshot').get('courseId') +
+               this.get('snapshot').collection.courseId +
                '/exercises/' +
-               this.get('snapshot').get('exerciseId') +
+               this.get('snapshot').collection.exerciseId +
                '/snapshots/' +
                this.get('snapshot').id +
                '/files';
