@@ -2,7 +2,7 @@
 
 Web client for Code Browser (HTML5 + CSS3 + JavaScript + Node.js + Grunt).
 
-CI: https://travis-ci.org/codebrowser/web-client
+CI: https://travis-ci.org/codebrowser/web-client  
 Deployed on: http://codebrowser.herokuapp.com
 
 To develop this project, you will need to have node.js and npm installed on your development environment.
