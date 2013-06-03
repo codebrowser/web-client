@@ -1,11 +1,7 @@
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
     el: config.view.container,
-
-    template: function () {
-
-        return $('#snapshot-template').html();
-    },
+    template: Handlebars.templates.Snapshot,
 
     events: {
 
@@ -35,8 +31,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Template
-        var template = Handlebars.compile(this.template());
-        var output = template($.extend(this.model.toJSON(), attributes));
+        var output = this.template($.extend(this.model.toJSON(), attributes));
 
         this.$el.html(output);
     },

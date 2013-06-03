@@ -14,9 +14,10 @@
         <script src='assets/js/underscore-min.js'></script>
         <script src='assets/js/backbone-min.js'></script>
         <script src='assets/js/backbone-relational.js'></script>
-        <script src='assets/js/handlebars.js'></script>
+        <script src='assets/js/handlebars.runtime.js'></script>
         <script src='assets/js/ace/ace.js'></script>
         <script src='assets/bootstrap/js/bootstrap.min.js'></script>
+        <script src='assets/js/codebrowser-templates-min.js'></script>
         <script src='assets/js/codebrowser.js'></script>
 
     </head>
@@ -29,43 +30,6 @@
             <div id='container'></div>
 
         </div>
-
-        <!-- Templates -->
-
-        <!-- Error -->
-        <script type='text/template' id='error-template'>
-
-            <p>Oops!</p>
-
-        </script>
-
-        <!-- Editor -->
-        <script type='text/template' id='editor-template'>
-
-            <h2>{{name}}</h2>
-            <div id='editor'></div>
-
-        </script>
-
-        <!-- Snapshot -->
-        <script type='text/template' id='snapshot-template'>
-
-            <ul>
-                {{#files}}
-                <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'>{{name}}</a></li>
-                {{/files}}
-            </ul>
-
-            {{convert snapshotTime}}
-
-            <div id='buttons'>
-                <input type='button' id='previous' value='Previous'>
-                <input type='button' id='next' value='Next'>
-            </div>
-
-            <div id='editor-container'></div>
-
-        </script>
 
     </body>
 </html>

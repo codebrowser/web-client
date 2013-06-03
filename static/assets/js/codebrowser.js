@@ -330,16 +330,12 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
 codebrowser.view.EditorView = Backbone.View.extend({
 
-    template: function () {
-
-        return $('#editor-template').html();
-    },
+    template: Handlebars.templates.Editor,
 
     render: function (content, mode) {
 
         // Template
-        var template = Handlebars.compile(this.template());
-        var output = template(this.model.toJSON());
+        var output = this.template(this.model.toJSON());
 
         this.$el.html(output);
 
@@ -382,11 +378,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 codebrowser.view.ErrorView = Backbone.View.extend({
 
     el: config.view.container,
-
-    template: function () {
-
-        return $('#error-template').html();
-    },
+    template: Handlebars.templates.Error,
 
     render: function() {
 
@@ -398,11 +390,7 @@ codebrowser.view.ErrorView = Backbone.View.extend({
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
     el: config.view.container,
-
-    template: function () {
-
-        return $('#snapshot-template').html();
-    },
+    template: Handlebars.templates.Snapshot,
 
     events: {
 
@@ -432,8 +420,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Template
-        var template = Handlebars.compile(this.template());
-        var output = template($.extend(this.model.toJSON(), attributes));
+        var output = this.template($.extend(this.model.toJSON(), attributes));
 
         this.$el.html(output);
     },

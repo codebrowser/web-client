@@ -1,0 +1,14 @@
+<ul>
+    {{#files}}
+    <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'>{{name}}</a></li>
+    {{/files}}
+</ul>
+
+{{convert snapshotTime}}
+
+<div id='buttons'>
+    <input type='button' id='previous' value='Previous'>
+    <input type='button' id='next' value='Next'>
+</div>
+
+<div id='editor-container'></div>

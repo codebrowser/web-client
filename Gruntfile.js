@@ -40,13 +40,40 @@ module.exports = function (grunt) {
             }
         },
 
+        handlebars: {
+
+            template: {
+
+                files: {
+
+                    'static/assets/js/codebrowser-templates.js': 'src/templates/*.template'
+
+                },
+
+                options: {
+
+                    namespace: 'Handlebars.templates',
+
+                    processName: function (path) {
+
+                        var split = path.split('/');
+                        var file = split[split.length - 1];
+                        var filename = file.split('.')[0];
+
+                        return filename;
+                    }
+                }
+            }
+        },
+
         uglify: {
 
             dist: {
 
                 files: {
 
-                    'static/assets/js/codebrowser-min.js': 'static/assets/js/codebrowser.js'
+                    'static/assets/js/codebrowser-min.js': 'static/assets/js/codebrowser.js',
+                    'static/assets/js/codebrowser-templates-min.js': 'static/assets/js/codebrowser-templates.js'
 
                 },
 
@@ -100,8 +127,9 @@ module.exports = function (grunt) {
                          'static/assets/js/underscore-min.js',
                          'static/assets/js/backbone-min.js',
                          'static/assets/js/backbone-relational.js',
-                         'static/assets/js/handlebars.js',
-                         'static/assets/js/ace/ace.js'],
+                         'static/assets/js/handlebars.runtime.js',
+                         'static/assets/js/ace/ace.js',
+                         'static/assets/js/codebrowser-templates-min.js'],
                 specs: 'spec/**/*-spec.js',
                 template: require('grunt-template-jasmine-istanbul'),
                 templateOptions: {
@@ -147,6 +175,7 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
@@ -156,6 +185,6 @@ module.exports = function (grunt) {
     /* Register tasks */
 
     grunt.registerTask('test', ['jshint', 'jasmine', 'connect', 'webdriver']);
-    grunt.registerTask('build', ['concat', 'uglify']);
+    grunt.registerTask('build', ['concat', 'handlebars', 'uglify']);
     grunt.registerTask('default', ['test', 'build']);
 }

@@ -1,15 +1,11 @@
 codebrowser.view.EditorView = Backbone.View.extend({
 
-    template: function () {
-
-        return $('#editor-template').html();
-    },
+    template: Handlebars.templates.Editor,
 
     render: function (content, mode) {
 
         // Template
-        var template = Handlebars.compile(this.template());
-        var output = template(this.model.toJSON());
+        var output = this.template(this.model.toJSON());
 
         this.$el.html(output);
 
