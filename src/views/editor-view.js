@@ -20,7 +20,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
         config.editor.configure(this.editor);
 
         // Set content for editor
-        this.setContent(content, mode);
+        this.editor.setValue(content);
+        this.editor.navigateFileStart();
+
+        // Set syntax mode
+        this.editor.getSession().setMode(mode);
     },
 
     setModel: function (model) {
@@ -39,17 +43,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var filename = self.model.get('name');
             var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
 
-            // NOTE: Could use setContent?
             self.render(content, mode);
         });
-    },
-
-    setContent: function (content, mode) {
-
-        this.editor.setValue(content);
-        this.editor.navigateFileStart();
-
-        // Set syntax mode
-        this.editor.getSession().setMode(mode);
     }
 });
