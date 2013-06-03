@@ -16,6 +16,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     initialize: function () {
 
         this.model = new codebrowser.model.Snapshot();
+        this.collection = new codebrowser.collection.SnapshotCollection();
 
         this.render();
 
@@ -25,9 +26,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     render: function () {
 
+        var data = {
+            studentId: this.collection.studentId,
+            courseId: this.collection.courseId,
+            exerciseId: this.collection.exerciseId
+        };
+
         // Template
         var template = Handlebars.compile(this.template());
-        var output = template(this.model.toJSON());
+        var output = template($.extend(this.model.toJSON(), data));
 
         this.$el.html(output);
     },
