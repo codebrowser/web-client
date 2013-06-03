@@ -144,7 +144,7 @@ codebrowser.model.Exercise = Backbone.RelationalModel.extend({
 });
 ;
 
-/* 
+/*
  * A file is resolved through a snapshot.
  */
 
@@ -164,13 +164,13 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
                '/files';
     },
 
-    /* Callback parameters (data, [error]) are the received data and possible error, respectively. */
+    /* Callback parameters (content, [error]) are the received data and possible error, respectively. */
 
     fetchContent: function (callback) {
 
-        var request = $.get(this.urlRoot() + '/' + this.id + '/content', function (data) {
+        var request = $.get(this.urlRoot() + '/' + this.id + '/content', function (content) {
 
-            callback(data, null);
+            callback(content, null);
         });
 
         request.fail(function () {
