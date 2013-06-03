@@ -330,12 +330,18 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
 codebrowser.view.EditorView = Backbone.View.extend({
 
-    render: function (data, mode) {
+    template: function () {
 
-        var source = $('#editor-template').html();
-        var template = Handlebars.compile(source);
-        template = template(this.model.toJSON());
-        $(this.el).html(template);
+        return $('#editor-template').html();
+    },
+
+    render: function (content, mode) {
+
+        // Template
+        var template = Handlebars.compile(this.template());
+        var output = template(this.model.toJSON());
+
+        this.$el.html(output);
 
         // Create editor
         this.editor = ace.edit('editor');
@@ -344,7 +350,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         config.editor.configure(this.editor);
 
         // Set content for editor
-        this.setContent(data, mode);
+        this.setContent(content, mode);
     },
 
     setModel: function (model) {
@@ -358,11 +364,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var self = this;
 
         // Fetch file
-        this.model.fetchContent(function(data) {
+        this.model.fetchContent(function (content) {
 
             var filename = self.model.get('name');
             var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
-            self.render(data, mode);
+
+            // NOTE: Could use setContent?
+            self.render(content, mode);
         });
     },
 
@@ -395,6 +403,13 @@ codebrowser.view.ErrorView = Backbone.View.extend({
 
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
+    el: config.view.container,
+
+    template: function () {
+
+        return $('#snapshot-template').html();
+    },
+
     events: {
 
         'click #previous': 'previous',
@@ -403,18 +418,22 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
+        // NOTE: Do we need this?
         this.model = new codebrowser.model.Snapshot();
+
         this.render();
 
+        // Editor
         this.editorView = new codebrowser.view.EditorView({ el: '#editor-container' });
     },
 
     render: function () {
 
-        var source = $('#snapshot-template').html();
-        var template = Handlebars.compile(source);
-        template = template(this.model.toJSON());
-        this.$el.html(template);
+        // Template
+        var template = Handlebars.compile(this.template());
+        var output = template(this.model.toJSON());
+
+        this.$el.html(output);
     },
 
     setModel: function (model) {
@@ -422,26 +441,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.model = model;
         this.render();
 
+        // NOTE: Do we need this?
         this.editorView.el = '#editor-container';
+
+        // Update editor
         this.editorView.setModel(this.model.get('files').at(0));
-    },
-
-    previous: function (eventInformation) {
-
-        var index = this.collection.indexOf(this.model);
-        var prevModel = this.collection.at(index-1);
-
-        this.navigate(prevModel.id);
-        eventInformation.preventDefault();
-    },
-
-    next: function (eventInformation) {
-
-        var index = this.collection.indexOf(this.model);
-        var nextModel = this.collection.at(index+1);
-
-        this.navigate(nextModel.id);
-        eventInformation.preventDefault();
     },
 
     navigate: function (id) {
@@ -456,21 +460,26 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           id);
     },
 
-    configURLs: function () {
+    previous: function (event) {
 
-        for (var i=0; i < this.model.get('files').length; ++i) {
-            var file = this.model.get('files').at(i);
-            file.set('url', '#/students/' +
-                            this.collection.studentId +
-                            '/courses/' +
-                            this.collection.courseId +
-                            '/exercises/' +
-                            this.collection.exerciseId +
-                            '/snapshots/' +
-                            this.model.id +
-                            '/files/' +
-                            file.get('id'));
-        }
+        event.preventDefault();
+
+        // TODO: Underflow, disable button
+        var index = this.collection.indexOf(this.model);
+        var previous = this.collection.at(index - 1);
+
+        this.navigate(previous.id);
+    },
+
+    next: function (event) {
+
+        event.preventDefault();
+
+        // TODO: Overflow, disable button
+        var index = this.collection.indexOf(this.model);
+        var next = this.collection.at(index + 1);
+
+        this.navigate(next.id);
     }
 });
 ;
@@ -491,6 +500,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
     notFound: function () {
 
         console.log('Catched!');
+
         this.errorView.render();
     }
 });
@@ -506,7 +516,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotView = new codebrowser.view.SnapshotView({ el: config.view.container });
+        this.snapshotView = new codebrowser.view.SnapshotView();
     },
 
     snapshot: function (studentId, courseId, exerciseId, id) {
@@ -527,7 +537,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 if (!snapshot) {
 
-                    self.navigate('#/error');
+                    console.log('No snapshot found with given ID.');
                     return;
                 }
 
@@ -536,7 +546,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
             error: function () {
 
-                console.log('Request failed.');
+                console.log('Failed fetching snapshots.');
             }
         });
     }

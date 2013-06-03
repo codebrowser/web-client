@@ -1,11 +1,17 @@
 codebrowser.view.EditorView = Backbone.View.extend({
 
-    render: function (data, mode) {
+    template: function () {
 
-        var source = $('#editor-template').html();
-        var template = Handlebars.compile(source);
-        template = template(this.model.toJSON());
-        $(this.el).html(template);
+        return $('#editor-template').html();
+    },
+
+    render: function (content, mode) {
+
+        // Template
+        var template = Handlebars.compile(this.template());
+        var output = template(this.model.toJSON());
+
+        this.$el.html(output);
 
         // Create editor
         this.editor = ace.edit('editor');
@@ -14,7 +20,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         config.editor.configure(this.editor);
 
         // Set content for editor
-        this.setContent(data, mode);
+        this.setContent(content, mode);
     },
 
     setModel: function (model) {
@@ -28,11 +34,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var self = this;
 
         // Fetch file
-        this.model.fetchContent(function(data) {
+        this.model.fetchContent(function (content) {
 
             var filename = self.model.get('name');
             var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
-            self.render(data, mode);
+
+            // NOTE: Could use setContent?
+            self.render(content, mode);
         });
     },
 

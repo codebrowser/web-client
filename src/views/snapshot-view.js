@@ -1,5 +1,12 @@
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
+    el: config.view.container,
+
+    template: function () {
+
+        return $('#snapshot-template').html();
+    },
+
     events: {
 
         'click #previous': 'previous',
@@ -8,18 +15,22 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
+        // NOTE: Do we need this?
         this.model = new codebrowser.model.Snapshot();
+
         this.render();
 
+        // Editor
         this.editorView = new codebrowser.view.EditorView({ el: '#editor-container' });
     },
 
     render: function () {
 
-        var source = $('#snapshot-template').html();
-        var template = Handlebars.compile(source);
-        template = template(this.model.toJSON());
-        this.$el.html(template);
+        // Template
+        var template = Handlebars.compile(this.template());
+        var output = template(this.model.toJSON());
+
+        this.$el.html(output);
     },
 
     setModel: function (model) {
@@ -27,26 +38,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.model = model;
         this.render();
 
+        // NOTE: Do we need this?
         this.editorView.el = '#editor-container';
+
+        // Update editor
         this.editorView.setModel(this.model.get('files').at(0));
-    },
-
-    previous: function (eventInformation) {
-
-        var index = this.collection.indexOf(this.model);
-        var prevModel = this.collection.at(index-1);
-
-        this.navigate(prevModel.id);
-        eventInformation.preventDefault();
-    },
-
-    next: function (eventInformation) {
-
-        var index = this.collection.indexOf(this.model);
-        var nextModel = this.collection.at(index+1);
-
-        this.navigate(nextModel.id);
-        eventInformation.preventDefault();
     },
 
     navigate: function (id) {
@@ -61,20 +57,25 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           id);
     },
 
-    configURLs: function () {
+    previous: function (event) {
 
-        for (var i=0; i < this.model.get('files').length; ++i) {
-            var file = this.model.get('files').at(i);
-            file.set('url', '#/students/' +
-                            this.collection.studentId +
-                            '/courses/' +
-                            this.collection.courseId +
-                            '/exercises/' +
-                            this.collection.exerciseId +
-                            '/snapshots/' +
-                            this.model.id +
-                            '/files/' +
-                            file.get('id'));
-        }
+        event.preventDefault();
+
+        // TODO: Underflow, disable button
+        var index = this.collection.indexOf(this.model);
+        var previous = this.collection.at(index - 1);
+
+        this.navigate(previous.id);
+    },
+
+    next: function (event) {
+
+        event.preventDefault();
+
+        // TODO: Overflow, disable button
+        var index = this.collection.indexOf(this.model);
+        var next = this.collection.at(index + 1);
+
+        this.navigate(next.id);
     }
 });
