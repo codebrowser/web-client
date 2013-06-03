@@ -92,8 +92,14 @@ module.exports = function (grunt) {
                          'static/assets/js/backbone-relational.js',
                          'static/assets/js/handlebars.js',
                          'static/assets/js/ace/ace.js'],
-                specs: 'spec/**/*-spec.js'
+                specs: 'spec/**/*-spec.js',
+                template: require('grunt-template-jasmine-istanbul'),
+                templateOptions: {
 
+                    coverage: 'coverage/coverage.json',
+                    report: 'coverage/'
+
+                }
             }
         }
     });
