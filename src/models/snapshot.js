@@ -34,14 +34,5 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
 
             }
         }
-    ],
-
-    convertTime: function () {
-
-        if (this.get('snapshotTime')) {
-
-            var snapshotTime = this.get('snapshotTime');
-            this.set('snapshotTime', new Date(snapshotTime).toLocaleString());
-        }
-    }
+    ]
 });

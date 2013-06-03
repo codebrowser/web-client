@@ -104,6 +104,12 @@ codebrowser.helper.AceMode = {
 }
 ;
 
+Handlebars.registerHelper('snapshotTime', function () {
+
+    return new Date(this.snapshotTime).toLocaleString();
+});
+;
+
 codebrowser.model.Course = Backbone.RelationalModel.extend({
 
     urlRoot: config.api.main.root + 'courses',
@@ -211,16 +217,7 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
 
             }
         }
-    ],
-
-    convertTime: function () {
-
-        if (this.get('snapshotTime')) {
-
-            var snapshotTime = this.get('snapshotTime');
-            this.set('snapshotTime', new Date(snapshotTime).toLocaleString());
-        }
-    }
+    ]
 });
 ;
 
@@ -338,7 +335,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var source = $('#editor-template').html();
         var template = Handlebars.compile(source);
         template = template(this.model.toJSON());
-        this.$el.html(template);
+        $(this.el).html(template);
 
         // Create editor
         this.editor = ace.edit('editor');
@@ -423,9 +420,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     setModel: function (model) {
 
         this.model = model;
-        this.model.convertTime();
         this.render();
 
+        this.editorView.el = '#editor-container';
         this.editorView.setModel(this.model.get('files').at(0));
     },
 
@@ -509,7 +506,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotView = new codebrowser.view.SnapshotView({ el: '#snapshot-container' });
+        this.snapshotView = new codebrowser.view.SnapshotView({ el: config.view.container });
     },
 
     snapshot: function (studentId, courseId, exerciseId, id) {
