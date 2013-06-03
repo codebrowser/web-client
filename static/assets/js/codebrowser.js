@@ -382,11 +382,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
 codebrowser.view.ErrorView = Backbone.View.extend({
 
+    el: '#container',
+
+    template: function () {
+
+        return $('#error-template').html();
+    },
+
     render: function() {
 
-        $(this.el).empty();
-        $('<br/>').appendTo(this.el);
-        $('<h1/>').text('You didn\'t find what you were looking for, now good day.').appendTo(this.el);
+        this.$el.html(this.template);
     }
 });
 ;
@@ -475,21 +480,21 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
 codebrowser.router.BaseRouter = Backbone.Router.extend({
 
-    initialize: function () {
-
-        this.errorView = new codebrowser.view.ErrorView({ el: config.view.container });
-    },
-
     routes: {
 
-        '*notFound': 'catch'
+        '*notFound': 'notFound'
 
     },
 
-    catch: function () {
+    initialize: function () {
 
-        this.errorView.render();
+        this.errorView = new codebrowser.view.ErrorView();
+    },
+
+    notFound: function () {
+
         console.log('Catched!');
+        this.errorView.render();
     }
 });
 ;

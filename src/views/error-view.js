@@ -1,9 +1,14 @@
 codebrowser.view.ErrorView = Backbone.View.extend({
 
+    el: '#container',
+
+    template: function () {
+
+        return $('#error-template').html();
+    },
+
     render: function() {
 
-        $(this.el).empty();
-        $('<br/>').appendTo(this.el);
-        $('<h1/>').text('You didn\'t find what you were looking for, now good day.').appendTo(this.el);
+        this.$el.html(this.template);
     }
 });

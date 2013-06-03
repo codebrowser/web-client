@@ -1,19 +1,19 @@
 codebrowser.router.BaseRouter = Backbone.Router.extend({
 
-    initialize: function () {
-
-        this.errorView = new codebrowser.view.ErrorView({ el: config.view.container });
-    },
-
     routes: {
 
-        '*notFound': 'catch'
+        '*notFound': 'notFound'
 
     },
 
-    catch: function () {
+    initialize: function () {
 
-        this.errorView.render();
+        this.errorView = new codebrowser.view.ErrorView();
+    },
+
+    notFound: function () {
+
         console.log('Catched!');
+        this.errorView.render();
     }
 });
