@@ -25,7 +25,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     setModel: function (model) {
 
         this.model = model;
-        this.model.convertTime();
         this.render();
 
         this.editorView.el = '#editor-container';

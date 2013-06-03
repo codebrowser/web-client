@@ -104,6 +104,12 @@ codebrowser.helper.AceMode = {
 }
 ;
 
+Handlebars.registerHelper('snapshotTime', function () {
+
+    return new Date(this.snapshotTime).toLocaleString();
+});
+;
+
 codebrowser.model.Course = Backbone.RelationalModel.extend({
 
     urlRoot: config.api.main.root + 'courses',
@@ -211,16 +217,7 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
 
             }
         }
-    ],
-
-    convertTime: function () {
-
-        if (this.get('snapshotTime')) {
-
-            var snapshotTime = this.get('snapshotTime');
-            this.set('snapshotTime', new Date(snapshotTime).toLocaleString());
-        }
-    }
+    ]
 });
 ;
 
@@ -418,7 +415,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     setModel: function (model) {
 
         this.model = model;
-        this.model.convertTime();
         this.render();
 
         this.editorView.el = '#editor-container';
