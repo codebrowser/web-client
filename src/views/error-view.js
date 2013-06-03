@@ -1,6 +1,6 @@
 codebrowser.view.ErrorView = Backbone.View.extend({
 
-    el: '#container',
+    el: config.view.container,
 
     template: function () {
 
