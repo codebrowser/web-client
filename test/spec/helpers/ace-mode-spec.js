@@ -10,7 +10,7 @@ describe('AceMode', function () {
         expect(codebrowser.helper.AceMode.getModeForFilename('.gitignore')).toBe('ace/mode/text');
     });
 
-    it('should return text mode for a system file with known extension', function () {
+    it('should return text mode for a known file extension with an unknown filename', function () {
 
         expect(codebrowser.helper.AceMode.getModeForFilename('.java')).toBe('ace/mode/text');
     });
