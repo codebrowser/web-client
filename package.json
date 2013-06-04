@@ -27,7 +27,7 @@
 
     "scripts": {
 
-        "test": "grunt test"
+        "test": "grunt test integration-test"
 
     },
 
