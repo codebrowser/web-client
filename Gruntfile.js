@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 
             src: {
 
-                files: ['config/*.js', 'src/**/*.js', 'spec/**/*-spec.js', 'selenium/*.js'],
+                files: ['config/*.js', 'src/**/*.js', 'test/spec/**/*-spec.js', 'test/selenium/*.js'],
                 tasks: ['jshint', 'build'],
                 options: {
 
@@ -99,20 +99,20 @@ module.exports = function (grunt) {
 
             spec: {
 
-                src: 'spec/**/*.js',
+                src: 'test/spec/**/*.js',
                 options: {
 
-                    jshintrc: 'spec/jshint.json'
+                    jshintrc: 'test/spec/jshint.json'
 
                 }
             },
 
             selenium: {
 
-                src: 'selenium/*.js',
+                src: 'test/selenium/*.js',
                 options: {
 
-                    jshintrc: 'selenium/jshint.json'
+                    jshintrc: 'test/selenium/jshint.json'
 
                 }
             }
@@ -130,12 +130,12 @@ module.exports = function (grunt) {
                          'static/assets/js/handlebars.runtime.js',
                          'static/assets/js/ace/ace.js',
                          'static/assets/js/codebrowser-templates-min.js'],
-                specs: 'spec/**/*-spec.js',
+                specs: 'test/spec/**/*-spec.js',
                 template: require('grunt-template-jasmine-istanbul'),
                 templateOptions: {
 
-                    coverage: 'coverage/coverage.json',
-                    report: 'coverage/'
+                    coverage: 'test/coverage/coverage.json',
+                    report: 'test/coverage/'
 
                 }
             }
@@ -158,7 +158,7 @@ module.exports = function (grunt) {
             dist: {
 
                 url: 'http://localhost:8000/',
-                tests: 'selenium/*.js'
+                tests: 'test/selenium/*.js'
 
             },
 

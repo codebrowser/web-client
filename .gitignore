@@ -10,6 +10,6 @@
 
 .grunt/
 _SpecRunner.html
-coverage/
+test/coverage/
 nbproject/
 node_modules/
