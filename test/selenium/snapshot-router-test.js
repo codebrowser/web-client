@@ -16,7 +16,7 @@ exports.tests = [
         }
     },
 
-    {
+    /*{
         name: 'should render snapshot with correct file listing',
         func: function (done) {
 
@@ -29,7 +29,7 @@ exports.tests = [
 
                     }).end(done);
         }
-    },
+    },*/
 
     {
         name: 'should render snapshot with correct file name',
@@ -43,7 +43,7 @@ exports.tests = [
 
                     }).end(done);
         }
-    },
+    }/*,
 
     {
         name: 'should render correct URLs to files in the list',
@@ -58,5 +58,5 @@ exports.tests = [
 
                     }).end(done);
         }
-    }
+    }*/
 ];
