@@ -15,7 +15,7 @@ dependencies by running `npm install -d`.
 
 ## Run Tests
 
-Run tests with `grunt test`.
+Run tests with `grunt test`. Run integration tests with `grunt integration-test'.
 
 ## Build
 
