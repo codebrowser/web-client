@@ -20,26 +20,6 @@ module.exports = function (grunt) {
             }
         },
 
-        concat: {
-
-            dist: {
-
-                src: ['config/*.js',
-                      'src/app.js',
-                      'src/helpers/*.js',
-                      'src/models/*.js',
-                      'src/collections/*.js',
-                      'src/views/*.js',
-                      'src/routers/*.js'],
-                dest: 'static/assets/js/codebrowser.js',
-                options: {
-
-                    separator: ';\n\n'
-
-                }
-            }
-        },
-
         handlebars: {
 
             template: {
@@ -66,14 +46,46 @@ module.exports = function (grunt) {
             }
         },
 
+        concat: {
+
+            dist: {
+
+                src: ['config/*.js',
+                      'src/app.js',
+                      'src/helpers/*.js',
+                      'src/models/*.js',
+                      'src/collections/*.js',
+                      'src/views/*.js',
+                      'src/routers/*.js'],
+                dest: 'static/assets/js/codebrowser.js',
+                options: {
+
+                    separator: ';\n\n'
+
+                }
+            },
+
+            handlebars: {
+
+                src: ['static/assets/js/codebrowser-templates.js',
+                      'static/assets/js/codebrowser.js'],
+                dest: 'static/assets/js/codebrowser.js',
+                options: {
+
+                    separator: ';\n\n'
+
+                }
+            }
+        },
+
         uglify: {
 
             dist: {
 
                 files: {
 
-                    'static/assets/js/codebrowser-min.js': 'static/assets/js/codebrowser.js',
-                    'static/assets/js/codebrowser-templates-min.js': 'static/assets/js/codebrowser-templates.js'
+                    'static/assets/js/codebrowser-templates-min.js': 'static/assets/js/codebrowser-templates.js',
+                    'static/assets/js/codebrowser-min.js': 'static/assets/js/codebrowser.js'
 
                 },
 
@@ -174,8 +186,8 @@ module.exports = function (grunt) {
     /* Load tasks */
 
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-handlebars');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
@@ -185,6 +197,6 @@ module.exports = function (grunt) {
     /* Register tasks */
 
     grunt.registerTask('test', ['jshint', 'jasmine', 'connect', 'webdriver']);
-    grunt.registerTask('build', ['concat', 'handlebars', 'uglify']);
+    grunt.registerTask('build', ['handlebars', 'concat', 'uglify']);
     grunt.registerTask('default', ['test', 'build']);
 }
