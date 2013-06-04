@@ -176,8 +176,7 @@ module.exports = function (grunt) {
 
             options: {
 
-                browser: 'phantomjs',
-                reporter: 'specification'
+                browser: 'phantomjs'
 
             }
         }
