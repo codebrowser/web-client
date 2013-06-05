@@ -1,14 +1,30 @@
-<ul>
-    {{#files}}
-    <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'>{{name}}</a></li>
-    {{/files}}
-</ul>
+<div class='row'>
 
-{{convert snapshotTime}}
+    <div class='span8'>
 
-<div id='buttons'>
-    <input type='button' id='previous' value='Previous'>
-    <input type='button' id='next' value='Next'>
+        <div class='btn-group'>
+
+            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'>Files <span class='caret'></span></a>
+
+            <ul class='dropdown-menu'>
+            {{#files}}
+                <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'>{{name}}</a></li>
+            {{/files}}
+            </ul>
+
+        </div>
+
+    </div>
+
+    <div class='span4'>
+
+        <div class='btn-group pull-right'>
+            <input type='button' id='previous' class='btn' value='Previous'>
+            <input type='button' id='next' class='btn' value='Next'>
+        </div>
+
+    </div>
+
 </div>
 
 <div id='editor-container'></div>

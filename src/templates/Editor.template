@@ -1,5 +1,8 @@
 <header>
+
     <h1>{{name}}</h1>
+    <span class='pull-right'>{{date snapshot.snapshotTime}}</span>
+
 </header>
 
 <div id='editor'></div>

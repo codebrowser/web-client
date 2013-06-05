@@ -1,27 +1,36 @@
-#editor-container {
+#container {
 
     margin: 20px 0;
 
 }
 
+#editor-container {
+
+    margin: 10px 0;
+
+}
+
 #editor-container header {
 
+    padding: 0 10px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-bottom: 0;
     border-radius: 4px 4px 0 0;
     background-color: rgba(0, 0, 0, 0.05);
+    font-size: 12px;
+    line-height: 30px;
+    color: rgba(0, 0, 0, 0.6);
 
 }
 
 #editor-container header h1 {
 
+    display: inline;
     margin: 0;
-    padding: 0 10px;
-    font-size: 12px;
+    font-size: inherit;
     font-weight: 500;
     text-shadow: 0 1px 0 white;
-    line-height: 30px;
-    color: rgba(0, 0, 0, 0.6);
+    line-height: inherit;
 
 }
 

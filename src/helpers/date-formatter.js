@@ -1,4 +1,4 @@
-Handlebars.registerHelper('convert', function (time) {
+Handlebars.registerHelper('date', function (time) {
 
     return new Date(time).toLocaleString();
 });
