@@ -71,6 +71,17 @@ function program1(depth0,data,depth1) {
 
 var config = {
 
+    /* Test */
+
+    test: {
+
+        async: {
+
+            timeout: 4000
+
+        }
+    },
+
     /* API */
 
     api: {
@@ -198,7 +209,7 @@ codebrowser.model.Course = Backbone.RelationalModel.extend({
 });
 ;
 
-/* 
+/*
  * An exercise is resolved through a course.
  */
 
@@ -206,7 +217,7 @@ codebrowser.model.Exercise = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
-        return this.get('course').urlRoot + '/' + this.get('course').id + '/exercises';
+        return this.get('course').url() + '/exercises';
     }
 });
 ;
@@ -312,7 +323,7 @@ codebrowser.collection.CourseCollection = Backbone.Collection.extend({
 });
 ;
 
-/* 
+/*
  * ExerciseCollection is resolved through a course.
  */
 
@@ -322,7 +333,7 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
 
     url: function () {
 
-        return this.course.urlRoot + '/' + this.course.id + '/exercises';
+        return this.course.url() + '/exercises';
     }
 });
 ;

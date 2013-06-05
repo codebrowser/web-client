@@ -1,4 +1,4 @@
-/* 
+/*
  * ExerciseCollection is resolved through a course.
  */
 
@@ -8,6 +8,6 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
 
     url: function () {
 
-        return this.course.urlRoot + '/' + this.course.id + '/exercises';
+        return this.course.url() + '/exercises';
     }
 });

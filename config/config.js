@@ -4,6 +4,17 @@
 
 var config = {
 
+    /* Test */
+
+    test: {
+
+        async: {
+
+            timeout: 4000
+
+        }
+    },
+
     /* API */
 
     api: {

@@ -10,12 +10,37 @@ describe('File', function () {
         file.set('snapshot', snapshot);
     });
 
-    it('should have correct url root', function () {
+    it('should have correct URL root through a snapshot', function () {
 
         expect(file.urlRoot()).toBe(config.api.main.root + 'students/1/courses/2/exercises/3/snapshots/4/files');
     });
 
-    it('should have correct url', function () {
+    it('should have correct URL root through a collection of snapshots', function () {
+
+        var snapshots = new codebrowser.collection.SnapshotCollection(null, { studentId: 2, courseId: 2, exerciseId: 3 });
+        file = null;
+
+        snapshots.fetch({
+
+            success: function () {
+
+                file = snapshots.at(0).get('files').at(0);
+            }
+        });
+
+        waitsFor(function () {
+
+            return file !== null;
+
+        }, 'Snapshots fetch never succeeded.', config.test.async.timeout);
+
+        runs(function () {
+
+            expect(file.urlRoot()).toBe(config.api.main.root + 'students/2/courses/2/exercises/3/snapshots/5/files');
+        });
+    });
+
+    it('should have correct URL', function () {
 
         expect(file.url()).toBe(config.api.main.root + 'students/1/courses/2/exercises/3/snapshots/4/files/5');
     });
@@ -40,7 +65,7 @@ describe('File', function () {
 
             return _content !== null;
 
-        }, 'File fetch never succeeded.', 2000);
+        }, 'File fetch never succeeded.', config.test.async.timeout);
 
         runs(function () {
 
@@ -57,6 +82,7 @@ describe('File', function () {
 
             success: function () {
 
+                // Change the file ID to something wrong
                 snapshot.get('files').at(0).id = 0;
                 snapshot.get('files').at(0).fetchContent(function (content, error) {
 
@@ -69,7 +95,7 @@ describe('File', function () {
 
             return _error !== null;
 
-        }, 'File fetch never succeeded.', 2000);
+        }, 'File fetch never succeeded.', config.test.async.timeout);
 
         runs(function () {
 
