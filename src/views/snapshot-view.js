@@ -34,6 +34,18 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var output = this.template($.extend(this.model.toJSON(), attributes));
 
         this.$el.html(output);
+
+        var index = this.collection.indexOf(this.model);
+
+        // First snapshot, disable button for previous
+        if (index === 0) {
+            $('#previous').attr('disabled', true);
+        }
+
+        // Last snapshot, disable button for next
+        if (index === this.collection.length - 1) {
+            $('#next').attr('disabled', true);
+        }
     },
 
     setModel: function (model, fileId) {
@@ -68,7 +80,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         event.preventDefault();
 
-        // TODO: Underflow, disable button
         var index = this.collection.indexOf(this.model);
         var previous = this.collection.at(index - 1);
 
@@ -79,7 +90,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         event.preventDefault();
 
-        // TODO: Overflow, disable button
         var index = this.collection.indexOf(this.model);
         var next = this.collection.at(index + 1);
 
