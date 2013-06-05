@@ -1,2 +1,5 @@
-<h2>{{name}}</h2>
+<header>
+    <h1>{{name}}</h1>
+</header>
+
 <div id='editor'></div>
