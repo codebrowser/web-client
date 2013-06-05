@@ -570,7 +570,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     notFound: function () {
 
-        console.log('Catched!');
+        console.log('Caught!');
 
         this.errorView.render();
     }
