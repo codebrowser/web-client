@@ -5,6 +5,9 @@ describe('Snapshot', function () {
 
     beforeEach(function () {
 
+        // Reset store
+        Backbone.Relational.store.reset();
+
         snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: 4 });
     });
 
