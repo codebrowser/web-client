@@ -143,7 +143,13 @@ module.exports = function (grunt) {
 
         jasmine: {
 
-            src: ['config/*.js', 'src/**/*.js'],
+            src: ['config/*.js',
+                  'src/app.js',
+                  'src/helpers/*.js',
+                  'src/models/*.js',
+                  'src/collections/*.js',
+                  'src/views/*.js',
+                  'src/routers/*.js'],
             options: {
 
                 vendor: ['static/assets/js/jquery-2.0.0.min.js',
