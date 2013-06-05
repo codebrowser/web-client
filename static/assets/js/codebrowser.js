@@ -71,6 +71,17 @@ function program1(depth0,data,depth1) {
 
 var config = {
 
+    /* Test */
+
+    test: {
+
+        async: {
+
+            timeout: 4000
+
+        }
+    },
+
     /* API */
 
     api: {

@@ -32,7 +32,7 @@ describe('File', function () {
 
             return file !== null;
 
-        }, 'Snapshots fetch never succeeded.', 2000);
+        }, 'Snapshots fetch never succeeded.', config.test.async.timeout);
 
         runs(function () {
 
@@ -65,7 +65,7 @@ describe('File', function () {
 
             return _content !== null;
 
-        }, 'File fetch never succeeded.', 2000);
+        }, 'File fetch never succeeded.', config.test.async.timeout);
 
         runs(function () {
 
@@ -95,7 +95,7 @@ describe('File', function () {
 
             return _error !== null;
 
-        }, 'File fetch never succeeded.', 2000);
+        }, 'File fetch never succeeded.', config.test.async.timeout);
 
         runs(function () {
 
