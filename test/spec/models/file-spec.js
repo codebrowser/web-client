@@ -32,7 +32,6 @@ describe('File', function () {
 
     it('should have correct URL root through a collection of snapshots', function () {
 
-        // Snapshot
         var snapshot = snapshots.at(0);
         file = snapshot.get('files').at(0);
 
@@ -61,8 +60,6 @@ describe('File', function () {
     it('should fetch content for an existing file', function () {
 
         var _content = null;
-
-        // Snapshot
         var snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: student.id,
                                                                  courseId: course.id,
                                                                  exerciseId: exercise.id,
@@ -89,8 +86,6 @@ describe('File', function () {
     it('fetch content for a non-existent file should return an error', function () {
 
         var _error = null;
-
-        // Snapshot
         var snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: student.id,
                                                                  courseId: course.id,
                                                                  exerciseId: exercise.id,
