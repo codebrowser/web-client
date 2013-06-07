@@ -5,12 +5,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
     render: function (content, mode) {
 
         // Template
-        var output = this.template(this.model.toJSON());
-
-        this.$el.html(output);
+        var output = $(this.template(this.model.toJSON()));
 
         // Create editor
-        this.editor = ace.edit('editor');
+        this.editor = ace.edit(output.filter('#editor').get(0));
 
         // Configure editor
         config.editor.configure(this.editor);
@@ -21,11 +19,15 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Set syntax mode
         this.editor.getSession().setMode(mode);
+
+        // Add to DOM
+        this.$el.html(output);
     },
 
     setModel: function (model) {
 
         this.model = model;
+
         this.update();
     },
 

@@ -7,20 +7,19 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         'click #previous': 'previous',
         'click #next':     'next'
+
     },
 
     initialize: function () {
 
-        this.model = new codebrowser.model.Snapshot();
-        this.collection = new codebrowser.collection.SnapshotCollection();
-
         // Editor
         this.editorView = new codebrowser.view.EditorView();
-
-        this.render();
     },
 
     render: function () {
+
+        // Index of current model
+        var index = this.collection.indexOf(this.model);
 
         var attributes = {
 
@@ -31,30 +30,28 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Template
-        var output = this.template($.extend(this.model.toJSON(), attributes));
-
-        this.$el.html(output);
-
-        var index = this.collection.indexOf(this.model);
+        var output = $(this.template($.extend(this.model.toJSON(), attributes)));
 
         // First snapshot, disable button for previous
         if (index === 0) {
-            $('#previous').attr('disabled', true);
+            $('#previous', output).attr('disabled', true);
         }
 
         // Last snapshot, disable button for next
         if (index === this.collection.length - 1) {
-            $('#next').attr('disabled', true);
+            $('#next', output).attr('disabled', true);
         }
+
+        // Element for editor
+        this.editorView.setElement(output.filter('#editor-container'));
+
+        // Add to DOM
+        this.$el.html(output);
     },
 
     setModel: function (model, fileId) {
 
         this.model = model;
-        this.render();
-
-        // Update editor
-        this.editorView.setElement('#editor-container');
 
         // Show first file if no fileId is specified
         if (!fileId) {
@@ -62,6 +59,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         } else {
             this.editorView.setModel(this.model.get('files').get(fileId));
         }
+
+        this.render();
     },
 
     navigate: function (id) {
@@ -76,9 +75,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           id);
     },
 
-    previous: function (event) {
-
-        event.preventDefault();
+    previous: function () {
 
         var index = this.collection.indexOf(this.model);
         var previous = this.collection.at(index - 1);
@@ -86,9 +83,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigate(previous.id);
     },
 
-    next: function (event) {
-
-        event.preventDefault();
+    next: function () {
 
         var index = this.collection.indexOf(this.model);
         var next = this.collection.at(index + 1);
