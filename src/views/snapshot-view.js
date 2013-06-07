@@ -14,10 +14,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.model = new codebrowser.model.Snapshot();
         this.collection = new codebrowser.collection.SnapshotCollection();
 
-        this.render();
-
         // Editor
         this.editorView = new codebrowser.view.EditorView();
+
+        this.render();
     },
 
     render: function () {
