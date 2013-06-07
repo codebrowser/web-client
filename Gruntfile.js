@@ -21,8 +21,8 @@ module.exports = function (grunt) {
 
             test: {
 
-                files: ['test/spec/**/*-spec.js', 'test/selenium/*.js'],
-                tasks: ['jshint:spec', 'jshint:selenium'],
+                files: ['test/config/config.js', 'test/spec/**/*-spec.js', 'test/selenium/*.js'],
+                tasks: ['jshint:test', 'jshint:spec', 'jshint:selenium'],
                 options: {
 
                     nospawn: true
@@ -113,6 +113,16 @@ module.exports = function (grunt) {
             src: {
 
                 src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js'],
+                options: {
+
+                    jshintrc: 'jshint.json'
+
+                }
+            },
+
+            test: {
+
+                src: 'test/config/config.js',
                 options: {
 
                     jshintrc: 'jshint.json'
