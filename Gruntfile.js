@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 
             test: {
 
-                files: ['test/config/config.js', 'test/spec/**/*-spec.js', 'test/selenium/*.js'],
+                files: ['test/config/config.js', 'test/selenium/*.js', 'test/spec/**/*-spec.js'],
                 tasks: ['jshint:test', 'jshint:spec', 'jshint:selenium'],
 
             }
@@ -39,6 +39,7 @@ module.exports = function (grunt) {
 
                     processName: function (path) {
 
+                        // Use filename as the name of the template (View.template -> View)
                         var split = path.split('/');
                         var file = split[split.length - 1];
                         var filename = file.split('.')[0];
