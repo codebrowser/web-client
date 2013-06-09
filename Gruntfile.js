@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 
             src: {
 
-                files: ['config/*.js', 'src/**/*.js', 'src/templates/*.template'],
+                files: ['Gruntfile.js', 'config/*.js', 'src/**/*.js', 'src/templates/*.template'],
                 tasks: ['jshint:src', 'build'],
                 options: {
 
