@@ -13,6 +13,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     initialize: function () {
 
         this.$el.empty();
+        this.$el.undelegate();
 
         // Create divs for elements
         this.navigationContainer = $('<div>');
