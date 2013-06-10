@@ -14,7 +14,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create view when necessary
+        // Create snapshot view when necessary
         if (!this.snapshotView) {
             this.snapshotView = new codebrowser.view.SnapshotView();
         }
@@ -38,6 +38,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 var snapshot = snapshotCollection.get(snapshotId);
 
+                // Invalid snapshot ID
                 if (!snapshot) {
 
                     self.snapshotView = null;
@@ -49,10 +50,13 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 self.snapshotView.setModel(snapshot, fileId);
             },
 
+            // Snapshots fetch failed
             error: function () {
 
                 self.snapshotView = null;
                 new codebrowser.view.ErrorView({ model: { message: 'Failed fetching snapshots.' } });
+
+                return;
             }
         });
     }

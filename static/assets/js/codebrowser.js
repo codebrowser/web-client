@@ -409,13 +409,15 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.$el.empty();
 
         // Create divs for elements
-        this.topElement = $('<div>');
-        this.editorElement = $('<div>', {id: 'editor'});
+        this.topContainer = $('<div>');
+        this.editorElement = $('<div>', { id: 'editor' });
 
-        this.$el.append(this.topElement);
+        // Append elements to parent
+        this.$el.append(this.topContainer);
         this.$el.append(this.editorElement);
 
-        // Create editor
+        // Create Ace editor
+        this.editorElement.hide();
         this.editor = ace.edit(this.editorElement.get(0));
 
         // Configure editor
@@ -427,8 +429,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Template
         var output = $(this.template(this.model.toJSON()));
 
-        // Add to DOM
-        this.topElement.html(output);
+        // Attach to DOM
+        this.topContainer.html(output);
     },
 
     setModel: function (model) {
@@ -444,6 +446,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Fetch file
         this.model.fetchContent(function (content) {
+
+            self.editorElement.show();
 
             var filename = self.model.get('name');
             var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
@@ -498,14 +502,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.empty();
 
         // Create divs for elements
-        this.navigationElement = $('<div>');
-        this.editorElement = $('<div>', {id: 'editor-container'});
+        this.navigationContainer = $('<div>');
+        this.editorContainer = $('<div>', { id: 'editor-container' });
 
-        this.$el.append(this.navigationElement);
-        this.$el.append(this.editorElement);
+        // Append elements to parent
+        this.$el.append(this.navigationContainer);
+        this.$el.append(this.editorContainer);
 
         // Editor
-        this.editorView = new codebrowser.view.EditorView({ el: this.editorElement });
+        this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
     },
 
     render: function () {
@@ -513,6 +518,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Index of current model
         var index = this.collection.indexOf(this.model);
 
+        // View attributes
         var attributes = {
 
             studentId: this.collection.studentId,
@@ -534,8 +540,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#next', output).attr('disabled', true);
         }
 
-        // Add to DOM
-        this.navigationElement.html(output);
+        // Attach to DOM
+        this.navigationContainer.html(output);
     },
 
     setModel: function (model, fileId) {
@@ -597,8 +603,6 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     notFound: function () {
 
-        console.log('Caught!');
-
         this.errorView.render();
     }
 });
@@ -620,7 +624,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create view when necessary
+        // Create snapshot view when necessary
         if (!this.snapshotView) {
             this.snapshotView = new codebrowser.view.SnapshotView();
         }
@@ -644,6 +648,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 var snapshot = snapshotCollection.get(snapshotId);
 
+                // Invalid snapshot ID
                 if (!snapshot) {
 
                     self.snapshotView = null;
@@ -655,10 +660,13 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 self.snapshotView.setModel(snapshot, fileId);
             },
 
+            // Snapshots fetch failed
             error: function () {
 
                 self.snapshotView = null;
                 new codebrowser.view.ErrorView({ model: { message: 'Failed fetching snapshots.' } });
+
+                return;
             }
         });
     }

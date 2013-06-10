@@ -15,14 +15,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.empty();
 
         // Create divs for elements
-        this.navigationElement = $('<div>');
-        this.editorElement = $('<div>', {id: 'editor-container'});
+        this.navigationContainer = $('<div>');
+        this.editorContainer = $('<div>', { id: 'editor-container' });
 
-        this.$el.append(this.navigationElement);
-        this.$el.append(this.editorElement);
+        // Append elements to parent
+        this.$el.append(this.navigationContainer);
+        this.$el.append(this.editorContainer);
 
         // Editor
-        this.editorView = new codebrowser.view.EditorView({ el: this.editorElement });
+        this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
     },
 
     render: function () {
@@ -30,6 +31,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Index of current model
         var index = this.collection.indexOf(this.model);
 
+        // View attributes
         var attributes = {
 
             studentId: this.collection.studentId,
@@ -51,8 +53,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#next', output).attr('disabled', true);
         }
 
-        // Add to DOM
-        this.navigationElement.html(output);
+        // Attach to DOM
+        this.navigationContainer.html(output);
     },
 
     setModel: function (model, fileId) {
