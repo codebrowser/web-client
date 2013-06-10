@@ -9,10 +9,20 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotView = new codebrowser.view.SnapshotView();
+        this.setUp();
+    },
+
+    setUp: function () {
+
+        // Create view when necessary
+        if (!this.snapshotView) {
+            this.snapshotView = new codebrowser.view.SnapshotView();
+        }
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {
+
+        this.setUp();
 
         var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
                                                                                        courseId: courseId,
@@ -30,6 +40,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 if (!snapshot) {
 
+                    self.snapshotView = null;
                     new codebrowser.view.ErrorView({ model: { message: 'No snapshot found with given ID.' } });
 
                     return;
@@ -40,6 +51,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
             error: function () {
 
+                self.snapshotView = null;
                 new codebrowser.view.ErrorView({ model: { message: 'Failed fetching snapshots.' } });
             }
         });
