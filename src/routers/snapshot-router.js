@@ -30,7 +30,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 if (!snapshot) {
 
-                    console.log('No snapshot found with given ID.');
+                    new codebrowser.view.ErrorView({ model: { message: 'No snapshot found with given ID.' } });
+
                     return;
                 }
 
@@ -39,7 +40,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
             error: function () {
 
-                console.log('Failed fetching snapshots.');
+                new codebrowser.view.ErrorView({ model: { message: 'Failed fetching snapshots.' } });
             }
         });
     }

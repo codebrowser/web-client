@@ -3,8 +3,16 @@ codebrowser.view.ErrorView = Backbone.View.extend({
     el: config.view.container,
     template: Handlebars.templates.Error,
 
-    render: function() {
+    initialize: function () {
 
-        this.$el.html(this.template);
+        this.render();
+    },
+
+    render: function () {
+
+        // Template
+        var output = this.template(this.model);
+
+        this.$el.html(output);
     }
 });

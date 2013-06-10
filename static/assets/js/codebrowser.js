@@ -14,17 +14,22 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + "</h1>\n    <span class='pull-right'>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + "</span>\n\n</header>\n\n<div id='editor'></div>\n";
+    + "</span>\n\n</header>\n";
   return buffer;
   });
 
 this["Handlebars"]["templates"]["Error"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  return "<p>Oops!</p>\n";
+  buffer += "<p>";
+  if (stack1 = helpers.message) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.message; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</p>\n";
+  return buffer;
   });
 
 this["Handlebars"]["templates"]["Snapshot"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -61,7 +66,7 @@ function program1(depth0,data,depth1) {
   else { stack1 = depth0.files; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.files) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            </ul>\n\n        </div>\n\n    </div>\n\n    <div class='span4'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n        </div>\n\n    </div>\n\n</div>\n\n<div id='editor-container'></div>\n";
+  buffer += "\n            </ul>\n\n        </div>\n\n    </div>\n\n    <div class='span4'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
   });;
 
@@ -399,26 +404,31 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     template: Handlebars.templates.Editor,
 
-    render: function (content, mode) {
+    initialize: function () {
+
+        this.$el.empty();
+
+        // Create divs for elements
+        this.topElement = $('<div>');
+        this.editorElement = $('<div>', {id: 'editor'});
+
+        this.$el.append(this.topElement);
+        this.$el.append(this.editorElement);
+
+        // Create editor
+        this.editor = ace.edit(this.editorElement.get(0));
+
+        // Configure editor
+        config.editor.configure(this.editor);
+    },
+
+    render: function () {
 
         // Template
         var output = $(this.template(this.model.toJSON()));
 
-        // Create editor
-        this.editor = ace.edit(output.filter('#editor').get(0));
-
-        // Configure editor
-        config.editor.configure(this.editor);
-
-        // Set content for editor
-        this.editor.setValue(content);
-        this.editor.navigateFileStart();
-
-        // Set syntax mode
-        this.editor.getSession().setMode(mode);
-
         // Add to DOM
-        this.$el.html(output);
+        this.topElement.html(output);
     },
 
     setModel: function (model) {
@@ -438,7 +448,14 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var filename = self.model.get('name');
             var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
 
-            self.render(content, mode);
+            // Set content for editor
+            self.editor.setValue(content);
+            self.editor.navigateFileStart();
+
+            // Set syntax mode
+            self.editor.getSession().setMode(mode);
+
+            self.render();
         });
     }
 });
@@ -449,9 +466,17 @@ codebrowser.view.ErrorView = Backbone.View.extend({
     el: config.view.container,
     template: Handlebars.templates.Error,
 
-    render: function() {
+    initialize: function () {
 
-        this.$el.html(this.template);
+        this.render();
+    },
+
+    render: function () {
+
+        // Template
+        var output = this.template(this.model);
+
+        this.$el.html(output);
     }
 });
 ;
@@ -470,8 +495,17 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
+        this.$el.empty();
+
+        // Create divs for elements
+        this.navigationElement = $('<div>');
+        this.editorElement = $('<div>', {id: 'editor-container'});
+
+        this.$el.append(this.navigationElement);
+        this.$el.append(this.editorElement);
+
         // Editor
-        this.editorView = new codebrowser.view.EditorView();
+        this.editorView = new codebrowser.view.EditorView({ el: this.editorElement });
     },
 
     render: function () {
@@ -500,11 +534,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#next', output).attr('disabled', true);
         }
 
-        // Element for editor
-        this.editorView.setElement(output.filter('#editor-container'));
-
         // Add to DOM
-        this.$el.html(output);
+        this.navigationElement.html(output);
     },
 
     setModel: function (model, fileId) {
@@ -561,7 +592,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.errorView = new codebrowser.view.ErrorView();
+        this.errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
     },
 
     notFound: function () {
@@ -605,7 +636,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 if (!snapshot) {
 
-                    console.log('No snapshot found with given ID.');
+                    new codebrowser.view.ErrorView({ model: { message: 'No snapshot found with given ID.' } });
+
                     return;
                 }
 
@@ -614,7 +646,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
             error: function () {
 
-                console.log('Failed fetching snapshots.');
+                new codebrowser.view.ErrorView({ model: { message: 'Failed fetching snapshots.' } });
             }
         });
     }

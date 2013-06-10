@@ -4,5 +4,3 @@
     <span class='pull-right'>{{date snapshot.snapshotTime}}</span>
 
 </header>
-
-<div id='editor'></div>

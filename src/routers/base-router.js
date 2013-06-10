@@ -8,7 +8,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.errorView = new codebrowser.view.ErrorView();
+        this.errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
     },
 
     notFound: function () {

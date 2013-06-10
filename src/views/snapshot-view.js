@@ -12,8 +12,17 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
+        this.$el.empty();
+
+        // Create divs for elements
+        this.navigationElement = $('<div>');
+        this.editorElement = $('<div>', {id: 'editor-container'});
+
+        this.$el.append(this.navigationElement);
+        this.$el.append(this.editorElement);
+
         // Editor
-        this.editorView = new codebrowser.view.EditorView();
+        this.editorView = new codebrowser.view.EditorView({ el: this.editorElement });
     },
 
     render: function () {
@@ -42,11 +51,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#next', output).attr('disabled', true);
         }
 
-        // Element for editor
-        this.editorView.setElement(output.filter('#editor-container'));
-
         // Add to DOM
-        this.$el.html(output);
+        this.navigationElement.html(output);
     },
 
     setModel: function (model, fileId) {
