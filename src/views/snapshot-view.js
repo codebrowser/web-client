@@ -19,6 +19,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
+        // Empty container
         this.$el.empty();
         this.$el.undelegate();
 
@@ -36,7 +37,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     render: function () {
 
-        // Index of current model
+        // Index of the current model
         var index = this.collection.indexOf(this.model);
 
         // View attributes
@@ -53,38 +54,42 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Template for navigation container
         var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
 
-        // First snapshot, disable button for previous
+        // First snapshot, disable the buttons for first and previous
         if (index === 0) {
             $('#first', navigationContainerOutput).attr('disabled', true);
             $('#previous', navigationContainerOutput).attr('disabled', true);
         }
 
-        // Last snapshot, disable button for next
+        // Last snapshot, disable the buttons for next and last
         if (index === this.collection.length - 1) {
             $('#next', navigationContainerOutput).attr('disabled', true);
             $('#last', navigationContainerOutput).attr('disabled', true);
         }
 
-        // Attach to DOM
+        // Update navigation container
         this.navigationContainer.html(navigationContainerOutput);
     },
 
-    setModel: function (previousModel, currentModel, fileId) {
+    update: function (previousSnapshot, snapshot, fileId) {
 
-        this.model = currentModel;
+        this.model = snapshot;
 
-        // First snapshot, use current model as previous and disable split
-        if (!previousModel) {
-            previousModel = currentModel;
+        // First snapshot
+        if (!previousSnapshot) {
+
+            // Use the current snapshot as the previous
+            previousSnapshot = this.model;
+
             this.editorView.toggleSplit(false);
         }
 
         // Show first file if no fileId is specified
         if (!fileId) {
-            this.editorView.setModel(previousModel.get('files').at(0), currentModel.get('files').at(0));
+            this.editorView.update(previousSnapshot.get('files').at(0), this.model.get('files').at(0));
         } else {
+
             // TODO: How to determine same file across snapshots?
-            this.editorView.setModel(previousModel.get('files').get(fileId), currentModel.get('files').get(fileId));
+            this.editorView.update(previousSnapshot.get('files').get(fileId), this.model.get('files').get(fileId));
         }
 
         this.render();

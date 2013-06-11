@@ -14,28 +14,30 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     initialize: function () {
 
+        // Empty container
         this.$el.empty();
+
+        // Hide view until needed
+        this.$el.hide();
 
         // Create divs for elements
         this.topContainer = $('<div>');
         this.editorElement = $('<div>', { id: 'editor' });
 
-        this.previousEditorElement = $('<div>', { id: 'previous-editor' }).hide();
-        this.currentEditorElement = $('<div>', { id: 'current-editor' });
+        // Elements for editors
+        this.sideEditorElement = $('<div>', { id: 'previous-editor' }).hide();
+        this.mainEditorElement = $('<div>', { id: 'current-editor' });
 
-        this.editorElement.append(this.previousEditorElement);
-        this.editorElement.append(this.currentEditorElement);
+        this.editorElement.append(this.sideEditorElement);
+        this.editorElement.append(this.mainEditorElement);
 
         // Append elements to parent
         this.$el.append(this.topContainer);
         this.$el.append(this.editorElement);
 
-        // Hide container until needed
-        this.$el.hide();
-
         // Create Ace editor
-        this.previousEditor = ace.edit(this.previousEditorElement.get(0));
-        this.currentEditor = ace.edit(this.currentEditorElement.get(0));
+        this.previousEditor = ace.edit(this.sideEditorElement.get(0));
+        this.currentEditor = ace.edit(this.mainEditorElement.get(0));
 
         // Configure editor
         config.editor.configure(this.previousEditor);
@@ -45,45 +47,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var topContainerOutput = $(this.template.topContainer(this.currentModel.toJSON()));
+        var topContainerOutput = $(this.template.topContainer(this.model.toJSON()));
 
-        // Attach to DOM
+        // Update top container
         this.topContainer.html(topContainerOutput);
-    },
-
-    setModel: function (previousModel, currentModel) {
-
-        this.previousModel = previousModel;
-        this.currentModel = currentModel;
-
-        this.update();
-    },
-
-    update: function () {
-
-        this.$el.show();
-
-        var filename = this.currentModel.get('name');
-        var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
-
-        var self = this;
-
-        // Fetch previous file if the models are not the same
-        if (this.previousModel !== this.currentModel) {
-
-            this.previousModel.fetchContent(function (content) {
-
-                self.setContent(self.previousEditor, content, mode);
-            });
-        }
-
-        // Fetch current file
-        this.currentModel.fetchContent(function (content) {
-
-            self.setContent(self.currentEditor, content, mode);
-        });
-
-        this.render();
     },
 
     setContent: function (editor, content, mode) {
@@ -96,21 +63,53 @@ codebrowser.view.EditorView = Backbone.View.extend({
         editor.getSession().setMode(mode);
     },
 
+    update: function (previousFile, file) {
+
+        // Show view if necessary
+        this.$el.show();
+
+        this.model = file;
+
+        // Syntax mode
+        var mode = codebrowser.helper.AceMode.getModeForFilename(this.model.get('name'));
+
+        var self = this;
+
+        // Fetch previous file only if the models are not the same
+        if (previousFile !== this.model) {
+
+            previousFile.fetchContent(function (content) {
+
+                // TODO: Error handling
+                self.setContent(self.previousEditor, content, mode);
+            });
+        }
+
+        // Fetch current file
+        this.model.fetchContent(function (content) {
+
+            // TODO: Error handling
+            self.setContent(self.currentEditor, content, mode);
+        });
+
+        this.render();
+    },
+
     toggleSplit: function (split) {
 
         this.split = split;
 
         if (!this.split) {
 
-            this.previousEditorElement.hide();
-            this.previousEditorElement.css('width', '0');
-            this.currentEditorElement.css('width', '');
+            this.sideEditorElement.hide();
+            this.sideEditorElement.css('width', '0');
+            this.mainEditorElement.css('width', '');
 
         } else {
 
-            this.previousEditorElement.css('width', '469px');
-            this.currentEditorElement.css('width', '468px');
-            this.previousEditorElement.show();
+            this.sideEditorElement.css('width', '469px');
+            this.mainEditorElement.css('width', '468px');
+            this.sideEditorElement.show();
         }
     },
 
