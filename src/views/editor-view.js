@@ -1,6 +1,10 @@
 codebrowser.view.EditorView = Backbone.View.extend({
 
-    template: Handlebars.templates.Editor,
+    template: {
+
+        topContainer: Handlebars.templates.EditorTopContainer
+
+    },
 
     initialize: function () {
 
@@ -25,10 +29,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var output = $(this.template(this.model.toJSON()));
+        var topContainerOutput = $(this.template.topContainer(this.model.toJSON()));
 
         // Attach to DOM
-        this.topContainer.html(output);
+        this.topContainer.html(topContainerOutput);
     },
 
     setModel: function (model) {

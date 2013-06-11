@@ -1,7 +1,7 @@
 this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 
-this["Handlebars"]["templates"]["Editor"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
@@ -32,7 +32,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   });
 
-this["Handlebars"]["templates"]["Snapshot"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+this["Handlebars"]["templates"]["SnapshotNavigationContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
@@ -410,7 +410,11 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
 codebrowser.view.EditorView = Backbone.View.extend({
 
-    template: Handlebars.templates.Editor,
+    template: {
+
+        topContainer: Handlebars.templates.EditorTopContainer
+
+    },
 
     initialize: function () {
 
@@ -435,10 +439,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var output = $(this.template(this.model.toJSON()));
+        var topContainerOutput = $(this.template.topContainer(this.model.toJSON()));
 
         // Attach to DOM
-        this.topContainer.html(output);
+        this.topContainer.html(topContainerOutput);
     },
 
     setModel: function (model) {
@@ -496,7 +500,12 @@ codebrowser.view.ErrorView = Backbone.View.extend({
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
     el: config.view.container,
-    template: Handlebars.templates.Snapshot,
+
+    template: {
+
+        navigationContainer: Handlebars.templates.SnapshotNavigationContainer
+
+    },
 
     events: {
 
@@ -540,23 +549,23 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         }
 
-        // Template
-        var output = $(this.template($.extend(this.model.toJSON(), attributes)));
+        // Template for navigation container
+        var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
 
         // First snapshot, disable button for previous
         if (index === 0) {
-            $('#first', output).attr('disabled', true);
-            $('#previous', output).attr('disabled', true);
+            $('#first', navigationContainerOutput).attr('disabled', true);
+            $('#previous', navigationContainerOutput).attr('disabled', true);
         }
 
         // Last snapshot, disable button for next
         if (index === this.collection.length - 1) {
-            $('#next', output).attr('disabled', true);
-            $('#last', output).attr('disabled', true);
+            $('#next', navigationContainerOutput).attr('disabled', true);
+            $('#last', navigationContainerOutput).attr('disabled', true);
         }
 
         // Attach to DOM
-        this.navigationContainer.html(output);
+        this.navigationContainer.html(navigationContainerOutput);
     },
 
     setModel: function (model, fileId) {

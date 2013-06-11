@@ -1,7 +1,12 @@
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
     el: config.view.container,
-    template: Handlebars.templates.Snapshot,
+
+    template: {
+
+        navigationContainer: Handlebars.templates.SnapshotNavigationContainer
+
+    },
 
     events: {
 
@@ -45,23 +50,23 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         }
 
-        // Template
-        var output = $(this.template($.extend(this.model.toJSON(), attributes)));
+        // Template for navigation container
+        var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
 
         // First snapshot, disable button for previous
         if (index === 0) {
-            $('#first', output).attr('disabled', true);
-            $('#previous', output).attr('disabled', true);
+            $('#first', navigationContainerOutput).attr('disabled', true);
+            $('#previous', navigationContainerOutput).attr('disabled', true);
         }
 
         // Last snapshot, disable button for next
         if (index === this.collection.length - 1) {
-            $('#next', output).attr('disabled', true);
-            $('#last', output).attr('disabled', true);
+            $('#next', navigationContainerOutput).attr('disabled', true);
+            $('#last', navigationContainerOutput).attr('disabled', true);
         }
 
         // Attach to DOM
-        this.navigationContainer.html(output);
+        this.navigationContainer.html(navigationContainerOutput);
     },
 
     setModel: function (model, fileId) {
