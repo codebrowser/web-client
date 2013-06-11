@@ -110,7 +110,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     last: function () {
 
-        var last = this.collection.at(this.collection.length-1);
+        var last = this.collection.at(this.collection.length - 1);
 
         this.navigate(last.id);
     }
