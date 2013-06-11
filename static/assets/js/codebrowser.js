@@ -455,7 +455,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var topContainerOutput = $(this.template.topContainer(this.model.toJSON()));
+        var topContainerOutput = $(this.template.topContainer(this.currentModel.toJSON()));
 
         // Attach to DOM
         this.topContainer.html(topContainerOutput);
