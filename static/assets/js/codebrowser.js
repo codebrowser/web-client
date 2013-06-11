@@ -66,7 +66,7 @@ function program1(depth0,data,depth1) {
   else { stack1 = depth0.files; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.files) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            </ul>\n\n        </div>\n\n    </div>\n\n    <div class='span1 text-center'>";
+  buffer += "\n            </ul>\n\n        </div>\n\n        <button id='split' type='button' class='btn' data-toggle='button'>Split</button>\n\n    </div>\n\n    <div class='span1 text-center'>";
   if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -503,7 +503,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     toggleSplit: function (split) {
 
-        this.split = split;
+        // Use parameter if given, otherwise toggle internal split state
+        if (split !== undefined) {
+            this.split = split;
+        } else {
+            this.split = !this.split;
+        }
 
         // Enable split
         if (this.split) {
@@ -557,6 +562,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
+        'click #split':    'split',
         'click #first':    'first',
         'click #previous': 'previous',
         'click #next':     'next',
@@ -601,8 +607,14 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Template for navigation container
         var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
 
-        // First snapshot, disable the buttons for first and previous
+        // Split view is enabled
+        if (this.editorView.split) {
+            $('#split', navigationContainerOutput).addClass('active');
+        }
+
+        // First snapshot, disable the buttons for split, first and previous
         if (index === 0) {
+            $('#split', navigationContainerOutput).attr('disabled', true);
             $('#first', navigationContainerOutput).attr('disabled', true);
             $('#previous', navigationContainerOutput).attr('disabled', true);
         }
@@ -640,6 +652,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         this.render();
+    },
+
+    split: function () {
+
+        this.editorView.toggleSplit();
     },
 
     navigate: function (id) {

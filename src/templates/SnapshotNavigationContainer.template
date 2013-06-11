@@ -14,6 +14,8 @@
 
         </div>
 
+        <button id='split' type='button' class='btn' data-toggle='button'>Split</button>
+
     </div>
 
     <div class='span1 text-center'>{{current}} / {{total}}</div>

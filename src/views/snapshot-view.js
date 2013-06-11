@@ -10,6 +10,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
+        'click #split':    'split',
         'click #first':    'first',
         'click #previous': 'previous',
         'click #next':     'next',
@@ -54,8 +55,14 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Template for navigation container
         var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
 
-        // First snapshot, disable the buttons for first and previous
+        // Split view is enabled
+        if (this.editorView.split) {
+            $('#split', navigationContainerOutput).addClass('active');
+        }
+
+        // First snapshot, disable the buttons for split, first and previous
         if (index === 0) {
+            $('#split', navigationContainerOutput).attr('disabled', true);
             $('#first', navigationContainerOutput).attr('disabled', true);
             $('#previous', navigationContainerOutput).attr('disabled', true);
         }
@@ -93,6 +100,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         this.render();
+    },
+
+    split: function () {
+
+        this.editorView.toggleSplit();
     },
 
     navigate: function (id) {

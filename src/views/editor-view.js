@@ -93,7 +93,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     toggleSplit: function (split) {
 
-        this.split = split;
+        // Use parameter if given, otherwise toggle internal split state
+        if (split !== undefined) {
+            this.split = split;
+        } else {
+            this.split = !this.split;
+        }
 
         // Enable split
         if (this.split) {
