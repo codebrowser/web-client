@@ -34,7 +34,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
-            exerciseId: this.collection.exerciseId
+            exerciseId: this.collection.exerciseId,
+            snapshotIndex: this.collection.indexOf(this.model)+1,
+            numberOfSnaps: this.collection.length
 
         }
 

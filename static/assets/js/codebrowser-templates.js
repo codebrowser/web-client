@@ -66,6 +66,14 @@ function program1(depth0,data,depth1) {
   else { stack1 = depth0.files; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.files) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            </ul>\n\n        </div>\n\n    </div>\n\n    <div class='span4'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n        </div>\n\n    </div>\n\n</div>\n";
+  buffer += "\n            </ul>\n\n        </div>\n\n        <a href=\"#\" class=\"btn btn-small disabled\">";
+  if (stack1 = helpers.snapshotIndex) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.snapshotIndex; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + " / ";
+  if (stack1 = helpers.numberOfSnaps) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.numberOfSnaps; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</a>\n\n    </div>\n\n    <div class='span4'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
   });
