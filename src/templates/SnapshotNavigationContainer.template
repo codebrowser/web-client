@@ -21,10 +21,10 @@
     <div class='span3'>
 
         <div class='btn-group pull-right'>
-            <input type='button' id='first' class='btn' value='First'>
-            <input type='button' id='previous' class='btn' value='Previous'>
-            <input type='button' id='next' class='btn' value='Next'>
-            <input type='button' id='last' class='btn' value='Last'>
+            <button type='button' id='first' class='btn'>First</button>
+            <button type='button' id='previous' class='btn'>Previous</button>
+            <button type='button' id='next' class='btn'>Next</button>
+            <button type='button' id='last' class='btn'>Last</button>
         </div>
 
     </div>

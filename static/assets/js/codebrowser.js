@@ -74,7 +74,7 @@ function program1(depth0,data,depth1) {
   if (stack1 = helpers.total) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.total; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</div>\n\n    <div class='span3'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='first' class='btn' value='First'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n            <input type='button' id='last' class='btn' value='Last'>\n        </div>\n\n    </div>\n\n</div>\n";
+    + "</div>\n\n    <div class='span3'>\n\n        <div class='btn-group pull-right'>\n            <button type='button' id='first' class='btn'>First</button>\n            <button type='button' id='previous' class='btn'>Previous</button>\n            <button type='button' id='next' class='btn'>Next</button>\n            <button type='button' id='last' class='btn'>Last</button>\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
   });;
 
