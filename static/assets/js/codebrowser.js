@@ -74,7 +74,7 @@ function program1(depth0,data,depth1) {
   if (stack1 = helpers.numberOfSnaps) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.numberOfSnaps; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</a>\n\n    </div>\n\n    <div class='span4'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n        </div>\n\n    </div>\n\n</div>\n";
+    + "</a>\n\n    </div>\n\n    <div class='span4'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='first' class='btn' value='First'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n            <input type='button' id='last' class='btn' value='Last'>\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
   });;
 
@@ -417,13 +417,15 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.$el.empty();
 
         // Create divs for elements
-        this.topElement = $('<div>');
-        this.editorElement = $('<div>', {id: 'editor'});
+        this.topContainer = $('<div>');
+        this.editorElement = $('<div>', { id: 'editor' });
 
-        this.$el.append(this.topElement);
+        // Append elements to parent
+        this.$el.append(this.topContainer);
         this.$el.append(this.editorElement);
 
-        // Create editor
+        // Create Ace editor
+        this.editorElement.hide();
         this.editor = ace.edit(this.editorElement.get(0));
 
         // Configure editor
@@ -435,8 +437,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Template
         var output = $(this.template(this.model.toJSON()));
 
-        // Add to DOM
-        this.topElement.html(output);
+        // Attach to DOM
+        this.topContainer.html(output);
     },
 
     setModel: function (model) {
@@ -452,6 +454,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Fetch file
         this.model.fetchContent(function (content) {
+
+            self.editorElement.show();
 
             var filename = self.model.get('name');
             var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
@@ -496,24 +500,28 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
+        'click #first':    'first',
         'click #previous': 'previous',
-        'click #next':     'next'
+        'click #next':     'next',
+        'click #last':     'last'
 
     },
 
     initialize: function () {
 
         this.$el.empty();
+        this.$el.undelegate();
 
         // Create divs for elements
-        this.navigationElement = $('<div>');
-        this.editorElement = $('<div>', {id: 'editor-container'});
+        this.navigationContainer = $('<div>');
+        this.editorContainer = $('<div>', { id: 'editor-container' });
 
-        this.$el.append(this.navigationElement);
-        this.$el.append(this.editorElement);
+        // Append elements to parent
+        this.$el.append(this.navigationContainer);
+        this.$el.append(this.editorContainer);
 
         // Editor
-        this.editorView = new codebrowser.view.EditorView({ el: this.editorElement });
+        this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
     },
 
     render: function () {
@@ -521,6 +529,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Index of current model
         var index = this.collection.indexOf(this.model);
 
+        // View attributes
         var attributes = {
 
             studentId: this.collection.studentId,
@@ -536,16 +545,18 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // First snapshot, disable button for previous
         if (index === 0) {
+            $('#first', output).attr('disabled', true);
             $('#previous', output).attr('disabled', true);
         }
 
         // Last snapshot, disable button for next
         if (index === this.collection.length - 1) {
             $('#next', output).attr('disabled', true);
+            $('#last', output).attr('disabled', true);
         }
 
-        // Add to DOM
-        this.navigationElement.html(output);
+        // Attach to DOM
+        this.navigationContainer.html(output);
     },
 
     setModel: function (model, fileId) {
@@ -574,6 +585,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           id);
     },
 
+    first: function () {
+
+        var first = this.collection.at(0);
+
+        this.navigate(first.id);
+    },
+
     previous: function () {
 
         var index = this.collection.indexOf(this.model);
@@ -588,6 +606,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var next = this.collection.at(index + 1);
 
         this.navigate(next.id);
+    },
+
+    last: function () {
+
+        var last = this.collection.at(this.collection.length - 1);
+
+        this.navigate(last.id);
     }
 });
 ;
@@ -606,8 +631,6 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
     },
 
     notFound: function () {
-
-        console.log('Caught!');
 
         this.errorView.render();
     }
@@ -630,7 +653,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create view when necessary
+        // Create snapshot view when necessary
         if (!this.snapshotView) {
             this.snapshotView = new codebrowser.view.SnapshotView();
         }
@@ -654,6 +677,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 var snapshot = snapshotCollection.get(snapshotId);
 
+                // Invalid snapshot ID
                 if (!snapshot) {
 
                     self.snapshotView = null;
@@ -665,10 +689,13 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 self.snapshotView.setModel(snapshot, fileId);
             },
 
+            // Snapshots fetch failed
             error: function () {
 
                 self.snapshotView = null;
                 new codebrowser.view.ErrorView({ model: { message: 'Failed fetching snapshots.' } });
+
+                return;
             }
         });
     }
