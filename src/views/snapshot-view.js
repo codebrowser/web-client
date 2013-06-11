@@ -58,15 +58,22 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationContainer.html(output);
     },
 
-    setModel: function (model, fileId) {
+    setModel: function (previousModel, currentModel, fileId) {
 
-        this.model = model;
+        this.model = currentModel;
+
+        // First snapshot, use current model as previous and disable split
+        if (!previousModel) {
+            previousModel = currentModel;
+            this.editorView.toggleSplit(false);
+        }
 
         // Show first file if no fileId is specified
         if (!fileId) {
-            this.editorView.setModel(this.model.get('files').at(0));
+            this.editorView.setModel(previousModel.get('files').at(0), currentModel.get('files').at(0));
         } else {
-            this.editorView.setModel(this.model.get('files').get(fileId));
+            // TODO: How to determine same file across snapshots?
+            this.editorView.setModel(previousModel.get('files').get(fileId), currentModel.get('files').get(fileId));
         }
 
         this.render();

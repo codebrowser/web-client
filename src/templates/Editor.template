@@ -1,6 +1,7 @@
 <header>
 
     <h1>{{name}}</h1>
+    <input type='checkbox' id='split' />Split
     <span class='pull-right'>{{date snapshot.snapshotTime}}</span>
 
 </header>

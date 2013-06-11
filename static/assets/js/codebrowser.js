@@ -11,7 +11,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</h1>\n    <span class='pull-right'>";
+    + "</h1>\n    <input type='checkbox' id='split' />Split\n    <span class='pull-right'>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
     + "</span>\n\n</header>\n";
@@ -403,6 +403,13 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 codebrowser.view.EditorView = Backbone.View.extend({
 
     template: Handlebars.templates.Editor,
+    split: false,
+
+    events: {
+
+        'click #split': 'splitEvent'
+
+    },
 
     initialize: function () {
 
@@ -412,55 +419,103 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.topContainer = $('<div>');
         this.editorElement = $('<div>', { id: 'editor' });
 
+        this.previousEditorElement = $('<div>', { id: 'previous-editor' }).hide();
+        this.currentEditorElement = $('<div>', { id: 'current-editor' });
+
+        this.editorElement.append(this.previousEditorElement);
+        this.editorElement.append(this.currentEditorElement);
+
         // Append elements to parent
         this.$el.append(this.topContainer);
         this.$el.append(this.editorElement);
 
+        // Hide container until needed
+        this.$el.hide();
+
         // Create Ace editor
-        this.editorElement.hide();
-        this.editor = ace.edit(this.editorElement.get(0));
+        this.previousEditor = ace.edit(this.previousEditorElement.get(0));
+        this.currentEditor = ace.edit(this.currentEditorElement.get(0));
 
         // Configure editor
-        config.editor.configure(this.editor);
+        config.editor.configure(this.previousEditor);
+        config.editor.configure(this.currentEditor);
     },
 
     render: function () {
 
         // Template
-        var output = $(this.template(this.model.toJSON()));
+        var output = $(this.template(this.currentModel.toJSON()));
 
         // Attach to DOM
         this.topContainer.html(output);
     },
 
-    setModel: function (model) {
+    setModel: function (previousModel, currentModel) {
 
-        this.model = model;
+        this.previousModel = previousModel;
+        this.currentModel = currentModel;
 
         this.update();
     },
 
     update: function () {
 
+        this.$el.show();
+
+        var filename = this.currentModel.get('name');
+        var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
+
         var self = this;
 
-        // Fetch file
-        this.model.fetchContent(function (content) {
+        // Fetch previous file if the models are not the same
+        if (this.previousModel !== this.currentModel) {
 
-            self.editorElement.show();
+            this.previousModel.fetchContent(function (content) {
 
-            var filename = self.model.get('name');
-            var mode = codebrowser.helper.AceMode.getModeForFilename(filename);
+                self.setContent(self.previousEditor, content, mode);
+            });
+        }
 
-            // Set content for editor
-            self.editor.setValue(content);
-            self.editor.navigateFileStart();
+        // Fetch current file
+        this.currentModel.fetchContent(function (content) {
 
-            // Set syntax mode
-            self.editor.getSession().setMode(mode);
-
-            self.render();
+            self.setContent(self.currentEditor, content, mode);
         });
+
+        this.render();
+    },
+
+    setContent: function (editor, content, mode) {
+
+        // Set content for editor
+        editor.setValue(content);
+        editor.navigateFileStart();
+
+        // Set syntax mode
+        editor.getSession().setMode(mode);
+    },
+
+    toggleSplit: function (split) {
+
+        this.split = split;
+
+        if (!this.split) {
+
+            this.previousEditorElement.hide();
+            this.previousEditorElement.css('width', '0');
+            this.currentEditorElement.css('width', '');
+
+        } else {
+
+            this.previousEditorElement.css('width', '469px');
+            this.currentEditorElement.css('width', '468px');
+            this.previousEditorElement.show();
+        }
+    },
+
+    splitEvent: function () {
+
+        this.toggleSplit($('#split').prop('checked'));
     }
 });
 ;
@@ -545,15 +600,22 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationContainer.html(output);
     },
 
-    setModel: function (model, fileId) {
+    setModel: function (previousModel, currentModel, fileId) {
 
-        this.model = model;
+        this.model = currentModel;
+
+        // First snapshot, use current model as previous and disable split
+        if (!previousModel) {
+            previousModel = currentModel;
+            this.editorView.toggleSplit(false);
+        }
 
         // Show first file if no fileId is specified
         if (!fileId) {
-            this.editorView.setModel(this.model.get('files').at(0));
+            this.editorView.setModel(previousModel.get('files').at(0), currentModel.get('files').at(0));
         } else {
-            this.editorView.setModel(this.model.get('files').get(fileId));
+            // TODO: How to determine same file across snapshots?
+            this.editorView.setModel(previousModel.get('files').get(fileId), currentModel.get('files').get(fileId));
         }
 
         this.render();
@@ -647,10 +709,15 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
             success: function () {
 
-                var snapshot = snapshotCollection.get(snapshotId);
+                // Current
+                var currentSnapshot = snapshotCollection.get(snapshotId);
+
+                // Previous
+                var index = snapshotCollection.indexOf(currentSnapshot);
+                var previousSnapshot = snapshotCollection.at(index - 1);
 
                 // Invalid snapshot ID
-                if (!snapshot) {
+                if (!currentSnapshot) {
 
                     self.snapshotView = null;
                     new codebrowser.view.ErrorView({ model: { message: 'No snapshot found with given ID.' } });
@@ -658,7 +725,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
-                self.snapshotView.setModel(snapshot, fileId);
+                self.snapshotView.setModel(previousSnapshot, currentSnapshot, fileId);
             },
 
             // Snapshots fetch failed
