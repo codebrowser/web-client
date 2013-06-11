@@ -5,8 +5,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
+        'click #first':    'first',
         'click #previous': 'previous',
-        'click #next':     'next'
+        'click #next':     'next',
+        'click #last':     'last'
 
     },
 
@@ -43,12 +45,14 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // First snapshot, disable button for previous
         if (index === 0) {
+            $('#first', output).attr('disabled', true);
             $('#previous', output).attr('disabled', true);
         }
 
         // Last snapshot, disable button for next
         if (index === this.collection.length - 1) {
             $('#next', output).attr('disabled', true);
+            $('#last', output).attr('disabled', true);
         }
 
         // Add to DOM
@@ -81,6 +85,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           id);
     },
 
+    first: function () {
+
+        var first = this.collection.at(0);
+
+        this.navigate(first.id);
+    },
+
     previous: function () {
 
         var index = this.collection.indexOf(this.model);
@@ -95,5 +106,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var next = this.collection.at(index + 1);
 
         this.navigate(next.id);
+    },
+
+    last: function () {
+
+        var last = this.collection.at(this.collection.length-1);
+
+        this.navigate(last.id);
     }
 });
