@@ -66,15 +66,15 @@ function program1(depth0,data,depth1) {
   else { stack1 = depth0.files; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.files) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            </ul>\n\n        </div>\n\n        <a href=\"#\" class=\"btn btn-small disabled\">";
-  if (stack1 = helpers.snapshotIndex) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.snapshotIndex; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += "\n            </ul>\n\n        </div>\n\n    </div>\n\n    <div class='span1 text-center'>";
+  if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + " / ";
-  if (stack1 = helpers.numberOfSnaps) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.numberOfSnaps; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (stack1 = helpers.total) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.total; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</a>\n\n    </div>\n\n    <div class='span4'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='first' class='btn' value='First'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n            <input type='button' id='last' class='btn' value='Last'>\n        </div>\n\n    </div>\n\n</div>\n";
+    + "</div>\n\n    <div class='span3'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='first' class='btn' value='First'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n            <input type='button' id='last' class='btn' value='Last'>\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
   });;
 
@@ -513,7 +513,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.undelegate();
 
         // Create divs for elements
-        this.navigationContainer = $('<div>');
+        this.navigationContainer = $('<div>', { id: 'navigation-container' });
         this.editorContainer = $('<div>', { id: 'editor-container' });
 
         // Append elements to parent
@@ -535,8 +535,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
             exerciseId: this.collection.exerciseId,
-            snapshotIndex: this.collection.indexOf(this.model)+1,
-            numberOfSnaps: this.collection.length
+            current: index + 1,
+            total: this.collection.length
 
         }
 

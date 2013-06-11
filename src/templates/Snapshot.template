@@ -14,11 +14,11 @@
 
         </div>
 
-        <a href="#" class="btn btn-small disabled">{{snapshotIndex}} / {{numberOfSnaps}}</a>
-
     </div>
 
-    <div class='span4'>
+    <div class='span1 text-center'>{{current}} / {{total}}</div>
+
+    <div class='span3'>
 
         <div class='btn-group pull-right'>
             <input type='button' id='first' class='btn' value='First'>

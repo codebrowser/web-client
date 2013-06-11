@@ -18,7 +18,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.undelegate();
 
         // Create divs for elements
-        this.navigationContainer = $('<div>');
+        this.navigationContainer = $('<div>', { id: 'navigation-container' });
         this.editorContainer = $('<div>', { id: 'editor-container' });
 
         // Append elements to parent
@@ -40,8 +40,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
             exerciseId: this.collection.exerciseId,
-            snapshotIndex: this.collection.indexOf(this.model)+1,
-            numberOfSnaps: this.collection.length
+            current: index + 1,
+            total: this.collection.length
 
         }
 
