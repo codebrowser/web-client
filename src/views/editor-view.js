@@ -6,11 +6,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
-    events: {
-
-        'click #split': 'splitEvent'
-
-    },
+    split: false,
 
     initialize: function () {
 
@@ -25,8 +21,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.editorElement = $('<div>', { id: 'editor' });
 
         // Elements for editors
-        this.sideEditorElement = $('<div>', { id: 'previous-editor' }).hide();
-        this.mainEditorElement = $('<div>', { id: 'current-editor' });
+        this.sideEditorElement = $('<div>', { id: 'side-editor', height: '800px' }).hide();
+        this.mainEditorElement = $('<div>', { id: 'main-editor', height: '800px' });
 
         this.editorElement.append(this.sideEditorElement);
         this.editorElement.append(this.mainEditorElement);
@@ -36,12 +32,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.$el.append(this.editorElement);
 
         // Create Ace editor
-        this.previousEditor = ace.edit(this.sideEditorElement.get(0));
-        this.currentEditor = ace.edit(this.mainEditorElement.get(0));
+        this.sideEditor = ace.edit(this.sideEditorElement.get(0));
+        this.mainEditor = ace.edit(this.mainEditorElement.get(0));
 
         // Configure editor
-        config.editor.configure(this.previousEditor);
-        config.editor.configure(this.currentEditor);
+        config.editor.configure(this.sideEditor);
+        config.editor.configure(this.mainEditor);
     },
 
     render: function () {
@@ -81,7 +77,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
             previousFile.fetchContent(function (content) {
 
                 // TODO: Error handling
-                self.setContent(self.previousEditor, content, mode);
+                self.setContent(self.sideEditor, content, mode);
             });
         }
 
@@ -89,7 +85,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.model.fetchContent(function (content) {
 
             // TODO: Error handling
-            self.setContent(self.currentEditor, content, mode);
+            self.setContent(self.mainEditor, content, mode);
         });
 
         this.render();
@@ -99,22 +95,21 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         this.split = split;
 
-        if (!this.split) {
+        // Enable split
+        if (this.split) {
 
-            this.sideEditorElement.hide();
-            this.sideEditorElement.css('width', '0');
-            this.mainEditorElement.css('width', '');
-
-        } else {
-
-            this.sideEditorElement.css('width', '469px');
-            this.mainEditorElement.css('width', '468px');
+            // Split side editor to left
+            this.sideEditorElement.css({ float: 'left', width: '50%' });
             this.sideEditorElement.show();
+
+            // Split main editor to right
+            this.mainEditorElement.css({ float: 'right', width: '50%' });
+
+            return;
         }
-    },
 
-    splitEvent: function () {
-
-        this.toggleSplit($('#split').prop('checked'));
+        // Disable split
+        this.sideEditorElement.hide();
+        this.mainEditorElement.css({ float: '', width: '' });
     }
 });

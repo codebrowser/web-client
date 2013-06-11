@@ -21,7 +21,6 @@
 
     padding: 0 10px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    border-bottom: 0;
     border-radius: 4px 4px 0 0;
     background-color: rgba(0, 0, 0, 0.05);
     font-size: 12px;
@@ -41,20 +40,11 @@
 
 }
 
-#previous-editor {
+#editor {
 
-    float: left;
-    height: 800px;
+    overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    border-right: 0;
-    border-radius: 0 0 0 4px;
-
-}
-
-#current-editor {
-
-    height: 800px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-top: 0;
     border-radius: 0 0 4px 4px;
 
 }
