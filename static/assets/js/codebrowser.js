@@ -1,7 +1,7 @@
 this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 
-this["Handlebars"]["templates"]["Editor"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
@@ -32,7 +32,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   });
 
-this["Handlebars"]["templates"]["Snapshot"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+this["Handlebars"]["templates"]["SnapshotNavigationContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
@@ -66,7 +66,15 @@ function program1(depth0,data,depth1) {
   else { stack1 = depth0.files; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.files) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            </ul>\n\n        </div>\n\n    </div>\n\n    <div class='span4'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n        </div>\n\n    </div>\n\n</div>\n";
+  buffer += "\n            </ul>\n\n        </div>\n\n    </div>\n\n    <div class='span1 text-center'>";
+  if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + " / ";
+  if (stack1 = helpers.total) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.total; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</div>\n\n    <div class='span3'>\n\n        <div class='btn-group pull-right'>\n            <input type='button' id='first' class='btn' value='First'>\n            <input type='button' id='previous' class='btn' value='Previous'>\n            <input type='button' id='next' class='btn' value='Next'>\n            <input type='button' id='last' class='btn' value='Last'>\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
   });;
 
@@ -402,8 +410,11 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
 codebrowser.view.EditorView = Backbone.View.extend({
 
-    template: Handlebars.templates.Editor,
-    split: false,
+    template: {
+
+        topContainer: Handlebars.templates.EditorTopContainer
+
+    },
 
     events: {
 
@@ -444,10 +455,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var output = $(this.template(this.currentModel.toJSON()));
+        var topContainerOutput = $(this.template.topContainer(this.model.toJSON()));
 
         // Attach to DOM
-        this.topContainer.html(output);
+        this.topContainer.html(topContainerOutput);
     },
 
     setModel: function (previousModel, currentModel) {
@@ -543,12 +554,19 @@ codebrowser.view.ErrorView = Backbone.View.extend({
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
     el: config.view.container,
-    template: Handlebars.templates.Snapshot,
+
+    template: {
+
+        navigationContainer: Handlebars.templates.SnapshotNavigationContainer
+
+    },
 
     events: {
 
+        'click #first':    'first',
         'click #previous': 'previous',
-        'click #next':     'next'
+        'click #next':     'next',
+        'click #last':     'last'
 
     },
 
@@ -558,7 +576,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.undelegate();
 
         // Create divs for elements
-        this.navigationContainer = $('<div>');
+        this.navigationContainer = $('<div>', { id: 'navigation-container' });
         this.editorContainer = $('<div>', { id: 'editor-container' });
 
         // Append elements to parent
@@ -579,25 +597,29 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
-            exerciseId: this.collection.exerciseId
+            exerciseId: this.collection.exerciseId,
+            current: index + 1,
+            total: this.collection.length
 
         }
 
-        // Template
-        var output = $(this.template($.extend(this.model.toJSON(), attributes)));
+        // Template for navigation container
+        var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
 
         // First snapshot, disable button for previous
         if (index === 0) {
-            $('#previous', output).attr('disabled', true);
+            $('#first', navigationContainerOutput).attr('disabled', true);
+            $('#previous', navigationContainerOutput).attr('disabled', true);
         }
 
         // Last snapshot, disable button for next
         if (index === this.collection.length - 1) {
-            $('#next', output).attr('disabled', true);
+            $('#next', navigationContainerOutput).attr('disabled', true);
+            $('#last', navigationContainerOutput).attr('disabled', true);
         }
 
         // Attach to DOM
-        this.navigationContainer.html(output);
+        this.navigationContainer.html(navigationContainerOutput);
     },
 
     setModel: function (previousModel, currentModel, fileId) {
@@ -633,6 +655,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           id);
     },
 
+    first: function () {
+
+        var first = this.collection.at(0);
+
+        this.navigate(first.id);
+    },
+
     previous: function () {
 
         var index = this.collection.indexOf(this.model);
@@ -647,6 +676,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var next = this.collection.at(index + 1);
 
         this.navigate(next.id);
+    },
+
+    last: function () {
+
+        var last = this.collection.at(this.collection.length - 1);
+
+        this.navigate(last.id);
     }
 });
 ;

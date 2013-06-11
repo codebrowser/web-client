@@ -4,6 +4,13 @@
 
 }
 
+#navigation-container {
+
+    height: 30px;
+    line-height: 30px;
+
+}
+
 #editor-container {
 
     margin: 10px 0;

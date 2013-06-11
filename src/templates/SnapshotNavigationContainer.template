@@ -16,11 +16,15 @@
 
     </div>
 
-    <div class='span4'>
+    <div class='span1 text-center'>{{current}} / {{total}}</div>
+
+    <div class='span3'>
 
         <div class='btn-group pull-right'>
+            <input type='button' id='first' class='btn' value='First'>
             <input type='button' id='previous' class='btn' value='Previous'>
             <input type='button' id='next' class='btn' value='Next'>
+            <input type='button' id='last' class='btn' value='Last'>
         </div>
 
     </div>

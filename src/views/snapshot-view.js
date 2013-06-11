@@ -1,12 +1,19 @@
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
     el: config.view.container,
-    template: Handlebars.templates.Snapshot,
+
+    template: {
+
+        navigationContainer: Handlebars.templates.SnapshotNavigationContainer
+
+    },
 
     events: {
 
+        'click #first':    'first',
         'click #previous': 'previous',
-        'click #next':     'next'
+        'click #next':     'next',
+        'click #last':     'last'
 
     },
 
@@ -16,7 +23,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.undelegate();
 
         // Create divs for elements
-        this.navigationContainer = $('<div>');
+        this.navigationContainer = $('<div>', { id: 'navigation-container' });
         this.editorContainer = $('<div>', { id: 'editor-container' });
 
         // Append elements to parent
@@ -37,25 +44,29 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
-            exerciseId: this.collection.exerciseId
+            exerciseId: this.collection.exerciseId,
+            current: index + 1,
+            total: this.collection.length
 
         }
 
-        // Template
-        var output = $(this.template($.extend(this.model.toJSON(), attributes)));
+        // Template for navigation container
+        var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
 
         // First snapshot, disable button for previous
         if (index === 0) {
-            $('#previous', output).attr('disabled', true);
+            $('#first', navigationContainerOutput).attr('disabled', true);
+            $('#previous', navigationContainerOutput).attr('disabled', true);
         }
 
         // Last snapshot, disable button for next
         if (index === this.collection.length - 1) {
-            $('#next', output).attr('disabled', true);
+            $('#next', navigationContainerOutput).attr('disabled', true);
+            $('#last', navigationContainerOutput).attr('disabled', true);
         }
 
         // Attach to DOM
-        this.navigationContainer.html(output);
+        this.navigationContainer.html(navigationContainerOutput);
     },
 
     setModel: function (previousModel, currentModel, fileId) {
@@ -91,6 +102,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           id);
     },
 
+    first: function () {
+
+        var first = this.collection.at(0);
+
+        this.navigate(first.id);
+    },
+
     previous: function () {
 
         var index = this.collection.indexOf(this.model);
@@ -105,5 +123,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var next = this.collection.at(index + 1);
 
         this.navigate(next.id);
+    },
+
+    last: function () {
+
+        var last = this.collection.at(this.collection.length - 1);
+
+        this.navigate(last.id);
     }
 });
