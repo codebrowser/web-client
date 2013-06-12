@@ -79,11 +79,6 @@ describe('Snapshot', function () {
         expect(snapshot.getRelation('files').options.type).toBe(Backbone.HasMany);
     });
 
-    it('should have correct key for files relation', function () {
-
-        expect(snapshot.getRelation('files').options.key).toBe('files');
-    });
-
     it('should have correct related model for files relation', function () {
 
         expect(snapshot.getRelation('files').options.relatedModel).toBe('codebrowser.model.File');

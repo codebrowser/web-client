@@ -27,11 +27,6 @@ describe('Student', function () {
         expect(student.getRelation('courses').options.type).toBe(Backbone.HasMany);
     });
 
-    it('should have correct key for courses relation', function () {
-
-        expect(student.getRelation('courses').options.key).toBe('courses');
-    });
-
     it('should have correct related model for courses relation', function () {
 
         expect(student.getRelation('courses').options.relatedModel).toBe('codebrowser.model.Course');
