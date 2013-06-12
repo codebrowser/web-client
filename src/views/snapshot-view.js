@@ -58,7 +58,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Split view is enabled
         if (this.editorView.split) {
             $('#split', navigationContainerOutput).addClass('active');
-        } else if (!this.editorView.canSplit) {
+        } else if (!this.editorView.canSplit()) {
             $('#split', navigationContainerOutput).attr('disabled', true);
         }
 
@@ -96,6 +96,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Show first file if no fileId is specified
         if (!fileId) {
+
+            if (previousSnapshot.get('files').at(0).get('name') !== this.model.get('files').at(0).get('name')) {
+                previousSnapshot = this.model;
+            }
+
             this.editorView.update(previousSnapshot.get('files').at(0), this.model.get('files').at(0));
         } else {
 
@@ -158,7 +163,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var previous = this.collection.at(index - 1);
 
         var previousFileId = this.getFileId(previous);
-        console.log(previousFileId);
 
         this.navigate(previous.id, previousFileId);
     },

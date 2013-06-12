@@ -475,6 +475,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.$el.show();
 
         this.model = file;
+        this.previousModel = previousFile;
+
+        this.checkFiles();
 
         // Syntax mode
         var mode = codebrowser.helper.AceMode.getModeForFilename(this.model.get('name'));
@@ -484,10 +487,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Disable split view if both models are the same
         if (previousFile === this.model) {
 
-            this.canSplit = false;
             this.toggleSplit(false);
-        } else {
-            this.canSplit = true;
         }
 
         // Fetch previous file only if the models are not the same
@@ -535,6 +535,15 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Disable split
         this.sideEditorElement.hide();
         this.mainEditorElement.css({ float: '', width: '' });
+    },
+
+    canSplit: function () {
+
+        if (this.model === this.previousModel) {
+            return false;
+        }
+
+        return true;
     }
 });
 ;
@@ -619,7 +628,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Split view is enabled
         if (this.editorView.split) {
             $('#split', navigationContainerOutput).addClass('active');
-        } else if (!this.editorView.canSplit) {
+        } else if (!this.editorView.canSplit()) {
             $('#split', navigationContainerOutput).attr('disabled', true);
         }
 
@@ -657,6 +666,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Show first file if no fileId is specified
         if (!fileId) {
+
+            if (previousSnapshot.get('files').at(0).get('name') !== this.model.get('files').at(0).get('name')) {
+                previousSnapshot = this.model;
+            }
+
             this.editorView.update(previousSnapshot.get('files').at(0), this.model.get('files').at(0));
         } else {
 
@@ -719,7 +733,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var previous = this.collection.at(index - 1);
 
         var previousFileId = this.getFileId(previous);
-        console.log(previousFileId);
 
         this.navigate(previous.id, previousFileId);
     },
