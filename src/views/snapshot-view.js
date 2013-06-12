@@ -77,9 +77,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationContainer.html(navigationContainerOutput);
     },
 
-    update: function (previousSnapshot, snapshot, fileId) {
+    update: function (snapshot, fileId) {
 
         this.model = snapshot;
+
+        // Previous snapshot
+        var index = this.collection.indexOf(snapshot);
+        var previousSnapshot = this.collection.at(index - 1);
 
         // First snapshot
         if (!previousSnapshot) {
@@ -96,7 +100,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         } else {
 
             // TODO: How to determine same file across snapshots?
-            this.editorView.update(previousSnapshot.get('files').get(fileId), this.model.get('files').get(fileId));
+            this.editorView.update(previousSnapshot.get('files').at(0), this.model.get('files').get(fileId));
         }
 
         this.render();

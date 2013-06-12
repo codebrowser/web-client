@@ -39,10 +39,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 // Snapshot
                 var snapshot = snapshotCollection.get(snapshotId);
 
-                // Previous snapshot
-                var index = snapshotCollection.indexOf(snapshot);
-                var previousSnapshot = snapshotCollection.at(index - 1);
-
                 // Invalid snapshot ID
                 if (!snapshot) {
 
@@ -52,7 +48,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
-                self.snapshotView.update(previousSnapshot, snapshot, fileId);
+                self.snapshotView.update(snapshot, fileId);
             },
 
             // Snapshots fetch failed
