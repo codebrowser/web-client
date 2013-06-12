@@ -315,7 +315,7 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
 
     initialize: function () {
 
-        // Get IDs from collection
+        // If fetched through a collection, get IDs from the collection
         if (this.collection) {
             this.set('studentId', this.collection.studentId);
             this.set('courseId', this.collection.courseId);
