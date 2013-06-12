@@ -44,6 +44,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // View attributes
         var attributes = {
 
+            exercise: this.model.get('course').get('exercises').get(this.model.get('exerciseId')).toJSON(),
             current: index + 1,
             total: this.collection.length
 

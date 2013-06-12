@@ -4,7 +4,7 @@
 
         <div class='btn-group'>
 
-            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'>Files <span class='caret'></span></a>
+            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'>{{exercise.name}} <span class='caret'></span></a>
 
             <ul class='dropdown-menu'>
             {{#files}}
