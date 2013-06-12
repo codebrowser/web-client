@@ -50,7 +50,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Template for navigation container
-        var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
+        var navigationContainerOutput = $(this.template.navigationContainer(_.extend(this.model.toJSON(), attributes)));
 
         // Split view is enabled, set split button as active
         if (this.editorView.split) {
@@ -115,7 +115,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Use first file if non specified
         if (!file) {
-            file = snapshot.get('files').at(0);
+            file = snapshot.get('files').first();
         }
 
         codebrowser.app.snapshot.navigate('#/students/' +
@@ -132,7 +132,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     first: function () {
 
-        var first = this.collection.at(0);
+        var first = this.collection.first();
         var file = first.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(first, file);
@@ -158,7 +158,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     last: function () {
 
-        var last = this.collection.at(this.collection.length - 1);
+        var last = this.collection.last();
         var file = last.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(last, file);
