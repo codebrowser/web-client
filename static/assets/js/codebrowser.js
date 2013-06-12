@@ -477,8 +477,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.model = file;
         this.previousModel = previousFile;
 
-        this.checkFiles();
-
         // Syntax mode
         var mode = codebrowser.helper.AceMode.getModeForFilename(this.model.get('name'));
 
@@ -628,13 +626,14 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Split view is enabled
         if (this.editorView.split) {
             $('#split', navigationContainerOutput).addClass('active');
-        } else if (!this.editorView.canSplit()) {
+        }
+
+        if (!this.editorView.canSplit()) {
             $('#split', navigationContainerOutput).attr('disabled', true);
         }
 
         // First snapshot, disable the buttons for split, first and previous
         if (index === 0) {
-            $('#split', navigationContainerOutput).attr('disabled', true);
             $('#first', navigationContainerOutput).attr('disabled', true);
             $('#previous', navigationContainerOutput).attr('disabled', true);
         }
@@ -667,6 +666,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Show first file if no fileId is specified
         if (!fileId) {
 
+            // First files of both snapshots are different, don't allow splitting
             if (previousSnapshot.get('files').at(0).get('name') !== this.model.get('files').at(0).get('name')) {
                 previousSnapshot = this.model;
             }
@@ -686,8 +686,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                 previousFileId = previousFile.id;
             }
 
-            // TODO: Disable split if file doesn't have a previous snapshot
-            this.editorView.update(previousSnapshot.get('files').get(previousFileId), this.model.get('files').get(fileId));
+            this.editorView.update(previousSnapshot.get('files').get(previousFileId),
+                                   this.model.get('files').get(fileId));
 
             this.fileId = fileId;
         }
