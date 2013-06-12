@@ -95,8 +95,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             this.editorView.update(previousSnapshot.get('files').at(0), this.model.get('files').at(0));
         } else {
 
-            // TODO: How to determine same file across snapshots?
-            this.editorView.update(this.model.get('files').get(fileId), this.model.get('files').get(fileId));
+            // Determine same file across snapshots
+            var fileName = this.model.get('files').get(fileId).get('name');
+            var previousFileId = previousSnapshot.get('files').findWhere({ name: fileName }).id;
+
+            this.editorView.update(previousSnapshot.get('files').get(previousFileId), this.model.get('files').get(fileId));
+
             this.fileId = fileId;
         }
 
