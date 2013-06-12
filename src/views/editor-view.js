@@ -8,6 +8,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     split: false,
 
+    canSplit: function () {
+
+        return this.model !== this.previousModel;
+    },
+
     initialize: function () {
 
         // Empty container
@@ -62,6 +67,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     update: function (previousFile, file) {
 
         var self = this;
+
         this.model = file;
         this.previousModel = previousFile;
 
@@ -131,14 +137,5 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Disable split
         this.sideEditorElement.hide();
         this.mainEditorElement.css({ float: '', width: '' });
-    },
-
-    canSplit: function () {
-
-        if (this.model === this.previousModel) {
-            return false;
-        }
-
-        return true;
     }
 });

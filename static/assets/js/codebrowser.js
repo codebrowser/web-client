@@ -442,6 +442,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     split: false,
 
+    canSplit: function () {
+
+        return this.model !== this.previousModel;
+    },
+
     initialize: function () {
 
         // Empty container
@@ -496,6 +501,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     update: function (previousFile, file) {
 
         var self = this;
+
         this.model = file;
         this.previousModel = previousFile;
 
@@ -565,15 +571,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Disable split
         this.sideEditorElement.hide();
         this.mainEditorElement.css({ float: '', width: '' });
-    },
-
-    canSplit: function () {
-
-        if (this.model === this.previousModel) {
-            return false;
-        }
-
-        return true;
     }
 });
 ;
@@ -652,16 +649,17 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Template for navigation container
         var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
 
-        // Split view is enabled
+        // Split view is enabled, set split button as active
         if (this.editorView.split) {
             $('#split', navigationContainerOutput).addClass('active');
         }
 
+        // Disable split button if editor can't be split
         if (!this.editorView.canSplit()) {
             $('#split', navigationContainerOutput).attr('disabled', true);
         }
 
-        // First snapshot, disable the buttons for split, first and previous
+        // First snapshot, disable the buttons for first and previous
         if (index === 0) {
             $('#first', navigationContainerOutput).attr('disabled', true);
             $('#previous', navigationContainerOutput).attr('disabled', true);
@@ -692,20 +690,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             previousSnapshot = this.model;
         }
 
-        // Determine same file across snapshots
-        var fileName = this.model.get('files').get(fileId).get('name');
-        var previousFile = previousSnapshot.get('files').findWhere({name: fileName});
-        var previousFileId;
+        // Determine current file
+        this.file = this.model.get('files').get(fileId);
+        var filename = this.file.get('name');
 
-        if (!previousFile) {
-            previousSnapshot = this.model;
-            previousFileId = fileId;
-        } else {
-            previousFileId = previousFile.id;
-        }
+        // Determine previous file if it exists
+        var previousFile = previousSnapshot.get('files').findWhere({ name: filename });
 
-        this.editorView.update(previousSnapshot.get('files').get(previousFileId),
-                               this.model.get('files').get(fileId));
+        // Update editor
+        this.editorView.update(previousFile || this.file, this.file);
 
         this.render();
     },
@@ -715,7 +708,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.editorView.toggleSplit();
     },
 
-    navigate: function (id, fileId) {
+    navigate: function (snapshot, file) {
+
+        // Use first file if non specified
+        if (!file) {
+            file = snapshot.get('file').at(0);
+        }
 
         codebrowser.app.snapshot.navigate('#/students/' +
                                           this.collection.studentId +
@@ -724,62 +722,43 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           '/exercises/' +
                                           this.collection.exerciseId +
                                           '/snapshots/' +
-                                          id +
+                                          snapshot.id +
                                           '/files/' +
-                                          fileId);
+                                          file.id);
     },
 
     first: function () {
 
         var first = this.collection.at(0);
+        var file = first.get('files').findWhere({ name: this.file.get('name') });
 
-        var firstFileId = this.getFileId(first);
-
-        this.navigate(first.id, firstFileId);
+        this.navigate(first, file);
     },
 
     previous: function () {
 
         var index = this.collection.indexOf(this.model);
         var previous = this.collection.at(index - 1);
+        var file = previous.get('files').findWhere({ name: this.file.get('name') });
 
-        var previousFileId = this.getFileId(previous);
-
-        this.navigate(previous.id, previousFileId);
+        this.navigate(previous, file);
     },
 
     next: function () {
 
         var index = this.collection.indexOf(this.model);
         var next = this.collection.at(index + 1);
+        var file = next.get('files').findWhere({ name: this.file.get('name') });
 
-        var nextFileId = this.getFileId(next);
-
-        this.navigate(next.id, nextFileId);
+        this.navigate(next, file);
     },
 
     last: function () {
 
         var last = this.collection.at(this.collection.length - 1);
+        var file = last.get('files').findWhere({ name: this.file.get('name') });
 
-        var lastFileId = this.getFileId(last);
-
-        this.navigate(last.id, lastFileId);
-    },
-
-    getFileId: function(snapshot) {
-
-        // Get file name
-        var fileName = this.editorView.model.get('name');
-
-        // Return the first file that matches given attributes
-        var file = snapshot.get('files').findWhere({name: fileName});
-
-        if (!file) {
-            return snapshot.get('files').at(0).id;
-        } else {
-            return file.id;
-        }
+        this.navigate(last, file);
     }
 });
 ;
@@ -854,9 +833,12 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
+                // No file ID specified, navigate to first file
                 if (!fileId) {
 
-                    fileId = snapshot.get('files').at(0).id;
+                    self.snapshotView.navigate(snapshot, null);
+
+                    return;
                 }
 
                 self.snapshotView.update(snapshot, fileId);
