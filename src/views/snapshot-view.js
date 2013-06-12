@@ -100,6 +100,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         } else {
 
             // TODO: How to determine same file across snapshots?
+            // TODO: Disable split if file doesn't have a previous snapshot
             this.editorView.update(previousSnapshot.get('files').at(0), this.model.get('files').get(fileId));
         }
 
