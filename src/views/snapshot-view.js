@@ -52,14 +52,18 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Template for navigation container
         var navigationContainerOutput = $(this.template.navigationContainer($.extend(this.model.toJSON(), attributes)));
 
-        // Split view is enabled
+        // Split view is enabled, set split button as active
         if (this.editorView.split) {
             $('#split', navigationContainerOutput).addClass('active');
         }
 
-        // First snapshot, disable the buttons for split, first and previous
-        if (index === 0) {
+        // Disable split button if editor can't be split
+        if (!this.editorView.canSplit()) {
             $('#split', navigationContainerOutput).attr('disabled', true);
+        }
+
+        // First snapshot, disable the buttons for first and previous
+        if (index === 0) {
             $('#first', navigationContainerOutput).attr('disabled', true);
             $('#previous', navigationContainerOutput).attr('disabled', true);
         }
@@ -89,15 +93,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             previousSnapshot = this.model;
         }
 
-        // Show first file if no fileId is specified
-        if (!fileId) {
-            this.editorView.update(previousSnapshot.get('files').at(0), this.model.get('files').at(0));
-        } else {
+        // Determine current file
+        this.file = this.model.get('files').get(fileId);
+        var filename = this.file.get('name');
 
-            // TODO: How to determine same file across snapshots?
-            // TODO: Disable split if file doesn't have a previous snapshot
-            this.editorView.update(previousSnapshot.get('files').at(0), this.model.get('files').get(fileId));
-        }
+        // Determine previous file if it exists
+        var previousFile = previousSnapshot.get('files').findWhere({ name: filename });
+
+        // Update editor
+        this.editorView.update(previousFile || this.file, this.file);
 
         this.render();
     },
@@ -107,7 +111,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.editorView.toggleSplit();
     },
 
-    navigate: function (id) {
+    navigate: function (snapshot, file) {
+
+        // Use first file if non specified
+        if (!file) {
+            file = snapshot.get('file').at(0);
+        }
 
         codebrowser.app.snapshot.navigate('#/students/' +
                                           this.collection.studentId +
@@ -116,36 +125,42 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           '/exercises/' +
                                           this.collection.exerciseId +
                                           '/snapshots/' +
-                                          id);
+                                          snapshot.id +
+                                          '/files/' +
+                                          file.id);
     },
 
     first: function () {
 
         var first = this.collection.at(0);
+        var file = first.get('files').findWhere({ name: this.file.get('name') });
 
-        this.navigate(first.id);
+        this.navigate(first, file);
     },
 
     previous: function () {
 
         var index = this.collection.indexOf(this.model);
         var previous = this.collection.at(index - 1);
+        var file = previous.get('files').findWhere({ name: this.file.get('name') });
 
-        this.navigate(previous.id);
+        this.navigate(previous, file);
     },
 
     next: function () {
 
         var index = this.collection.indexOf(this.model);
         var next = this.collection.at(index + 1);
+        var file = next.get('files').findWhere({ name: this.file.get('name') });
 
-        this.navigate(next.id);
+        this.navigate(next, file);
     },
 
     last: function () {
 
         var last = this.collection.at(this.collection.length - 1);
+        var file = last.get('files').findWhere({ name: this.file.get('name') });
 
-        this.navigate(last.id);
+        this.navigate(last, file);
     }
 });

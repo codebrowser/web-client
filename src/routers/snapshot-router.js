@@ -48,6 +48,14 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
+                // No file ID specified, navigate to first file
+                if (!fileId) {
+
+                    self.snapshotView.navigate(snapshot, null);
+
+                    return;
+                }
+
                 self.snapshotView.update(snapshot, fileId);
             },
 
