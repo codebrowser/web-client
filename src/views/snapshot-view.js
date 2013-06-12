@@ -115,7 +115,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Use first file if non specified
         if (!file) {
-            file = snapshot.get('file').at(0);
+            file = snapshot.get('files').at(0);
         }
 
         codebrowser.app.snapshot.navigate('#/students/' +
