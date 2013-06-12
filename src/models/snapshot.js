@@ -1,4 +1,4 @@
-/* 
+/*
  * Fetch a snapshot by passing a studentId, courseId and exerciseId as attributes for the model:
  * var snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: 4 });
  */
@@ -34,5 +34,15 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
 
             }
         }
-    ]
+    ],
+
+    initialize: function () {
+
+        // Get IDs from collection
+        if (this.collection) {
+            this.set('studentId', this.collection.studentId);
+            this.set('courseId', this.collection.courseId);
+            this.set('exerciseId', this.collection.exerciseId);
+        }
+    }
 });
