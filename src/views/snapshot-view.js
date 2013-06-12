@@ -171,6 +171,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             // Catch file name from header
             var fileName = $('header h1').text();
 
+            // Return id of the first file that matches given attributes
             var id = model.get('files').findWhere({ name: fileName }).id;
 
             this.fileId = null;
