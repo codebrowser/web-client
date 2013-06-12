@@ -77,9 +77,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationContainer.html(navigationContainerOutput);
     },
 
-    update: function (previousSnapshot, snapshot, fileId) {
+    update: function (snapshot, fileId) {
 
         this.model = snapshot;
+
+        // Previous snapshot
+        var index = this.collection.indexOf(snapshot);
+        var previousSnapshot = this.collection.at(index - 1);
 
         // First snapshot
         if (!previousSnapshot) {
@@ -99,6 +103,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             var fileName = this.model.get('files').get(fileId).get('name');
             var previousFileId = previousSnapshot.get('files').findWhere({ name: fileName }).id;
 
+            // TODO: Disable split if file doesn't have a previous snapshot
             this.editorView.update(previousSnapshot.get('files').get(previousFileId), this.model.get('files').get(fileId));
 
             this.fileId = fileId;
