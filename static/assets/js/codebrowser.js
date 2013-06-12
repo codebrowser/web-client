@@ -648,7 +648,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         } else {
 
             // TODO: How to determine same file across snapshots?
-            this.editorView.update(previousSnapshot.get('files').get(fileId), this.model.get('files').get(fileId));
+            this.editorView.update(this.model.get('files').get(fileId), this.model.get('files').get(fileId));
+            this.fileId = fileId;
         }
 
         this.render();
@@ -659,23 +660,39 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.editorView.toggleSplit();
     },
 
-    navigate: function (id) {
+    navigate: function (id, fileId) {
 
-        codebrowser.app.snapshot.navigate('#/students/' +
-                                          this.collection.studentId +
-                                          '/courses/' +
-                                          this.collection.courseId +
-                                          '/exercises/' +
-                                          this.collection.exerciseId +
-                                          '/snapshots/' +
-                                          id);
+        if (fileId) {
+            codebrowser.app.snapshot.navigate('#/students/' +
+                                              this.collection.studentId +
+                                              '/courses/' +
+                                              this.collection.courseId +
+                                              '/exercises/' +
+                                              this.collection.exerciseId +
+                                              '/snapshots/' +
+                                              id +
+                                              '/files/' +
+                                              fileId);
+        } else {
+
+            codebrowser.app.snapshot.navigate('#/students/' +
+                                              this.collection.studentId +
+                                              '/courses/' +
+                                              this.collection.courseId +
+                                              '/exercises/' +
+                                              this.collection.exerciseId +
+                                              '/snapshots/' +
+                                              id);
+        }
     },
 
     first: function () {
 
         var first = this.collection.at(0);
 
-        this.navigate(first.id);
+        var firstFileId = this.getFileId(first);
+
+        this.navigate(first.id, firstFileId);
     },
 
     previous: function () {
@@ -683,7 +700,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var index = this.collection.indexOf(this.model);
         var previous = this.collection.at(index - 1);
 
-        this.navigate(previous.id);
+        var previousFileId = this.getFileId(previous);
+
+        this.navigate(previous.id, previousFileId);
     },
 
     next: function () {
@@ -691,14 +710,34 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var index = this.collection.indexOf(this.model);
         var next = this.collection.at(index + 1);
 
-        this.navigate(next.id);
+        var nextFileId = this.getFileId(next);
+
+        this.navigate(next.id, nextFileId);
     },
 
     last: function () {
 
         var last = this.collection.at(this.collection.length - 1);
 
-        this.navigate(last.id);
+        var lastFileId = this.getFileId(last);
+
+        this.navigate(last.id, lastFileId);
+    },
+
+    getFileId: function (model) {
+
+        if (this.fileId) {
+
+            // Catch file name from header
+            var fileName = $('header h1').text();
+
+            var id = model.get('files').findWhere({ name: fileName }).id;
+
+            this.fileId = null;
+            return id;
+        }
+
+        return null;
     }
 });
 ;
