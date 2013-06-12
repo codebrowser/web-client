@@ -4,6 +4,20 @@
 
 var config = {
 
+    /* Storage keys */
+
+    storage: {
+
+        view: {
+
+            EditorView: {
+
+                split: 'codebrowser.view.EditorView.split'
+
+            }
+        }
+    },
+
     /* API */
 
     api: {

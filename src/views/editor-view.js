@@ -61,21 +61,25 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     update: function (previousFile, file) {
 
-        // Show view if necessary
-        this.$el.show();
-
+        var self = this;
         this.model = file;
         this.previousModel = previousFile;
 
         // Syntax mode
         var mode = codebrowser.helper.AceMode.getModeForFilename(this.model.get('name'));
 
-        var self = this;
+        // Show view if necessary
+        this.$el.show();
 
         // Disable split view if both models are the same
         if (previousFile === this.model) {
 
             this.toggleSplit(false);
+
+        } else {
+
+            // Restore split state
+            this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
         }
 
         // Fetch previous file only if the models are not the same
@@ -104,7 +108,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
         if (split !== undefined) {
             this.split = split;
         } else {
+
             this.split = !this.split;
+
+            // Store split state
+            localStorage.setItem(config.storage.view.EditorView.split, this.split);
         }
 
         // Enable split

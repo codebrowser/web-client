@@ -1,5 +1,8 @@
 describe('Snapshot', function () {
 
+    var students = new codebrowser.collection.StudentCollection();
+    students.fetch({ async: false });
+
     var missingAttributesError = 'Attributes studentId, courseId and exerciseId are required to fetch a snapshot.';
     var snapshot;
 
@@ -14,6 +17,30 @@ describe('Snapshot', function () {
     it('should have correct URL root', function () {
 
         expect(snapshot.urlRoot()).toBe(config.api.main.root + 'students/1/courses/2/exercises/3/snapshots');
+    });
+
+    it('should have correct URL root through a collection of snapshots', function () {
+
+        // Get existing IDs
+        var student = students.at(0);
+        var course = student.get('courses').at(0);
+        var exercise = course.get('exercises').at(0);
+
+        // Snapshots
+        var snapshots = new codebrowser.collection.SnapshotCollection(null, { studentId: student.id, courseId: course.id, exerciseId: exercise.id });
+        snapshots.fetch({ async: false });
+
+        // Snapshot
+        snapshot = snapshots.at(0);
+
+        expect(snapshot.urlRoot()).toBe(config.api.main.root +
+                                        'students/' +
+                                        student.id +
+                                        '/courses/' +
+                                        course.id +
+                                        '/exercises/' +
+                                        exercise.id +
+                                        '/snapshots');
     });
 
     it('should have correct URL', function () {

@@ -84,6 +84,20 @@ function program1(depth0,data,depth1) {
 
 var config = {
 
+    /* Storage keys */
+
+    storage: {
+
+        view: {
+
+            EditorView: {
+
+                split: 'codebrowser.view.EditorView.split'
+
+            }
+        }
+    },
+
     /* API */
 
     api: {
@@ -234,11 +248,11 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
         return config.api.main.root +
                'students/' +
-               (this.get('snapshot').get('studentId') || this.get('snapshot').collection.studentId) +
+               this.get('snapshot').get('studentId') +
                '/courses/' +
-               (this.get('snapshot').get('courseId') || this.get('snapshot').collection.courseId) +
+               this.get('snapshot').get('courseId') +
                '/exercises/' +
-               (this.get('snapshot').get('exerciseId') || this.get('snapshot').collection.exerciseId) +
+               this.get('snapshot').get('exerciseId') +
                '/snapshots/' +
                this.get('snapshot').id +
                '/files';
@@ -261,7 +275,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 });
 ;
 
-/* 
+/*
  * Fetch a snapshot by passing a studentId, courseId and exerciseId as attributes for the model:
  * var snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: 4 });
  */
@@ -297,7 +311,17 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
 
             }
         }
-    ]
+    ],
+
+    initialize: function () {
+
+        // Get IDs from collection
+        if (this.collection) {
+            this.set('studentId', this.collection.studentId);
+            this.set('courseId', this.collection.courseId);
+            this.set('exerciseId', this.collection.exerciseId);
+        }
+    }
 });
 ;
 
@@ -471,21 +495,25 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     update: function (previousFile, file) {
 
-        // Show view if necessary
-        this.$el.show();
-
+        var self = this;
         this.model = file;
         this.previousModel = previousFile;
 
         // Syntax mode
         var mode = codebrowser.helper.AceMode.getModeForFilename(this.model.get('name'));
 
-        var self = this;
+        // Show view if necessary
+        this.$el.show();
 
         // Disable split view if both models are the same
         if (previousFile === this.model) {
 
             this.toggleSplit(false);
+
+        } else {
+
+            // Restore split state
+            this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
         }
 
         // Fetch previous file only if the models are not the same
@@ -514,7 +542,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
         if (split !== undefined) {
             this.split = split;
         } else {
+
             this.split = !this.split;
+
+            // Store split state
+            localStorage.setItem(config.storage.view.EditorView.split, this.split);
         }
 
         // Enable split
@@ -612,9 +644,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // View attributes
         var attributes = {
 
-            studentId: this.collection.studentId,
-            courseId: this.collection.courseId,
-            exerciseId: this.collection.exerciseId,
             current: index + 1,
             total: this.collection.length
 
