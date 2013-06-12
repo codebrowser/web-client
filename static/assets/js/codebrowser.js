@@ -694,32 +694,23 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Show first file if no fileId is specified
         if (!fileId) {
-
-            // First files of both snapshots are different, don't allow splitting
-            if (previousSnapshot.get('files').at(0).get('name') !== this.model.get('files').at(0).get('name')) {
-                previousSnapshot = this.model;
-            }
-
-            this.editorView.update(previousSnapshot.get('files').at(0), this.model.get('files').at(0));
-        } else {
-
-            // Determine same file across snapshots
-            var fileName = this.model.get('files').get(fileId).get('name');
-            var previousFile = previousSnapshot.get('files').findWhere({ name: fileName });
-            var previousFileId;
-
-            if (!previousFile) {
-                previousSnapshot = this.model;
-                previousFileId = fileId;
-            } else {
-                previousFileId = previousFile.id;
-            }
-
-            this.editorView.update(previousSnapshot.get('files').get(previousFileId),
-                                   this.model.get('files').get(fileId));
-
-            this.fileId = fileId;
+            fileId = this.model.get('files').at(0).id;
         }
+
+        // Determine same file across snapshots
+        var fileName = this.model.get('files').get(fileId).get('name');
+        var previousFile = previousSnapshot.get('files').findWhere({name: fileName});
+        var previousFileId;
+
+        if (!previousFile) {
+            previousSnapshot = this.model;
+            previousFileId = fileId;
+        } else {
+            previousFileId = previousFile.id;
+        }
+
+        this.editorView.update(previousSnapshot.get('files').get(previousFileId),
+                               this.model.get('files').get(fileId));
 
         this.render();
     },
@@ -731,20 +722,16 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     navigate: function (id, fileId) {
 
-        var url = '#/students/' +
-                  this.collection.studentId +
-                  '/courses/' +
-                  this.collection.courseId +
-                  '/exercises/' +
-                  this.collection.exerciseId +
-                  '/snapshots/' +
-                  id;
-
-        if (fileId) {
-            url += '/files/'+fileId;
-        }
-
-        codebrowser.app.snapshot.navigate(url);
+        codebrowser.app.snapshot.navigate('#/students/' +
+                                          this.collection.studentId +
+                                          '/courses/' +
+                                          this.collection.courseId +
+                                          '/exercises/' +
+                                          this.collection.exerciseId +
+                                          '/snapshots/' +
+                                          id +
+                                          '/files/' +
+                                          fileId);
     },
 
     first: function () {
@@ -785,26 +772,19 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigate(last.id, lastFileId);
     },
 
-    getFileId: function (snapshot) {
+    getFileId: function(snapshot) {
 
-        if (this.fileId) {
+        // Get file name
+        var fileName = this.editorView.model.get('name');
 
-            // Get file name
-            var fileName = this.editorView.model.get('name');
+        // Return the first file that matches given attributes
+        var file = snapshot.get('files').findWhere({name: fileName});
 
-            // Return the first file that matches given attributes
-            var file = snapshot.get('files').findWhere({ name: fileName });
-
-            this.fileId = null;
-
-            if (!file) {
-                return null;
-            } else {
-                return file.id;
-            }
+        if (!file) {
+            return snapshot.get('files').at(0).id;
+        } else {
+            return file.id;
         }
-
-        return null;
     }
 });
 ;
