@@ -110,28 +110,20 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     navigate: function (id, fileId) {
 
-        if (fileId) {
-            codebrowser.app.snapshot.navigate('#/students/' +
-                                              this.collection.studentId +
-                                              '/courses/' +
-                                              this.collection.courseId +
-                                              '/exercises/' +
-                                              this.collection.exerciseId +
-                                              '/snapshots/' +
-                                              id +
-                                              '/files/' +
-                                              fileId);
-        } else {
+        var url = '#/students/' +
+                  this.collection.studentId +
+                  '/courses/' +
+                  this.collection.courseId +
+                  '/exercises/' +
+                  this.collection.exerciseId +
+                  '/snapshots/' +
+                  id;
 
-            codebrowser.app.snapshot.navigate('#/students/' +
-                                              this.collection.studentId +
-                                              '/courses/' +
-                                              this.collection.courseId +
-                                              '/exercises/' +
-                                              this.collection.exerciseId +
-                                              '/snapshots/' +
-                                              id);
+        if (fileId) {
+            url += '/files/'+fileId;
         }
+
+        codebrowser.app.snapshot.navigate(url);
     },
 
     first: function () {
