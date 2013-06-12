@@ -98,4 +98,20 @@ describe('Snapshot', function () {
 
         expect(snapshot.getRelation('files').options.reverseRelation.key).toBe('snapshot');
     });
+
+    it('should have course', function () {
+
+        expect(snapshot.getRelation('course')).not.toBeNull();
+    });
+
+    it('should have HasOne relation with course', function () {
+
+        expect(snapshot.getRelation('course').options.type).toBe(Backbone.HasOne);
+    });
+
+    it('should have correct related model for course relation', function () {
+
+        expect(snapshot.getRelation('course').options.relatedModel).toBe('codebrowser.model.Course');
+    });
+
 });
