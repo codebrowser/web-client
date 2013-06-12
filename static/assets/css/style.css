@@ -1,14 +1,27 @@
+/* Icons */
+
 .icon-gray {
 
     opacity: 0.5;
 
 }
 
+.icon-split-editor {
+
+    background-image: url('../img/split-view.png');
+    background-position: center;
+
+}
+
+/* Container */
+
 #container {
 
     margin: 20px 0;
 
 }
+
+/* Snapshot */
 
 #navigation-container {
 
@@ -21,6 +34,8 @@
     line-height: 30px;
 
 }
+
+/* Editor */
 
 #editor-container {
 

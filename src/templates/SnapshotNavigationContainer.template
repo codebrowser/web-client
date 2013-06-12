@@ -14,7 +14,7 @@
 
         </div>
 
-        <button id='split' type='button' class='btn' data-toggle='button'>Split</button>
+        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>
 
     </div>
 
