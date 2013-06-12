@@ -99,7 +99,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
             // Determine same file across snapshots
             var fileName = this.model.get('files').get(fileId).get('name');
-            var previousFileId = previousSnapshot.get('files').findWhere({ name: fileName }).id;
+            var previousFile = previousSnapshot.get('files').findWhere({ name: fileName });
+            var previousFileId;
+
+            if (!previousFile) {
+                previousSnapshot = this.model;
+                previousFileId = fileId;
+            } else {
+                previousFileId = previousFile.id;
+            }
 
             // TODO: Disable split if file doesn't have a previous snapshot
             this.editorView.update(previousSnapshot.get('files').get(previousFileId), this.model.get('files').get(fileId));
@@ -171,18 +179,23 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigate(last.id, lastFileId);
     },
 
-    getFileId: function (model) {
+    getFileId: function (snapshot) {
 
         if (this.fileId) {
 
-            // Catch file name from header
-            var fileName = $('header h1').text();
+            // Get file name
+            var fileName = this.editorView.model.get('name');
 
-            // Return id of the first file that matches given attributes
-            var id = model.get('files').findWhere({ name: fileName }).id;
+            // Return the first file that matches given attributes
+            var file = snapshot.get('files').findWhere({ name: fileName });
 
             this.fileId = null;
-            return id;
+
+            if (!file) {
+                return null;
+            } else {
+                return file.id;
+            }
         }
 
         return null;
