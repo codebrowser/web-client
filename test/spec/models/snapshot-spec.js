@@ -109,4 +109,8 @@ describe('Snapshot', function () {
         expect(snapshot.getRelation('course').options.relatedModel).toBe('codebrowser.model.Course');
     });
 
+    it('should have correct key for course relation', function () {
+
+        expect(snapshot.getRelation('course').keyId).toBe(2);
+    });
 });

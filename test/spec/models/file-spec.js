@@ -44,7 +44,6 @@ describe('File', function () {
                                     exercise.id +
                                     '/snapshots/' +
                                     snapshot.id + '/files');
-
     });
 
     it('should have correct URL', function () {
