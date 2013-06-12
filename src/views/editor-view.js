@@ -67,8 +67,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.model = file;
         this.previousModel = previousFile;
 
-        this.checkFiles();
-
         // Syntax mode
         var mode = codebrowser.helper.AceMode.getModeForFilename(this.model.get('name'));
 
