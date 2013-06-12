@@ -90,8 +90,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
             // Use the current snapshot as the previous
             previousSnapshot = this.model;
-
-            this.editorView.toggleSplit(false);
         }
 
         // Show first file if no fileId is specified
