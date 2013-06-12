@@ -74,7 +74,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Disable split view if both models are the same
         if (previousFile === this.model) {
 
+            this.canSplit = false;
             this.toggleSplit(false);
+        } else {
+            this.canSplit = true;
         }
 
         // Fetch previous file only if the models are not the same

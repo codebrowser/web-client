@@ -484,7 +484,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Disable split view if both models are the same
         if (previousFile === this.model) {
 
+            this.canSplit = false;
             this.toggleSplit(false);
+        } else {
+            this.canSplit = true;
         }
 
         // Fetch previous file only if the models are not the same
@@ -616,6 +619,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Split view is enabled
         if (this.editorView.split) {
             $('#split', navigationContainerOutput).addClass('active');
+        } else if (!this.editorView.canSplit) {
+            $('#split', navigationContainerOutput).attr('disabled', true);
         }
 
         // First snapshot, disable the buttons for split, first and previous
@@ -714,6 +719,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var previous = this.collection.at(index - 1);
 
         var previousFileId = this.getFileId(previous);
+        console.log(previousFileId);
 
         this.navigate(previous.id, previousFileId);
     },

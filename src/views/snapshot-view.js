@@ -58,6 +58,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Split view is enabled
         if (this.editorView.split) {
             $('#split', navigationContainerOutput).addClass('active');
+        } else if (!this.editorView.canSplit) {
+            $('#split', navigationContainerOutput).attr('disabled', true);
         }
 
         // First snapshot, disable the buttons for split, first and previous
@@ -156,6 +158,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var previous = this.collection.at(index - 1);
 
         var previousFileId = this.getFileId(previous);
+        console.log(previousFileId);
 
         this.navigate(previous.id, previousFileId);
     },
