@@ -92,11 +92,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             previousSnapshot = this.model;
         }
 
-        // Show first file if no fileId is specified
-        if (!fileId) {
-            fileId = this.model.get('files').at(0).id;
-        }
-
         // Determine same file across snapshots
         var fileName = this.model.get('files').get(fileId).get('name');
         var previousFile = previousSnapshot.get('files').findWhere({name: fileName});

@@ -48,6 +48,11 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
+                if (!fileId) {
+
+                    fileId = snapshot.get('files').at(0).id;
+                }
+
                 self.snapshotView.update(snapshot, fileId);
             },
 

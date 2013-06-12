@@ -692,11 +692,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             previousSnapshot = this.model;
         }
 
-        // Show first file if no fileId is specified
-        if (!fileId) {
-            fileId = this.model.get('files').at(0).id;
-        }
-
         // Determine same file across snapshots
         var fileName = this.model.get('files').get(fileId).get('name');
         var previousFile = previousSnapshot.get('files').findWhere({name: fileName});
@@ -857,6 +852,11 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     new codebrowser.view.ErrorView({ model: { message: 'No snapshot found with given ID.' } });
 
                     return;
+                }
+
+                if (!fileId) {
+
+                    fileId = snapshot.get('files').at(0).id;
                 }
 
                 self.snapshotView.update(snapshot, fileId);
