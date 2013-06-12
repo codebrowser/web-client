@@ -4,11 +4,11 @@
 
         <div class='btn-group'>
 
-            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'>{{exercise.name}} <span class='caret'></span></a>
+            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> {{exercise.name}} <span class='caret'></span></a>
 
             <ul class='dropdown-menu'>
             {{#files}}
-                <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'>{{name}}</a></li>
+                <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
             {{/files}}
             </ul>
 
