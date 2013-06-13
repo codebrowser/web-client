@@ -61,8 +61,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Set content for editor
         editor.setValue(content);
+        
         editor.moveCursorToPosition(position);
         editor.getSelection().clearSelection();
+        editor.scrollToRow(position.row - 15);
 
         // Set syntax mode
         editor.getSession().setMode(mode);
