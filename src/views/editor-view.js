@@ -59,12 +59,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Remember cursor position
         var position = editor.getSelection().getSelectionAnchor();
 
+        // Remember scroll position
+        var scrollPosition = editor.getSession().getScrollTop();
+
         // Set content for editor
         editor.setValue(content);
-        
+
+        // Set cursor and scroll position
         editor.moveCursorToPosition(position);
         editor.getSelection().clearSelection();
-        editor.scrollToRow(position.row - 15);
+        editor.getSession().setScrollTop(scrollPosition);
 
         // Set syntax mode
         editor.getSession().setMode(mode);
