@@ -56,9 +56,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     setContent: function (editor, content, mode) {
 
+        // Remember cursor position
+        var position = editor.getSelection().getSelectionAnchor();
+
         // Set content for editor
         editor.setValue(content);
-        editor.navigateFileStart();
+        editor.moveCursorToPosition(position);
+        editor.getSelection().clearSelection();
 
         // Set syntax mode
         editor.getSession().setMode(mode);
