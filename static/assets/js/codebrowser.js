@@ -451,6 +451,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     },
 
     split: false,
+    markers: [],
 
     canSplit: function () {
 
@@ -498,6 +499,44 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.topContainer.html(topContainerOutput);
     },
 
+    diff: function (previousContent, content) {
+
+        var Range = ace.require('ace/range').Range;
+
+        var base = difflib.stringAsLines(previousContent);
+        var changed = difflib.stringAsLines(content);
+
+        var sequenceMatcher = new difflib.SequenceMatcher(base, changed);
+
+        /* jshint camelcase: false */
+
+        var differences = sequenceMatcher.get_opcodes();
+
+        /* jshint camelcase: true */
+
+        for (var i = 0; i < differences.length; i++) {
+
+            var block = differences[i];
+            var type = block[0];
+
+            var changedRowStart = block[3];
+            var changedRowEnd = block[4] - 1;
+
+            // Insert
+            if (type === 'insert') {
+
+                this.markers.push(this.mainEditor.getSession().addMarker(new Range(changedRowStart, 0, changedRowEnd, 1), 'insert', 'fullLine'));
+            }
+
+            // Replace
+            if (type === 'replace') {
+
+                this.markers.push(this.mainEditor.getSession().addMarker(new Range(changedRowStart, 0, changedRowEnd, 1), 'replace', 'fullLine'));
+            }
+        }
+
+    },
+
     setContent: function (editor, content, mode) {
 
         // Remember cursor position
@@ -505,6 +544,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Remember scroll position
         var scrollPosition = editor.getSession().getScrollTop();
+
+        // Clear markers
+        while (this.markers.length > 0) {
+
+            var markerId = this.markers.pop();
+            this.mainEditor.getSession().removeMarker(markerId);
+        }
 
         // Set content for editor
         editor.setValue(content);
@@ -516,6 +562,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Set syntax mode
         editor.getSession().setMode(mode);
+
+        this.diff(this.sideEditor.getValue(), this.mainEditor.getValue());
     },
 
     update: function (previousFile, file) {

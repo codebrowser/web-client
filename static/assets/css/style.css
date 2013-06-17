@@ -74,3 +74,18 @@
     border-radius: 0 0 4px 4px;
 
 }
+
+#editor .insert {
+
+    position: absolute;
+    z-index: 2;
+    background-color: lightgreen;
+
+}
+
+#editor .replace {
+
+    position: absolute;
+    z-index: 2;
+    background-color: lightskyblue;
+}

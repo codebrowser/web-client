@@ -24,6 +24,7 @@
         "Backbone": true,
         "codebrowser": true,
         "config": true,
+        "difflib": true,
         "editor": true,
         "Handlebars": true
 

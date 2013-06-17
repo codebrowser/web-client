@@ -162,6 +162,7 @@ module.exports = function (grunt) {
                          'static/assets/js/backbone-relational-min.js',
                          'static/assets/js/handlebars.runtime-min.js',
                          'static/assets/js/ace/ace.js',
+                         'static/assets/js/difflib-min.js',
                          'static/assets/js/codebrowser-templates-min.js'],
                 specs: 'test/spec/**/*-spec.js',
                 template: require('grunt-template-jasmine-istanbul'),
