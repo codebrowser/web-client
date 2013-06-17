@@ -50,7 +50,7 @@ var config = {
             editor.getSession().setFoldStyle('markbeginend');
 
             // Text
-            editor.setTheme('ace/theme/crimson_editor');
+            editor.setTheme('ace/theme/light');
             editor.setFontSize(12);
             editor.getSession().setTabSize(4);
             editor.getSession().setUseWrapMode(true);
