@@ -56,8 +56,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
-                // TODO: This would be nice to get at once
-                snapshot.fetchRelated('course', { async: false });
                 self.snapshotView.update(snapshot, fileId);
             },
 

@@ -109,8 +109,18 @@ describe('Snapshot', function () {
         expect(snapshot.getRelation('course').options.relatedModel).toBe('codebrowser.model.Course');
     });
 
-    it('should have correct key for course relation', function () {
+    it('should have exercise', function () {
 
-        expect(snapshot.getRelation('course').keyId).toBe(2);
+        expect(snapshot.getRelation('exercise')).not.toBeNull();
+    });
+
+    it('should have HasOne relation with exercise', function () {
+
+        expect(snapshot.getRelation('exercise').options.type).toBe(Backbone.HasOne);
+    });
+
+    it('should have correct related model for exercise relation', function () {
+
+        expect(snapshot.getRelation('exercise').options.relatedModel).toBe('codebrowser.model.Exercise');
     });
 });
