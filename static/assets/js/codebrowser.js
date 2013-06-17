@@ -318,6 +318,12 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
             type: Backbone.HasOne,
             key: 'course',
             relatedModel: 'codebrowser.model.Course'
+        },
+
+        {
+            type: Backbone.HasOne,
+            key: 'exercise',
+            relatedModel: 'codebrowser.model.Exercise'
         }
     ],
 
@@ -329,8 +335,6 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
             this.set('courseId', this.collection.courseId);
             this.set('exerciseId', this.collection.exerciseId);
         }
-
-        this.getRelation('course').keyId = this.get('courseId');
     }
 });
 ;
@@ -661,7 +665,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // View attributes
         var attributes = {
 
-            exercise: this.model.get('course').get('exercises').get(this.model.get('exerciseId')).toJSON(),
             current: index + 1,
             total: this.collection.length
 
@@ -862,8 +865,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
-                // TODO: This would be nice to get at once
-                snapshot.fetchRelated('course', { async: false });
                 self.snapshotView.update(snapshot, fileId);
             },
 
