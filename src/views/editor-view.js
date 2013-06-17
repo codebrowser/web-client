@@ -59,10 +59,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         var Range = ace.require('ace/range').Range;
 
-        var base = difflib.stringAsLines(previousContent);
-        var changed = difflib.stringAsLines(content);
+        // Diff
+        var from = difflib.stringAsLines(previousContent);
+        var to = difflib.stringAsLines(content);
 
-        var sequenceMatcher = new difflib.SequenceMatcher(base, changed);
+        var sequenceMatcher = new difflib.SequenceMatcher(from, to);
 
         /* jshint camelcase: false */
 
@@ -70,24 +71,33 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         /* jshint camelcase: true */
 
+        // Show markers
         for (var i = 0; i < differences.length; i++) {
 
-            var block = differences[i];
-            var type = block[0];
+            var difference = differences[i];
+            var type = difference[0];
 
-            var changedRowStart = block[3];
-            var changedRowEnd = block[4] - 1;
+            var toRowStart = difference[3];
+            var toRowEnd = difference[4] - 1;
+
+            var marker;
 
             // Insert
             if (type === 'insert') {
 
-                this.markers.push(this.mainEditor.getSession().addMarker(new Range(changedRowStart, 0, changedRowEnd, 1), 'insert', 'fullLine'));
+                marker = this.mainEditor.getSession()
+                                        .addMarker(new Range(toRowStart, 0, toRowEnd, 1), 'insert', 'fullLine');
+
+                this.markers.push(marker);
             }
 
             // Replace
             if (type === 'replace') {
 
-                this.markers.push(this.mainEditor.getSession().addMarker(new Range(changedRowStart, 0, changedRowEnd, 1), 'replace', 'fullLine'));
+                marker = this.mainEditor.getSession()
+                                        .addMarker(new Range(toRowStart, 0, toRowEnd, 1), 'replace', 'fullLine');
+
+                this.markers.push(marker);
             }
         }
 
@@ -103,9 +113,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Clear markers
         while (this.markers.length > 0) {
-
-            var markerId = this.markers.pop();
-            this.mainEditor.getSession().removeMarker(markerId);
+            this.mainEditor.getSession().removeMarker(this.markers.pop());
         }
 
         // Set content for editor
