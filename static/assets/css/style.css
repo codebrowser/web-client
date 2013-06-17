@@ -79,7 +79,7 @@
 
     position: absolute;
     z-index: 2;
-    background-color: lightgreen;
+    background-color: rgba(190, 250, 190, 0.60);
 
 }
 
@@ -87,5 +87,5 @@
 
     position: absolute;
     z-index: 2;
-    background-color: lightskyblue;
+    background-color: rgba(130, 200, 250, 0.60);
 }
