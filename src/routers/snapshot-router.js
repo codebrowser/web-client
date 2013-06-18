@@ -20,6 +20,12 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         }
     },
 
+    notFound: function () {
+
+        this.snapshotView = null;
+        new codebrowser.view.NotFoundErrorView();
+    },
+
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {
 
         this.setUp();
@@ -42,8 +48,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 // Invalid snapshot ID
                 if (!snapshot) {
 
-                    self.snapshotView = null;
-                    new codebrowser.view.NotFoundErrorView();
+                    self.notFound();
 
                     return;
                 }
@@ -56,14 +61,21 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
+                // Invalid file ID
+                if (!snapshot.get('files').get(fileId)) {
+
+                    self.notFound();
+
+                    return;
+                }
+
                 self.snapshotView.update(snapshot, fileId);
             },
 
             // Snapshots fetch failed
             error: function () {
 
-                self.snapshotView = null;
-                new codebrowser.view.NotFoundErrorView();
+                self.notFound();
             }
         });
     }
