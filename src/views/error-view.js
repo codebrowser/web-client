@@ -3,9 +3,10 @@ codebrowser.view.ErrorView = Backbone.View.extend({
     el: config.view.container,
     template: Handlebars.templates.Error,
 
-    initialize: function () {
+    remove: function () {
 
-        this.render();
+        // Empty container
+        this.$el.empty();
     },
 
     render: function () {

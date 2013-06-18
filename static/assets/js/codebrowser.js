@@ -160,6 +160,7 @@ var codebrowser = {
     model: {},
     collection: {},
     view: {},
+    controller: {},
     router: {},
 
     initialize: function () {
@@ -167,7 +168,8 @@ var codebrowser = {
         // Oops! Something went wrong
         window.onerror = function () {
 
-            new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+            codebrowser.controller.ViewController.pushToView(errorView, true);
         }
 
         codebrowser.app.base = new codebrowser.router.BaseRouter();
@@ -469,9 +471,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     initialize: function () {
 
-        // Empty container
-        this.$el.empty();
-
         // Hide view until needed
         this.$el.hide();
 
@@ -497,6 +496,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
+    },
+
+    remove: function () {
+
+        // Empty container
+        this.$el.empty();
     },
 
     render: function () {
@@ -616,9 +621,10 @@ codebrowser.view.ErrorView = Backbone.View.extend({
     el: config.view.container,
     template: Handlebars.templates.Error,
 
-    initialize: function () {
+    remove: function () {
 
-        this.render();
+        // Empty container
+        this.$el.empty();
     },
 
     render: function () {
@@ -663,23 +669,34 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
-        // Empty container
-        this.$el.empty();
-        this.$el.undelegate();
+        // Wrapper
+        this.wrappingContainer = $('<div>');
 
         // Create divs for elements
         this.navigationContainer = $('<div>', { id: 'navigation-container' });
         this.editorContainer = $('<div>', { id: 'editor-container' });
 
         // Append elements to parent
-        this.$el.append(this.navigationContainer);
-        this.$el.append(this.editorContainer);
+        this.wrappingContainer.append(this.navigationContainer);
+        this.wrappingContainer.append(this.editorContainer);
 
         // Editor
         this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
     },
 
+    remove: function () {
+
+        this.editorView.remove();
+
+        // Empty container
+        this.$el.empty();
+        this.$el.undelegate();
+    },
+
     render: function () {
+
+        // Append wrapper to DOM
+        this.$el.append(this.wrappingContainer);
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);
@@ -819,6 +836,25 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 });
 ;
 
+codebrowser.controller.ViewController = {
+
+    pushToView: function (view, render) {
+
+        // Remove previous view
+        if (this.view) {
+            this.view.remove();
+        }
+
+        this.view = view;
+
+        // Should render view
+        if (render) {
+            this.view.render();
+        }
+    }
+}
+;
+
 codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     routes: {
@@ -834,7 +870,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     notFound: function () {
 
-        this.errorView.render();
+        codebrowser.controller.ViewController.pushToView(this.errorView, true);
     }
 });
 ;
@@ -856,15 +892,16 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
     setUp: function () {
 
         // Create snapshot view when necessary
-        if (!this.snapshotView) {
+        if (!this.snapshotView || codebrowser.controller.ViewController.view !== this.snapshotView) {
             this.snapshotView = new codebrowser.view.SnapshotView();
+            codebrowser.controller.ViewController.pushToView(this.snapshotView);
         }
     },
 
     notFound: function () {
 
-        this.snapshotView = null;
-        new codebrowser.view.NotFoundErrorView();
+        var errorView = new codebrowser.view.NotFoundErrorView();
+        codebrowser.controller.ViewController.pushToView(errorView, true);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {

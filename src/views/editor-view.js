@@ -15,9 +15,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     initialize: function () {
 
-        // Empty container
-        this.$el.empty();
-
         // Hide view until needed
         this.$el.hide();
 
@@ -43,6 +40,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
+    },
+
+    remove: function () {
+
+        // Empty container
+        this.$el.empty();
     },
 
     render: function () {

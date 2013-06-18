@@ -16,6 +16,7 @@ var codebrowser = {
     model: {},
     collection: {},
     view: {},
+    controller: {},
     router: {},
 
     initialize: function () {
@@ -23,7 +24,8 @@ var codebrowser = {
         // Oops! Something went wrong
         window.onerror = function () {
 
-            new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+            codebrowser.controller.ViewController.pushToView(errorView, true);
         }
 
         codebrowser.app.base = new codebrowser.router.BaseRouter();

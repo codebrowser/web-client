@@ -13,6 +13,6 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     notFound: function () {
 
-        this.errorView.render();
+        codebrowser.controller.ViewController.pushToView(this.errorView, true);
     }
 });
