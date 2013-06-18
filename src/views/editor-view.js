@@ -119,7 +119,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
             this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
 
             // Restore diff state
-            this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
+            this.toggleDiff(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
         }
 
         // Fetch previous file only if the models are not the same
@@ -279,7 +279,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             return;
         }
-
 
         /* Clear diffs */
 

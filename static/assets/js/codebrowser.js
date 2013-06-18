@@ -568,7 +568,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
             this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
 
             // Restore diff state
-            this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
+            this.toggleDiff(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
         }
 
         // Fetch previous file only if the models are not the same
@@ -616,6 +616,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
             // Split main editor to right
             this.mainEditorElement.css({ float: 'right', width: '50%' });
 
+            // When enabling split, disable diff and enable it again so that
+            // deleted lines are marked only in the previous file
             var willItDiff = this.diff;
             this.toggleDiff(false);
             this.toggleDiff(willItDiff);
@@ -724,11 +726,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 }
             }
 
-            console.log('lol');
-            console.log(this.diff);
             return;
         }
-
 
         /* Clear diffs */
 
