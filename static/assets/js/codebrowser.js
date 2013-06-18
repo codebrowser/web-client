@@ -616,6 +616,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             // Split main editor to right
             this.mainEditorElement.css({ float: 'right', width: '50%' });
 
+            var willItDiff = this.diff;
+            this.toggleDiff(false);
+            this.toggleDiff(willItDiff);
+
             return;
         }
 
@@ -720,6 +724,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 }
             }
 
+            console.log('lol');
+            console.log(this.diff);
             return;
         }
 
