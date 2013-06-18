@@ -101,17 +101,23 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Fetch previous file only if the models are not the same
         if (previousFile !== this.model) {
 
-            previousFile.fetchContent(function (content) {
+            previousFile.fetchContent(function (content, error) {
 
-                // TODO: Error handling
+                if (error) {
+                    throw new Error('Failed file fetch.');
+                }
+
                 self.setContent(self.sideEditor, content, mode);
             });
         }
 
         // Fetch current file
-        this.model.fetchContent(function (content) {
+        this.model.fetchContent(function (content, error) {
 
-            // TODO: Error handling
+            if (error) {
+                throw new Error('Failed file fetch.');
+            }
+
             self.setContent(self.mainEditor, content, mode);
         });
 
