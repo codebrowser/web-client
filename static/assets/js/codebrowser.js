@@ -619,6 +619,16 @@ codebrowser.view.ErrorView = Backbone.View.extend({
 });
 ;
 
+codebrowser.view.NotFoundErrorView = codebrowser.view.ErrorView.extend({
+
+    model: {
+
+        message: 'Not Found.'
+
+    }
+});
+;
+
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
     el: config.view.container,
@@ -852,7 +862,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 if (!snapshot) {
 
                     self.snapshotView = null;
-                    new codebrowser.view.ErrorView({ model: { message: 'No snapshot found with given ID.' } });
+                    new codebrowser.view.NotFoundErrorView();
 
                     return;
                 }
@@ -872,9 +882,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             error: function () {
 
                 self.snapshotView = null;
-                new codebrowser.view.ErrorView({ model: { message: 'Failed fetching snapshots.' } });
-
-                return;
+                new codebrowser.view.NotFoundErrorView();
             }
         });
     }
