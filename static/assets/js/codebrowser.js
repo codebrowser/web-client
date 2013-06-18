@@ -785,6 +785,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         var index = this.collection.indexOf(this.model);
         var previous = this.collection.at(index - 1);
+
+        if (!previous) {
+            return;
+        }
+
         var file = previous.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(previous, file);
@@ -794,6 +799,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         var index = this.collection.indexOf(this.model);
         var next = this.collection.at(index + 1);
+
+        if (!next) {
+            return;
+        }
+
         var file = next.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(next, file);
