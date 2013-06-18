@@ -68,7 +68,7 @@ function program1(depth0,data,depth1) {
   else { stack2 = depth0.files; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if (!helpers.files) { stack2 = blockHelperMissing.call(depth0, stack2, options); }
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n            </ul>\n\n        </div>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n\n    </div>\n\n    <div class='span1 text-center'>";
+  buffer += "\n            </ul>\n\n        </div>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'>Diff</button>\n\n    </div>\n\n    <div class='span1 text-center'>";
   if (stack2 = helpers.current) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.current; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
@@ -94,7 +94,8 @@ var config = {
 
             EditorView: {
 
-                split: 'codebrowser.view.EditorView.split'
+                split: 'codebrowser.view.EditorView.split',
+                diff: 'codebrowser.view.EditorView.diff'
 
             }
         }
@@ -454,16 +455,24 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    /* Split */
+
     split: false,
-    markers: [],
 
     canSplit: function () {
 
         return this.model !== this.previousModel;
     },
 
-    initialize: function () {
+    /* Diff */
 
+    markers: {'main-editor': [], 'side-editor': []},
+    diffLines: [],
+
+    diff: false,
+    canDiff: true,
+
+    initialize: function () {
         // Empty container
         this.$el.empty();
 
@@ -503,54 +512,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.topContainer.html(topContainerOutput);
     },
 
-    diff: function (previousContent, content) {
-
-        var Range = ace.require('ace/range').Range;
-
-        // Diff
-        var from = difflib.stringAsLines(previousContent);
-        var to = difflib.stringAsLines(content);
-
-        var sequenceMatcher = new difflib.SequenceMatcher(from, to);
-
-        /* jshint camelcase: false */
-
-        var differences = sequenceMatcher.get_opcodes();
-
-        /* jshint camelcase: true */
-
-        // Show markers
-        for (var i = 0; i < differences.length; i++) {
-
-            var difference = differences[i];
-            var type = difference[0];
-
-            var toRowStart = difference[3];
-            var toRowEnd = difference[4] - 1;
-
-            var marker;
-
-            // Insert
-            if (type === 'insert') {
-
-                marker = this.mainEditor.getSession()
-                                        .addMarker(new Range(toRowStart, 0, toRowEnd, 1), 'insert', 'fullLine');
-
-                this.markers.push(marker);
-            }
-
-            // Replace
-            if (type === 'replace') {
-
-                marker = this.mainEditor.getSession()
-                                        .addMarker(new Range(toRowStart, 0, toRowEnd, 1), 'replace', 'fullLine');
-
-                this.markers.push(marker);
-            }
-        }
-
-    },
-
     setContent: function (editor, content, mode) {
 
         // Remember cursor position
@@ -560,9 +521,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var scrollPosition = editor.getSession().getScrollTop();
 
         // Clear markers
-        while (this.markers.length > 0) {
-            this.mainEditor.getSession().removeMarker(this.markers.pop());
-        }
+        this.clearMarkers(editor);
 
         // Set content for editor
         editor.setValue(content);
@@ -574,13 +533,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Set syntax mode
         editor.getSession().setMode(mode);
-
-        this.diff(this.sideEditor.getValue(), this.mainEditor.getValue());
     },
 
     update: function (previousFile, file) {
 
         var self = this;
+
+        var fileSynced = _.after(2, function() {
+
+            self.canDiff = true;
+            self.toggleDiff(self.diff);
+        });
 
         this.model = file;
         this.previousModel = previousFile;
@@ -596,10 +559,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             this.toggleSplit(false);
 
+            this.canDiff = false;
+            this.toggleDiff(false);
+
         } else {
 
             // Restore split state
             this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
+
+            // Restore diff state
+            this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
         }
 
         // Fetch previous file only if the models are not the same
@@ -609,6 +578,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
                 // TODO: Error handling
                 self.setContent(self.sideEditor, content, mode);
+                fileSynced();
             });
         }
 
@@ -617,6 +587,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             // TODO: Error handling
             self.setContent(self.mainEditor, content, mode);
+            fileSynced();
         });
 
         this.render();
@@ -651,6 +622,126 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Disable split
         this.sideEditorElement.hide();
         this.mainEditorElement.css({ float: '', width: '' });
+
+        if (this.diff) {
+            this.toggleDiff(true);
+        }
+    },
+
+    toggleDiff: function (diff) {
+
+        var Range = ace.require('ace/range').Range;
+
+        if (diff !== undefined) {
+            this.diff = diff;
+        } else {
+
+            this.diff = !this.diff;
+
+            // Store diff state
+            localStorage.setItem(config.storage.view.EditorView.diff, this.diff);
+        }
+
+        // Enable diff
+        if (this.diff) {
+
+            var previousContent = this.sideEditor.getValue();
+            var content = this.mainEditor.getValue();
+
+            // Diff
+            var from = difflib.stringAsLines(previousContent);
+            var to = difflib.stringAsLines(content);
+
+            var sequenceMatcher = new difflib.SequenceMatcher(from, to);
+
+            /* jshint camelcase: false */
+
+            var differences = sequenceMatcher.get_opcodes();
+
+            /* jshint camelcase: true */
+
+            // Show markers
+            for (var i = 0; i < differences.length; i++) {
+
+                var difference = differences[i];
+                var type = difference[0];
+
+                var fromRowStart = difference[1];
+                var fromRowEnd = difference[2] - 1;
+
+                var toRowStart = difference[3];
+                var toRowEnd = difference[4] - 1;
+
+                var marker;
+
+                // Insert
+                if (type === 'insert') {
+
+                    marker = this.mainEditor.getSession()
+                            .addMarker(new Range(toRowStart, 0, toRowEnd, 1), 'insert', 'fullLine');
+
+                    this.markers['main-editor'].push(marker);
+                }
+
+                // Replace
+                if (type === 'replace') {
+
+                    marker = this.mainEditor.getSession()
+                            .addMarker(new Range(toRowStart, 0, toRowEnd, 1), 'replace', 'fullLine');
+
+                    this.markers['main-editor'].push(marker);
+                }
+
+                // Delete
+                if (type === 'delete') {
+
+                    if (!this.split) {
+
+                        var deletedAsLines = from.slice(fromRowStart, fromRowEnd + 1);
+
+                        // Remember lines
+                        this.diffLines.push({rowStart: fromRowStart, rowEnd: fromRowEnd + 1});
+
+                        var deleted = deletedAsLines.join('\n');
+
+                        this.mainEditor.getSession().insert({row: fromRowStart, column: 0}, deleted + '\n');
+
+
+                        marker = this.mainEditor.getSession()
+                                .addMarker(new Range(fromRowStart, 0, fromRowEnd, 1), 'delete', 'fullLine');
+
+                        this.markers['main-editor'].push(marker);
+                    }
+
+                    marker = this.sideEditor.getSession()
+                            .addMarker(new Range(fromRowStart, 0, fromRowEnd, 1), 'delete', 'fullLine');
+
+                    this.markers['side-editor'].push(marker);
+                }
+            }
+
+            return;
+        }
+
+
+        /* Clear diffs */
+
+        for (var j=0; j < this.diffLines.length; j++) {
+            this.mainEditor.getSession().remove(new Range(this.diffLines[j].rowStart, 0, this.diffLines[j].rowEnd, 0));
+        }
+
+        this.diffLines = [];
+
+        this.clearMarkers(this.mainEditor);
+        this.clearMarkers(this.sideEditor);
+    },
+
+    clearMarkers: function (editor) {
+
+        // Clear markers
+        while (this.markers[editor.container.id].length > 0) {
+            editor.getSession().removeMarker(this.markers[editor.container.id].pop());
+        }
     }
 });
 ;
@@ -688,6 +779,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     events: {
 
         'click #split':    'split',
+        'click #diff':     'diff',
         'click #first':    'first',
         'click #previous': 'previous',
         'click #next':     'next',
@@ -739,6 +831,16 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#split', navigationContainerOutput).attr('disabled', true);
         }
 
+        // Diff is enabled, set diff button as active
+        if (this.editorView.diff) {
+            $('#diff', navigationContainerOutput).addClass('active');
+        }
+
+        // Disable diff button
+        if (!this.editorView.canDiff) {
+            $('#diff', navigationContainerOutput).attr('disabled', true);
+        }
+
         // First snapshot, disable the buttons for first and previous
         if (index === 0) {
             $('#first', navigationContainerOutput).attr('disabled', true);
@@ -786,6 +888,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     split: function () {
 
         this.editorView.toggleSplit();
+    },
+
+    diff: function () {
+
+        this.editorView.toggleDiff();
     },
 
     navigate: function (snapshot, file) {

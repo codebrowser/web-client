@@ -78,7 +78,6 @@
 #editor .insert {
 
     position: absolute;
-    z-index: 2;
     background-color: rgba(190, 250, 190, 0.60);
 
 }
@@ -86,6 +85,11 @@
 #editor .replace {
 
     position: absolute;
-    z-index: 2;
     background-color: rgba(130, 200, 250, 0.60);
+}
+
+#editor .delete {
+
+    position: absolute;
+    background-color: rgba(250, 130, 130, 0.60);
 }

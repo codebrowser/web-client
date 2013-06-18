@@ -12,7 +12,8 @@ var config = {
 
             EditorView: {
 
-                split: 'codebrowser.view.EditorView.split'
+                split: 'codebrowser.view.EditorView.split',
+                diff: 'codebrowser.view.EditorView.diff'
 
             }
         }

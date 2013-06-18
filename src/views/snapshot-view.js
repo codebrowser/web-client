@@ -11,6 +11,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     events: {
 
         'click #split':    'split',
+        'click #diff':     'diff',
         'click #first':    'first',
         'click #previous': 'previous',
         'click #next':     'next',
@@ -62,6 +63,16 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#split', navigationContainerOutput).attr('disabled', true);
         }
 
+        // Diff is enabled, set diff button as active
+        if (this.editorView.diff) {
+            $('#diff', navigationContainerOutput).addClass('active');
+        }
+
+        // Disable diff button
+        if (!this.editorView.canDiff) {
+            $('#diff', navigationContainerOutput).attr('disabled', true);
+        }
+
         // First snapshot, disable the buttons for first and previous
         if (index === 0) {
             $('#first', navigationContainerOutput).attr('disabled', true);
@@ -109,6 +120,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     split: function () {
 
         this.editorView.toggleSplit();
+    },
+
+    diff: function () {
+
+        this.editorView.toggleDiff();
     },
 
     navigate: function (snapshot, file) {
