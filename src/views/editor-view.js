@@ -277,8 +277,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 }
             }
 
-            console.log('lol');
-            console.log(this.diff);
             return;
         }
 
