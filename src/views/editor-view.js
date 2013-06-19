@@ -216,11 +216,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
                 var diffObject = diffs[i];
 
-                console.log('-----------');
-                console.log(diffObject.type);
-                console.log(diffObject.rowStart);
-                console.log(diffObject.rowEnd);
-
                 if (diffObject.type === 'delete') {
 
                     if (!this.split) {
@@ -235,14 +230,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
                         this.markers['side-editor'].push(marker);
                         continue;
                     }
-
-                    offset += diffObject.rowEnd - diffObject.rowStart;
                 }
 
                 marker = this.mainEditor.getSession()
                                         .addMarker(new Range(diffObject.rowStart + offset, 0, diffObject.rowEnd + offset, 1), diffObject.type, 'fullLine');
 
                 this.markers['main-editor'].push(marker);
+
+                if (diffObject.type === 'delete') {
+                    offset += diffObject.rowEnd - diffObject.rowStart;
+                }
             }
 
             return;

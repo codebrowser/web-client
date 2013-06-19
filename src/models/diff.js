@@ -38,7 +38,9 @@ codebrowser.model.Diff = function(previousContent, content) {
             diff = _.extend(diff, { data: deleted} );
         }
 
-        differences.push(diff);
+        if (diff.type !== 'equal') {
+            differences.push(diff);
+        }
     }
 
     return differences;
