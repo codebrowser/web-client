@@ -728,12 +728,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         var Range = ace.require('ace/range').Range;
 
-        /* Remove added lines */
+        // Remove added lines
         while (this.removedLines.length > 0) {
-            var diff = this.removedLines.pop()
-            this.mainEditor.getSession().remove(new Range(diff.rowStart, 0, diff.rowEnd, 0));
+            var difference = this.removedLines.pop();
+            this.mainEditor.getSession().remove(new Range(difference.rowStart, 0, difference.rowEnd, 0));
         }
 
+        // Remove markers
         this.removeMarkers(this.mainEditor);
         this.removeMarkers(this.sideEditor);
     },
@@ -742,6 +743,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         var Range = ace.require('ace/range').Range;
 
+        // Use parameter if given, otherwise toggle internal diff state
         if (diff !== undefined) {
 
             this.diff = diff;
@@ -760,46 +762,72 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var previousContent = this.sideEditor.getValue();
             var content = this.mainEditor.getValue();
 
-            var diffs = new codebrowser.model.Diff(previousContent, content);
+            var differences = new codebrowser.model.Diff(previousContent, content);
 
-            for (var i = 0; i < diffs.length; i++) {
+            // Offset by added lines
+            var offset = 0;
+
+            // Show differences
+            for (var i = 0; i < differences.length; i++) {
+
+                var difference = differences[i];
 
                 var marker;
 
-                var offset = 0;
+                // Delete
+                if (difference.type === 'delete') {
 
-                var diffObject = diffs[i];
-
-                if (diffObject.type === 'delete') {
-
+                    // Show removed lines within main editor if not in split view
                     if (!this.split) {
 
-                        this.removedLines.push({rowStart: diffObject.rowStart + offset, rowEnd: diffObject.rowEnd + 1 + offset});
-                        this.mainEditor.getSession().insert({row: diffObject.rowStart + offset, column: 0}, diffObject.data + '\n');
+                        // Remember removed lines
+                        this.removedLines.push({
 
+                            rowStart: difference.rowStart + offset,
+                            rowEnd: difference.rowEnd + 1 + offset
+
+                        });
+
+                        // Add removed lines to main editor
+                        this.mainEditor.getSession()
+                                       .insert({ row: difference.rowStart + offset, column: 0 },
+                                               difference.data + '\n');
+
+                        // Increase offset
+                        offset += difference.rowEnd - difference.rowStart;
+
+                    // Show removed lines in side editor if split view is enabled
                     } else {
 
+                        // Add marker for removed line in side editor
                         marker = this.sideEditor.getSession()
-                                .addMarker(new Range(diffObject.rowStart, 0, diffObject.rowEnd, 1), diffObject.type, 'fullLine');
+                                                .addMarker(new Range(difference.rowStart, 0, difference.rowEnd, 1),
+                                                           difference.type,
+                                                           'fullLine');
 
+                        // Remember marker
                         this.markers['side-editor'].push(marker);
+
                         continue;
                     }
                 }
 
-                marker = this.mainEditor.getSession()
-                                        .addMarker(new Range(diffObject.rowStart + offset, 0, diffObject.rowEnd + offset, 1), diffObject.type, 'fullLine');
 
+                // Add markers to main editor
+                marker = this.mainEditor
+                             .getSession()
+                             .addMarker(new Range(difference.rowStart + offset, 0, difference.rowEnd + offset, 1),
+                                        difference.type,
+                                        'fullLine');
+
+                // Remember marker
                 this.markers['main-editor'].push(marker);
-
-                if (diffObject.type === 'delete') {
-                    offset += diffObject.rowEnd - diffObject.rowStart;
-                }
             }
 
             return;
         }
 
+        // Disable diff
         this.clearDiff();
     },
 });
