@@ -822,7 +822,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 }
 
 
-                // Add markers to main editor
+                // Add marker to main editor
                 marker = this.mainEditor
                              .getSession()
                              .addMarker(new Range(difference.rowStart + offset, 0, difference.rowEnd + offset, 1),
