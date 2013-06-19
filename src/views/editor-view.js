@@ -285,9 +285,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                        .insert({ row: difference.rowStart + offset, column: 0 },
                                                difference.lines + '\n');
 
-                        // Increase offset
-                        offset += difference.rowEnd - difference.rowStart;
-
                     // Show removed lines in side editor if split view is enabled
                     } else {
 
@@ -314,6 +311,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
                 // Remember marker
                 this.markers['main-editor'].push(marker);
+
+                if (difference.type === 'delete') {
+
+                    // Increase offset
+                    offset += difference.rowEnd - difference.rowStart;
+                }
             }
 
             return;
