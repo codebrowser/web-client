@@ -135,8 +135,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             // Restore split state
             this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
 
-            // Restore diff state
-            this.toggleDiff(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
+            // Restore diff state if editor doesn't contain any diff markers
+            if (this.markers['main-editor'].length === 0) {
+                this.toggleDiff(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
+            }
         }
 
         // Fetch previous file only if the models are not the same
