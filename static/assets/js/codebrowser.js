@@ -68,11 +68,7 @@ function program1(depth0,data,depth1) {
   else { stack2 = depth0.files; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if (!helpers.files) { stack2 = blockHelperMissing.call(depth0, stack2, options); }
   if(stack2 || stack2 === 0) { buffer += stack2; }
-<<<<<<< HEAD
-  buffer += "\n            </ul>\n\n        </div>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'>Diff</button>\n\n    </div>\n\n    <div class='span1 text-center'>";
-=======
-  buffer += "\n            </ul>\n\n        </div>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
->>>>>>> master
+  buffer += "\n            </ul>\n\n        </div>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'>Diff</button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
   if (stack2 = helpers.current) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.current; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
@@ -538,13 +534,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         return this.model !== this.previousModel;
     },
 
-<<<<<<< HEAD
     initialize: function () {
-        // Empty container
-        this.$el.empty();
 
-=======
->>>>>>> master
         // Hide view until needed
         this.$el.hide();
 
