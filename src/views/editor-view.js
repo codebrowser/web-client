@@ -205,76 +205,34 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var previousContent = this.sideEditor.getValue();
             var content = this.mainEditor.getValue();
 
-            // Diff
-            var from = difflib.stringAsLines(previousContent);
-            var to = difflib.stringAsLines(content);
+            var diffs = codebrowser.model.Diff.diff(previousContent, content);
 
-            var sequenceMatcher = new difflib.SequenceMatcher(from, to);
-
-            /* jshint camelcase: false */
-
-            var differences = sequenceMatcher.get_opcodes();
-
-            /* jshint camelcase: true */
-
-            // Show markers
-            for (var i = 0; i < differences.length; i++) {
-
-                var difference = differences[i];
-                var type = difference[0];
-
-                var fromRowStart = difference[1];
-                var fromRowEnd = difference[2] - 1;
-
-                var toRowStart = difference[3];
-                var toRowEnd = difference[4] - 1;
+            for (var i = 0; i < diffs.length; ++i) {
 
                 var marker;
 
-                // Insert
-                if (type === 'insert') {
+                var diffObject = diffs[i];
 
-                    marker = this.mainEditor.getSession()
-                            .addMarker(new Range(toRowStart, 0, toRowEnd, 1), 'insert', 'fullLine');
-
-                    this.markers['main-editor'].push(marker);
-                }
-
-                // Replace
-                if (type === 'replace') {
-
-                    marker = this.mainEditor.getSession()
-                            .addMarker(new Range(toRowStart, 0, toRowEnd, 1), 'replace', 'fullLine');
-
-                    this.markers['main-editor'].push(marker);
-                }
-
-                // Delete
-                if (type === 'delete') {
+                if (diffObject.type === 'delete') {
 
                     if (!this.split) {
 
-                        var deletedAsLines = from.slice(fromRowStart, fromRowEnd + 1);
+                        this.diffLines.push({rowStart: diffObject.rowStart, rowEnd: diffObject.rowEnd + 1});
+                        this.mainEditor.getSession().insert({row: diffObject.rowStart, column: 0}, diffObject.data + '\n');
+                    } else {
 
-                        // Remember lines
-                        this.diffLines.push({rowStart: fromRowStart, rowEnd: fromRowEnd + 1});
+                        marker = this.sideEditor.getSession()
+                                .addMarker(new Range(diffObject.rowStart, 0, diffObject.rowEnd, 1), diffObject.type, 'fullLine');
 
-                        var deleted = deletedAsLines.join('\n');
-
-                        this.mainEditor.getSession().insert({row: fromRowStart, column: 0}, deleted + '\n');
-
-
-                        marker = this.mainEditor.getSession()
-                                .addMarker(new Range(fromRowStart, 0, fromRowEnd, 1), 'delete', 'fullLine');
-
-                        this.markers['main-editor'].push(marker);
+                        this.markers['side-editor'].push(marker);
+                        continue;
                     }
-
-                    marker = this.sideEditor.getSession()
-                            .addMarker(new Range(fromRowStart, 0, fromRowEnd, 1), 'delete', 'fullLine');
-
-                    this.markers['side-editor'].push(marker);
                 }
+
+                marker = this.mainEditor.getSession()
+                                        .addMarker(new Range(diffObject.rowStart, 0, diffObject.rowEnd, 1), diffObject.type, 'fullLine');
+
+                this.markers['main-editor'].push(marker);
             }
 
             return;
