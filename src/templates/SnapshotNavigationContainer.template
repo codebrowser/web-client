@@ -15,7 +15,7 @@
         </div>
 
         <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>
-        <button id='diff' type='button' class='btn' data-toggle='button'>Diff</button>
+        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>
 
     </div>
 
