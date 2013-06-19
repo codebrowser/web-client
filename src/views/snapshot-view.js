@@ -70,7 +70,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#split', navigationContainerOutput).addClass('active');
         }
 
-        // Disable split button if editor can't be split
+        // Disable split button if editor can not be split
         if (!this.editorView.canSplit()) {
             $('#split', navigationContainerOutput).attr('disabled', true);
         }
@@ -80,7 +80,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#diff', navigationContainerOutput).addClass('active');
         }
 
-        // Disable diff button
+        // Disable diff button if editor can not diff
         if (!this.editorView.canDiff()) {
             $('#diff', navigationContainerOutput).attr('disabled', true);
         }
