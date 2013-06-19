@@ -35,7 +35,7 @@ codebrowser.model.Diff = function(previousContent, content) {
             diff.rowStart = operation[1];
             diff.rowEnd   = operation[2] - 1;
 
-            diff = _.extend(diff, { data: deleted} );
+            diff = _.extend(diff, { lines: deleted });
         }
 
         if (diff.type !== 'equal') {

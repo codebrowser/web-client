@@ -283,7 +283,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                         // Add removed lines to main editor
                         this.mainEditor.getSession()
                                        .insert({ row: difference.rowStart + offset, column: 0 },
-                                               difference.data + '\n');
+                                               difference.lines + '\n');
 
                         // Increase offset
                         offset += difference.rowEnd - difference.rowStart;

@@ -275,7 +275,7 @@ codebrowser.model.Diff = function(previousContent, content) {
             diff.rowStart = operation[1];
             diff.rowEnd   = operation[2] - 1;
 
-            diff = _.extend(diff, { data: deleted} );
+            diff = _.extend(diff, { lines: deleted });
         }
 
         if (diff.type !== 'equal') {
@@ -791,7 +791,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                         // Add removed lines to main editor
                         this.mainEditor.getSession()
                                        .insert({ row: difference.rowStart + offset, column: 0 },
-                                               difference.data + '\n');
+                                               difference.lines + '\n');
 
                         // Increase offset
                         offset += difference.rowEnd - difference.rowStart;
