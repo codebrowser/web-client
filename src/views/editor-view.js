@@ -33,6 +33,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     removedLines: [],
 
+    /* Editor */
+
     initialize: function () {
 
         // Hide view until needed
@@ -272,6 +274,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
                     // Show removed lines within main editor if not in split view
                     if (!this.split) {
 
+                        // Add removed lines to main editor
+                        this.mainEditor.getSession()
+                                       .insert({ row: difference.rowStart + offset, column: 0 },
+                                               difference.lines);
+
                         // Remember removed lines
                         this.removedLines.push({
 
@@ -280,12 +287,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
                         });
 
-                        // Add removed lines to main editor
-                        this.mainEditor.getSession()
-                                       .insert({ row: difference.rowStart + offset, column: 0 },
-                                               difference.lines + '\n');
-
-                    // Show removed lines in side editor if split view is enabled
+                    // Show only removed lines in side editor if split view is enabled
                     } else {
 
                         // Add marker for removed line in side editor
@@ -312,9 +314,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 // Remember marker
                 this.markers['main-editor'].push(marker);
 
+                // Remove increases offset
                 if (difference.type === 'delete') {
-
-                    // Increase offset
                     offset += difference.rowEnd - difference.rowStart;
                 }
             }

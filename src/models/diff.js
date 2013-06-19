@@ -2,10 +2,10 @@ codebrowser.model.Diff = function (previousContent, content) {
 
     var differences = [];
 
-    // Create diff
     var from = difflib.stringAsLines(previousContent);
     var to = difflib.stringAsLines(content);
 
+    // Create diff
     var sequenceMatcher = new difflib.SequenceMatcher(from, to);
 
     /* jshint camelcase: false */
@@ -37,7 +37,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 
             // Deleted lines
             var deletedAsLines = from.slice(operation[1], operation[2]);
-            var deleted = deletedAsLines.join('\n');
+            var deleted = deletedAsLines.join('\n') + '\n';
 
             diff.rowStart = operation[1];
             diff.rowEnd = operation[2] - 1;
