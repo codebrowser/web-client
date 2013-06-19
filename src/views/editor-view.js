@@ -254,7 +254,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var previousContent = this.sideEditor.getValue();
             var content = this.mainEditor.getValue();
 
-            var differences = new codebrowser.model.Diff(previousContent, content);
+            var differences = new codebrowser.model.Diff(previousContent, content).getDifferences();
 
             // Offset by added lines
             var offset = 0;
