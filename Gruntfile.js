@@ -219,7 +219,7 @@ module.exports = function (grunt) {
 
     /* Register tasks */
 
-    grunt.registerTask('test', ['jshint', 'handlebars', 'jasmine']);
+    grunt.registerTask('test', ['jshint', 'jasmine']);
     grunt.registerTask('integration-test', ['connect', 'webdriver']);
     grunt.registerTask('build', ['handlebars', 'concat', 'uglify']);
     grunt.registerTask('default', ['test', 'integration-test', 'build']);
