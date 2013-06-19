@@ -21,6 +21,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
+        var self = this;
+
         // Snapshot container
         this.snapshotContainer = $('<div>', { id: 'snapshot-container' });
 
@@ -34,9 +36,26 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Editor
         this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
+
+        // Bind keypress
+        $(document).keydown(function () {
+
+            // Left
+            if (event.keyCode === 37) {
+                self.previous();
+            }
+
+            // Right
+            if (event.keyCode === 39) {
+                self.next();
+            }
+        });
     },
 
     remove: function () {
+
+        // Unbind keypress
+        $(document).unbind();
 
         // Remove editor
         this.editorView.remove();
