@@ -60,6 +60,7 @@ module.exports = function (grunt) {
                       'src/models/*.js',
                       'src/collections/*.js',
                       'src/views/*.js',
+                      'src/controllers/*.js',
                       'src/routers/*.js'],
                 dest: 'static/assets/js/codebrowser.js',
                 options: {
@@ -153,6 +154,7 @@ module.exports = function (grunt) {
                   'src/models/*.js',
                   'src/collections/*.js',
                   'src/views/*.js',
+                  'src/controllers/*.js',
                   'src/routers/*.js'],
             options: {
 

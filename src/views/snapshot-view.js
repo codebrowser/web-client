@@ -21,23 +21,35 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
-        // Empty container
-        this.$el.empty();
-        this.$el.undelegate();
+        // Snapshot container
+        this.snapshotContainer = $('<div>', { id: 'snapshot-container' });
 
         // Create divs for elements
         this.navigationContainer = $('<div>', { id: 'navigation-container' });
         this.editorContainer = $('<div>', { id: 'editor-container' });
 
         // Append elements to parent
-        this.$el.append(this.navigationContainer);
-        this.$el.append(this.editorContainer);
+        this.snapshotContainer.append(this.navigationContainer);
+        this.snapshotContainer.append(this.editorContainer);
 
         // Editor
         this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
     },
 
+    remove: function () {
+
+        // Remove editor
+        this.editorView.remove();
+
+        // Empty container
+        this.$el.empty();
+        this.$el.undelegate();
+    },
+
     render: function () {
+
+        // Append wrapper to DOM
+        this.$el.append(this.snapshotContainer);
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);
@@ -158,6 +170,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         var index = this.collection.indexOf(this.model);
         var previous = this.collection.at(index - 1);
+
+        if (!previous) {
+            return;
+        }
+
         var file = previous.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(previous, file);
@@ -167,6 +184,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         var index = this.collection.indexOf(this.model);
         var next = this.collection.at(index + 1);
+
+        if (!next) {
+            return;
+        }
+
         var file = next.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(next, file);

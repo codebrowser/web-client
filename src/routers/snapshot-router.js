@@ -14,10 +14,20 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create snapshot view when necessary
-        if (!this.snapshotView) {
+        // Create snapshot view if it is not active
+        if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
+
             this.snapshotView = new codebrowser.view.SnapshotView();
+
+            codebrowser.controller.ViewController.pushToView(this.snapshotView);
         }
+    },
+
+    notFound: function () {
+
+        var errorView = new codebrowser.view.NotFoundErrorView();
+
+        codebrowser.controller.ViewController.pushToView(errorView, true);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {
@@ -42,8 +52,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 // Invalid snapshot ID
                 if (!snapshot) {
 
-                    self.snapshotView = null;
-                    new codebrowser.view.ErrorView({ model: { message: 'No snapshot found with given ID.' } });
+                    self.notFound();
 
                     return;
                 }
@@ -56,16 +65,21 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
+                // Invalid file ID
+                if (!snapshot.get('files').get(fileId)) {
+
+                    self.notFound();
+
+                    return;
+                }
+
                 self.snapshotView.update(snapshot, fileId);
             },
 
             // Snapshots fetch failed
             error: function () {
 
-                self.snapshotView = null;
-                new codebrowser.view.ErrorView({ model: { message: 'Failed fetching snapshots.' } });
-
-                return;
+                self.notFound();
             }
         });
     }

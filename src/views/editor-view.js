@@ -27,8 +27,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
     },
 
     initialize: function () {
-        // Empty container
-        this.$el.empty();
 
         // Hide view until needed
         this.$el.hide();
@@ -55,6 +53,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
+    },
+
+    remove: function () {
+
+        // Empty container
+        this.$el.empty();
     },
 
     render: function () {
@@ -125,18 +129,24 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Fetch previous file only if the models are not the same
         if (previousFile !== this.model) {
 
-            previousFile.fetchContent(function (content) {
+            previousFile.fetchContent(function (content, error) {
 
-                // TODO: Error handling
+                if (error) {
+                    throw new Error('Failed file fetch.');
+                }
+
                 self.setContent(self.sideEditor, content, mode);
                 fileSynced();
             });
         }
 
         // Fetch current file
-        this.model.fetchContent(function (content) {
+        this.model.fetchContent(function (content, error) {
 
-            // TODO: Error handling
+            if (error) {
+                throw new Error('Failed file fetch.');
+            }
+
             self.setContent(self.mainEditor, content, mode);
             fileSynced();
         });

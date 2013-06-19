@@ -1,3 +1,41 @@
+/* Fonts */
+
+@font-face {
+
+    font-family: 'LiberationMono';
+    src: url('../font/liberation-mono/LiberationMono-Regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+
+    font-family: 'LiberationMono';
+    src: url('../font/liberation-mono/LiberationMono-Italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+@font-face {
+
+    font-family: 'LiberationMono';
+    src: url('../font/liberation-mono/LiberationMono-Bold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+
+    font-family: 'LiberationMono';
+    src: url('../font/liberation-mono/LiberationMono-BoldItalic-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+
+}
+
 /* Icons */
 
 .icon-gray {
@@ -10,6 +48,48 @@
 
     background-image: url('../img/split-view.png');
     background-position: center;
+
+}
+
+/* Responsive container */
+
+@media screen and (min-width: 1200px) {
+
+    .container {
+
+        width: 1000px;
+
+    }
+
+}
+
+@media screen and (min-width: 1400px) {
+
+    .container {
+
+        width: 1200px;
+
+    }
+
+}
+
+@media screen and (min-width: 1600px) {
+
+    .container {
+
+        width: 1400px;
+
+    }
+
+}
+
+@media screen and (min-width: 1800px) {
+
+    .container {
+
+        width: 1600px;
+
+    }
 
 }
 

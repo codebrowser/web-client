@@ -1,6 +1,6 @@
 <div class='row'>
 
-    <div class='span8'>
+    <div class='span5'>
 
         <div class='btn-group'>
 
@@ -19,15 +19,23 @@
 
     </div>
 
-    <div class='span1 text-center'>{{current}} / {{total}}</div>
+    <div class='span4 pull-right'>
 
-    <div class='span3'>
+        <div class='row'>
 
-        <div class='btn-group pull-right'>
-            <button type='button' id='first' class='btn'>First</button>
-            <button type='button' id='previous' class='btn'>Previous</button>
-            <button type='button' id='next' class='btn'>Next</button>
-            <button type='button' id='last' class='btn'>Last</button>
+            <div class='span1 text-center'>{{current}} / {{total}}</div>
+
+            <div class='span3'>
+
+                <div class='btn-group pull-right'>
+                    <button type='button' id='first' class='btn'>First</button>
+                    <button type='button' id='previous' class='btn'>Previous</button>
+                    <button type='button' id='next' class='btn'>Next</button>
+                    <button type='button' id='last' class='btn'>Last</button>
+                </div>
+
+            </div>
+
         </div>
 
     </div>

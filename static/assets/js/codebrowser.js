@@ -60,7 +60,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 
-  buffer += "<div class='row'>\n\n    <div class='span8'>\n\n        <div class='btn-group'>\n\n            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> "
+  buffer += "<div class='row'>\n\n    <div class='span5'>\n\n        <div class='btn-group'>\n\n            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> "
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " <span class='caret'></span></a>\n\n            <ul class='dropdown-menu'>\n            ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
@@ -68,7 +68,11 @@ function program1(depth0,data,depth1) {
   else { stack2 = depth0.files; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if (!helpers.files) { stack2 = blockHelperMissing.call(depth0, stack2, options); }
   if(stack2 || stack2 === 0) { buffer += stack2; }
+<<<<<<< HEAD
   buffer += "\n            </ul>\n\n        </div>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'>Diff</button>\n\n    </div>\n\n    <div class='span1 text-center'>";
+=======
+  buffer += "\n            </ul>\n\n        </div>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
+>>>>>>> master
   if (stack2 = helpers.current) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.current; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
@@ -76,7 +80,7 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.total) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.total; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</div>\n\n    <div class='span3'>\n\n        <div class='btn-group pull-right'>\n            <button type='button' id='first' class='btn'>First</button>\n            <button type='button' id='previous' class='btn'>Previous</button>\n            <button type='button' id='next' class='btn'>Next</button>\n            <button type='button' id='last' class='btn'>Last</button>\n        </div>\n\n    </div>\n\n</div>\n";
+    + "</div>\n\n            <div class='span3'>\n\n                <div class='btn-group pull-right'>\n                    <button type='button' id='first' class='btn'>First</button>\n                    <button type='button' id='previous' class='btn'>Previous</button>\n                    <button type='button' id='next' class='btn'>Next</button>\n                    <button type='button' id='last' class='btn'>Last</button>\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
   });;
 
@@ -133,7 +137,7 @@ var config = {
             editor.getSession().setFoldStyle('markbeginend');
 
             // Text
-            editor.setTheme('ace/theme/crimson_editor');
+            editor.setTheme('ace/theme/light');
             editor.setFontSize(12);
             editor.getSession().setTabSize(4);
             editor.getSession().setUseWrapMode(true);
@@ -161,13 +165,23 @@ var codebrowser = {
     model: {},
     collection: {},
     view: {},
+    controller: {},
     router: {},
 
     initialize: function () {
 
+        // Oops! Catch all global unhandled errors
+        window.onerror = function () {
+
+            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+            codebrowser.controller.ViewController.pushToView(errorView, true);
+        }
+
+        // Initialise routers
         codebrowser.app.base = new codebrowser.router.BaseRouter();
         codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
 
+        // History
         Backbone.history.start();
     }
 }
@@ -524,10 +538,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
         return this.model !== this.previousModel;
     },
 
+<<<<<<< HEAD
     initialize: function () {
         // Empty container
         this.$el.empty();
 
+=======
+>>>>>>> master
         // Hide view until needed
         this.$el.hide();
 
@@ -553,6 +570,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
+    },
+
+    remove: function () {
+
+        // Empty container
+        this.$el.empty();
     },
 
     render: function () {
@@ -623,18 +646,24 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Fetch previous file only if the models are not the same
         if (previousFile !== this.model) {
 
-            previousFile.fetchContent(function (content) {
+            previousFile.fetchContent(function (content, error) {
 
-                // TODO: Error handling
+                if (error) {
+                    throw new Error('Failed file fetch.');
+                }
+
                 self.setContent(self.sideEditor, content, mode);
                 fileSynced();
             });
         }
 
         // Fetch current file
-        this.model.fetchContent(function (content) {
+        this.model.fetchContent(function (content, error) {
 
-            // TODO: Error handling
+            if (error) {
+                throw new Error('Failed file fetch.');
+            }
+
             self.setContent(self.mainEditor, content, mode);
             fileSynced();
         });
@@ -778,9 +807,10 @@ codebrowser.view.ErrorView = Backbone.View.extend({
     el: config.view.container,
     template: Handlebars.templates.Error,
 
-    initialize: function () {
+    remove: function () {
 
-        this.render();
+        // Empty container
+        this.$el.empty();
     },
 
     render: function () {
@@ -789,6 +819,16 @@ codebrowser.view.ErrorView = Backbone.View.extend({
         var output = this.template(this.model);
 
         this.$el.html(output);
+    }
+});
+;
+
+codebrowser.view.NotFoundErrorView = codebrowser.view.ErrorView.extend({
+
+    model: {
+
+        message: 'Not Found.'
+
     }
 });
 ;
@@ -816,23 +856,35 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
-        // Empty container
-        this.$el.empty();
-        this.$el.undelegate();
+        // Snapshot container
+        this.snapshotContainer = $('<div>', { id: 'snapshot-container' });
 
         // Create divs for elements
         this.navigationContainer = $('<div>', { id: 'navigation-container' });
         this.editorContainer = $('<div>', { id: 'editor-container' });
 
         // Append elements to parent
-        this.$el.append(this.navigationContainer);
-        this.$el.append(this.editorContainer);
+        this.snapshotContainer.append(this.navigationContainer);
+        this.snapshotContainer.append(this.editorContainer);
 
         // Editor
         this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
     },
 
+    remove: function () {
+
+        // Remove editor
+        this.editorView.remove();
+
+        // Empty container
+        this.$el.empty();
+        this.$el.undelegate();
+    },
+
     render: function () {
+
+        // Append wrapper to DOM
+        this.$el.append(this.snapshotContainer);
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);
@@ -953,6 +1005,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         var index = this.collection.indexOf(this.model);
         var previous = this.collection.at(index - 1);
+
+        if (!previous) {
+            return;
+        }
+
         var file = previous.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(previous, file);
@@ -962,6 +1019,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         var index = this.collection.indexOf(this.model);
         var next = this.collection.at(index + 1);
+
+        if (!next) {
+            return;
+        }
+
         var file = next.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(next, file);
@@ -975,6 +1037,32 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigate(last, file);
     }
 });
+;
+
+codebrowser.controller.ViewController = {
+
+    view: null,
+
+    isActive: function (view) {
+
+        return this.view === view;
+    },
+
+    pushToView: function (view, render) {
+
+        // Remove previous view
+        if (this.view) {
+            this.view.remove();
+        }
+
+        this.view = view;
+
+        // Should render view
+        if (render) {
+            this.view.render();
+        }
+    }
+}
 ;
 
 codebrowser.router.BaseRouter = Backbone.Router.extend({
@@ -992,7 +1080,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     notFound: function () {
 
-        this.errorView.render();
+        codebrowser.controller.ViewController.pushToView(this.errorView, true);
     }
 });
 ;
@@ -1013,10 +1101,20 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create snapshot view when necessary
-        if (!this.snapshotView) {
+        // Create snapshot view if it is not active
+        if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
+
             this.snapshotView = new codebrowser.view.SnapshotView();
+
+            codebrowser.controller.ViewController.pushToView(this.snapshotView);
         }
+    },
+
+    notFound: function () {
+
+        var errorView = new codebrowser.view.NotFoundErrorView();
+
+        codebrowser.controller.ViewController.pushToView(errorView, true);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {
@@ -1041,8 +1139,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 // Invalid snapshot ID
                 if (!snapshot) {
 
-                    self.snapshotView = null;
-                    new codebrowser.view.ErrorView({ model: { message: 'No snapshot found with given ID.' } });
+                    self.notFound();
 
                     return;
                 }
@@ -1055,16 +1152,21 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                     return;
                 }
 
+                // Invalid file ID
+                if (!snapshot.get('files').get(fileId)) {
+
+                    self.notFound();
+
+                    return;
+                }
+
                 self.snapshotView.update(snapshot, fileId);
             },
 
             // Snapshots fetch failed
             error: function () {
 
-                self.snapshotView = null;
-                new codebrowser.view.ErrorView({ model: { message: 'Failed fetching snapshots.' } });
-
-                return;
+                self.notFound();
             }
         });
     }
