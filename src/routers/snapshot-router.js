@@ -14,9 +14,11 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create snapshot view when necessary
-        if (!this.snapshotView || codebrowser.controller.ViewController.view !== this.snapshotView) {
+        // Create snapshot view if it is not active
+        if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
+
             this.snapshotView = new codebrowser.view.SnapshotView();
+
             codebrowser.controller.ViewController.pushToView(this.snapshotView);
         }
     },
@@ -24,6 +26,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
     notFound: function () {
 
         var errorView = new codebrowser.view.NotFoundErrorView();
+
         codebrowser.controller.ViewController.pushToView(errorView, true);
     },
 

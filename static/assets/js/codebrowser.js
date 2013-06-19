@@ -165,16 +165,18 @@ var codebrowser = {
 
     initialize: function () {
 
-        // Oops! Something went wrong
+        // Oops! Catch all global unhandled errors
         window.onerror = function () {
 
             var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
             codebrowser.controller.ViewController.pushToView(errorView, true);
         }
 
+        // Initialise routers
         codebrowser.app.base = new codebrowser.router.BaseRouter();
         codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
 
+        // History
         Backbone.history.start();
     }
 }
@@ -669,16 +671,16 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
-        // Wrapper
-        this.wrappingContainer = $('<div>');
+        // Snapshot container
+        this.snapshotContainer = $('<div>', { id: 'snapshot-container' });
 
         // Create divs for elements
         this.navigationContainer = $('<div>', { id: 'navigation-container' });
         this.editorContainer = $('<div>', { id: 'editor-container' });
 
         // Append elements to parent
-        this.wrappingContainer.append(this.navigationContainer);
-        this.wrappingContainer.append(this.editorContainer);
+        this.snapshotContainer.append(this.navigationContainer);
+        this.snapshotContainer.append(this.editorContainer);
 
         // Editor
         this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
@@ -686,6 +688,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     remove: function () {
 
+        // Remove editor
         this.editorView.remove();
 
         // Empty container
@@ -696,7 +699,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     render: function () {
 
         // Append wrapper to DOM
-        this.$el.append(this.wrappingContainer);
+        this.$el.append(this.snapshotContainer);
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);
@@ -838,6 +841,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
 codebrowser.controller.ViewController = {
 
+    view: null,
+
+    isActive: function (view) {
+
+        return this.view === view;
+    },
+
     pushToView: function (view, render) {
 
         // Remove previous view
@@ -891,9 +901,11 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create snapshot view when necessary
-        if (!this.snapshotView || codebrowser.controller.ViewController.view !== this.snapshotView) {
+        // Create snapshot view if it is not active
+        if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
+
             this.snapshotView = new codebrowser.view.SnapshotView();
+
             codebrowser.controller.ViewController.pushToView(this.snapshotView);
         }
     },
@@ -901,6 +913,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
     notFound: function () {
 
         var errorView = new codebrowser.view.NotFoundErrorView();
+
         codebrowser.controller.ViewController.pushToView(errorView, true);
     },
 
