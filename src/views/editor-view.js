@@ -137,8 +137,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
             // Restore split state
             this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
 
-            // Restore diff state if editor doesn't contain any diff markers
-            if (this.markers['main-editor'].length === 0) {
+            // Restore diff state if necessary
+            if (!this.diff) {
                 this.toggleDiff(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
             }
         }
