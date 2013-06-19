@@ -69,7 +69,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Disable diff button
-        if (!this.editorView.canDiff) {
+        if (!this.editorView.canDiff()) {
             $('#diff', navigationContainerOutput).attr('disabled', true);
         }
 

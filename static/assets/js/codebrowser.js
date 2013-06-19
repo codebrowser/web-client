@@ -228,85 +228,50 @@ codebrowser.model.Course = Backbone.RelationalModel.extend({
 });
 ;
 
-codebrowser.model.Diff = {
+codebrowser.model.Diff = function(previousContent, content) {
 
-    diff: function(previousContent, content) {
+    var differences = [];
 
-        var diffData = [];
+    // Diff
+    var from = difflib.stringAsLines(previousContent);
+    var to = difflib.stringAsLines(content);
 
-        // Diff
-        var from = difflib.stringAsLines(previousContent);
-        var to = difflib.stringAsLines(content);
+    var sequenceMatcher = new difflib.SequenceMatcher(from, to);
 
-        var sequenceMatcher = new difflib.SequenceMatcher(from, to);
+    /* jshint camelcase: false */
 
-        /* jshint camelcase: false */
+    var operations = sequenceMatcher.get_opcodes();
 
-        var differences = sequenceMatcher.get_opcodes();
+    /* jshint camelcase: true */
 
-        /* jshint camelcase: true */
+    // Show markers
+    for (var i = 0; i < operations.length; i++) {
 
-        // Show markers
-        for (var i = 0; i < differences.length; i++) {
+        var operation = operations[i];
 
-            var difference = differences[i];
-            var type = difference[0];
-
-            var fromRowStart = difference[1] + offset;
-            var fromRowEnd = difference[2] - 1 + offset;
-
-            var toRowStart = difference[3] + offset;
-            var toRowEnd = difference[4] - 1 + offset;
-
-            var offset = 0;
-
-            // Insert
-            if (type === 'insert') {
-
-                var insert = {
-                    type:     'insert',
-                    rowStart: toRowStart,
-                    rowEnd:   toRowEnd
-                }
-
-                diffData.push(insert);
-            }
-
-            // Replace
-            if (type === 'replace') {
-
-                var replace = {
-                    type:     'replace',
-                    rowStart: toRowStart,
-                    rowEnd:   toRowEnd
-                }
-
-                diffData.push(replace);
-            }
-
-            // Delete
-            if (type === 'delete') {
-
-
-                var deletedAsLines = from.slice(fromRowStart, fromRowEnd + 1);
-
-                var deleted = deletedAsLines.join('\n');
-
-                var deletion = {
-                    type: 'delete',
-                    rowStart: fromRowStart,
-                    rowEnd:   fromRowEnd,
-                    data:     deleted
-                }
-
-                diffData.push(deletion);
-
-                offset = fromRowEnd + 1 - fromRowStart;
-            }
+        var diff = {
+            type:     operation[0],
+            rowStart: operation[3],
+            rowEnd:   operation[4] - 1
         }
 
-        return diffData;
+        // Delete
+        if (diff.type === 'delete') {
+
+            var deletedAsLines = from.slice(operation[1], operation[2]);
+
+            var deleted = deletedAsLines.join('\n');
+
+            diff.rowStart = operation[1];
+            diff.rowEnd   = operation[2] - 1;
+
+            diff = _.extend(diff, { data: deleted} );
+        }
+
+        differences.push(diff);
     }
+
+    return differences;
 }
 ;
 
@@ -552,7 +517,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
     diffLines: [],
 
     diff: false,
-    canDiff: true,
+    canDiff: function () {
+
+        return this.model !== this.previousModel;
+    },
 
     initialize: function () {
         // Empty container
@@ -602,8 +570,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Remember scroll position
         var scrollPosition = editor.getSession().getScrollTop();
 
-        // Clear markers
-        this.clearMarkers(editor);
+        // Remove markers
+        this.removeMarkers(editor);
 
         // Set content for editor
         editor.setValue(content);
@@ -623,7 +591,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         var fileSynced = _.after(2, function() {
 
-            self.canDiff = true;
             self.toggleDiff(self.diff);
         });
 
@@ -640,8 +607,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
         if (previousFile === this.model) {
 
             this.toggleSplit(false);
-
-            this.canDiff = false;
             this.toggleDiff(false);
 
         } else {
@@ -675,6 +640,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.render();
     },
 
+    didSplit: function () {
+
+        this.clearDiff();
+        this.toggleDiff(this.diff);
+
+    },
+
     toggleSplit: function (split) {
 
         // Use parameter if given, otherwise toggle internal split state
@@ -698,11 +670,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
             // Split main editor to right
             this.mainEditorElement.css({ float: 'right', width: '50%' });
 
-            // When enabling split, disable diff and enable it again so that
-            // deleted lines are marked only in the previous file
-            var willItDiff = this.diff;
-            this.toggleDiff(false);
-            this.toggleDiff(willItDiff);
+            this.didSplit();
 
             return;
         }
@@ -711,9 +679,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.sideEditorElement.hide();
         this.mainEditorElement.css({ float: '', width: '' });
 
-        if (this.diff) {
-            this.toggleDiff(true);
-        }
+        this.didSplit();
     },
 
     toggleDiff: function (diff) {
@@ -736,20 +702,27 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var previousContent = this.sideEditor.getValue();
             var content = this.mainEditor.getValue();
 
-            var diffs = codebrowser.model.Diff.diff(previousContent, content);
+            var diffs = new codebrowser.model.Diff(previousContent, content);
 
             for (var i = 0; i < diffs.length; ++i) {
 
                 var marker;
 
+                var offset = 0;
+
                 var diffObject = diffs[i];
+
+                console.log('-----------');
+                console.log(diffObject.type);
+                console.log(diffObject.rowStart);
+                console.log(diffObject.rowEnd);
 
                 if (diffObject.type === 'delete') {
 
                     if (!this.split) {
 
-                        this.diffLines.push({rowStart: diffObject.rowStart, rowEnd: diffObject.rowEnd + 1});
-                        this.mainEditor.getSession().insert({row: diffObject.rowStart, column: 0}, diffObject.data + '\n');
+                        this.diffLines.push({rowStart: diffObject.rowStart + offset, rowEnd: diffObject.rowEnd + 1 + offset});
+                        this.mainEditor.getSession().insert({row: diffObject.rowStart + offset, column: 0}, diffObject.data + '\n');
                     } else {
 
                         marker = this.sideEditor.getSession()
@@ -758,16 +731,33 @@ codebrowser.view.EditorView = Backbone.View.extend({
                         this.markers['side-editor'].push(marker);
                         continue;
                     }
+
+                    offset += diffObject.rowEnd - diffObject.rowStart;
                 }
 
                 marker = this.mainEditor.getSession()
-                                        .addMarker(new Range(diffObject.rowStart, 0, diffObject.rowEnd, 1), diffObject.type, 'fullLine');
+                                        .addMarker(new Range(diffObject.rowStart + offset, 0, diffObject.rowEnd + offset, 1), diffObject.type, 'fullLine');
 
                 this.markers['main-editor'].push(marker);
             }
 
             return;
         }
+
+        this.clearDiff();
+    },
+
+    removeMarkers: function (editor) {
+
+        // Remove markers
+        while (this.markers[editor.container.id].length > 0) {
+            editor.getSession().removeMarker(this.markers[editor.container.id].pop());
+        }
+    },
+
+    clearDiff: function () {
+
+        var Range = ace.require('ace/range').Range;
 
         /* Clear diffs */
 
@@ -777,17 +767,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         this.diffLines = [];
 
-        this.clearMarkers(this.mainEditor);
-        this.clearMarkers(this.sideEditor);
-    },
-
-    clearMarkers: function (editor) {
-
-        // Clear markers
-        while (this.markers[editor.container.id].length > 0) {
-            editor.getSession().removeMarker(this.markers[editor.container.id].pop());
-        }
+        this.removeMarkers(this.mainEditor);
+        this.removeMarkers(this.sideEditor);
     }
+
 });
 ;
 
@@ -882,7 +865,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Disable diff button
-        if (!this.editorView.canDiff) {
+        if (!this.editorView.canDiff()) {
             $('#diff', navigationContainerOutput).attr('disabled', true);
         }
 

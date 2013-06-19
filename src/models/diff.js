@@ -1,80 +1,45 @@
-codebrowser.model.Diff = {
+codebrowser.model.Diff = function(previousContent, content) {
 
-    diff: function(previousContent, content) {
+    var differences = [];
 
-        var diffData = [];
+    // Diff
+    var from = difflib.stringAsLines(previousContent);
+    var to = difflib.stringAsLines(content);
 
-        // Diff
-        var from = difflib.stringAsLines(previousContent);
-        var to = difflib.stringAsLines(content);
+    var sequenceMatcher = new difflib.SequenceMatcher(from, to);
 
-        var sequenceMatcher = new difflib.SequenceMatcher(from, to);
+    /* jshint camelcase: false */
 
-        /* jshint camelcase: false */
+    var operations = sequenceMatcher.get_opcodes();
 
-        var differences = sequenceMatcher.get_opcodes();
+    /* jshint camelcase: true */
 
-        /* jshint camelcase: true */
+    // Show markers
+    for (var i = 0; i < operations.length; i++) {
 
-        // Show markers
-        for (var i = 0; i < differences.length; i++) {
+        var operation = operations[i];
 
-            var difference = differences[i];
-            var type = difference[0];
-
-            var fromRowStart = difference[1] + offset;
-            var fromRowEnd = difference[2] - 1 + offset;
-
-            var toRowStart = difference[3] + offset;
-            var toRowEnd = difference[4] - 1 + offset;
-
-            var offset = 0;
-
-            // Insert
-            if (type === 'insert') {
-
-                var insert = {
-                    type:     'insert',
-                    rowStart: toRowStart,
-                    rowEnd:   toRowEnd
-                }
-
-                diffData.push(insert);
-            }
-
-            // Replace
-            if (type === 'replace') {
-
-                var replace = {
-                    type:     'replace',
-                    rowStart: toRowStart,
-                    rowEnd:   toRowEnd
-                }
-
-                diffData.push(replace);
-            }
-
-            // Delete
-            if (type === 'delete') {
-
-
-                var deletedAsLines = from.slice(fromRowStart, fromRowEnd + 1);
-
-                var deleted = deletedAsLines.join('\n');
-
-                var deletion = {
-                    type: 'delete',
-                    rowStart: fromRowStart,
-                    rowEnd:   fromRowEnd,
-                    data:     deleted
-                }
-
-                diffData.push(deletion);
-
-                offset = fromRowEnd + 1 - fromRowStart;
-            }
+        var diff = {
+            type:     operation[0],
+            rowStart: operation[3],
+            rowEnd:   operation[4] - 1
         }
 
-        return diffData;
+        // Delete
+        if (diff.type === 'delete') {
+
+            var deletedAsLines = from.slice(operation[1], operation[2]);
+
+            var deleted = deletedAsLines.join('\n');
+
+            diff.rowStart = operation[1];
+            diff.rowEnd   = operation[2] - 1;
+
+            diff = _.extend(diff, { data: deleted} );
+        }
+
+        differences.push(diff);
     }
+
+    return differences;
 }
