@@ -36,7 +36,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Editor
         this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
 
-        // Bind keypress
+        // Bind keydown
         $(document).keydown(function () {
 
             // Left
@@ -53,7 +53,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     remove: function () {
 
-        // Unbind keypress
+        // Unbind keydown
         $(document).unbind();
 
         // Remove editor

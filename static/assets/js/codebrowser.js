@@ -589,7 +589,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Use parameter if given, otherwise toggle internal split state
         if (split !== undefined) {
+
             this.split = split;
+
         } else {
 
             this.split = !this.split;
@@ -687,7 +689,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Editor
         this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
 
-        // Bind keypress
+        // Bind keydown
         $(document).keydown(function () {
 
             // Left
@@ -704,7 +706,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     remove: function () {
 
-        // Unbind keypress
+        // Unbind keydown
         $(document).unbind();
 
         // Remove editor
