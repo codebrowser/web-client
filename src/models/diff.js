@@ -57,15 +57,11 @@ codebrowser.model.Diff = function (previousContent, content) {
             // Replace contains insert-lines
             if (toChange > fromChange) {
 
-                var rowEnd = difference.rowEnd;
-                difference.rowEnd = operation[2] - 1;
-
                 differences.push(difference);
                 difference = _.clone(difference);
 
                 difference.type = 'insert';
                 difference.rowStart += (operation[2] - operation[1]);
-                difference.rowEnd = rowEnd;
             }
         }
 
