@@ -291,7 +291,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
                         // Add marker for removed line in side editor
                         marker = this.sideEditor.getSession()
-                                                .addMarker(new Range(difference.rowStart, 0, difference.rowEnd, 1),
+                                                .addMarker(new Range(difference.fromRowStart, 0, difference.fromRowEnd, 1),
                                                            difference.type,
                                                            'fullLine');
 
@@ -302,11 +302,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
                     }
                 }
 
+                var offset = 0;
+
+                // Use offset only in single view
+                if (!this.split) {
+                    offset = difference.offset;
+                }
 
                 // Add marker to main editor
                 marker = this.mainEditor
                              .getSession()
-                             .addMarker(new Range(difference.rowStart + difference.offset, 0, difference.rowEnd + difference.offset, 1),
+                             .addMarker(new Range(difference.rowStart + offset, 0, difference.rowEnd + offset, 1),
                                         difference.type,
                                         'fullLine');
 
