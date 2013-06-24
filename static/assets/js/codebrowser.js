@@ -255,37 +255,85 @@ codebrowser.model.Diff = function (previousContent, content) {
 
     /* jshint camelcase: true */
 
+    console.log(operations);
+
+    // Offset by added lines
+    var offset = 0;
+
     for (var i = 0; i < operations.length; i++) {
 
         var operation = operations[i];
 
-        var diff = {
+        console.log(operation[0]);
+        console.log('------------');
+        console.log('fromRowStart: ' + operation[1]);
+        console.log('fromRowEnd: ' + (operation[2] - 1));
+        console.log('');
+        console.log('toRowStart: ' + operation[3]);
+        console.log('toRowEnd: ' + (operation[4] - 1));
+        console.log('------------');
+
+        var difference = {
 
             type:     operation[0],
             rowStart: operation[3],
-            rowEnd:   operation[4] - 1
+            rowEnd:   operation[4] - 1,
+            offset: offset
 
         }
 
         // Ignore equal
-        if (diff.type === 'equal') {
+        if (difference.type === 'equal') {
             continue;
         }
 
+        // Replace
+        if (difference.type === 'replace') {
+
+            var fromChange = operation[2] - operation[1] - 1;
+            var toChange = operation[4] - operation[3] - 1;
+
+            // Replace contains delete-lines
+            if (fromChange > toChange) {
+
+                differences.push(difference);
+                difference = _.clone(difference);
+
+                operation[1] += (operation[4] - operation[3]);
+
+                difference.type = 'delete';
+            }
+
+            // Replace contains insert-lines
+            if (toChange > fromChange) {
+
+                differences.push(difference);
+                difference = _.clone(difference);
+
+                difference.type = 'insert';
+                difference.rowStart += (operation[2] - operation[1]);
+            }
+        }
+
         // Delete
-        if (diff.type === 'delete') {
+        if (difference.type === 'delete') {
 
             // Deleted lines
             var deletedAsLines = from.slice(operation[1], operation[2]);
             var deleted = deletedAsLines.join('\n') + '\n';
 
-            diff.rowStart = operation[1];
-            diff.rowEnd = operation[2] - 1;
+            difference.rowStart = operation[1];
+            difference.rowEnd = operation[2] - 1;
 
-            diff = _.extend(diff, { lines: deleted });
+            difference = _.extend(difference, { lines: deleted });
         }
 
-        differences.push(diff);
+        // Delete increases offset
+        if (difference.type === 'delete') {
+            offset += difference.rowEnd - difference.rowStart + 1;
+        }
+
+        differences.push(difference);
     }
 
     this.getDifferences = function () {
@@ -776,9 +824,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             var differences = new codebrowser.model.Diff(previousContent, content).getDifferences();
 
-            // Offset by added lines
-            var offset = 0;
-
             // Show differences
             for (var i = 0; i < differences.length; i++) {
 
@@ -794,14 +839,14 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
                         // Add removed lines to main editor
                         this.mainEditor.getSession()
-                                       .insert({ row: difference.rowStart + offset, column: 0 },
+                                       .insert({ row: difference.rowStart + difference.offset, column: 0 },
                                                difference.lines);
 
                         // Remember removed lines
                         this.removedLines.push({
 
-                            rowStart: difference.rowStart + offset,
-                            rowEnd: difference.rowEnd + 1 + offset
+                            rowStart: difference.rowStart + difference.offset,
+                            rowEnd: difference.rowEnd + 1 + difference.offset
 
                         });
 
@@ -825,17 +870,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 // Add marker to main editor
                 marker = this.mainEditor
                              .getSession()
-                             .addMarker(new Range(difference.rowStart + offset, 0, difference.rowEnd + offset, 1),
+                             .addMarker(new Range(difference.rowStart + difference.offset, 0, difference.rowEnd + difference.offset, 1),
                                         difference.type,
                                         'fullLine');
 
                 // Remember marker
                 this.markers['main-editor'].push(marker);
-
-                // Remove increases offset
-                if (difference.type === 'delete') {
-                    offset += difference.rowEnd - difference.rowStart;
-                }
             }
 
             return;

@@ -260,9 +260,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             var differences = new codebrowser.model.Diff(previousContent, content).getDifferences();
 
-            // Offset by added lines
-            var offset = 0;
-
             // Show differences
             for (var i = 0; i < differences.length; i++) {
 
@@ -278,14 +275,14 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
                         // Add removed lines to main editor
                         this.mainEditor.getSession()
-                                       .insert({ row: difference.rowStart + offset, column: 0 },
+                                       .insert({ row: difference.rowStart + difference.offset, column: 0 },
                                                difference.lines);
 
                         // Remember removed lines
                         this.removedLines.push({
 
-                            rowStart: difference.rowStart + offset,
-                            rowEnd: difference.rowEnd + 1 + offset
+                            rowStart: difference.rowStart + difference.offset,
+                            rowEnd: difference.rowEnd + 1 + difference.offset
 
                         });
 
@@ -309,17 +306,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 // Add marker to main editor
                 marker = this.mainEditor
                              .getSession()
-                             .addMarker(new Range(difference.rowStart + offset, 0, difference.rowEnd + offset, 1),
+                             .addMarker(new Range(difference.rowStart + difference.offset, 0, difference.rowEnd + difference.offset, 1),
                                         difference.type,
                                         'fullLine');
 
                 // Remember marker
                 this.markers['main-editor'].push(marker);
-
-                // Remove increases offset
-                if (difference.type === 'delete') {
-                    offset += difference.rowEnd - difference.rowStart;
-                }
             }
 
             return;
