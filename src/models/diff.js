@@ -22,6 +22,14 @@ codebrowser.model.Diff = function (previousContent, content) {
     for (var i = 0; i < operations.length; i++) {
 
         var operation = operations[i];
+        
+        console.log(operation[0]);
+        console.log('fromRowStart: ' + operation[1]);
+        console.log('fromRowEnd: ' + (operation[2] - 1));
+        console.log('');
+        console.log('toRowStart: ' + operation[3]);
+        console.log('toRowEnd: ' + (operation[4] - 1));
+        console.log('----------');
 
         var difference = {
 
@@ -54,7 +62,10 @@ codebrowser.model.Diff = function (previousContent, content) {
             if (fromChange > toChange) {
 
                 // Replace
-                difference.rowEnd -= (changed > delta ? changed : delta);
+                if (difference.rowEnd - difference.rowStart !== 0) {
+                    difference.rowEnd -= (changed > delta ? changed : delta);
+                }
+                
                 differences.push(difference);
 
                 // Delete
@@ -63,7 +74,7 @@ codebrowser.model.Diff = function (previousContent, content) {
                 difference.type = 'delete';
 
                 // Move index
-                operation[1] += changed;
+                operation[1] += lines;
             }
 
             // Replace contains inserted lines
