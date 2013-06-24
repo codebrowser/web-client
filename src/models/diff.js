@@ -40,37 +40,44 @@ codebrowser.model.Diff = function (previousContent, content) {
         // Replace
         if (difference.type === 'replace') {
 
+            var originalDifference = _.clone(difference);
+
             var fromChange = operation[2] - operation[1] - 1;
             var toChange = operation[4] - operation[3] - 1;
 
-            var originalDifference = _.clone(difference);
+            // Delta
+            var lines = difference.rowEnd - difference.rowStart + 1;
+            var changed = operation[2] - operation[1];
+            var delta = lines - changed;
 
             // Replace contains deleted lines
             if (fromChange > toChange) {
 
                 // Replace
+                difference.rowEnd -= (changed > delta ? changed : delta);
                 differences.push(difference);
 
                 // Delete
                 difference = originalDifference;
 
-                operation[1] += operation[4] - operation[3];
-
                 difference.type = 'delete';
+
+                // Move index
+                operation[1] += changed;
             }
 
             // Replace contains inserted lines
             if (toChange > fromChange) {
 
                 // Replace
-                difference.rowEnd -= toChange;
+                difference.rowEnd -= (changed > delta ? changed : delta);
                 differences.push(difference);
 
                 // Insert
                 difference = originalDifference;
 
                 difference.type = 'insert';
-                difference.rowStart += operation[2] - operation[1];
+                difference.rowStart += changed;
             }
         }
 
