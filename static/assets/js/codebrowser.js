@@ -875,7 +875,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                                difference.lines);
 
                         // Decorate
-                        this.decorate(this.mainEditor, difference.rowStart + difference.offset, difference.rowEnd + difference.offset, 'delete');
+                        this.decorate(this.mainEditor,
+                                      difference.rowStart + difference.offset,
+                                      difference.rowEnd + difference.offset,
+                                      'delete');
 
                         // Remember removed lines
                         this.removedLines.push({
@@ -889,10 +892,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
                     } else {
 
                         // Add marker for removed line in side editor
-                        marker = this.sideEditor.getSession()
-                                                .addMarker(new Range(difference.fromRowStart, 0, difference.fromRowEnd, 1),
-                                                           difference.type,
-                                                           'fullLine');
+                        marker = this.sideEditor
+                                     .getSession()
+                                     .addMarker(new Range(difference.fromRowStart, 0, difference.fromRowEnd, 1),
+                                                difference.type,
+                                                'fullLine');
 
                         // Decorate
                         this.decorate(this.sideEditor, difference.fromRowStart, difference.fromRowEnd, 'delete');
@@ -919,7 +923,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                         'fullLine');
 
                 // Decorate
-                this.decorate(this.mainEditor, difference.rowStart + offset, difference.rowEnd + offset, difference.type);
+                this.decorate(this.mainEditor,
+                              difference.rowStart + offset,
+                              difference.rowEnd + offset,
+                              difference.type);
 
                 // Remember marker
                 this.markers['main-editor'].push(marker);
