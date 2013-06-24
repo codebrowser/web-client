@@ -188,15 +188,22 @@
 
 #editor .decoration {
 
-    margin-left: -23%;
+    margin-left: -30%;
 
 }
 
 #editor .decoration:before {
 
-    margin-right: 20%;
+    display: inline-block;
+    float: left;
     font-weight: bold;
     color: #555555;
+
+}
+
+#editor .decoration.gutter-insert {
+
+    background-color: rgba(154, 247, 122, 0.6);
 
 }
 
@@ -206,9 +213,21 @@
 
 }
 
+#editor .decoration.gutter-replace {
+
+    background-color: rgba(150, 206, 245, 0.6);
+
+}
+
 #editor .decoration.gutter-replace:before {
 
-    content: '+';
+    content: '.';
+
+}
+
+#editor .decoration.gutter-delete {
+
+    background-color: rgba(250, 130, 130, 0.6);
 
 }
 
