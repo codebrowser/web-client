@@ -283,11 +283,16 @@ codebrowser.model.Diff = function (previousContent, content) {
             var fromChange = operation[2] - operation[1] - 1;
             var toChange = operation[4] - operation[3] - 1;
 
+            var originalDifference = _.clone(difference);
+
             // Replace contains deleted lines
             if (fromChange > toChange) {
 
+                // Replace
                 differences.push(difference);
-                difference = _.clone(difference);
+
+                // Delete
+                difference = originalDifference;
 
                 operation[1] += operation[4] - operation[3];
 
@@ -297,8 +302,12 @@ codebrowser.model.Diff = function (previousContent, content) {
             // Replace contains inserted lines
             if (toChange > fromChange) {
 
+                // Replace
+                difference.rowEnd -= toChange;
                 differences.push(difference);
-                difference = _.clone(difference);
+
+                // Insert
+                difference = originalDifference;
 
                 difference.type = 'insert';
                 difference.rowStart += operation[2] - operation[1];
