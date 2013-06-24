@@ -24,6 +24,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
         return this.model !== this.previousModel;
     },
 
+    decorations: {
+
+        'main-editor': [],
+        'side-editor': []
+
+    },
+
     markers: {
 
         'main-editor': [],
@@ -79,6 +86,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.topContainer.html(topContainerOutput);
     },
 
+    removeDecorations: function (editor) {
+
+        // Remove decorations from editor
+        while (this.decorations[editor.container.id].length > 0) {
+
+            var decoration = this.decorations[editor.container.id].pop();
+
+            editor.getSession().removeGutterDecoration(decoration.row, decoration.style);
+        }
+    },
+
     removeMarkers: function (editor) {
 
         // Remove markers from editor
@@ -94,6 +112,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Remember scroll position
         var scrollPosition = editor.getSession().getScrollTop();
+
+        // Remove decorations
+        this.removeDecorations(editor);
 
         // Remove markers
         this.removeMarkers(editor);
@@ -220,9 +241,23 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.didSplit();
     },
 
+    decorate: function (editor, rowStart, rowEnd, style) {
+
+        for (var row = rowStart; row <= rowEnd; row++) {
+
+            this.decorations[editor.container.id].push({ row: row, style: 'decoration ' + style });
+
+            editor.getSession().addGutterDecoration(row, 'decoration ' + style);
+        }
+    },
+
     clearDiff: function () {
 
         var Range = ace.require('ace/range').Range;
+
+        // Remove decorations
+        this.removeDecorations(this.mainEditor);
+        this.removeDecorations(this.sideEditor);
 
         // Remove added lines
         while (this.removedLines.length > 0) {
@@ -278,6 +313,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                        .insert({ row: difference.rowStart + difference.offset, column: 0 },
                                                difference.lines);
 
+                        // Decorate
+                        this.decorate(this.mainEditor, difference.rowStart + difference.offset, difference.rowEnd + difference.offset, 'gutter-delete');
+
                         // Remember removed lines
                         this.removedLines.push({
 
@@ -294,6 +332,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                                 .addMarker(new Range(difference.fromRowStart, 0, difference.fromRowEnd, 1),
                                                            difference.type,
                                                            'fullLine');
+
+                        // Decorate
+                        this.decorate(this.sideEditor, difference.fromRowStart, difference.fromRowEnd, 'gutter-delete');
 
                         // Remember marker
                         this.markers['side-editor'].push(marker);
@@ -316,6 +357,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                         difference.type,
                                         'fullLine');
 
+                // Decorate
+                this.decorate(this.mainEditor, difference.rowStart + offset, difference.rowEnd + offset, 'gutter-' + difference.type);
+
                 // Remember marker
                 this.markers['main-editor'].push(marker);
             }
@@ -325,5 +369,5 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Disable diff
         this.clearDiff();
-    },
+    }
 });

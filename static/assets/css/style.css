@@ -185,3 +185,35 @@
     background-color: rgba(250, 130, 130, 0.6);
 
 }
+
+#editor .decoration {
+
+    margin-left: -23%;
+
+}
+
+#editor .decoration:before {
+
+    margin-right: 20%;
+    font-weight: bold;
+    color: #555555;
+
+}
+
+#editor .decoration.gutter-insert:before {
+
+    content: '+';
+
+}
+
+#editor .decoration.gutter-replace:before {
+
+    content: '+';
+
+}
+
+#editor .decoration.gutter-delete:before {
+
+    content: '-';
+
+}
