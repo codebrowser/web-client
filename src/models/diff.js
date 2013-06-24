@@ -22,14 +22,6 @@ codebrowser.model.Diff = function (previousContent, content) {
     for (var i = 0; i < operations.length; i++) {
 
         var operation = operations[i];
-        
-        console.log(operation[0]);
-        console.log('fromRowStart: ' + operation[1]);
-        console.log('fromRowEnd: ' + (operation[2] - 1));
-        console.log('');
-        console.log('toRowStart: ' + operation[3]);
-        console.log('toRowEnd: ' + (operation[4] - 1));
-        console.log('----------');
 
         var difference = {
 
