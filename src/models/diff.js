@@ -43,25 +43,25 @@ codebrowser.model.Diff = function (previousContent, content) {
             var fromChange = operation[2] - operation[1] - 1;
             var toChange = operation[4] - operation[3] - 1;
 
-            // Replace contains delete-lines
+            // Replace contains deleted lines
             if (fromChange > toChange) {
 
                 differences.push(difference);
                 difference = _.clone(difference);
 
-                operation[1] += (operation[4] - operation[3]);
+                operation[1] += operation[4] - operation[3];
 
                 difference.type = 'delete';
             }
 
-            // Replace contains insert-lines
+            // Replace contains inserted lines
             if (toChange > fromChange) {
 
                 differences.push(difference);
                 difference = _.clone(difference);
 
                 difference.type = 'insert';
-                difference.rowStart += (operation[2] - operation[1]);
+                difference.rowStart += operation[2] - operation[1];
             }
         }
 
@@ -83,10 +83,10 @@ codebrowser.model.Diff = function (previousContent, content) {
             difference = _.extend(difference, { fromRowStart: operation[1], fromRowEnd: operation[2] - 1, lines: deleted });
 
             // Delete increases offset
-            offset += difference.rowEnd - difference.rowStart + 1;
+            var increase = difference.rowEnd - difference.rowStart + 1;
 
-            // Delete increases delete offset
-            deleteOffset += difference.rowEnd - difference.rowStart + 1;
+            offset += increase;
+            deleteOffset += increase;
         }
 
         differences.push(difference);

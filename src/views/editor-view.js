@@ -243,11 +243,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     decorate: function (editor, rowStart, rowEnd, style) {
 
+        // Decorate lines
         for (var row = rowStart; row <= rowEnd; row++) {
 
-            this.decorations[editor.container.id].push({ row: row, style: 'decoration ' + style });
+            this.decorations[editor.container.id].push({ row: row, style: 'decoration gutter-' + style });
 
-            editor.getSession().addGutterDecoration(row, 'decoration ' + style);
+            editor.getSession().addGutterDecoration(row, 'decoration gutter-' + style);
         }
     },
 
@@ -314,7 +315,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                                difference.lines);
 
                         // Decorate
-                        this.decorate(this.mainEditor, difference.rowStart + difference.offset, difference.rowEnd + difference.offset, 'gutter-delete');
+                        this.decorate(this.mainEditor, difference.rowStart + difference.offset, difference.rowEnd + difference.offset, 'delete');
 
                         // Remember removed lines
                         this.removedLines.push({
@@ -334,7 +335,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                                            'fullLine');
 
                         // Decorate
-                        this.decorate(this.sideEditor, difference.fromRowStart, difference.fromRowEnd, 'gutter-delete');
+                        this.decorate(this.sideEditor, difference.fromRowStart, difference.fromRowEnd, 'delete');
 
                         // Remember marker
                         this.markers['side-editor'].push(marker);
@@ -358,7 +359,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                         'fullLine');
 
                 // Decorate
-                this.decorate(this.mainEditor, difference.rowStart + offset, difference.rowEnd + offset, 'gutter-' + difference.type);
+                this.decorate(this.mainEditor, difference.rowStart + offset, difference.rowEnd + offset, difference.type);
 
                 // Remember marker
                 this.markers['main-editor'].push(marker);

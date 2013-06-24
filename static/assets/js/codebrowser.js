@@ -283,25 +283,25 @@ codebrowser.model.Diff = function (previousContent, content) {
             var fromChange = operation[2] - operation[1] - 1;
             var toChange = operation[4] - operation[3] - 1;
 
-            // Replace contains delete-lines
+            // Replace contains deleted lines
             if (fromChange > toChange) {
 
                 differences.push(difference);
                 difference = _.clone(difference);
 
-                operation[1] += (operation[4] - operation[3]);
+                operation[1] += operation[4] - operation[3];
 
                 difference.type = 'delete';
             }
 
-            // Replace contains insert-lines
+            // Replace contains inserted lines
             if (toChange > fromChange) {
 
                 differences.push(difference);
                 difference = _.clone(difference);
 
                 difference.type = 'insert';
-                difference.rowStart += (operation[2] - operation[1]);
+                difference.rowStart += operation[2] - operation[1];
             }
         }
 
@@ -323,10 +323,10 @@ codebrowser.model.Diff = function (previousContent, content) {
             difference = _.extend(difference, { fromRowStart: operation[1], fromRowEnd: operation[2] - 1, lines: deleted });
 
             // Delete increases offset
-            offset += difference.rowEnd - difference.rowStart + 1;
+            var increase = difference.rowEnd - difference.rowStart + 1;
 
-            // Delete increases delete offset
-            deleteOffset += difference.rowEnd - difference.rowStart + 1;
+            offset += increase;
+            deleteOffset += increase;
         }
 
         differences.push(difference);
@@ -803,11 +803,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     decorate: function (editor, rowStart, rowEnd, style) {
 
+        // Decorate lines
         for (var row = rowStart; row <= rowEnd; row++) {
 
-            this.decorations[editor.container.id].push({ row: row, style: 'decoration ' + style });
+            this.decorations[editor.container.id].push({ row: row, style: 'decoration gutter-' + style });
 
-            editor.getSession().addGutterDecoration(row, 'decoration ' + style);
+            editor.getSession().addGutterDecoration(row, 'decoration gutter-' + style);
         }
     },
 
@@ -874,7 +875,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                                difference.lines);
 
                         // Decorate
-                        this.decorate(this.mainEditor, difference.rowStart + difference.offset, difference.rowEnd + difference.offset, 'gutter-delete');
+                        this.decorate(this.mainEditor, difference.rowStart + difference.offset, difference.rowEnd + difference.offset, 'delete');
 
                         // Remember removed lines
                         this.removedLines.push({
@@ -894,7 +895,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                                            'fullLine');
 
                         // Decorate
-                        this.decorate(this.sideEditor, difference.fromRowStart, difference.fromRowEnd, 'gutter-delete');
+                        this.decorate(this.sideEditor, difference.fromRowStart, difference.fromRowEnd, 'delete');
 
                         // Remember marker
                         this.markers['side-editor'].push(marker);
@@ -918,7 +919,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                         'fullLine');
 
                 // Decorate
-                this.decorate(this.mainEditor, difference.rowStart + offset, difference.rowEnd + offset, 'gutter-' + difference.type);
+                this.decorate(this.mainEditor, difference.rowStart + offset, difference.rowEnd + offset, difference.type);
 
                 // Remember marker
                 this.markers['main-editor'].push(marker);
