@@ -680,6 +680,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     initialize: function () {
 
+        var self = this;
+
         // Hide view until needed
         this.$el.hide();
 
@@ -705,9 +707,18 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
+
+        // Bind resize
+        $(window).resize(function () {
+
+            self.didResize();
+        });
     },
 
     remove: function () {
+
+        // Unbind resize
+        $(window).unbind();
 
         // Empty container
         this.$el.empty();
@@ -734,6 +745,15 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Popover is enabled, show popover
         if (this.popover) {
+            $('#editor-popover').popover('toggle');
+        }
+    },
+
+    didResize: function () {
+
+        // Relocate popover
+        if (this.popover) {
+            $('#editor-popover').popover('toggle');
             $('#editor-popover').popover('toggle');
         }
     },
