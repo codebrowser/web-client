@@ -4,16 +4,17 @@ this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
   buffer += "<header>\n\n    <h1>";
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</h1>\n    <span class='pull-right'>\n\n        ";
-  options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
+    + "</h1>\n\n    <span class='pull-right'>\n\n        + ";
+  if (stack1 = helpers.duration) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.duration; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
     + "\n\n        <a id='editor-popover' href='#' data-toggle='popover' data-placement='bottom' data-content='\n\n            <dl class=\"dl-horizontal pull-left\">\n\n              <dt>Insert</dt>\n              <dd>"
     + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " lines</dd>\n\n              <dt>Replace</dt>\n              <dd>"
@@ -221,6 +222,59 @@ Handlebars.registerHelper('date', function (time) {
 
     return new Date(time).toLocaleString();
 });
+;
+
+codebrowser.helper.Duration = {
+
+    calculate: function (time, previousTime) {
+
+        var difference = time - previousTime;
+
+        var value;
+        var timeUnit;
+
+        var seconds = Math.round(difference/1000);
+
+        if (seconds > 60) {
+
+            var minutes = Math.round(seconds / 60);
+
+            if (minutes > 60) {
+
+                var hours = Math.round(minutes / 60);
+
+                if (hours > 24) {
+
+                    var days = Math.round(hours / 24);
+
+                    value = days;
+                    timeUnit = 'day';
+
+                } else {
+
+                    value = hours;
+                    timeUnit = 'hour';
+                }
+
+            } else {
+
+                value = minutes;
+                timeUnit = 'minute';
+            }
+
+        } else {
+
+            value = seconds;
+            timeUnit = 'second';
+        }
+
+        if (value > 1) {
+            timeUnit += 's';
+        }
+
+        return value + ' ' + timeUnit;
+    }
+}
 ;
 
 codebrowser.model.Course = Backbone.RelationalModel.extend({
@@ -727,9 +781,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     render: function () {
 
+        var duration = codebrowser.helper.Duration.calculate(this.model.get('snapshot').get('snapshotTime'),
+                                                             this.previousModel.get('snapshot').get('snapshotTime'));
         // View attributes
         var attributes = {
 
+            duration: duration,
             difference: this.differences.getCount()
 
         }
