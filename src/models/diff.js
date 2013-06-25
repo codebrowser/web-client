@@ -57,7 +57,7 @@ codebrowser.model.Diff = function (previousContent, content) {
                 if (difference.rowEnd - difference.rowStart !== 0) {
                     difference.rowEnd -= (changed > delta ? changed : delta);
                 }
-                
+
                 differences.push(difference);
 
                 // Delete
@@ -112,7 +112,27 @@ codebrowser.model.Diff = function (previousContent, content) {
     }
 
     this.getDifferences = function () {
-
         return differences;
+    }
+
+    this.statistics = function () {
+
+        var stats = {
+
+            'replace': 0,
+            'insert': 0,
+            'delete': 0
+
+        }
+
+        for (var i=0; i < differences.length; ++i) {
+
+            var difference = differences[i];
+
+            var lines = difference.rowEnd - difference.rowStart + 1;
+            stats[difference.type] += lines;
+        }
+
+        return stats;
     }
 }
