@@ -303,12 +303,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var previousContent = this.sideEditor.getValue();
             var content = this.mainEditor.getValue();
 
-            var differences = new codebrowser.model.Diff(previousContent, content).getDifferences().all;
+            // Differences
+            this.differences = new codebrowser.model.Diff(previousContent, content);
 
             // Show differences
-            for (var i = 0; i < differences.length; i++) {
+            for (var i = 0; i < this.differences.getDifferences().all.length; i++) {
 
-                var difference = differences[i];
+                var difference = this.differences.getDifferences().all[i];
 
                 var marker;
 
