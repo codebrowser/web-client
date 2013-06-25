@@ -1,6 +1,6 @@
 <header>
 
     <h1>{{name}}</h1>
-    <span class='pull-right'>Worked on for {{time}}</span>
+    <span class='pull-right'>+{{time}}</span>
 
 </header>
