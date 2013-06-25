@@ -2,6 +2,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots':                           'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId':               'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId': 'snapshot'
 
@@ -46,8 +47,20 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
             success: function () {
 
+                var snapshot;
+
+                // No snapshot ID specified, navigate to first snapshot
+                if (!snapshotId) {
+
+                    snapshot = snapshotCollection.at(0);
+
+                    self.snapshotView.navigate(snapshot, null);
+
+                    return;
+                }
+
                 // Snapshot
-                var snapshot = snapshotCollection.get(snapshotId);
+                snapshot = snapshotCollection.get(snapshotId);
 
                 // Invalid snapshot ID
                 if (!snapshot) {
