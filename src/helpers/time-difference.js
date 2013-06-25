@@ -1,11 +1,8 @@
 codebrowser.helper.TimeDifference = {
 
-    calculate: function (timestamp, previousTimestamp) {
+    calculate: function (time, previousTime) {
 
-        var time = new Date(timestamp);
-        var previousTime = new Date(previousTimestamp);
-
-        var difference = time.getTime() - previousTime.getTime();
+        var difference = time - previousTime;
 
         var seconds = Math.round(difference/1000);
 
