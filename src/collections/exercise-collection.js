@@ -8,6 +8,10 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
 
     url: function () {
 
+        if (this.course) {
+            return this.course.url() + '/exercises';
+        }
+
         if (!this.studentId || !this.courseId) {
             throw new Error('Options studentId and courseId are required to fetch exercises.');
         }
