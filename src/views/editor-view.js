@@ -206,9 +206,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     didSplit: function () {
 
-        // Re-render diff
-        this.clearDiff();
-        this.toggleDiff(this.diff);
+        if (this.diff) {
+
+            // Re-render diff
+            this.clearDiff();
+            this.toggleDiff(this.diff);
+        }
     },
 
     toggleSplit: function (split) {
