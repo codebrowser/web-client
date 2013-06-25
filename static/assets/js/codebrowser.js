@@ -1268,6 +1268,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     first: function () {
 
         var first = this.collection.first();
+
+        if (!first) {
+            return;
+        }
+
         var file = first.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(first, file);
@@ -1304,6 +1309,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     last: function () {
 
         var last = this.collection.last();
+
+        if (!last) {
+            return;
+        }
+
         var file = last.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(last, file);
