@@ -736,8 +736,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         } else {
 
-            // Restore split state
-            this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
+            // Restore split state if necessary
+            if (!this.split) {
+                this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
+            }
 
             // Restore diff state if necessary
             if (!this.diff) {
