@@ -52,7 +52,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.editorElement = $('<div>', { id: 'editor' });
 
         // Elements for editors
-        this.sideEditorElement = $('<div>', { id: 'side-editor', height: '800px' }).hide();
+        this.sideEditorElement = $('<div>', { id: 'side-editor', height: '800px' });
         this.mainEditorElement = $('<div>', { id: 'main-editor', height: '800px' });
 
         this.editorElement.append(this.sideEditorElement);
@@ -148,15 +148,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var mode = codebrowser.helper.AceMode.getModeForFilename(this.model.get('name'));
 
         // Disable split and diff view if both models are the same
-        if (previousFile === this.model) {
+        if (this.previousModel === this.model) {
 
             this.toggleSplit(false);
             this.toggleDiff(false);
 
         } else {
 
-            // Restore split state
-            this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
+            // Restore split state if necessary
+            if (!this.split) {
+                this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
+            }
 
             // Restore diff state if necessary
             if (!this.diff) {
@@ -165,7 +167,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
 
         // Fetch previous file only if the models are not the same
-        if (previousFile !== this.model) {
+        if (this.previousModel !== this.model) {
 
             previousFile.fetchContent(function (content, error) {
 
@@ -184,6 +186,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             if (error) {
                 throw new Error('Failed file fetch.');
+            }
+
+            // If models are the same, set the same content to side editor
+            if (self.previousModel === self.model) {
+                self.setContent(self.sideEditor, content, mode);
             }
 
             self.setContent(self.mainEditor, content, mode);
@@ -234,9 +241,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
             return;
         }
 
-        // Disable split
-        this.sideEditorElement.hide();
-        this.mainEditorElement.css({ float: '', width: '' });
+        // Disable split if necessary
+        if (this.sideEditorElement.is(':visible')) {
+            this.sideEditorElement.hide();
+            this.mainEditorElement.css({ float: '', width: '' });
+        }
 
         this.didSplit();
     },
