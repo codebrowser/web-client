@@ -4,9 +4,9 @@ codebrowser.model.Diff = function (previousContent, content) {
 
     var count = {
 
-        replace: 0,
-        insert:  0,
-        delete:  0
+        replace:  0,
+        insert:   0,
+        'delete': 0
 
     }
 
@@ -14,9 +14,9 @@ codebrowser.model.Diff = function (previousContent, content) {
 
     var differences = {
 
-        insert: [],
-        replace: [],
-        delete: [],
+        insert:   [],
+        replace:  [],
+        'delete': [],
         all: []
 
     }
