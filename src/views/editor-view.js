@@ -141,6 +141,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Wait for files to be in sync
         var fileSynced = _.after(2, function() {
 
+            var previousContent = self.sideEditor.getValue();
+            var content = self.mainEditor.getValue();
+
+            // Differences
+            self.differences = new codebrowser.model.Diff(previousContent, content);
+
             self.toggleDiff(self.diff);
         });
 
@@ -301,13 +307,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
 
         // Enable diff
-        if (this.diff) {
-
-            var previousContent = this.sideEditor.getValue();
-            var content = this.mainEditor.getValue();
-
-            // Differences
-            this.differences = new codebrowser.model.Diff(previousContent, content);
+        if (this.diff && this.differences) {
 
             // Show differences
             for (var i = 0; i < this.differences.getDifferences().all.length; i++) {
