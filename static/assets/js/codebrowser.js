@@ -1095,11 +1095,6 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
 
         // Update exercise container
         this.exerciseContainer.html(exerciseContainerOutput);
-    },
-
-    update: function () {
-
-        this.render();
     }
 });
 ;
@@ -1393,11 +1388,6 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     },
 
-    initialize: function () {
-
-        this.setUp();
-    },
-
     setUp: function () {
 
         // Create exercise view if it is not active
@@ -1432,7 +1422,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
             success: function () {
 
-                self.exerciseView.update();
+                self.exerciseView.render();
             },
 
             // Exercises fetch failed

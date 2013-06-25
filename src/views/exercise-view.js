@@ -38,10 +38,5 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
 
         // Update exercise container
         this.exerciseContainer.html(exerciseContainerOutput);
-    },
-
-    update: function () {
-
-        this.render();
     }
 });
