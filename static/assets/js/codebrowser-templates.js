@@ -11,10 +11,16 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</h1>\n    <span class='pull-right'>";
+    + "</h1>\n    <span class='pull-right'>\n\n        ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + "</span>\n\n</header>\n";
+    + "\n\n        <a id='editor-popover' href='#' data-toggle='popover' data-placement='bottom' data-content='\n\n            <dl class=\"dl-horizontal pull-left\">\n\n              <dt>Insert</dt>\n              <dd>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " lines</dd>\n\n              <dt>Replace</dt>\n              <dd>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.replace)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " lines</dd>\n\n              <dt>Delete</dt>\n              <dd>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1['delete'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " lines</dd>\n\n            </dl>\n\n        '><i class='icon-info-sign icon-gray'></i></a>\n\n    </span>\n\n</header>\n";
   return buffer;
   });
 

@@ -100,6 +100,20 @@
 
 }
 
+/* Popover */
+
+.popover-content .dl-horizontal dt {
+
+    width: auto;
+
+}
+
+.popover-content .dl-horizontal dd {
+
+    margin-left: 100px;
+
+}
+
 /* Container */
 
 #container {

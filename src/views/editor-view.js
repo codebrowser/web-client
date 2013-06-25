@@ -6,6 +6,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    events: {
+
+        'click #editor-popover': 'togglePopover'
+
+    },
+
     /* Split */
 
     split: false,
@@ -19,7 +25,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     diff: false,
 
-    differences: null,
+    differences: new codebrowser.model.Diff('', ''),
 
     canDiff: function () {
 
@@ -41,6 +47,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
     },
 
     removedLines: [],
+
+    /* Popover */
+
+    popover: false,
 
     /* Editor */
 
@@ -77,15 +87,31 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Empty container
         this.$el.empty();
+        this.$el.undelegate();
     },
 
     render: function () {
 
+        // View attributes
+        var attributes = {
+
+            difference: this.differences.getCount()
+
+        }
+
         // Template
-        var topContainerOutput = $(this.template.topContainer(this.model.toJSON()));
+        var topContainerOutput = $(this.template.topContainer(_.extend(this.model.toJSON(), attributes)));
+
+        // Editor popover
+        $('#editor-popover', topContainerOutput).popover({ animation: false, html: true, trigger: 'click' });
 
         // Update top container
         this.topContainer.html(topContainerOutput);
+
+        // Popover is enabled, show popover
+        if (this.popover) {
+            $('#editor-popover').popover('toggle');
+        }
     },
 
     removeDecorations: function (editor) {
@@ -150,6 +176,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
             self.differences = new codebrowser.model.Diff(previousContent, content);
 
             self.toggleDiff(self.diff);
+
+            self.render();
         });
 
         // Syntax mode
@@ -309,7 +337,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
 
         // Enable diff
-        if (this.diff && this.differences) {
+        if (this.diff) {
 
             // Show differences
             for (var i = 0; i < this.differences.getDifferences().all.length; i++) {
@@ -392,5 +420,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Disable diff
         this.clearDiff();
+    },
+
+    togglePopover: function (event) {
+
+        event.preventDefault();
+
+        this.popover = !this.popover;
     }
 });

@@ -1,6 +1,27 @@
 <header>
 
     <h1>{{name}}</h1>
-    <span class='pull-right'>{{date snapshot.snapshotTime}}</span>
+    <span class='pull-right'>
+
+        {{date snapshot.snapshotTime}}
+
+        <a id='editor-popover' href='#' data-toggle='popover' data-placement='bottom' data-content='
+
+            <dl class="dl-horizontal pull-left">
+
+              <dt>Insert</dt>
+              <dd>{{difference.insert}} lines</dd>
+
+              <dt>Replace</dt>
+              <dd>{{difference.replace}} lines</dd>
+
+              <dt>Delete</dt>
+              <dd>{{difference.delete}} lines</dd>
+
+            </dl>
+
+        '><i class='icon-info-sign icon-gray'></i></a>
+
+    </span>
 
 </header>
