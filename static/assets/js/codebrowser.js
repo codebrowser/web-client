@@ -4,16 +4,17 @@ this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
   buffer += "<header>\n\n    <h1>";
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</h1>\n    <span class='pull-right'>";
-  options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
+    + "</h1>\n    <span class='pull-right'>Worked on for ";
+  if (stack1 = helpers.time) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.time; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
     + "</span>\n\n</header>\n";
   return buffer;
   });
@@ -215,6 +216,58 @@ Handlebars.registerHelper('date', function (time) {
 
     return new Date(time).toLocaleString();
 });
+;
+
+codebrowser.helper.TimeDifference = {
+
+    calculate: function (timestamp, previousTimestamp) {
+
+        var time = new Date(timestamp);
+        var previousTime = new Date(previousTimestamp);
+
+        var difference = time.getTime() - previousTime.getTime();
+
+        var seconds = Math.round(difference/1000);
+
+        var value;
+
+        if (seconds > 60) {
+            var minutes = Math.round(seconds / 60);
+
+            if (minutes > 60) {
+                var hours = Math.round(minutes / 60);
+
+                if (hours > 24) {
+                    var days = Math.round(hours / 24);
+
+                    value = days + ' day';
+
+                } else {
+
+                    value = hours + ' hour';
+                }
+
+            } else {
+
+                value = minutes + ' minute';
+            }
+
+        } else {
+
+            value = seconds + ' second';
+        }
+
+        var thenum = value.replace(/[A-Za-z$-]/g, '');
+
+        if (parseInt(thenum, 10) > 1) {
+            value += 's';
+        }
+
+        return value;
+    }
+
+}
+
 ;
 
 codebrowser.model.Course = Backbone.RelationalModel.extend({
@@ -660,8 +713,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     render: function () {
 
+        var timeDiff = codebrowser.helper.TimeDifference.calculate(this.model.get('snapshot').get('snapshotTime'),
+                                                                   this.previousModel.get('snapshot').get('snapshotTime'));
+
+        var attributes = {
+
+            time: timeDiff
+
+        }
+
         // Template
-        var topContainerOutput = $(this.template.topContainer(this.model.toJSON()));
+        var topContainerOutput = $(this.template.topContainer(_.extend(this.model.toJSON(), attributes)));
 
         // Update top container
         this.topContainer.html(topContainerOutput);

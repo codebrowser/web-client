@@ -79,8 +79,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     render: function () {
 
+        var timeDiff = codebrowser.helper.TimeDifference.calculate(this.model.get('snapshot').get('snapshotTime'),
+                                                                   this.previousModel.get('snapshot').get('snapshotTime'));
+
+        var attributes = {
+
+            time: timeDiff
+
+        }
+
         // Template
-        var topContainerOutput = $(this.template.topContainer(this.model.toJSON()));
+        var topContainerOutput = $(this.template.topContainer(_.extend(this.model.toJSON(), attributes)));
 
         // Update top container
         this.topContainer.html(topContainerOutput);
