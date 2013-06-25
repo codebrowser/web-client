@@ -637,6 +637,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     diff: false,
 
+    differences: null,
+
     canDiff: function () {
 
         return this.model !== this.previousModel;
