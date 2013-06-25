@@ -7,6 +7,7 @@ codebrowser.helper.TimeDifference = {
         var seconds = Math.round(difference/1000);
 
         var value;
+        var timeUnit;
 
         if (seconds > 60) {
             var minutes = Math.round(seconds / 60);
@@ -17,30 +18,32 @@ codebrowser.helper.TimeDifference = {
                 if (hours > 24) {
                     var days = Math.round(hours / 24);
 
-                    value = days + ' day';
+                    value = days;
+                    timeUnit = 'day';
 
                 } else {
 
-                    value = hours + ' hour';
+                    value = hours;
+                    timeUnit = 'hour';
                 }
 
             } else {
 
-                value = minutes + ' minute';
+                value = minutes;
+                timeUnit = 'minute';
             }
 
         } else {
 
-            value = seconds + ' second';
+            value = seconds;
+            timeUnit = 'second';
         }
 
-        var thenum = value.replace(/[A-Za-z$-]/g, '');
-
-        if (parseInt(thenum, 10) > 1) {
-            value += 's';
+        if (value > 1) {
+            timeUnit += 's';
         }
-
-        return value;
+        
+        return value + ' ' + timeUnit;
     }
 
 }
