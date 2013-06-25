@@ -241,9 +241,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
             return;
         }
 
-        // Disable split
-        this.sideEditorElement.hide();
-        this.mainEditorElement.css({ float: '', width: '' });
+        // Disable split if necessary
+        if (this.sideEditorElement.is(':visible')) {
+            this.sideEditorElement.hide();
+            this.mainEditorElement.css({ float: '', width: '' });
+        }
 
         this.didSplit();
     },
