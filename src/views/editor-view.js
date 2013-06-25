@@ -79,12 +79,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     render: function () {
 
-        var timeDiff = codebrowser.helper.TimeDifference.calculate(this.model.get('snapshot').get('snapshotTime'),
-                                                                   this.previousModel.get('snapshot').get('snapshotTime'));
+        var duration = codebrowser.helper.Duration.calculate(this.model.get('snapshot').get('snapshotTime'),
+                                                             this.previousModel.get('snapshot').get('snapshotTime'));
 
         var attributes = {
 
-            time: timeDiff
+            duration: duration
 
         }
 
