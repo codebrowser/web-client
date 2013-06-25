@@ -1,14 +1,25 @@
 codebrowser.model.Diff = function (previousContent, content) {
 
-    var statistics = {
+    /* Lines */
 
-        'replace': 0,
-        'insert': 0,
-        'delete': 0
+    var count = {
+
+        replace: 0,
+        insert:  0,
+        delete:  0
 
     }
 
-    var differences = [];
+    /* Differences */
+
+    var differences = {
+
+        insert: [],
+        replace: [],
+        delete: [],
+        all: []
+
+    }
 
     var from = difflib.stringAsLines(previousContent);
     var to = difflib.stringAsLines(content);
@@ -66,10 +77,11 @@ codebrowser.model.Diff = function (previousContent, content) {
                     difference.rowEnd -= (changed > delta ? changed : delta);
                 }
 
-                differences.push(difference);
+                differences.replace.push(difference);
+                differences.all.push(difference);
 
-                // Statistics
-                statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+                // Increase replaced lines
+                count.replace += difference.rowEnd - difference.rowStart + 1;
 
                 // Delete
                 difference = originalDifference;
@@ -85,10 +97,12 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                 // Replace
                 difference.rowEnd -= (changed > delta ? changed : delta);
-                differences.push(difference);
 
-                // Statistics
-                statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+                differences.replace.push(difference);
+                differences.all.push(difference);
+
+                // Increase replaced lines
+                count.replace += difference.rowEnd - difference.rowStart + 1;
 
                 // Insert
                 difference = originalDifference;
@@ -124,19 +138,20 @@ codebrowser.model.Diff = function (previousContent, content) {
             deleteOffset += increase;
         }
 
-        // Statistics
-        statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+        // Increase lines
+        count[difference.type] += difference.rowEnd - difference.rowStart + 1;
 
-        differences.push(difference);
+        differences[difference.type].push(difference);
+        differences.all.push(difference);
+    }
+
+    this.getCount = function () {
+
+        return count;
     }
 
     this.getDifferences = function () {
 
         return differences;
-    }
-
-    this.getStatistics = function () {
-
-        return statistics;
     }
 }
