@@ -240,6 +240,14 @@ codebrowser.model.Course = Backbone.RelationalModel.extend({
 
 codebrowser.model.Diff = function (previousContent, content) {
 
+    var statistics = {
+
+        'replace': 0,
+        'insert': 0,
+        'delete': 0
+
+    }
+
     var differences = [];
 
     var from = difflib.stringAsLines(previousContent);
@@ -300,6 +308,9 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                 differences.push(difference);
 
+                // Statistics
+                statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+
                 // Delete
                 difference = originalDifference;
 
@@ -315,6 +326,9 @@ codebrowser.model.Diff = function (previousContent, content) {
                 // Replace
                 difference.rowEnd -= (changed > delta ? changed : delta);
                 differences.push(difference);
+
+                // Statistics
+                statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
 
                 // Insert
                 difference = originalDifference;
@@ -348,32 +362,20 @@ codebrowser.model.Diff = function (previousContent, content) {
             deleteOffset += increase;
         }
 
+        // Statistics
+        statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+
         differences.push(difference);
     }
 
     this.getDifferences = function () {
+
         return differences;
     }
 
-    this.statistics = function () {
+    this.getStatistics = function () {
 
-        var stats = {
-
-            'replace': 0,
-            'insert': 0,
-            'delete': 0
-
-        }
-
-        for (var i=0; i < differences.length; ++i) {
-
-            var difference = differences[i];
-
-            var lines = difference.rowEnd - difference.rowStart + 1;
-            stats[difference.type] += lines;
-        }
-
-        return stats;
+        return statistics;
     }
 }
 ;
