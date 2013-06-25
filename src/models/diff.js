@@ -28,7 +28,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             type:     operation[0],
             rowStart: operation[3],
             rowEnd:   operation[4] - 1,
-            offset: offset
+            offset:   offset
 
         }
 
@@ -57,7 +57,7 @@ codebrowser.model.Diff = function (previousContent, content) {
                 if (difference.rowEnd - difference.rowStart !== 0) {
                     difference.rowEnd -= (changed > delta ? changed : delta);
                 }
-                
+
                 differences.push(difference);
 
                 // Delete
@@ -99,9 +99,11 @@ codebrowser.model.Diff = function (previousContent, content) {
             difference.rowStart = operation[1] + deleteOffset;
             difference.rowEnd = operation[2] - 1 + deleteOffset;
 
-            difference = _.extend(difference, { fromRowStart: operation[1], fromRowEnd: operation[2] - 1, lines: deleted });
+            difference = _.extend(difference, { fromRowStart: operation[1],
+                                                fromRowEnd: operation[2] - 1,
+                                                lines: deleted });
 
-            // Delete increases offset
+            // Delete increases offsets
             var increase = difference.rowEnd - difference.rowStart + 1;
 
             offset += increase;
