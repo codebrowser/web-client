@@ -40,7 +40,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
             success: function () {
 
-                self.courseView.update();
+                self.courseView.render();
             },
 
             // Courses fetch failed
