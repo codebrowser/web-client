@@ -4,7 +4,7 @@
 
     <span class='pull-right'>
 
-        + {{duration}}
+        + {{duration snapshot.snapshotTime previous.snapshot.snapshotTime}}
 
         <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom' data-content='
 

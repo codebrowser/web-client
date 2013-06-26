@@ -4,7 +4,7 @@ this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
   buffer += "<header>\n\n    <h1>";
@@ -12,9 +12,8 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "</h1>\n\n    <span class='pull-right'>\n\n        + ";
-  if (stack1 = helpers.duration) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.duration; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.duration || depth0.duration),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "duration", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
     + "\n\n        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom' data-content='\n\n            <dl class=\"dl-horizontal pull-left\">\n\n              <dt>Insert</dt>\n              <dd>"
     + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " lines</dd>\n\n              <dt>Replace</dt>\n              <dd>"
@@ -275,6 +274,11 @@ codebrowser.helper.Duration = {
         return value + ' ' + timeUnit;
     }
 }
+
+Handlebars.registerHelper('duration', function (time, previousTime) {
+
+    return codebrowser.helper.Duration.calculate(time, previousTime);
+});
 ;
 
 codebrowser.model.Course = Backbone.RelationalModel.extend({
@@ -829,12 +833,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     render: function () {
 
-        var duration = codebrowser.helper.Duration.calculate(this.model.get('snapshot').get('snapshotTime'),
-                                                             this.previousModel.get('snapshot').get('snapshotTime'));
         // View attributes
         var attributes = {
 
-            duration: duration,
+            previous: this.previousModel.toJSON(),
             difference: this.differences.getCount()
 
         }

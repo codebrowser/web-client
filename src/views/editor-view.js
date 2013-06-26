@@ -149,12 +149,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     render: function () {
 
-        var duration = codebrowser.helper.Duration.calculate(this.model.get('snapshot').get('snapshotTime'),
-                                                             this.previousModel.get('snapshot').get('snapshotTime'));
         // View attributes
         var attributes = {
 
-            duration: duration,
+            previous: this.previousModel.toJSON(),
             difference: this.differences.getCount()
 
         }

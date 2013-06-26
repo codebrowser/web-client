@@ -49,3 +49,8 @@ codebrowser.helper.Duration = {
         return value + ' ' + timeUnit;
     }
 }
+
+Handlebars.registerHelper('duration', function (time, previousTime) {
+
+    return codebrowser.helper.Duration.calculate(time, previousTime);
+});
