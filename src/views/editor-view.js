@@ -318,6 +318,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
 
         // Editors can get confused after a split
+        this.mainEditor.resize();
+        this.sideEditor.resize();
         this.mainEditor.renderer.updateFull();
         this.sideEditor.renderer.updateFull();
     },
