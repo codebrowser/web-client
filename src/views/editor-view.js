@@ -312,6 +312,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             this.clearDiff();
             this.toggleDiff(this.diff);
         }
+
+        // Editors can get confused after a split
+        this.mainEditor.renderer.updateFull();
+        this.sideEditor.renderer.updateFull();
     },
 
     /* Actions */
