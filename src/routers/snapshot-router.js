@@ -19,7 +19,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
             this.snapshotView = new codebrowser.view.SnapshotView();
 
-            codebrowser.controller.ViewController.pushToView(this.snapshotView);
+            codebrowser.controller.ViewController.push(this.snapshotView);
         }
     },
 
@@ -27,7 +27,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
         var errorView = new codebrowser.view.NotFoundErrorView();
 
-        codebrowser.controller.ViewController.pushToView(errorView, true);
+        codebrowser.controller.ViewController.push(errorView, true);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {

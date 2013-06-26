@@ -7,7 +7,7 @@ codebrowser.controller.ViewController = {
         return this.view === view;
     },
 
-    pushToView: function (view, render) {
+    push: function (view, render) {
 
         // Remove previous view
         if (this.view) {
@@ -20,5 +20,8 @@ codebrowser.controller.ViewController = {
         if (render) {
             this.view.render();
         }
+
+        // Set to container
+        $(config.view.container).html(this.view.el);
     }
 }

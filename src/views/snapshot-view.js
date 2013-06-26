@@ -1,6 +1,6 @@
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
-    el: config.view.container,
+    id: 'snapshot-container',
 
     template: {
 
@@ -25,19 +25,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         var self = this;
 
-        // Snapshot container
-        this.snapshotContainer = $('<div>', { id: 'snapshot-container' });
-
-        // Create divs for elements
+        // Navigation
         this.navigationContainer = $('<div>', { id: 'navigation-container' });
-        this.editorContainer = $('<div>', { id: 'editor-container' });
-
-        // Append elements to parent
-        this.snapshotContainer.append(this.navigationContainer);
-        this.snapshotContainer.append(this.editorContainer);
+        this.$el.append(this.navigationContainer);
 
         // Editor
-        this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
+        this.editorView = new codebrowser.view.EditorView();
+        this.$el.append(this.editorView.el);
 
         // Bind resize
         $(window).resize(function () {
@@ -73,17 +67,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Remove editor
         this.editorView.remove();
 
-        // Empty container
-        this.$el.empty();
-        this.$el.undelegate();
+        Backbone.View.prototype.remove.call(this);
     },
 
     /* Render */
 
     render: function () {
-
-        // Append wrapper to DOM
-        this.$el.append(this.snapshotContainer);
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);

@@ -1,5 +1,7 @@
 codebrowser.view.EditorView = Backbone.View.extend({
 
+    id: 'editor-container',
+
     template: {
 
         topContainer: Handlebars.templates.EditorTopContainer
@@ -63,7 +65,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Hide view until needed
         this.$el.hide();
 
-        // Create divs for elements
+        // Elements
         this.topContainer = $('<div>');
         this.editorElement = $('<div>', { id: 'editor' });
 
@@ -86,15 +88,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
-    },
-
-    /* Remove */
-
-    remove: function () {
-
-        // Empty container
-        this.$el.empty();
-        this.$el.undelegate();
     },
 
     /* Reset */

@@ -25,7 +25,7 @@ var codebrowser = {
         window.onerror = function () {
 
             var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
-            codebrowser.controller.ViewController.pushToView(errorView, true);
+            codebrowser.controller.ViewController.push(errorView, true);
         }
 
         // Initialise routers
