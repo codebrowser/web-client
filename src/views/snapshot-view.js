@@ -34,13 +34,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.append(this.editorView.el);
 
         // Bind resize
-        $(window).resize(function () {
+        this.resize = function () {
 
             self.didResize();
-        });
+        }
+
+        $(window).resize(this.resize);
 
         // Bind keydown
-        $(document).keydown(function () {
+        this.keydown = function () {
 
             // Left
             if (event.keyCode === 37) {
@@ -51,7 +53,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             if (event.keyCode === 39) {
                 self.next();
             }
-        });
+        }
+
+        $(document).keydown(this.keydown);
     },
 
     /* Remove */
@@ -59,10 +63,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     remove: function () {
 
         // Unbind resize
-        $(window).unbind();
+        $(window).off('resize', this.resize);
 
         // Unbind keydown
-        $(document).unbind();
+        $(document).off('keydown', this.keydown);
 
         // Remove editor
         this.editorView.remove();
