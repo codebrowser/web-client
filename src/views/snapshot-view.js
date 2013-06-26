@@ -19,6 +19,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         var self = this;
@@ -37,6 +39,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Editor
         this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
 
+        // Bind resize
+        $(window).resize(function () {
+
+            self.didResize();
+        });
+
         // Bind keydown
         $(document).keydown(function () {
 
@@ -52,7 +60,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         });
     },
 
+    /* Remove */
+
     remove: function () {
+
+        // Unbind resize
+        $(window).unbind();
 
         // Unbind keydown
         $(document).unbind();
@@ -64,6 +77,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.empty();
         this.$el.undelegate();
     },
+
+    /* Render */
 
     render: function () {
 
@@ -120,6 +135,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationContainer.html(navigationContainerOutput);
     },
 
+    /* Update */
+
     update: function (snapshot, fileId) {
 
         this.model = snapshot;
@@ -148,6 +165,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.render();
     },
 
+    /* Events */
+
+    didResize: function () {
+
+        this.editorView.didResize();
+    },
+
+    /* Actions */
+
     split: function () {
 
         this.editorView.toggleSplit();
@@ -157,6 +183,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.editorView.toggleDiff();
     },
+
+    /* Actions - Navigation */
 
     navigate: function (snapshot, file) {
 
@@ -180,11 +208,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     first: function () {
 
         var first = this.collection.first();
-
-        if (!first) {
-            return;
-        }
-
         var file = first.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(first, file);
@@ -221,11 +244,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     last: function () {
 
         var last = this.collection.last();
-
-        if (!last) {
-            return;
-        }
-
         var file = last.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(last, file);

@@ -6,7 +6,7 @@
 
         + {{duration}}
 
-        <a id='editor-popover' href='#' data-toggle='popover' data-placement='bottom' data-content='
+        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom' data-content='
 
             <dl class="dl-horizontal pull-left">
 
