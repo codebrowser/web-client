@@ -1430,12 +1430,12 @@ codebrowser.controller.ViewController = {
 
     view: null,
 
-    isActive: function (view) {
-
-        return this.view === view;
-    },
-
     push: function (view, render) {
+
+        // Already in view
+        if (this.view === view) {
+            return;
+        }
 
         // Remove previous view
         if (this.view) {
@@ -1486,18 +1486,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.setUp();
-    },
-
-    setUp: function () {
-
-        // Create snapshot view if it is not active
-        if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
-
-            this.snapshotView = new codebrowser.view.SnapshotView();
-
-            codebrowser.controller.ViewController.push(this.snapshotView);
-        }
+        this.snapshotView = new codebrowser.view.SnapshotView();
     },
 
     notFound: function () {
@@ -1508,8 +1497,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {
-
-        this.setUp();
 
         var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
                                                                                        courseId: courseId,
@@ -1559,5 +1546,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
+
+        codebrowser.controller.ViewController.push(this.snapshotView);
     }
 });
