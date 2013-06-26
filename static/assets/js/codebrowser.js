@@ -1467,10 +1467,14 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
     },
+
+    /* Actions */
 
     notFound: function () {
 
@@ -1488,6 +1492,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.setUp();
@@ -1502,6 +1508,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             codebrowser.controller.ViewController.push(this.snapshotView);
         }
     },
+
+    /* Actions */
 
     notFound: function () {
 

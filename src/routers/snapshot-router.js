@@ -7,6 +7,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.setUp();
@@ -21,6 +23,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             codebrowser.controller.ViewController.push(this.snapshotView);
         }
     },
+
+    /* Actions */
 
     notFound: function () {
 
