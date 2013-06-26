@@ -144,6 +144,36 @@ function program1(depth0,data,depth1) {
   buffer += escapeExpression(stack2)
     + "</div>\n\n            <div class='span3'>\n\n                <div class='btn-group pull-right'>\n                    <button type='button' id='first' class='btn'>First</button>\n                    <button type='button' id='previous' class='btn'>Previous</button>\n                    <button type='button' id='next' class='btn'>Next</button>\n                    <button type='button' id='last' class='btn'>Last</button>\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
+  });
+
+this["Handlebars"]["templates"]["StudentContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n            <li><a href='#/students/";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "/courses'>";
+  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "</a></li>\n        ";
+  return buffer;
+  }
+
+  buffer += "<section>\n\n    <ul>\n        ";
+  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
+  if (stack1 = helpers.list) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.list; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.list) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </ul>\n\n</section>\n";
+  return buffer;
   });;
 
 /* exported config */
@@ -241,6 +271,7 @@ var codebrowser = {
 
         // Initialise routers
         codebrowser.app.base = new codebrowser.router.BaseRouter();
+        codebrowser.app.student = new codebrowser.router.StudentRouter();
         codebrowser.app.course = new codebrowser.router.CourseRouter();
         codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
         codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
@@ -1421,6 +1452,48 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 });
 ;
 
+codebrowser.view.StudentView = Backbone.View.extend({
+
+    el: config.view.container,
+
+    template: {
+
+        studentContainer: Handlebars.templates.StudentContainer
+
+    },
+
+    initialize: function () {
+
+        // Course container
+        this.studentContainer = $('<div>', { id: 'student-container' });
+    },
+
+    remove: function () {
+
+        // Empty container
+        this.$el.empty();
+    },
+
+    render: function () {
+
+        this.model = {
+
+            list: this.collection.toJSON()
+
+        }
+
+        // Append wrapper to DOM
+        this.$el.append(this.studentContainer);
+
+        // Template for student container
+        var studentContainerOutput = $(this.template.studentContainer(this.model));
+
+        // Update student container
+        this.studentContainer.html(studentContainerOutput);
+    }
+});
+;
+
 codebrowser.controller.ViewController = {
 
     view: null,
@@ -1669,6 +1742,61 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             },
 
             // Snapshots fetch failed
+            error: function () {
+
+                self.notFound();
+            }
+        });
+    }
+});
+;
+
+codebrowser.router.StudentRouter = Backbone.Router.extend({
+
+    routes: {
+
+        'students': 'courses'
+
+    },
+
+    setUp: function () {
+
+        // Create exercise view if it is not active
+        if (!codebrowser.controller.ViewController.isActive(this.studentView)) {
+
+            this.studentView = new codebrowser.view.StudentView();
+
+            codebrowser.controller.ViewController.pushToView(this.studentView);
+        }
+
+    },
+
+    notFound: function () {
+
+        var errorView = new codebrowser.view.NotFoundErrorView();
+
+        codebrowser.controller.ViewController.pushToView(errorView, true);
+    },
+
+    courses: function () {
+
+        this.setUp();
+
+        var studentCollection = new codebrowser.collection.StudentCollection();
+
+        this.studentView.collection = studentCollection;
+
+        var self = this;
+
+        // Fetch course collection
+        studentCollection.fetch({
+
+            success: function () {
+
+                self.studentView.render();
+            },
+
+            // Courses fetch failed
             error: function () {
 
                 self.notFound();

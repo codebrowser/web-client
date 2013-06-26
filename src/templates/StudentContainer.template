@@ -1,0 +1,9 @@
+<section>
+
+    <ul>
+        {{#list}}
+            <li><a href='#/students/{{id}}/courses'>{{name}}</a></li>
+        {{/list}}
+    </ul>
+
+</section>

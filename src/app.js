@@ -30,6 +30,7 @@ var codebrowser = {
 
         // Initialise routers
         codebrowser.app.base = new codebrowser.router.BaseRouter();
+        codebrowser.app.student = new codebrowser.router.StudentRouter();
         codebrowser.app.course = new codebrowser.router.CourseRouter();
         codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
         codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
