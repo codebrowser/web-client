@@ -8,7 +8,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create exercise view if it is not active
+        // Create student view if it is not active
         if (!codebrowser.controller.ViewController.isActive(this.studentView)) {
 
             this.studentView = new codebrowser.view.StudentView();
@@ -35,7 +35,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
         var self = this;
 
-        // Fetch course collection
+        // Fetch student collection
         studentCollection.fetch({
 
             success: function () {
@@ -43,7 +43,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                 self.studentView.render();
             },
 
-            // Courses fetch failed
+            // Students fetch failed
             error: function () {
 
                 self.notFound();

@@ -8,7 +8,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create exercise view if it is not active
+        // Create course view if it is not active
         if (!codebrowser.controller.ViewController.isActive(this.courseView)) {
 
             this.courseView = new codebrowser.view.CourseView();

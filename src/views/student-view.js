@@ -10,7 +10,7 @@ codebrowser.view.StudentView = Backbone.View.extend({
 
     initialize: function () {
 
-        // Course container
+        // Student container
         this.studentContainer = $('<div>', { id: 'student-container' });
     },
 
