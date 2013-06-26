@@ -2,12 +2,12 @@ codebrowser.controller.ViewController = {
 
     view: null,
 
-    push: function (view, render) {
+    isActive: function (view) {
 
-        // Already in view
-        if (this.view === view) {
-            return;
-        }
+        return this.view === view;
+    },
+
+    push: function (view, render) {
 
         // Remove previous view
         if (this.view) {

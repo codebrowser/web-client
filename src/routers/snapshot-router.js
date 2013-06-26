@@ -9,7 +9,17 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.snapshotView = new codebrowser.view.SnapshotView();
+        this.setUp();
+    },
+
+    setUp: function () {
+
+        if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
+
+            this.snapshotView = new codebrowser.view.SnapshotView();
+
+            codebrowser.controller.ViewController.push(this.snapshotView);
+        }
     },
 
     notFound: function () {
@@ -20,6 +30,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {
+
+        this.setUp();
 
         var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
                                                                                        courseId: courseId,
@@ -69,7 +81,5 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
-
-        codebrowser.controller.ViewController.push(this.snapshotView);
     }
 });
