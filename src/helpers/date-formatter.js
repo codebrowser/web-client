@@ -1,4 +1,4 @@
-Handlebars.registerHelper('date', function (time) {
+Handlebars.registerHelper('date', function (date) {
 
-    return new Date(time).toLocaleString();
+    return moment(new Date(date)).format('D.M.YYYY HH.mm.ss');
 });

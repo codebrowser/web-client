@@ -102,6 +102,12 @@
 
 /* Popover */
 
+.popover-title time {
+
+    display: block;
+
+}
+
 .popover-content .dl-horizontal dt {
 
     width: auto;

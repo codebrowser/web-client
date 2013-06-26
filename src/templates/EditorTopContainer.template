@@ -6,7 +6,16 @@
 
         + {{duration snapshot.snapshotTime previous.snapshot.snapshotTime}}
 
-        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom' data-content='
+        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom'
+
+           data-original-title='
+
+                <time>{{date previous.snapshot.snapshotTime}} –</time>
+                <time>{{date snapshot.snapshotTime}}</time>
+
+           '
+
+           data-content='
 
             <dl class="dl-horizontal pull-left">
 
