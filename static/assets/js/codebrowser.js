@@ -1,6 +1,38 @@
 this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 
+this["Handlebars"]["templates"]["CourseContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+
+function program1(depth0,data,depth1) {
+  
+  var buffer = "", stack1, stack2;
+  buffer += "\n            <li><a href='#/students/"
+    + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "/courses/";
+  if (stack2 = helpers.id) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.id; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/exercises'>";
+  if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "</a></li>\n        ";
+  return buffer;
+  }
+
+  buffer += "<section>\n\n    <ul>\n        ";
+  options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
+  if (stack1 = helpers.list) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.list; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.list) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </ul>\n\n</section>\n";
+  return buffer;
+  });
+
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -209,6 +241,7 @@ var codebrowser = {
 
         // Initialise routers
         codebrowser.app.base = new codebrowser.router.BaseRouter();
+        codebrowser.app.course = new codebrowser.router.CourseRouter();
         codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
         codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
 
@@ -546,7 +579,14 @@ codebrowser.model.Student = Backbone.RelationalModel.extend({
 codebrowser.collection.CourseCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.Course,
-    url: config.api.main.root + 'courses'
+    url: config.api.main.root + 'courses',
+
+    initialize: function (models, options) {
+
+        if (options) {
+            this.studentId = options.studentId;
+        }
+    }
 
 });
 ;
@@ -652,6 +692,78 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
     model: codebrowser.model.Student,
     url: config.api.main.root + 'students'
 
+});
+;
+
+codebrowser.view.CourseView = Backbone.View.extend({
+
+    el: config.view.container,
+
+    template: {
+
+        courseContainer: Handlebars.templates.CourseContainer
+
+    },
+
+    initialize: function () {
+
+        // Course container
+        this.courseContainer = $('<div>', { id: 'course-container' });
+
+        // Element containing courses
+        this.courseElement = $('<div>', { id: 'courses' });
+
+        // Element containing exercises
+        this.exerciseContainer = $('<div>', { id: 'exercise-container' });
+
+        this.courseContainer.append(this.courseElement);
+        this.courseContainer.append(this.exerciseContainer);
+
+        // Exercises
+        this.exerciseView = new codebrowser.view.ExerciseView({ el: this.exerciseContainer });
+    },
+
+    remove: function () {
+
+        // Empty container
+        this.$el.empty();
+    },
+
+    render: function () {
+
+        this.model = {
+
+            studentId: this.collection.studentId,
+            list: this.collection.toJSON()
+
+        }
+
+        // Append wrapper to DOM
+        this.$el.append(this.courseContainer);
+
+        // Template for course container
+        var courseContainerOutput = $(this.template.courseContainer(this.model));
+
+        // Update course element
+        this.courseElement.html(courseContainerOutput);
+    },
+
+    update: function () {
+
+        this.render();
+
+        var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: this.collection.studentId,
+                                                                                       courseId: this.collection.at(0).id });
+
+        for (var i = 0; i < this.collection.at(0).get('exercises').length; ++i) {
+            exerciseCollection.push(this.collection.at(0).get('exercises').at(i));
+        }
+
+        this.exerciseView.collection = exerciseCollection;
+
+        // Update exercise view
+        this.exerciseView.render();
+    }
 });
 ;
 
@@ -1072,7 +1184,7 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
     initialize: function () {
 
         // Exercise container
-        this.exerciseContainer = $('<div>', { id: 'exercise-container' });
+        this.exerciseElement = $('<div>', { id: 'exercises' });
     },
 
     remove: function () {
@@ -1092,13 +1204,13 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
         }
 
         // Append wrapper to DOM
-        this.$el.append(this.exerciseContainer);
+        this.$el.append(this.exerciseElement);
 
         // Template for exercise container
         var exerciseContainerOutput = $(this.template.exerciseContainer(this.model));
 
         // Update exercise container
-        this.exerciseContainer.html(exerciseContainerOutput);
+        this.exerciseElement.html(exerciseContainerOutput);
     }
 });
 ;
@@ -1380,6 +1492,61 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
     notFound: function () {
 
         codebrowser.controller.ViewController.pushToView(this.errorView, true);
+    }
+});
+;
+
+codebrowser.router.CourseRouter = Backbone.Router.extend({
+
+    routes: {
+
+        'students/:studentId/courses': 'courses'
+
+    },
+
+    setUp: function () {
+
+        // Create exercise view if it is not active
+        if (!codebrowser.controller.ViewController.isActive(this.courseView)) {
+
+            this.courseView = new codebrowser.view.CourseView();
+
+            codebrowser.controller.ViewController.pushToView(this.courseView);
+        }
+
+    },
+
+    notFound: function () {
+
+        var errorView = new codebrowser.view.NotFoundErrorView();
+
+        codebrowser.controller.ViewController.pushToView(errorView, true);
+    },
+
+    courses: function (studentId) {
+
+        this.setUp();
+
+        var courseCollection = new codebrowser.collection.CourseCollection(null, { studentId: studentId });
+
+        this.courseView.collection = courseCollection;
+
+        var self = this;
+
+        // Fetch course collection
+        courseCollection.fetch({
+
+            success: function () {
+
+                self.courseView.update();
+            },
+
+            // Courses fetch failed
+            error: function () {
+
+                self.notFound();
+            }
+        });
     }
 });
 ;

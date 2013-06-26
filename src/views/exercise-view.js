@@ -11,7 +11,7 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
     initialize: function () {
 
         // Exercise container
-        this.exerciseContainer = $('<div>', { id: 'exercise-container' });
+        this.exerciseElement = $('<div>', { id: 'exercises' });
     },
 
     remove: function () {
@@ -31,12 +31,12 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
         }
 
         // Append wrapper to DOM
-        this.$el.append(this.exerciseContainer);
+        this.$el.append(this.exerciseElement);
 
         // Template for exercise container
         var exerciseContainerOutput = $(this.template.exerciseContainer(this.model));
 
         // Update exercise container
-        this.exerciseContainer.html(exerciseContainerOutput);
+        this.exerciseElement.html(exerciseContainerOutput);
     }
 });
