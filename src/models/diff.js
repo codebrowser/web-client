@@ -21,6 +21,8 @@ codebrowser.model.Diff = function (previousContent, content) {
 
     }
 
+    /* Initialise */
+
     var from = difflib.stringAsLines(previousContent);
     var to = difflib.stringAsLines(content);
 
