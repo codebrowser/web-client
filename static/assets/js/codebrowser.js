@@ -926,9 +926,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Syntax mode
         var mode = codebrowser.helper.AceMode.getModeForFilename(this.model.get('name'));
 
-        // Disable split and diff view if both models are the same
+        // Both models are the same
         if (this.previousModel === this.model) {
 
+            // Clear differences
+            this.differences = new codebrowser.model.Diff('', ''),
+
+            // Disable split and diff view
             this.toggleSplit(false);
             this.toggleDiff(false);
 
