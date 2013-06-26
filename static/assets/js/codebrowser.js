@@ -700,6 +700,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    insertedLines: {
+
+        'main-editor': [],
+
+    },
+
     events: {
 
         'click #editor-inspector': 'toggleInspector'
@@ -725,8 +731,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
     },
 
     differences: new codebrowser.model.Diff('', ''),
-
-    removedLines: [],
 
     /* Inspector */
 
@@ -794,19 +798,27 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
     },
 
-    clearDiff: function () {
+    removeInsertedLines: function (editor) {
 
         var Range = ace.require('ace/range').Range;
+
+        // Remove inserted lines from editor
+        while (this.insertedLines[editor.container.id].length > 0) {
+
+            var difference = this.insertedLines[editor.container.id].pop();
+
+            editor.getSession().remove(new Range(difference.rowStart, 0, difference.rowEnd, 0));
+        }
+    },
+
+    clearDiff: function () {
 
         // Remove decorations
         this.removeDecorations(this.mainEditor);
         this.removeDecorations(this.sideEditor);
 
-        // Remove added lines
-        while (this.removedLines.length > 0) {
-            var difference = this.removedLines.pop();
-            this.mainEditor.getSession().remove(new Range(difference.rowStart, 0, difference.rowEnd, 0));
-        }
+        // Remove inserted lines
+        this.removeInsertedLines(this.mainEditor);
 
         // Remove markers
         this.removeMarkers(this.mainEditor);
@@ -1067,7 +1079,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                             'delete');
 
                         // Remember removed lines
-                        this.removedLines.push({
+                        this.insertedLines['main-editor'].push({
 
                             rowStart: difference.rowStart + difference.offset,
                             rowEnd: difference.rowEnd + 1 + difference.offset
