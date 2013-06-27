@@ -15,6 +15,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    folds: {
+
+        'main-editor': [],
+        'side-editor': []
+
+    },
+
     markers: {
 
         'main-editor': [],
@@ -88,6 +95,34 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
+
+        var self = this;
+
+        this.sideEditor.getSession().on('changeFold', function (fold) {
+
+            var rowStart = fold.data.range.start.row;
+            var rowEnd = fold.data.range.end.row;
+
+            self.folds['side-editor'].push({ rowStart: rowStart, rowEnd: rowEnd, fold: true });
+        });
+
+        this.mainEditor.getSession().on('changeFold', function (fold) {
+
+            var rowStart = fold.data.range.start.row;
+            var rowEnd = fold.data.range.end.row;
+
+            self.folds['main-editor'].push({ rowStart: rowStart, rowEnd: rowEnd, fold: true });
+        });
+    },
+
+    fold: function (editor) {
+
+        for (var i=0; i < this.folds[editor.container.id].length; i++) {
+
+            var folding = this.folds[editor.container.id][i];
+            editor.getSession().foldAll(folding.rowStart, folding.rowEnd);
+        }
+
     },
 
     /* Reset */
@@ -194,6 +229,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Set content for editor
         editor.setValue(content);
+
+        // Folding
+        this.fold(editor);
 
         // Set cursor and scroll position
         editor.moveCursorToPosition(position);
