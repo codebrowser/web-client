@@ -1387,7 +1387,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.editorView.toggleDiff();
     },
 
-    navigate: function (snapshot, file) {
+    navigate: function (snapshot, file, options) {
 
         // Use first file if non specified
         if (!file) {
@@ -1403,7 +1403,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                                           '/snapshots/' +
                                           snapshot.id +
                                           '/files/' +
-                                          file.id);
+                                          file.id, { replace: !options ? options : options.replace });
     },
 
     first: function () {
@@ -1706,7 +1706,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                     snapshot = snapshotCollection.at(0);
 
-                    self.snapshotView.navigate(snapshot, null);
+                    self.snapshotView.navigate(snapshot, null, { replace: true });
 
                     return;
                 }

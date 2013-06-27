@@ -54,7 +54,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                     snapshot = snapshotCollection.at(0);
 
-                    self.snapshotView.navigate(snapshot, null);
+                    self.snapshotView.navigate(snapshot, null, { replace: true });
 
                     return;
                 }
