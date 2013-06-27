@@ -705,13 +705,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
-    folds: {
-
-        'main-editor': [],
-        'side-editor': []
-
-    },
-
     markers: {
 
         'main-editor': [],
@@ -785,86 +778,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
-
-        var self = this;
-
-        this.sideEditor.getSession().on('changeFold', function (fold) {
-
-            var rowStart = fold.data.range.start.row;
-            var rowEnd = fold.data.range.end.row;
-
-            if (fold.action === 'add') {
-                self.addFold(self.sideEditor, rowStart, rowEnd);
-            }
-
-            if (fold.action === 'remove') {
-                self.removeFold(self.sideEditor, rowStart);
-            }
-        });
-
-        this.mainEditor.getSession().on('changeFold', function (fold) {
-
-            var rowStart = fold.data.range.start.row;
-            var rowEnd = fold.data.range.end.row;
-
-            self.addFold(self.mainEditor, rowStart, rowEnd);
-        });
-    },
-
-    hasFold: function (editor, start, end) {
-
-        for (var i = 0; i < this.folds[editor.container.id].length; i++) {
-
-            var fold = this.folds[editor.container.id][i];
-
-            if (fold.rowStart === start && fold.rowEnd === end) {
-                return true;
-            }
-        }
-
-        return false;
-    },
-
-    removeFold: function(editor, start, end) {
-        if (!this.hasFold(editor, start, end)) {
-
-            return;
-        }
-
-        var foldToRemoveIndex = -1;
-
-        for (var i = 0; i < this.folds[editor.container.id].length; i++) {
-
-            var fold = this.folds[editor.container.id][i];
-
-            if (fold.rowStart === start && fold.rowEnd === end) {
-
-                foldToRemoveIndex = i;
-            }
-        }
-
-        if (foldToRemoveIndex >= 0) {
-            editor.slice(foldToRemoveIndex, 1);
-        }
-    },
-
-    addFold: function (editor, start, end) {
-
-        if (this.hasFold(editor, start, end)) {
-            return;
-        }
-
-        this.folds[editor.container.id].push({ rowStart: start, rowEnd: end });
-    },
-
-    fold: function (editor) {
-
-        for (var i=0; i < this.folds[editor.container.id].length; i++) {
-
-            var folding = this.folds[editor.container.id][i];
-            editor.getSession().foldAll(folding.rowStart, folding.rowEnd);
-        }
-
     },
 
     /* Reset */
@@ -953,9 +866,33 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
     },
 
+    fold: function (editor, folds) {
+
+        for (var i=0; i < folds.length; ++i) {
+
+            var fold = folds[i];
+            editor.getSession().foldAll(fold.start.row, fold.end.row);
+        }
+
+    },
+
+    saveFolds: function (foldData) {
+
+        var folds = [];
+
+        for (var i=0; i < foldData.length; ++i) {
+            folds.push(foldData[i]);
+        }
+
+        return folds;
+    },
+
     /* Update */
 
     setContent: function (editor, content, mode) {
+
+        // Remember folds
+        var folds = this.saveFolds(editor.getSession().$foldData);
 
         // Remember cursor position
         var position = editor.getSelection().getSelectionAnchor();
@@ -972,8 +909,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Set content for editor
         editor.setValue(content);
 
-        // Folding
-        this.fold(editor);
+        // Set folds for editor
+        this.fold(editor, folds);
 
         // Set cursor and scroll position
         editor.moveCursorToPosition(position);
