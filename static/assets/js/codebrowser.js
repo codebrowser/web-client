@@ -793,7 +793,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var rowStart = fold.data.range.start.row;
             var rowEnd = fold.data.range.end.row;
 
-            self.folds['side-editor'].push({ rowStart: rowStart, rowEnd: rowEnd, fold: true });
+            self.addFold(self.sideEditor, rowStart, rowEnd);
         });
 
         this.mainEditor.getSession().on('changeFold', function (fold) {
@@ -801,8 +801,31 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var rowStart = fold.data.range.start.row;
             var rowEnd = fold.data.range.end.row;
 
-            self.folds['main-editor'].push({ rowStart: rowStart, rowEnd: rowEnd, fold: true });
+            self.addFold(self.mainEditor, rowStart, rowEnd);
         });
+    },
+
+    hasFold: function (editor, start, end) {
+
+        for (var i = 0; i < this.folds[editor.container.id].length; i++) {
+
+            var fold = this.folds[editor.container.id][i];
+
+            if (fold.rowStart === start && fold.rowEnd === end) {
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    addFold: function (editor, start, end) {
+
+        if (this.hasFold(editor, start, end)) {
+            return;
+        }
+
+        this.folds[editor.container.id].push({ rowStart: start, rowEnd: end });
     },
 
     fold: function (editor) {
