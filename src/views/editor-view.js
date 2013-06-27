@@ -103,7 +103,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var rowStart = fold.data.range.start.row;
             var rowEnd = fold.data.range.end.row;
 
-            self.addFold(self.sideEditor, rowStart, rowEnd);
+            if (fold.action === 'add') {
+                self.addFold(self.sideEditor, rowStart, rowEnd);
+            }
+
+            if (fold.action === 'remove') {
+                self.removeFold(self.sideEditor, rowStart);
+            }
         });
 
         this.mainEditor.getSession().on('changeFold', function (fold) {
@@ -127,6 +133,29 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
 
         return false;
+    },
+
+    removeFold: function(editor, start, end) {
+        if (!this.hasFold(editor, start, end)) {
+
+            return;
+        }
+
+        var foldToRemoveIndex = -1;
+
+        for (var i = 0; i < this.folds[editor.container.id].length; i++) {
+
+            var fold = this.folds[editor.container.id][i];
+
+            if (fold.rowStart === start && fold.rowEnd === end) {
+
+                foldToRemoveIndex = i;
+            }
+        }
+
+        if (foldToRemoveIndex >= 0) {
+            editor.slice(foldToRemoveIndex, 1);
+        }
     },
 
     addFold: function (editor, start, end) {
