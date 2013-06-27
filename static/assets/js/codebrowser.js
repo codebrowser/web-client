@@ -871,7 +871,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         for (var i=0; i < folds.length; ++i) {
 
             var fold = folds[i];
-            editor.getSession().foldAll(fold.start.row, fold.end.row);
+            editor.getSession().foldAll(fold.start.row, fold.end.row, 0);
         }
 
     },
@@ -881,7 +881,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     setContent: function (editor, content, mode) {
 
         // Remember folds
-        var folds = _.clone(editor.getSession().$foldData);
+        var folds = _.clone(editor.getSession().getAllFolds());
 
         // Remember cursor position
         var position = editor.getSelection().getSelectionAnchor();
