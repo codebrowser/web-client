@@ -165,6 +165,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
     },
 
+    fold: function (editor, folds) {
+
+        for (var i = 0; i < folds.length; i++) {
+
+            var fold = folds[i];
+
+            editor.getSession().foldAll(fold.start.row, fold.end.row, 0);
+        }
+    },
+
     decorateGutter: function (editor, rowStart, rowEnd, style) {
 
         // Decorate gutter for lines
@@ -174,16 +184,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             editor.getSession().addGutterDecoration(row, 'decoration gutter-' + style);
         }
-    },
-
-    fold: function (editor, folds) {
-
-        for (var i=0; i < folds.length; ++i) {
-
-            var fold = folds[i];
-            editor.getSession().foldAll(fold.start.row, fold.end.row, 0);
-        }
-
     },
 
     /* Update */
