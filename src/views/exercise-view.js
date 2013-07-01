@@ -8,18 +8,20 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
 
     },
 
+    /* Render */
+
     render: function () {
 
-        this.model = {
+        var model = {
 
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
-            list: this.collection.toJSON()
+            exercises: this.collection.toJSON()
 
         }
 
         // Template for exercise container
-        var exerciseContainerOutput = $(this.template.exerciseContainer(this.model));
+        var exerciseContainerOutput = $(this.template.exerciseContainer(model));
 
         // Update exercise container
         this.$el.html(exerciseContainerOutput);

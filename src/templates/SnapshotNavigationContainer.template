@@ -7,9 +7,9 @@
             <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> {{exercise.name}} <span class='caret'></span></a>
 
             <ul class='dropdown-menu'>
-            {{#files}}
-                <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
-            {{/files}}
+                {{#files}}
+                    <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
+                {{/files}}
             </ul>
 
         </div>

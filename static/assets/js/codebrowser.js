@@ -25,9 +25,9 @@ function program1(depth0,data,depth1) {
 
   buffer += "<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
-  if (stack1 = helpers.list) { stack1 = stack1.call(depth0, options); }
-  else { stack1 = depth0.list; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  if (!helpers.list) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if (stack1 = helpers.courses) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.courses; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.courses) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
@@ -102,9 +102,9 @@ function program1(depth0,data,depth1) {
 
   buffer += "<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
-  if (stack1 = helpers.list) { stack1 = stack1.call(depth0, options); }
-  else { stack1 = depth0.list; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  if (!helpers.list) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if (stack1 = helpers.exercises) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.exercises; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.exercises) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
@@ -118,7 +118,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\n                <li><a href='#/students/"
+  buffer += "\n                    <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -134,13 +134,13 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\n            ";
+    + "</a></li>\n                ";
   return buffer;
   }
 
   buffer += "<div class='row'>\n\n    <div class='span6'>\n\n        <div class='btn-group'>\n\n            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> "
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " <span class='caret'></span></a>\n\n            <ul class='dropdown-menu'>\n            ";
+    + " <span class='caret'></span></a>\n\n            <ul class='dropdown-menu'>\n                ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack2 = helpers.files) { stack2 = stack2.call(depth0, options); }
   else { stack2 = depth0.files; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
@@ -180,9 +180,9 @@ function program1(depth0,data) {
 
   buffer += "<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
-  if (stack1 = helpers.list) { stack1 = stack1.call(depth0, options); }
-  else { stack1 = depth0.list; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  if (!helpers.list) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if (stack1 = helpers.students) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.students; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.students) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
@@ -850,17 +850,19 @@ codebrowser.view.CourseView = Backbone.View.extend({
 
     },
 
+    /* Render */
+
     render: function () {
 
-        this.model = {
+        var model = {
 
             studentId: this.collection.studentId,
-            list: this.collection.toJSON()
+            courses: this.collection.toJSON()
 
         }
 
         // Template for course container
-        var courseContainerOutput = $(this.template.courseContainer(this.model));
+        var courseContainerOutput = $(this.template.courseContainer(model));
 
         // Update course container
         this.$el.html(courseContainerOutput);
@@ -1380,18 +1382,20 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
 
     },
 
+    /* Render */
+
     render: function () {
 
-        this.model = {
+        var model = {
 
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
-            list: this.collection.toJSON()
+            exercises: this.collection.toJSON()
 
         }
 
         // Template for exercise container
-        var exerciseContainerOutput = $(this.template.exerciseContainer(this.model));
+        var exerciseContainerOutput = $(this.template.exerciseContainer(model));
 
         // Update exercise container
         this.$el.html(exerciseContainerOutput);
@@ -1665,16 +1669,18 @@ codebrowser.view.StudentView = Backbone.View.extend({
 
     },
 
+    /* Render */
+
     render: function () {
 
-        this.model = {
+        var model = {
 
-            list: this.collection.toJSON()
+            students: this.collection.toJSON()
 
         }
 
         // Template for student container
-        var studentContainerOutput = $(this.template.studentContainer(this.model));
+        var studentContainerOutput = $(this.template.studentContainer(model));
 
         // Update student container
         this.$el.html(studentContainerOutput);

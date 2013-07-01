@@ -8,16 +8,18 @@ codebrowser.view.StudentView = Backbone.View.extend({
 
     },
 
+    /* Render */
+
     render: function () {
 
-        this.model = {
+        var model = {
 
-            list: this.collection.toJSON()
+            students: this.collection.toJSON()
 
         }
 
         // Template for student container
-        var studentContainerOutput = $(this.template.studentContainer(this.model));
+        var studentContainerOutput = $(this.template.studentContainer(model));
 
         // Update student container
         this.$el.html(studentContainerOutput);

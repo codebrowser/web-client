@@ -1,9 +1,9 @@
 <section>
 
     <ul>
-        {{#list}}
+        {{#exercises}}
             <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></li>
-        {{/list}}
+        {{/exercises}}
     </ul>
 
 </section>

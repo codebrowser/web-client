@@ -8,17 +8,19 @@ codebrowser.view.CourseView = Backbone.View.extend({
 
     },
 
+    /* Render */
+
     render: function () {
 
-        this.model = {
+        var model = {
 
             studentId: this.collection.studentId,
-            list: this.collection.toJSON()
+            courses: this.collection.toJSON()
 
         }
 
         // Template for course container
-        var courseContainerOutput = $(this.template.courseContainer(this.model));
+        var courseContainerOutput = $(this.template.courseContainer(model));
 
         // Update course container
         this.$el.html(courseContainerOutput);
