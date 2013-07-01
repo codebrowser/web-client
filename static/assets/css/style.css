@@ -132,24 +132,25 @@
 
 #snapshots-timeline-container {
 
-    margin: 10px auto;
-    padding: 40px;
+    margin: 25px auto;
+    padding: 20px;
+    border: 1px solid #c5d6de;
     border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: #e6f1f6;
 
 }
 
-.line {
+#snapshots-timeline-container .line {
 
     stroke-width: 1px;
-    stroke: #515151;
+    stroke: #80929c;
 
 }
 
-.circle {
+#snapshots-timeline-container .circle {
 
-    stroke: #515151;
-    fill: #515151;
+    stroke: #55656d;
+    fill: #80929c;
 
 }
 

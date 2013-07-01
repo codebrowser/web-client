@@ -1695,7 +1695,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         /* jshint newcap: false */
 
-        this.canvas = Raphael(this.el, '100%', 50);
+        this.canvas = Raphael(this.el, '100%', 41);
 
         /* jshint newcap: true */
     },
@@ -1707,7 +1707,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Clear canvas
         this.canvas.clear();
 
-        var y = this.canvas.height / 2 + 2;
+        var y = this.canvas.height / 2 + 3;
         var width = this.$el.width() - 10;
 
         // Line
