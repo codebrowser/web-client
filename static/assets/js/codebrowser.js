@@ -1743,16 +1743,19 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.courseView = new codebrowser.view.CourseView();
     },
 
+    /* Actions */
+
     notFound: function () {
 
         var errorView = new codebrowser.view.NotFoundErrorView();
-
-        codebrowser.controller.ViewController.pushToView(errorView, true);
+        codebrowser.controller.ViewController.push(errorView, true);
     },
 
     courses: function (studentId) {
@@ -1791,16 +1794,19 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.exerciseView = new codebrowser.view.ExerciseView();
     },
 
+    /* Actions */
+
     notFound: function () {
 
         var errorView = new codebrowser.view.NotFoundErrorView();
-
-        codebrowser.controller.ViewController.pushToView(errorView, true);
+        codebrowser.controller.ViewController.push(errorView, true);
     },
 
     exercises: function (studentId, courseId) {
@@ -1943,16 +1949,19 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.studentView = new codebrowser.view.StudentView();
     },
 
+    /* Actions */
+
     notFound: function () {
 
         var errorView = new codebrowser.view.NotFoundErrorView();
-
-        codebrowser.controller.ViewController.pushToView(errorView, true);
+        codebrowser.controller.ViewController.push(errorView, true);
     },
 
     courses: function () {

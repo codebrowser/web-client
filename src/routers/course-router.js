@@ -6,16 +6,19 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.courseView = new codebrowser.view.CourseView();
     },
 
+    /* Actions */
+
     notFound: function () {
 
         var errorView = new codebrowser.view.NotFoundErrorView();
-
-        codebrowser.controller.ViewController.pushToView(errorView, true);
+        codebrowser.controller.ViewController.push(errorView, true);
     },
 
     courses: function (studentId) {
