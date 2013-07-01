@@ -698,10 +698,12 @@ codebrowser.model.Student = Backbone.RelationalModel.extend({
 
 /*
  * Fetch all courses:
- * var courses = new codebrowser.collection.SnapshotCollection();
+ *
+ * var courses = new codebrowser.collection.CourseCollection();
  *
  * Fetch courses related to a student by passing a studentId as an option for the collection:
- * var courses = new codebrowser.collection.SnapshotCollection(null, { studentId: 1 });
+ *
+ * var courses = new codebrowser.collection.CourseCollection(null, { studentId: 1 });
  */
 
 codebrowser.collection.CourseCollection = Backbone.Collection.extend({
@@ -710,10 +712,12 @@ codebrowser.collection.CourseCollection = Backbone.Collection.extend({
 
     url: function () {
 
+        /* Fetch courses related to a student */
         if (this.studentId) {
             return config.api.main.root + 'students/' + this.studentId + '/courses';
         }
 
+        /* Fetch all courses */
         return config.api.main.root + 'courses';
     },
 
@@ -727,7 +731,15 @@ codebrowser.collection.CourseCollection = Backbone.Collection.extend({
 ;
 
 /*
- * ExerciseCollection is resolved through a course.
+ * Fetch all exercises related to a course:
+ *
+ * var course = codebrowser.model.Course.findOrCreate({ id: 1 });
+ * var exercises = new codebrowser.collection.ExerciseCollection();
+ * exercises.course = course;
+ *
+ * Fetch exercises related to a student and course by passing a studentId and courseId as options for the collection:
+ *
+ * var courses = new codebrowser.collection.ExerciesCollection(null, { studentId: 1, courseId: 2 });
  */
 
 codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
@@ -736,20 +748,17 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
 
     url: function () {
 
+        /* Fetch exercises related to a course */
         if (this.course) {
             return this.course.url() + '/exercises';
         }
 
+        /* Fetch exercises related to a student and course */
         if (!this.studentId || !this.courseId) {
             throw new Error('Options studentId and courseId are required to fetch exercises.');
         }
 
-        return config.api.main.root +
-               'students/' +
-               this.studentId +
-               '/courses/' +
-               this.courseId +
-               '/exercises/';
+        return config.api.main.root + 'students/' + this.studentId + '/courses/' + this.courseId + '/exercises';
     },
 
     initialize: function (models, options) {
@@ -786,8 +795,9 @@ codebrowser.collection.FileCollection = Backbone.Collection.extend({
 });
 ;
 
-/* 
+/*
  * Fetch snapshots by passing a studentId, courseId and exerciseId as options for the collection:
+ *
  * var snapshots = new codebrowser.collection.SnapshotCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
  */
 

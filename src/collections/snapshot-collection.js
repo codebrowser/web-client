@@ -1,5 +1,6 @@
-/* 
+/*
  * Fetch snapshots by passing a studentId, courseId and exerciseId as options for the collection:
+ *
  * var snapshots = new codebrowser.collection.SnapshotCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
  */
 

@@ -1,9 +1,11 @@
 /*
  * Fetch all courses:
- * var courses = new codebrowser.collection.SnapshotCollection();
+ *
+ * var courses = new codebrowser.collection.CourseCollection();
  *
  * Fetch courses related to a student by passing a studentId as an option for the collection:
- * var courses = new codebrowser.collection.SnapshotCollection(null, { studentId: 1 });
+ *
+ * var courses = new codebrowser.collection.CourseCollection(null, { studentId: 1 });
  */
 
 codebrowser.collection.CourseCollection = Backbone.Collection.extend({
@@ -12,10 +14,12 @@ codebrowser.collection.CourseCollection = Backbone.Collection.extend({
 
     url: function () {
 
+        /* Fetch courses related to a student */
         if (this.studentId) {
             return config.api.main.root + 'students/' + this.studentId + '/courses';
         }
 
+        /* Fetch all courses */
         return config.api.main.root + 'courses';
     },
 
