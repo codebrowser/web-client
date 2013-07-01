@@ -23,7 +23,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 
-  buffer += "<section>\n\n    <ul>\n        ";
+  buffer += "<h2>Courses</h2>\n\n<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack1 = helpers.courses) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.courses; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
@@ -109,7 +109,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 
-  buffer += "<section>\n\n    <ul>\n        ";
+  buffer += "<h2>Exercises</h2>\n\n<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack1 = helpers.exercises) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.exercises; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
@@ -187,7 +187,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<section>\n\n    <ul>\n        ";
+  buffer += "<h2>Students</h2>\n\n<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
   if (stack1 = helpers.students) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.students; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
