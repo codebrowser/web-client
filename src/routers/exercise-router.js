@@ -6,16 +6,9 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     },
 
-    setUp: function () {
+    initialize: function () {
 
-        // Create exercise view if it is not active
-        if (!codebrowser.controller.ViewController.isActive(this.exerciseView)) {
-
-            this.exerciseView = new codebrowser.view.ExerciseView();
-
-            codebrowser.controller.ViewController.push(this.exerciseView);
-        }
-
+        this.exerciseView = new codebrowser.view.ExerciseView();
     },
 
     notFound: function () {
@@ -26,8 +19,6 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
     },
 
     exercises: function (studentId, courseId) {
-
-        this.setUp();
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId, courseId: courseId });
 
@@ -49,5 +40,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
+
+        codebrowser.controller.ViewController.push(this.exerciseView);
     }
 });

@@ -6,16 +6,9 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     },
 
-    setUp: function () {
+    initialize: function () {
 
-        // Create student view if it is not active
-        if (!codebrowser.controller.ViewController.isActive(this.studentView)) {
-
-            this.studentView = new codebrowser.view.StudentView();
-
-            codebrowser.controller.ViewController.push(this.studentView);
-        }
-
+        this.studentView = new codebrowser.view.StudentView();
     },
 
     notFound: function () {
@@ -26,8 +19,6 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
     },
 
     courses: function () {
-
-        this.setUp();
 
         var studentCollection = new codebrowser.collection.StudentCollection();
 
@@ -49,5 +40,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
+
+        codebrowser.controller.ViewController.push(this.studentView);
     }
 });

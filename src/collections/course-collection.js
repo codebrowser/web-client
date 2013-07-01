@@ -9,5 +9,4 @@ codebrowser.collection.CourseCollection = Backbone.Collection.extend({
             this.studentId = options.studentId;
         }
     }
-
 });

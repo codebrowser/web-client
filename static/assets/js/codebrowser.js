@@ -707,7 +707,6 @@ codebrowser.collection.CourseCollection = Backbone.Collection.extend({
             this.studentId = options.studentId;
         }
     }
-
 });
 ;
 
@@ -1718,16 +1717,9 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     },
 
-    setUp: function () {
+    initialize: function () {
 
-        // Create course view if it is not active
-        if (!codebrowser.controller.ViewController.isActive(this.courseView)) {
-
-            this.courseView = new codebrowser.view.CourseView();
-
-            codebrowser.controller.ViewController.push(this.courseView);
-        }
-
+        this.courseView = new codebrowser.view.CourseView();
     },
 
     notFound: function () {
@@ -1738,8 +1730,6 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
     },
 
     courses: function (studentId) {
-
-        this.setUp();
 
         var courseCollection = new codebrowser.collection.CourseCollection(null, { studentId: studentId });
 
@@ -1761,6 +1751,8 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
+
+        codebrowser.controller.ViewController.push(this.courseView);
     }
 });
 ;
@@ -1773,16 +1765,9 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     },
 
-    setUp: function () {
+    initialize: function () {
 
-        // Create exercise view if it is not active
-        if (!codebrowser.controller.ViewController.isActive(this.exerciseView)) {
-
-            this.exerciseView = new codebrowser.view.ExerciseView();
-
-            codebrowser.controller.ViewController.push(this.exerciseView);
-        }
-
+        this.exerciseView = new codebrowser.view.ExerciseView();
     },
 
     notFound: function () {
@@ -1793,8 +1778,6 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
     },
 
     exercises: function (studentId, courseId) {
-
-        this.setUp();
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId, courseId: courseId });
 
@@ -1816,6 +1799,8 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
+
+        codebrowser.controller.ViewController.push(this.exerciseView);
     }
 });
 ;
@@ -1932,16 +1917,9 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     },
 
-    setUp: function () {
+    initialize: function () {
 
-        // Create student view if it is not active
-        if (!codebrowser.controller.ViewController.isActive(this.studentView)) {
-
-            this.studentView = new codebrowser.view.StudentView();
-
-            codebrowser.controller.ViewController.push(this.studentView);
-        }
-
+        this.studentView = new codebrowser.view.StudentView();
     },
 
     notFound: function () {
@@ -1952,8 +1930,6 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
     },
 
     courses: function () {
-
-        this.setUp();
 
         var studentCollection = new codebrowser.collection.StudentCollection();
 
@@ -1975,5 +1951,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
+
+        codebrowser.controller.ViewController.push(this.studentView);
     }
 });
