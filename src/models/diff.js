@@ -1,14 +1,27 @@
 codebrowser.model.Diff = function (previousContent, content) {
 
-    var statistics = {
+    /* Lines */
 
-        'replace': 0,
-        'insert': 0,
+    var count = {
+
+        replace:  0,
+        insert:   0,
         'delete': 0
 
     }
 
-    var differences = [];
+    /* Differences */
+
+    var differences = {
+
+        insert:   [],
+        replace:  [],
+        'delete': [],
+        all: []
+
+    }
+
+    /* Initialise */
 
     var from = difflib.stringAsLines(previousContent);
     var to = difflib.stringAsLines(content);
@@ -36,7 +49,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             type:     operation[0],
             rowStart: operation[3],
             rowEnd:   operation[4] - 1,
-            offset: offset
+            offset:   offset
 
         }
 
@@ -66,10 +79,11 @@ codebrowser.model.Diff = function (previousContent, content) {
                     difference.rowEnd -= (changed > delta ? changed : delta);
                 }
 
-                differences.push(difference);
+                differences.replace.push(difference);
+                differences.all.push(difference);
 
-                // Statistics
-                statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+                // Increase replaced lines
+                count.replace += difference.rowEnd - difference.rowStart + 1;
 
                 // Delete
                 difference = originalDifference;
@@ -85,10 +99,12 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                 // Replace
                 difference.rowEnd -= (changed > delta ? changed : delta);
-                differences.push(difference);
 
-                // Statistics
-                statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+                differences.replace.push(difference);
+                differences.all.push(difference);
+
+                // Increase replaced lines
+                count.replace += difference.rowEnd - difference.rowStart + 1;
 
                 // Insert
                 difference = originalDifference;
@@ -113,28 +129,31 @@ codebrowser.model.Diff = function (previousContent, content) {
             difference.rowStart = operation[1] + deleteOffset;
             difference.rowEnd = operation[2] - 1 + deleteOffset;
 
-            difference = _.extend(difference, { fromRowStart: operation[1], fromRowEnd: operation[2] - 1, lines: deleted });
+            difference = _.extend(difference, { fromRowStart: operation[1],
+                                                fromRowEnd: operation[2] - 1,
+                                                lines: deleted });
 
-            // Delete increases offset
+            // Delete increases offsets
             var increase = difference.rowEnd - difference.rowStart + 1;
 
             offset += increase;
             deleteOffset += increase;
         }
 
-        // Statistics
-        statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+        // Increase lines
+        count[difference.type] += difference.rowEnd - difference.rowStart + 1;
 
-        differences.push(difference);
+        differences[difference.type].push(difference);
+        differences.all.push(difference);
+    }
+
+    this.getCount = function () {
+
+        return count;
     }
 
     this.getDifferences = function () {
 
         return differences;
-    }
-
-    this.getStatistics = function () {
-
-        return statistics;
     }
 }

@@ -26,7 +26,8 @@
         "config": true,
         "difflib": true,
         "editor": true,
-        "Handlebars": true
+        "Handlebars": true,
+        "moment": true
 
     }
 }

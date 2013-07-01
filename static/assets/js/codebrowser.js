@@ -43,10 +43,22 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</h1>\n    <span class='pull-right'>";
+    + "</h1>\n\n    <span class='pull-right'>\n\n        + ";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.duration || depth0.duration),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "duration", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
+    + "\n\n        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom'\n\n           data-original-title='\n\n                <time>";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
+    + " –</time>\n                <time>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + "</span>\n\n</header>\n";
+    + "</time>\n\n           '\n\n           data-content='\n\n            <dl class=\"dl-horizontal pull-left\">\n\n              <dt>Insert</dt>\n              <dd>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " lines</dd>\n\n              <dt>Replace</dt>\n              <dd>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.replace)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " lines</dd>\n\n              <dt>Delete</dt>\n              <dd>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1['delete'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " lines</dd>\n\n            </dl>\n\n        '><i class='icon-info-sign icon-gray'></i></a>\n\n    </span>\n\n</header>\n";
   return buffer;
   });
 
@@ -67,7 +79,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["Handlebars"]["templates"]["ExerciseContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
 
 function program1(depth0,data,depth1) {
   
@@ -88,14 +100,12 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 
-  buffer += "<section>\n\n    <h1>"
-    + escapeExpression(((stack1 = ((stack1 = depth0.course),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h1>\n\n    <ul>\n        ";
+  buffer += "<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
-  if (stack2 = helpers.list) { stack2 = stack2.call(depth0, options); }
-  else { stack2 = depth0.list; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  if (!helpers.list) { stack2 = blockHelperMissing.call(depth0, stack2, options); }
-  if(stack2 || stack2 === 0) { buffer += stack2; }
+  if (stack1 = helpers.list) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.list; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.list) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
   });
@@ -128,7 +138,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 
-  buffer += "<div class='row'>\n\n    <div class='span5'>\n\n        <div class='btn-group'>\n\n            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> "
+  buffer += "<div class='row'>\n\n    <div class='span6'>\n\n        <div class='btn-group'>\n\n            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> "
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " <span class='caret'></span></a>\n\n            <ul class='dropdown-menu'>\n            ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
@@ -268,7 +278,7 @@ var codebrowser = {
         window.onerror = function () {
 
             var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
-            codebrowser.controller.ViewController.pushToView(errorView, true);
+            codebrowser.controller.ViewController.push(errorView, true);
         }
 
         // Initialise routers
@@ -312,9 +322,67 @@ codebrowser.helper.AceMode = {
 }
 ;
 
-Handlebars.registerHelper('date', function (time) {
+Handlebars.registerHelper('date', function (date) {
 
-    return new Date(time).toLocaleString();
+    return moment(new Date(date)).format('D.M.YYYY HH.mm.ss');
+});
+;
+
+codebrowser.helper.Duration = {
+
+    calculate: function (time, previousTime) {
+
+        var difference = time - previousTime;
+
+        var value;
+        var timeUnit;
+
+        var seconds = Math.round(difference/1000);
+
+        if (seconds > 60) {
+
+            var minutes = Math.round(seconds / 60);
+
+            if (minutes > 60) {
+
+                var hours = Math.round(minutes / 60);
+
+                if (hours > 24) {
+
+                    var days = Math.round(hours / 24);
+
+                    value = days;
+                    timeUnit = 'day';
+
+                } else {
+
+                    value = hours;
+                    timeUnit = 'hour';
+                }
+
+            } else {
+
+                value = minutes;
+                timeUnit = 'minute';
+            }
+
+        } else {
+
+            value = seconds;
+            timeUnit = 'second';
+        }
+
+        if (value > 1) {
+            timeUnit += 's';
+        }
+
+        return value + ' ' + timeUnit;
+    }
+}
+
+Handlebars.registerHelper('duration', function (time, previousTime) {
+
+    return codebrowser.helper.Duration.calculate(time, previousTime);
 });
 ;
 
@@ -341,15 +409,28 @@ codebrowser.model.Course = Backbone.RelationalModel.extend({
 
 codebrowser.model.Diff = function (previousContent, content) {
 
-    var statistics = {
+    /* Lines */
 
-        'replace': 0,
-        'insert': 0,
+    var count = {
+
+        replace:  0,
+        insert:   0,
         'delete': 0
 
     }
 
-    var differences = [];
+    /* Differences */
+
+    var differences = {
+
+        insert:   [],
+        replace:  [],
+        'delete': [],
+        all: []
+
+    }
+
+    /* Initialise */
 
     var from = difflib.stringAsLines(previousContent);
     var to = difflib.stringAsLines(content);
@@ -377,7 +458,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             type:     operation[0],
             rowStart: operation[3],
             rowEnd:   operation[4] - 1,
-            offset: offset
+            offset:   offset
 
         }
 
@@ -407,10 +488,11 @@ codebrowser.model.Diff = function (previousContent, content) {
                     difference.rowEnd -= (changed > delta ? changed : delta);
                 }
 
-                differences.push(difference);
+                differences.replace.push(difference);
+                differences.all.push(difference);
 
-                // Statistics
-                statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+                // Increase replaced lines
+                count.replace += difference.rowEnd - difference.rowStart + 1;
 
                 // Delete
                 difference = originalDifference;
@@ -426,10 +508,12 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                 // Replace
                 difference.rowEnd -= (changed > delta ? changed : delta);
-                differences.push(difference);
 
-                // Statistics
-                statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+                differences.replace.push(difference);
+                differences.all.push(difference);
+
+                // Increase replaced lines
+                count.replace += difference.rowEnd - difference.rowStart + 1;
 
                 // Insert
                 difference = originalDifference;
@@ -454,29 +538,32 @@ codebrowser.model.Diff = function (previousContent, content) {
             difference.rowStart = operation[1] + deleteOffset;
             difference.rowEnd = operation[2] - 1 + deleteOffset;
 
-            difference = _.extend(difference, { fromRowStart: operation[1], fromRowEnd: operation[2] - 1, lines: deleted });
+            difference = _.extend(difference, { fromRowStart: operation[1],
+                                                fromRowEnd: operation[2] - 1,
+                                                lines: deleted });
 
-            // Delete increases offset
+            // Delete increases offsets
             var increase = difference.rowEnd - difference.rowStart + 1;
 
             offset += increase;
             deleteOffset += increase;
         }
 
-        // Statistics
-        statistics[difference.type] += difference.rowEnd - difference.rowStart + 1;
+        // Increase lines
+        count[difference.type] += difference.rowEnd - difference.rowStart + 1;
 
-        differences.push(difference);
+        differences[difference.type].push(difference);
+        differences.all.push(difference);
+    }
+
+    this.getCount = function () {
+
+        return count;
     }
 
     this.getDifferences = function () {
 
         return differences;
-    }
-
-    this.getStatistics = function () {
-
-        return statistics;
     }
 }
 ;
@@ -758,9 +845,37 @@ codebrowser.view.CourseView = Backbone.View.extend({
 
 codebrowser.view.EditorView = Backbone.View.extend({
 
+    id: 'editor-container',
+
     template: {
 
         topContainer: Handlebars.templates.EditorTopContainer
+
+    },
+
+    decorations: {
+
+        'main-editor': [],
+        'side-editor': []
+
+    },
+
+    markers: {
+
+        'main-editor': [],
+        'side-editor': []
+
+    },
+
+    insertedLines: {
+
+        'main-editor': [],
+
+    },
+
+    events: {
+
+        'click #editor-inspector': 'toggleInspector'
 
     },
 
@@ -782,30 +897,20 @@ codebrowser.view.EditorView = Backbone.View.extend({
         return this.model !== this.previousModel;
     },
 
-    decorations: {
+    differences: new codebrowser.model.Diff('', ''),
 
-        'main-editor': [],
-        'side-editor': []
+    /* Inspector */
 
-    },
+    inspector: false,
 
-    markers: {
-
-        'main-editor': [],
-        'side-editor': []
-
-    },
-
-    removedLines: [],
-
-    /* Editor */
+    /* Initialise */
 
     initialize: function () {
 
         // Hide view until needed
         this.$el.hide();
 
-        // Create divs for elements
+        // Elements
         this.topContainer = $('<div>');
         this.editorElement = $('<div>', { id: 'editor' });
 
@@ -813,6 +918,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.sideEditorElement = $('<div>', { id: 'side-editor', height: '800px' }).hide();
         this.mainEditorElement = $('<div>', { id: 'main-editor', height: '800px' });
 
+        // Append editor elements to parent
         this.editorElement.append(this.sideEditorElement);
         this.editorElement.append(this.mainEditorElement);
 
@@ -829,20 +935,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         config.editor.configure(this.mainEditor);
     },
 
-    remove: function () {
-
-        // Empty container
-        this.$el.empty();
-    },
-
-    render: function () {
-
-        // Template
-        var topContainerOutput = $(this.template.topContainer(this.model.toJSON()));
-
-        // Update top container
-        this.topContainer.html(topContainerOutput);
-    },
+    /* Reset */
 
     removeDecorations: function (editor) {
 
@@ -863,7 +956,87 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
     },
 
+    removeInsertedLines: function (editor) {
+
+        var Range = ace.require('ace/range').Range;
+
+        // Remove inserted lines from editor
+        while (this.insertedLines[editor.container.id].length > 0) {
+
+            var difference = this.insertedLines[editor.container.id].pop();
+
+            editor.getSession().remove(new Range(difference.rowStart, 0, difference.rowEnd, 0));
+        }
+    },
+
+    clearDiff: function () {
+
+        // Remove decorations
+        this.removeDecorations(this.mainEditor);
+        this.removeDecorations(this.sideEditor);
+
+        // Remove inserted lines
+        this.removeInsertedLines(this.mainEditor);
+
+        // Remove markers
+        this.removeMarkers(this.mainEditor);
+        this.removeMarkers(this.sideEditor);
+    },
+
+    /* Render */
+
+    render: function () {
+
+        // View attributes
+        var attributes = {
+
+            previous: this.previousModel.toJSON(),
+            difference: this.differences.getCount()
+
+        }
+
+        // Template
+        var topContainerOutput = $(this.template.topContainer(_.extend(this.model.toJSON(), attributes)));
+
+        // Editor inspector
+        $('#editor-inspector', topContainerOutput).popover({ animation: false, html: true, trigger: 'click' });
+
+        // Update top container
+        this.topContainer.html(topContainerOutput);
+
+        // Restore inspector state
+        if (this.inspector) {
+            $('#editor-inspector').popover('toggle');
+        }
+    },
+
+    fold: function (editor, folds) {
+
+        for (var i = 0; i < folds.length; i++) {
+
+            var fold = folds[i];
+
+            editor.getSession().foldAll(fold.start.row, fold.end.row, 0);
+        }
+    },
+
+    decorateGutter: function (editor, rowStart, rowEnd, style) {
+
+        // Decorate gutter for lines
+        for (var row = rowStart; row <= rowEnd; row++) {
+
+            this.decorations[editor.container.id].push({ row: row, style: 'decoration gutter-' + style });
+
+            editor.getSession().addGutterDecoration(row, 'decoration gutter-' + style);
+        }
+    },
+
+    /* Update */
+
     setContent: function (editor, content, mode) {
+
+        // Remember folds
+        var folds = _.clone(editor.getSession().getAllFolds());
 
         // Remember cursor position
         var position = editor.getSelection().getSelectionAnchor();
@@ -879,6 +1052,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Set content for editor
         editor.setValue(content);
+
+        // Set folds for editor
+        this.fold(editor, folds);
 
         // Set cursor and scroll position
         editor.moveCursorToPosition(position);
@@ -896,25 +1072,40 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.model = file;
         this.previousModel = previousFile;
 
-        // Wait for files to be in sync
+        // Wait files to be in sync
         var fileSynced = _.after(2, function() {
 
+            var previousContent = self.sideEditor.getValue();
+            var content = self.mainEditor.getValue();
+
+            // Create diff
+            self.differences = new codebrowser.model.Diff(previousContent, content);
+
+            // Re-render diff
             self.toggleDiff(self.diff);
+
+            self.render();
         });
 
         // Syntax mode
         var mode = codebrowser.helper.AceMode.getModeForFilename(this.model.get('name'));
 
-        // Disable split and diff view if both models are the same
-        if (previousFile === this.model) {
+        // Both models are the same
+        if (this.previousModel === this.model) {
 
+            // Clear differences
+            this.differences = new codebrowser.model.Diff('', ''),
+
+            // Disable split and diff view
             this.toggleSplit(false);
             this.toggleDiff(false);
 
         } else {
 
-            // Restore split state
-            this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
+            // Restore split state if necessary
+            if (!this.split) {
+                this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
+            }
 
             // Restore diff state if necessary
             if (!this.diff) {
@@ -923,7 +1114,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
 
         // Fetch previous file only if the models are not the same
-        if (previousFile !== this.model) {
+        if (this.previousModel !== this.model) {
 
             previousFile.fetchContent(function (content, error) {
 
@@ -944,6 +1135,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 throw new Error('Failed file fetch.');
             }
 
+            // If both models are the same, set the same content to the side editor
+            if (self.previousModel === self.model) {
+                self.setContent(self.sideEditor, content, mode);
+            }
+
             self.setContent(self.mainEditor, content, mode);
 
             fileSynced();
@@ -955,12 +1151,34 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.render();
     },
 
+    /* Events */
+
+    didResize: function () {
+
+        // Relocate inspector
+        if (this.inspector) {
+            $('#editor-inspector').popover('toggle');
+            $('#editor-inspector').popover('toggle');
+        }
+    },
+
     didSplit: function () {
 
-        // Re-render diff
-        this.clearDiff();
-        this.toggleDiff(this.diff);
+        if (this.diff) {
+
+            // Re-render diff
+            this.clearDiff();
+            this.toggleDiff(this.diff);
+        }
+
+        // Editors can get confused after a split
+        this.mainEditor.resize();
+        this.sideEditor.resize();
+        this.mainEditor.renderer.updateFull();
+        this.sideEditor.renderer.updateFull();
     },
+
+    /* Actions */
 
     toggleSplit: function (split) {
 
@@ -992,41 +1210,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             return;
         }
 
-        // Disable split
         this.sideEditorElement.hide();
         this.mainEditorElement.css({ float: '', width: '' });
 
         this.didSplit();
-    },
-
-    decorate: function (editor, rowStart, rowEnd, style) {
-
-        // Decorate lines
-        for (var row = rowStart; row <= rowEnd; row++) {
-
-            this.decorations[editor.container.id].push({ row: row, style: 'decoration gutter-' + style });
-
-            editor.getSession().addGutterDecoration(row, 'decoration gutter-' + style);
-        }
-    },
-
-    clearDiff: function () {
-
-        var Range = ace.require('ace/range').Range;
-
-        // Remove decorations
-        this.removeDecorations(this.mainEditor);
-        this.removeDecorations(this.sideEditor);
-
-        // Remove added lines
-        while (this.removedLines.length > 0) {
-            var difference = this.removedLines.pop();
-            this.mainEditor.getSession().remove(new Range(difference.rowStart, 0, difference.rowEnd, 0));
-        }
-
-        // Remove markers
-        this.removeMarkers(this.mainEditor);
-        this.removeMarkers(this.sideEditor);
     },
 
     toggleDiff: function (diff) {
@@ -1049,22 +1236,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Enable diff
         if (this.diff) {
 
-            var previousContent = this.sideEditor.getValue();
-            var content = this.mainEditor.getValue();
-
-            var differences = new codebrowser.model.Diff(previousContent, content).getDifferences();
-
             // Show differences
-            for (var i = 0; i < differences.length; i++) {
+            for (var i = 0; i < this.differences.getDifferences().all.length; i++) {
 
-                var difference = differences[i];
+                var difference = this.differences.getDifferences().all[i];
 
                 var marker;
 
                 // Delete
                 if (difference.type === 'delete') {
 
-                    // Show removed lines within main editor if not in split view
+                    // If not in split view, show removed lines within the main editor
                     if (!this.split) {
 
                         // Add removed lines to main editor
@@ -1072,21 +1254,21 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                        .insert({ row: difference.rowStart + difference.offset, column: 0 },
                                                difference.lines);
 
-                        // Decorate
-                        this.decorate(this.mainEditor,
-                                      difference.rowStart + difference.offset,
-                                      difference.rowEnd + difference.offset,
-                                      'delete');
+                        // Decorate gutter
+                        this.decorateGutter(this.mainEditor,
+                                            difference.rowStart + difference.offset,
+                                            difference.rowEnd + difference.offset,
+                                            'delete');
 
                         // Remember removed lines
-                        this.removedLines.push({
+                        this.insertedLines['main-editor'].push({
 
                             rowStart: difference.rowStart + difference.offset,
                             rowEnd: difference.rowEnd + 1 + difference.offset
 
                         });
 
-                    // Show only removed lines in side editor if split view is enabled
+                    // If split view is enabled, show removed lines in side editor
                     } else {
 
                         // Add marker for removed line in side editor
@@ -1097,7 +1279,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                                 'fullLine');
 
                         // Decorate
-                        this.decorate(this.sideEditor, difference.fromRowStart, difference.fromRowEnd, 'delete');
+                        this.decorateGutter(this.sideEditor, difference.fromRowStart, difference.fromRowEnd, 'delete');
 
                         // Remember marker
                         this.markers['side-editor'].push(marker);
@@ -1108,7 +1290,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
                 var offset = 0;
 
-                // Use offset only in single view
+                // Offset in single mode by removed lines
                 if (!this.split) {
                     offset = difference.offset;
                 }
@@ -1121,10 +1303,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                         'fullLine');
 
                 // Decorate
-                this.decorate(this.mainEditor,
-                              difference.rowStart + offset,
-                              difference.rowEnd + offset,
-                              difference.type);
+                this.decorateGutter(this.mainEditor,
+                                    difference.rowStart + offset,
+                                    difference.rowEnd + offset,
+                                    difference.type);
 
                 // Remember marker
                 this.markers['main-editor'].push(marker);
@@ -1135,20 +1317,23 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Disable diff
         this.clearDiff();
+    },
+
+    toggleInspector: function (event) {
+
+        event.preventDefault();
+
+        this.inspector = !this.inspector;
     }
 });
 ;
 
 codebrowser.view.ErrorView = Backbone.View.extend({
 
-    el: config.view.container,
+    id: 'error-container',
     template: Handlebars.templates.Error,
 
-    remove: function () {
-
-        // Empty container
-        this.$el.empty();
-    },
+    /* Render */
 
     render: function () {
 
@@ -1201,7 +1386,7 @@ codebrowser.view.NotFoundErrorView = codebrowser.view.ErrorView.extend({
 
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
-    el: config.view.container,
+    id: 'snapshot-container',
 
     template: {
 
@@ -1220,26 +1405,30 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         var self = this;
 
-        // Snapshot container
-        this.snapshotContainer = $('<div>', { id: 'snapshot-container' });
-
-        // Create divs for elements
+        // Navigation
         this.navigationContainer = $('<div>', { id: 'navigation-container' });
-        this.editorContainer = $('<div>', { id: 'editor-container' });
-
-        // Append elements to parent
-        this.snapshotContainer.append(this.navigationContainer);
-        this.snapshotContainer.append(this.editorContainer);
+        this.$el.append(this.navigationContainer);
 
         // Editor
-        this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
+        this.editorView = new codebrowser.view.EditorView();
+        this.$el.append(this.editorView.el);
+
+        // Bind resize
+        this.resize = function () {
+
+            self.didResize();
+        }
+
+        $(window).resize(this.resize);
 
         // Bind keydown
-        $(document).keydown(function () {
+        this.keydown = function () {
 
             // Left
             if (event.keyCode === 37) {
@@ -1250,26 +1439,30 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             if (event.keyCode === 39) {
                 self.next();
             }
-        });
+        }
+
+        $(document).keydown(this.keydown);
     },
+
+    /* Remove */
 
     remove: function () {
 
+        // Unbind resize
+        $(window).off('resize', this.resize);
+
         // Unbind keydown
-        $(document).unbind();
+        $(document).off('keydown', this.keydown);
 
         // Remove editor
         this.editorView.remove();
 
-        // Empty container
-        this.$el.empty();
-        this.$el.undelegate();
+        Backbone.View.prototype.remove.call(this);
     },
 
-    render: function () {
+    /* Render */
 
-        // Append wrapper to DOM
-        this.$el.append(this.snapshotContainer);
+    render: function () {
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);
@@ -1321,6 +1514,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationContainer.html(navigationContainerOutput);
     },
 
+    /* Update */
+
     update: function (snapshot, fileId) {
 
         this.model = snapshot;
@@ -1349,6 +1544,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.render();
     },
 
+    /* Events */
+
+    didResize: function () {
+
+        this.editorView.didResize();
+    },
+
+    /* Actions */
+
     split: function () {
 
         this.editorView.toggleSplit();
@@ -1358,6 +1562,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.editorView.toggleDiff();
     },
+
+    /* Actions - Navigation */
 
     navigate: function (snapshot, file, options) {
 
@@ -1460,7 +1666,7 @@ codebrowser.controller.ViewController = {
         return this.view === view;
     },
 
-    pushToView: function (view, render) {
+    push: function (view, render) {
 
         // Remove previous view
         if (this.view) {
@@ -1473,6 +1679,9 @@ codebrowser.controller.ViewController = {
         if (render) {
             this.view.render();
         }
+
+        // Set to container
+        $(config.view.container).html(this.view.el);
     }
 }
 ;
@@ -1485,14 +1694,18 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
     },
 
+    /* Actions */
+
     notFound: function () {
 
-        codebrowser.controller.ViewController.pushToView(this.errorView, true);
+        codebrowser.controller.ViewController.push(this.errorView, true);
     }
 });
 ;
@@ -1617,6 +1830,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.setUp();
@@ -1624,20 +1839,21 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create snapshot view if it is not active
         if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
 
             this.snapshotView = new codebrowser.view.SnapshotView();
 
-            codebrowser.controller.ViewController.pushToView(this.snapshotView);
+            codebrowser.controller.ViewController.push(this.snapshotView);
         }
     },
+
+    /* Actions */
 
     notFound: function () {
 
         var errorView = new codebrowser.view.NotFoundErrorView();
 
-        codebrowser.controller.ViewController.pushToView(errorView, true);
+        codebrowser.controller.ViewController.push(errorView, true);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {

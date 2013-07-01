@@ -8,6 +8,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         this.setUp();
@@ -15,20 +17,21 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     setUp: function () {
 
-        // Create snapshot view if it is not active
         if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
 
             this.snapshotView = new codebrowser.view.SnapshotView();
 
-            codebrowser.controller.ViewController.pushToView(this.snapshotView);
+            codebrowser.controller.ViewController.push(this.snapshotView);
         }
     },
+
+    /* Actions */
 
     notFound: function () {
 
         var errorView = new codebrowser.view.NotFoundErrorView();
 
-        codebrowser.controller.ViewController.pushToView(errorView, true);
+        codebrowser.controller.ViewController.push(errorView, true);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {

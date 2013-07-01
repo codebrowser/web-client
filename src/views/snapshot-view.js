@@ -1,6 +1,6 @@
 codebrowser.view.SnapshotView = Backbone.View.extend({
 
-    el: config.view.container,
+    id: 'snapshot-container',
 
     template: {
 
@@ -19,26 +19,30 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     },
 
+    /* Initialise */
+
     initialize: function () {
 
         var self = this;
 
-        // Snapshot container
-        this.snapshotContainer = $('<div>', { id: 'snapshot-container' });
-
-        // Create divs for elements
+        // Navigation
         this.navigationContainer = $('<div>', { id: 'navigation-container' });
-        this.editorContainer = $('<div>', { id: 'editor-container' });
-
-        // Append elements to parent
-        this.snapshotContainer.append(this.navigationContainer);
-        this.snapshotContainer.append(this.editorContainer);
+        this.$el.append(this.navigationContainer);
 
         // Editor
-        this.editorView = new codebrowser.view.EditorView({ el: this.editorContainer });
+        this.editorView = new codebrowser.view.EditorView();
+        this.$el.append(this.editorView.el);
+
+        // Bind resize
+        this.resize = function () {
+
+            self.didResize();
+        }
+
+        $(window).resize(this.resize);
 
         // Bind keydown
-        $(document).keydown(function () {
+        this.keydown = function () {
 
             // Left
             if (event.keyCode === 37) {
@@ -49,26 +53,30 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             if (event.keyCode === 39) {
                 self.next();
             }
-        });
+        }
+
+        $(document).keydown(this.keydown);
     },
+
+    /* Remove */
 
     remove: function () {
 
+        // Unbind resize
+        $(window).off('resize', this.resize);
+
         // Unbind keydown
-        $(document).unbind();
+        $(document).off('keydown', this.keydown);
 
         // Remove editor
         this.editorView.remove();
 
-        // Empty container
-        this.$el.empty();
-        this.$el.undelegate();
+        Backbone.View.prototype.remove.call(this);
     },
 
-    render: function () {
+    /* Render */
 
-        // Append wrapper to DOM
-        this.$el.append(this.snapshotContainer);
+    render: function () {
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);
@@ -120,6 +128,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationContainer.html(navigationContainerOutput);
     },
 
+    /* Update */
+
     update: function (snapshot, fileId) {
 
         this.model = snapshot;
@@ -148,6 +158,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.render();
     },
 
+    /* Events */
+
+    didResize: function () {
+
+        this.editorView.didResize();
+    },
+
+    /* Actions */
+
     split: function () {
 
         this.editorView.toggleSplit();
@@ -157,6 +176,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.editorView.toggleDiff();
     },
+
+    /* Actions - Navigation */
 
     navigate: function (snapshot, file, options) {
 

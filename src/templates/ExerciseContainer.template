@@ -1,7 +1,5 @@
 <section>
 
-    <h1>{{course.name}}</h1>
-
     <ul>
         {{#list}}
             <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></li>
