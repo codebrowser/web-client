@@ -10,7 +10,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.studentView = new codebrowser.view.StudentView();
+        this.studentView = new codebrowser.view.StudentsView();
     },
 
     /* Actions */

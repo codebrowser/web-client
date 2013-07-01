@@ -10,7 +10,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.exerciseView = new codebrowser.view.ExerciseView();
+        this.exerciseView = new codebrowser.view.ExercisesView();
     },
 
     /* Actions */
