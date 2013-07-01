@@ -20,7 +20,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
 
             this.snapshotView = new codebrowser.view.SnapshotView();
-
             codebrowser.controller.ViewController.push(this.snapshotView);
         }
     },
