@@ -14,6 +14,6 @@ describe('CourseCollection', function () {
 
     it('should have correct URL', function () {
 
-        expect(courses.url).toBe(config.api.main.root + 'courses');
+        expect(courses.url()).toBe(config.api.main.root + 'courses');
     });
 });
