@@ -27,7 +27,8 @@
         "difflib": true,
         "editor": true,
         "Handlebars": true,
-        "moment": true
+        "moment": true,
+        "Raphael": true
 
     }
 }
