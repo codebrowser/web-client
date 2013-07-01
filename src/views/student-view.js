@@ -1,23 +1,11 @@
 codebrowser.view.StudentView = Backbone.View.extend({
 
-    el: config.view.container,
+    id: 'student-container',
 
     template: {
 
         studentContainer: Handlebars.templates.StudentContainer
 
-    },
-
-    initialize: function () {
-
-        // Student container
-        this.studentContainer = $('<div>', { id: 'student-container' });
-    },
-
-    remove: function () {
-
-        // Empty container
-        this.$el.empty();
     },
 
     render: function () {
@@ -28,13 +16,10 @@ codebrowser.view.StudentView = Backbone.View.extend({
 
         }
 
-        // Append wrapper to DOM
-        this.$el.append(this.studentContainer);
-
         // Template for student container
         var studentContainerOutput = $(this.template.studentContainer(this.model));
 
         // Update student container
-        this.studentContainer.html(studentContainerOutput);
+        this.$el.html(studentContainerOutput);
     }
 });

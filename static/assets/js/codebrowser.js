@@ -67,7 +67,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["Handlebars"]["templates"]["ExerciseContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
 
 function program1(depth0,data,depth1) {
   
@@ -88,12 +88,14 @@ function program1(depth0,data,depth1) {
   return buffer;
   }
 
-  buffer += "<section>\n\n    <ul>\n        ";
+  buffer += "<section>\n\n    <h1>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.course),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</h1>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
-  if (stack1 = helpers.list) { stack1 = stack1.call(depth0, options); }
-  else { stack1 = depth0.list; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  if (!helpers.list) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
-  if(stack1 || stack1 === 0) { buffer += stack1; }
+  if (stack2 = helpers.list) { stack2 = stack2.call(depth0, options); }
+  else { stack2 = depth0.list; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  if (!helpers.list) { stack2 = blockHelperMissing.call(depth0, stack2, options); }
+  if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
   });
@@ -728,24 +730,12 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
 codebrowser.view.CourseView = Backbone.View.extend({
 
-    el: config.view.container,
+    id: 'course-container',
 
     template: {
 
         courseContainer: Handlebars.templates.CourseContainer
 
-    },
-
-    initialize: function () {
-
-        // Course container
-        this.courseContainer = $('<div>', { id: 'course-container' });
-    },
-
-    remove: function () {
-
-        // Empty container
-        this.$el.empty();
     },
 
     render: function () {
@@ -757,14 +747,11 @@ codebrowser.view.CourseView = Backbone.View.extend({
 
         }
 
-        // Append wrapper to DOM
-        this.$el.append(this.courseContainer);
-
         // Template for course container
         var courseContainerOutput = $(this.template.courseContainer(this.model));
 
         // Update course container
-        this.courseContainer.html(courseContainerOutput);
+        this.$el.html(courseContainerOutput);
     }
 });
 ;
@@ -1175,24 +1162,12 @@ codebrowser.view.ErrorView = Backbone.View.extend({
 
 codebrowser.view.ExerciseView = Backbone.View.extend({
 
-    el: config.view.container,
+    id: 'exercise-container',
 
     template: {
 
         exerciseContainer: Handlebars.templates.ExerciseContainer
 
-    },
-
-    initialize: function () {
-
-        // Exercise container
-        this.exerciseContainer = $('<div>', { id: 'exercise-container' });
-    },
-
-    remove: function () {
-
-        // Empty container
-        this.$el.empty();
     },
 
     render: function () {
@@ -1205,14 +1180,11 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
 
         }
 
-        // Append wrapper to DOM
-        this.$el.append(this.exerciseContainer);
-
         // Template for exercise container
         var exerciseContainerOutput = $(this.template.exerciseContainer(this.model));
 
         // Update exercise container
-        this.exerciseContainer.html(exerciseContainerOutput);
+        this.$el.html(exerciseContainerOutput);
     }
 });
 ;
@@ -1454,24 +1426,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
 codebrowser.view.StudentView = Backbone.View.extend({
 
-    el: config.view.container,
+    id: 'student-container',
 
     template: {
 
         studentContainer: Handlebars.templates.StudentContainer
 
-    },
-
-    initialize: function () {
-
-        // Student container
-        this.studentContainer = $('<div>', { id: 'student-container' });
-    },
-
-    remove: function () {
-
-        // Empty container
-        this.$el.empty();
     },
 
     render: function () {
@@ -1482,14 +1442,11 @@ codebrowser.view.StudentView = Backbone.View.extend({
 
         }
 
-        // Append wrapper to DOM
-        this.$el.append(this.studentContainer);
-
         // Template for student container
         var studentContainerOutput = $(this.template.studentContainer(this.model));
 
         // Update student container
-        this.studentContainer.html(studentContainerOutput);
+        this.$el.html(studentContainerOutput);
     }
 });
 ;
