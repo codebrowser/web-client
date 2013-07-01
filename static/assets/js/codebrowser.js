@@ -1695,7 +1695,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         /* jshint newcap: false */
 
-        this.canvas = Raphael(this.el, '100%', 100);
+        this.canvas = Raphael(this.el, '100%', 50);
 
         /* jshint newcap: true */
     },
@@ -1708,25 +1708,19 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.canvas.clear();
 
         var y = this.canvas.height / 2 + 2;
-        var width = this.$el.width();
+        var width = this.$el.width() - 10;
 
         // Line
-        var line = this.canvas.path('M 0 ' + y + ' L ' + width + ' ' + y);
-
-        line.attr('stroke-width', '2px');
-        line.attr('stroke', '#878787');
+        var line = this.canvas.path('M 10 ' + y + ' L ' + width + ' ' + y);
+        $(line.node).attr('class', 'line');
 
         // Start circle
-        var startCircle = this.canvas.circle(5, y, 5);
-
-        startCircle.attr('fill', '#878787');
-        startCircle.attr('stroke', '#878787');
+        var startCircle = this.canvas.circle(10, y, 5);
+        $(startCircle.node).attr('class', 'circle');
 
         // End circle
-        var endCircle = this.canvas.circle(width - 5, y, 5);
-
-        endCircle.attr('fill', '#878787');
-        endCircle.attr('stroke', '#878787');
+        var endCircle = this.canvas.circle(width, y, 5);
+        $(endCircle.node).attr('class', 'circle');
     }
 });
 ;
