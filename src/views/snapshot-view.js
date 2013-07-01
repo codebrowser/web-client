@@ -25,6 +25,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         var self = this;
 
+        // Timeline
+        this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView();
+        this.$el.append(this.snapshotsTimelineView.el);
+
         // Navigation
         this.navigationContainer = $('<div>', { id: 'navigation-container' });
         this.$el.append(this.navigationContainer);
@@ -77,6 +81,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     /* Render */
 
     render: function () {
+
+        // Render timeline
+        this.snapshotsTimelineView.render();
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);
@@ -162,6 +169,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     didResize: function () {
 
+        this.snapshotsTimelineView.render();
         this.editorView.didResize();
     },
 
