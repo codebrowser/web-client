@@ -1,7 +1,7 @@
 this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 
-this["Handlebars"]["templates"]["CourseContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+this["Handlebars"]["templates"]["CoursesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
@@ -85,7 +85,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   });
 
-this["Handlebars"]["templates"]["ExerciseContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+this["Handlebars"]["templates"]["ExercisesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
@@ -167,7 +167,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   });
 
-this["Handlebars"]["templates"]["StudentContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+this["Handlebars"]["templates"]["StudentsContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
@@ -639,6 +639,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
 /*
  * Fetch a snapshot by passing a studentId, courseId and exerciseId as attributes for the model:
+ *
  * var snapshot = codebrowser.model.Snapshot.findOrCreate({ studentId: 1, courseId: 2, exerciseId: 3, id: 4 });
  */
 
@@ -859,13 +860,13 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 });
 ;
 
-codebrowser.view.CourseView = Backbone.View.extend({
+codebrowser.view.CoursesView = Backbone.View.extend({
 
-    id: 'course-container',
+    id: 'courses-container',
 
     template: {
 
-        courseContainer: Handlebars.templates.CourseContainer
+        coursesContainer: Handlebars.templates.CoursesContainer
 
     },
 
@@ -880,11 +881,11 @@ codebrowser.view.CourseView = Backbone.View.extend({
 
         }
 
-        // Template for course container
-        var courseContainerOutput = $(this.template.courseContainer(model));
+        // Template for courses container
+        var coursesContainerOutput = $(this.template.coursesContainer(model));
 
-        // Update course container
-        this.$el.html(courseContainerOutput);
+        // Update courses container
+        this.$el.html(coursesContainerOutput);
     }
 });
 ;
@@ -1391,13 +1392,13 @@ codebrowser.view.ErrorView = Backbone.View.extend({
 });
 ;
 
-codebrowser.view.ExerciseView = Backbone.View.extend({
+codebrowser.view.ExercisesView = Backbone.View.extend({
 
-    id: 'exercise-container',
+    id: 'exercises-container',
 
     template: {
 
-        exerciseContainer: Handlebars.templates.ExerciseContainer
+        exercisesContainer: Handlebars.templates.ExercisesContainer
 
     },
 
@@ -1413,11 +1414,11 @@ codebrowser.view.ExerciseView = Backbone.View.extend({
 
         }
 
-        // Template for exercise container
-        var exerciseContainerOutput = $(this.template.exerciseContainer(model));
+        // Template for exercises container
+        var exercisesContainerOutput = $(this.template.exercisesContainer(model));
 
-        // Update exercise container
-        this.$el.html(exerciseContainerOutput);
+        // Update exercises container
+        this.$el.html(exercisesContainerOutput);
     }
 });
 ;
@@ -1678,13 +1679,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 });
 ;
 
-codebrowser.view.StudentView = Backbone.View.extend({
+codebrowser.view.StudentsView = Backbone.View.extend({
 
-    id: 'student-container',
+    id: 'students-container',
 
     template: {
 
-        studentContainer: Handlebars.templates.StudentContainer
+        studentsContainer: Handlebars.templates.StudentsContainer
 
     },
 
@@ -1698,11 +1699,11 @@ codebrowser.view.StudentView = Backbone.View.extend({
 
         }
 
-        // Template for student container
-        var studentContainerOutput = $(this.template.studentContainer(model));
+        // Template for students container
+        var studentsContainerOutput = $(this.template.studentsContainer(model));
 
-        // Update student container
-        this.$el.html(studentContainerOutput);
+        // Update students container
+        this.$el.html(studentsContainerOutput);
     }
 });
 ;
@@ -1772,7 +1773,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.courseView = new codebrowser.view.CourseView();
+        this.courseView = new codebrowser.view.CoursesView();
     },
 
     /* Actions */
@@ -1823,7 +1824,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.exerciseView = new codebrowser.view.ExerciseView();
+        this.exerciseView = new codebrowser.view.ExercisesView();
     },
 
     /* Actions */
@@ -1977,7 +1978,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.studentView = new codebrowser.view.StudentView();
+        this.studentView = new codebrowser.view.StudentsView();
     },
 
     /* Actions */
