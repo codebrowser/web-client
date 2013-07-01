@@ -1,21 +1,21 @@
 describe('Duration', function () {
 
-    it('should return time difference in seconds', function () {
+    it('should return time difference as seconds', function () {
 
         expect(codebrowser.helper.Duration.calculate(1360332833591, 1360332812583)).toBe('21 seconds');
     });
 
-    it('should return time difference in minutes', function () {
+    it('should return time difference as minutes', function () {
 
         expect(codebrowser.helper.Duration.calculate(1360333509006, 1360332833591)).toBe('11 minutes');
     });
 
-    it('should return time difference in minutes', function () {
+    it('should return time difference as hours', function () {
 
         expect(codebrowser.helper.Duration.calculate(20000000, 6000000)).toBe('4 hours');
     });
 
-    it('should return time difference in days', function () {
+    it('should return time difference as days', function () {
 
         expect(codebrowser.helper.Duration.calculate(1360329948801, 1359642309317)).toBe('8 days');
     });

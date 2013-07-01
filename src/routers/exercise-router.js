@@ -13,7 +13,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
             this.exerciseView = new codebrowser.view.ExerciseView();
 
-            codebrowser.controller.ViewController.pushToView(this.exerciseView);
+            codebrowser.controller.ViewController.push(this.exerciseView);
         }
 
     },

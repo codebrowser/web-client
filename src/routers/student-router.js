@@ -13,7 +13,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
             this.studentView = new codebrowser.view.StudentView();
 
-            codebrowser.controller.ViewController.pushToView(this.studentView);
+            codebrowser.controller.ViewController.push(this.studentView);
         }
 
     },

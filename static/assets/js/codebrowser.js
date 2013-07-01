@@ -1725,7 +1725,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
             this.courseView = new codebrowser.view.CourseView();
 
-            codebrowser.controller.ViewController.pushToView(this.courseView);
+            codebrowser.controller.ViewController.push(this.courseView);
         }
 
     },
@@ -1780,7 +1780,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
             this.exerciseView = new codebrowser.view.ExerciseView();
 
-            codebrowser.controller.ViewController.pushToView(this.exerciseView);
+            codebrowser.controller.ViewController.push(this.exerciseView);
         }
 
     },
@@ -1939,7 +1939,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
             this.studentView = new codebrowser.view.StudentView();
 
-            codebrowser.controller.ViewController.pushToView(this.studentView);
+            codebrowser.controller.ViewController.push(this.studentView);
         }
 
     },
