@@ -157,7 +157,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var previousFile = previousSnapshot.get('files').findWhere({ name: filename });
 
         // Update timeline
-        this.snapshotsTimelineView.update(this.collection);
+        this.snapshotsTimelineView.update(this.collection, index);
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
