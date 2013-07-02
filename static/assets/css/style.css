@@ -154,6 +154,26 @@
 
 }
 
+#snapshots-timeline-container .circle:hover {
+
+    stroke: #272f33;
+    fill: #4e585e;
+
+}
+
+#snapshots-timeline-container .pointer {
+
+    stroke: #272f33;
+    fill: #4e585e;
+
+}
+
+#snapshots-timeline-container .pointer-area {
+
+    stroke-width: 0;
+
+}
+
 /* Snapshot */
 
 #navigation-container {
