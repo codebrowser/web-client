@@ -36,22 +36,22 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var self = this;
 
-        // Snapshot element
-        var snapshotElement = self.canvas.circle(x, y, radius);
-        $(snapshotElement.node).attr('class', 'snapshot');
-
         // Snapshot area element
         var snapshotArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
         $(snapshotArea.node).attr('class', 'area snapshot-area');
 
+        // Snapshot element
+        var snapshotElement = self.canvas.circle(x, y, radius);
+        $(snapshotElement.node).attr('class', 'snapshot');
+
         // Set models for snapshot and snapshot area elements
         var file = snapshot.get('files').findWhere({ name: this.filename });
 
-        snapshotElement.data('snapshot', snapshot);
-        snapshotElement.data('file', file);
-
         snapshotArea.data('snapshot', snapshot);
         snapshotArea.data('file', file);
+
+        snapshotElement.data('snapshot', snapshot);
+        snapshotElement.data('file', file);
 
         snapshotElement.click(function () {
 
