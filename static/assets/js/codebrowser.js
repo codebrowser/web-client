@@ -1845,12 +1845,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             // Snapshot element
             if (element.data('snapshot')) {
-
-                if (element.data('file')) {
-                    self.parentView.navigate(element.data('snapshot'), element.data('file'));
-                } else {
-                    self.parentView.navigate(element.data('snapshot'));
-                }
+                self.parentView.navigate(element.data('snapshot'), element.data('file'));
             }
         });
     },
