@@ -1477,7 +1477,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var self = this;
 
         // Timeline
-        this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView();
+        this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
         this.$el.append(this.snapshotsTimelineView.el);
 
         // Navigation
@@ -1532,9 +1532,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     /* Render */
 
     render: function () {
-
-        // Render timeline
-        this.snapshotsTimelineView.render();
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);
@@ -1609,6 +1606,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Determine previous file if it exists
         var previousFile = previousSnapshot.get('files').findWhere({ name: filename });
+
+        // Update timeline
+        this.snapshotsTimelineView.update(this.collection);
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
@@ -1707,7 +1707,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     id: 'snapshots-timeline-container',
 
-    initialize: function () {
+    initialize: function (options) {
+
+        // Parent view
+        this.parentView = options.parentView;
 
         /* jshint newcap: false */
 
@@ -1723,20 +1726,64 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Clear canvas
         this.canvas.clear();
 
+        // Center point
         var y = this.canvas.height / 2 + 3;
-        var width = this.$el.width() - 10;
+
+        var leftOffset = 0;
+        var x = 0;
+
+        var self = this;
+
+        this.collection.each(function (snapshot, index) {
+
+            // TODO: Weight by time between snapshots
+            var distance = 100;
+
+            // TODO: Weight by amount of differences
+            var radius = 8;
+
+            x += (radius * 2);
+
+            // Left offset
+            if (index === 0) {
+                leftOffset = x;
+            }
+
+            // Snapshot circle
+            var snapshotCircle = self.canvas.circle(x, y, radius);
+            snapshotCircle.data('snapshot', snapshot);
+
+            // Style
+            $(snapshotCircle.node).attr('class', 'circle');
+
+            snapshotCircle.click(function () {
+
+                var snapshot = this.data('snapshot');
+
+                // Navigate
+                self.parentView.navigate(snapshot);
+            });
+
+            if (index !== self.collection.length - 1) {
+                x += distance;
+            }
+        });
 
         // Line
-        var line = this.canvas.path('M 10 ' + y + ' L ' + width + ' ' + y);
+        var line = this.canvas.path('M ' + leftOffset + ' ' + y + ' L ' + x + ' ' + y);
+        line.toBack();
+
+        // Style
         $(line.node).attr('class', 'line');
+    },
 
-        // Start circle
-        var startCircle = this.canvas.circle(10, y, 5);
-        $(startCircle.node).attr('class', 'circle');
+    /* Update */
 
-        // End circle
-        var endCircle = this.canvas.circle(width, y, 5);
-        $(endCircle.node).attr('class', 'circle');
+    update: function (collection) {
+
+        this.collection = collection;
+
+        this.render();
     }
 });
 ;

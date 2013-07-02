@@ -26,7 +26,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var self = this;
 
         // Timeline
-        this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView();
+        this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
         this.$el.append(this.snapshotsTimelineView.el);
 
         // Navigation
@@ -81,9 +81,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     /* Render */
 
     render: function () {
-
-        // Render timeline
-        this.snapshotsTimelineView.render();
 
         // Index of the current model
         var index = this.collection.indexOf(this.model);
@@ -158,6 +155,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Determine previous file if it exists
         var previousFile = previousSnapshot.get('files').findWhere({ name: filename });
+
+        // Update timeline
+        this.snapshotsTimelineView.update(this.collection);
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
