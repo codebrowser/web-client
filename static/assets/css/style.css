@@ -168,6 +168,12 @@
 
 }
 
+#snapshots-timeline-container .pointer-area {
+
+    stroke-width: 0;
+
+}
+
 /* Snapshot */
 
 #navigation-container {

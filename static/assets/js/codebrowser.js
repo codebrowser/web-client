@@ -1761,8 +1761,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         });
     },
 
-    drawPointer: function (x, y) {
-        // M0 6, L3 0, 6 6, Z
+    drawPointer: function (x, y, radius) {
+
+        var pointerSet = this.canvas.set();
+
+        var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
+
+        $(pointerArea.node).attr('class', 'pointer-area');
 
         var width = 8;
 
@@ -1799,6 +1804,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                                         'Z');
 
         $(pointer.node).attr('class', 'pointer');
+
+        pointerSet.push(pointerArea);
+        pointerSet.push(pointerLine);
+        pointerSet.push(pointer);
     },
 
     render: function () {
@@ -1832,7 +1841,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             self.drawSnapshotCircle(snapshot, x, y, radius);
 
             if (index === self.currentSnapshotIndex) {
-                self.drawPointer(x, y);
+                self.drawPointer(x, y, radius);
             }
 
             if (index !== self.collection.length - 1) {
