@@ -34,6 +34,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var snapshotCircle = self.canvas.circle(x, y, radius);
         snapshotCircle.data('snapshot', snapshot);
 
+        var file = snapshot.get('files').findWhere({ name: this.fileName });
+
+        if (file) {
+            snapshotCircle.data('file', file);
+        }
+
         // Style
         $(snapshotCircle.node).attr('class', 'circle');
 
@@ -41,8 +47,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             var snapshot = this.data('snapshot');
 
+            var file = this.data('file');
+
             // Navigate
-            self.parentView.navigate(snapshot);
+            self.parentView.navigate(snapshot, file);
         });
 
         snapshotCircle.mouseover(function () {
@@ -149,10 +157,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     /* Update */
 
-    update: function (collection, currentSnapshotIndex) {
+    update: function (collection, currentSnapshotIndex, fileId) {
 
         this.collection = collection;
         this.currentSnapshotIndex = currentSnapshotIndex;
+
+        this.fileName = this.collection.at(currentSnapshotIndex).get('files').get(fileId).get('name');
 
         this.render();
     }
