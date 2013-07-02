@@ -22,9 +22,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     /* Render */
 
-    drawTimeline: function (leftOffset, y, x) {
+    renderTimeline: function (leftOffset, y, x) {
 
-        // Line
+        // Timeline element
         var timeline = this.canvas.path('M ' + leftOffset + ' ' + y + ' L ' + x + ' ' + y);
         $(timeline.node).attr('class', 'timeline');
 
@@ -32,7 +32,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         timeline.toBack();
     },
 
-    drawSnapshot: function (snapshot, x, y, radius) {
+    renderSnapshot: function (snapshot, x, y, radius) {
 
         var self = this;
 
@@ -40,11 +40,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var snapshotElement = self.canvas.circle(x, y, radius);
         $(snapshotElement.node).attr('class', 'snapshot');
 
-        // Snapshot area
+        // Snapshot area element
         var snapshotArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
         $(snapshotArea.node).attr('class', 'area snapshot-area');
 
-        // Set models for snapshot element
+        // Set models for snapshot and snapshot area elements
         var file = snapshot.get('files').findWhere({ name: this.filename });
 
         snapshotElement.data('snapshot', snapshot);
@@ -64,37 +64,37 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         snapshotElement.mouseover(function () {
 
-            this.animate({transform: 's1.2'}, 150);
+            this.animate({ transform: 's1.2' }, 150);
         });
 
         snapshotElement.mouseout(function () {
 
-            this.animate({transform: 's1'}, 150);
+            this.animate({ transform: 's1' }, 150);
         });
     },
 
-    drawPointer: function (x, y, radius) {
+    renderPointer: function (x, y, radius) {
+
+        // Set
+        var pointerSet = this.canvas.set();
 
         var width = 7;
 
         var pointerX = x - width / 2;
         var pointerY = y + 27;
 
-        // Set
-        var pointerSet = this.canvas.set();
-
-        // Pointer line
         var pointerLineX = x;
         var pointerLineY = pointerY - width / 2;
 
+        // Pointer line element
         var pointerLine = this.canvas.path('M' + pointerLineX + ' ' + pointerLineY + ', L' + pointerLineX + ' ' + 0);
-
         $(pointerLine.node).attr('class', 'pointer-line');
+
         pointerLine.toBack();
 
         pointerSet.push(pointerLine);
 
-        // Pointer
+        // Pointer element
         var pointer = this.canvas.path('M' +
                                         pointerX +
                                         ' ' +
@@ -113,7 +113,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         pointerSet.push(pointer);
 
-        // Pointer area
+        // Pointer area element
         var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
         $(pointerArea.node).attr('class', 'area pointer-area');
 
@@ -121,6 +121,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var self = this;
 
+        // Dragging events
         var onMove = function (dx) {
 
             pointerSet.transform('T ' + dx + ', 0');
@@ -187,11 +188,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                 leftOffset = x;
             }
 
-            self.drawSnapshot(snapshot, x, y, radius);
+            self.renderSnapshot(snapshot, x, y, radius);
 
             // Draw pointer on current snapshot
             if (index === self.currentSnapshotIndex) {
-                self.drawPointer(x, y, radius);
+                self.renderPointer(x, y, radius);
             }
 
             if (index !== self.collection.length - 1) {
@@ -199,7 +200,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             }
         });
 
-        this.drawTimeline(leftOffset, y, x);
+        this.renderTimeline(leftOffset, y, x);
     },
 
     /* Update */
@@ -210,7 +211,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.currentSnapshotIndex = currentSnapshotIndex;
         this.filename = filename;
 
-        // Render if user not dragging
+        // Render if user is not dragging
         if (!this.dragging) {
             this.render();
         }
