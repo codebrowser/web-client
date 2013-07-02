@@ -170,7 +170,7 @@
 
 }
 
-#snapshots-timeline-container .pointer-area {
+#snapshots-timeline-container .area.pointer {
 
     cursor: move;
 

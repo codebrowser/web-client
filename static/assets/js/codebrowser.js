@@ -1740,7 +1740,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Snapshot area element
         var snapshotArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
-        $(snapshotArea.node).attr('class', 'area snapshot-area');
+        $(snapshotArea.node).attr('class', 'area');
 
         // Snapshot element
         var snapshotElement = self.canvas.circle(x, y, radius);
@@ -1817,7 +1817,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Pointer area element
         var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
-        $(pointerArea.node).attr('class', 'area pointer-area');
+        $(pointerArea.node).attr('class', 'area pointer');
 
         pointerSet.push(pointerArea);
 
