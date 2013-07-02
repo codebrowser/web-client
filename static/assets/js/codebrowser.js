@@ -9,7 +9,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\r\n            <li><a href='#/students/"
+  buffer += "\n            <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/";
   if (stack2 = helpers.id) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
@@ -19,17 +19,17 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\r\n        ";
+    + "</a></li>\n        ";
   return buffer;
   }
 
-  buffer += "<h2>Courses</h2>\r\n\r\n<section>\r\n\r\n    <ul>\r\n        ";
+  buffer += "<h2>Courses</h2>\n\n<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack1 = helpers.courses) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.courses; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.courses) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n    </ul>\r\n\r\n</section>\r\n";
+  buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
   });
 
@@ -39,35 +39,35 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  buffer += "<header>\r\n\r\n    <h1>";
+  buffer += "<header>\n\n    <h1>";
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</h1>\r\n\r\n    <span class='pull-right'>\r\n\r\n        + ";
+    + "</h1>\n\n    <span class='pull-right'>\n\n        + ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.duration || depth0.duration),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "duration", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + "\r\n\r\n        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom'\r\n\r\n           data-original-title='\r\n\r\n                <time>";
+    + "\n\n        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom'\n\n           data-original-title='\n\n                <time>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + " –</time>\r\n                <time>";
+    + " –</time>\n                <time>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + "</time>\r\n\r\n           '\r\n\r\n           data-content='\r\n\r\n            <dl class=\"dl-horizontal pull-left\">\r\n\r\n              <dt>Insert</dt>\r\n              <dd>"
+    + "</time>\n\n           '\n\n           data-content='\n\n            <dl class=\"dl-horizontal pull-left\">\n\n              <dt>Insert</dt>\n              <dd>"
     + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.pluralize || depth0.pluralize),stack1 ? stack1.call(depth0, ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert), "line", options) : helperMissing.call(depth0, "pluralize", ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert), "line", options)))
-    + "</dd>\r\n\r\n              <dt>Replace</dt>\r\n              <dd>"
+    + "</dd>\n\n              <dt>Replace</dt>\n              <dd>"
     + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.replace)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.pluralize || depth0.pluralize),stack1 ? stack1.call(depth0, ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.replace), "line", options) : helperMissing.call(depth0, "pluralize", ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.replace), "line", options)))
-    + "</dd>\r\n\r\n              <dt>Delete</dt>\r\n              <dd>"
+    + "</dd>\n\n              <dt>Delete</dt>\n              <dd>"
     + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1['delete'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.pluralize || depth0.pluralize),stack1 ? stack1.call(depth0, ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1['delete']), "line", options) : helperMissing.call(depth0, "pluralize", ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1['delete']), "line", options)))
-    + "</dd>\r\n\r\n            </dl>\r\n\r\n        '><i class='icon-info-sign icon-gray'></i></a>\r\n\r\n    </span>\r\n\r\n</header>\r\n";
+    + "</dd>\n\n            </dl>\n\n        '><i class='icon-info-sign icon-gray'></i></a>\n\n    </span>\n\n</header>\n";
   return buffer;
   });
 
@@ -81,7 +81,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (stack1 = helpers.message) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.message; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</p>\r\n";
+    + "</p>\n";
   return buffer;
   });
 
@@ -93,7 +93,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\r\n            <li><a href='#/students/"
+  buffer += "\n            <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -105,17 +105,17 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\r\n        ";
+    + "</a></li>\n        ";
   return buffer;
   }
 
-  buffer += "<h2>Exercises</h2>\r\n\r\n<section>\r\n\r\n    <ul>\r\n        ";
+  buffer += "<h2>Exercises</h2>\n\n<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack1 = helpers.exercises) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.exercises; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.exercises) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n    </ul>\r\n\r\n</section>\r\n";
+  buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
   });
 
@@ -127,7 +127,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\r\n                    <li><a href='#/students/"
+  buffer += "\n                    <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -143,19 +143,19 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\r\n                ";
+    + "</a></li>\n                ";
   return buffer;
   }
 
-  buffer += "<div class='row'>\r\n\r\n    <div class='span6'>\r\n\r\n        <div class='btn-group'>\r\n\r\n            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> "
+  buffer += "<div class='row'>\n\n    <div class='span6'>\n\n        <div class='btn-group'>\n\n            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> "
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " <span class='caret'></span></a>\r\n\r\n            <ul class='dropdown-menu'>\r\n                ";
+    + " <span class='caret'></span></a>\n\n            <ul class='dropdown-menu'>\n                ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack2 = helpers.files) { stack2 = stack2.call(depth0, options); }
   else { stack2 = depth0.files; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if (!helpers.files) { stack2 = blockHelperMissing.call(depth0, stack2, options); }
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\r\n            </ul>\r\n\r\n        </div>\r\n\r\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\r\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\r\n\r\n    </div>\r\n\r\n    <div class='span4 pull-right'>\r\n\r\n        <div class='row'>\r\n\r\n            <div class='span1 text-center'>";
+  buffer += "\n            </ul>\n\n        </div>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
   if (stack2 = helpers.current) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.current; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
@@ -163,7 +163,7 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.total) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.total; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</div>\r\n\r\n            <div class='span3'>\r\n\r\n                <div class='btn-group pull-right'>\r\n                    <button type='button' id='first' class='btn'>First</button>\r\n                    <button type='button' id='previous' class='btn'>Previous</button>\r\n                    <button type='button' id='next' class='btn'>Next</button>\r\n                    <button type='button' id='last' class='btn'>Last</button>\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n</div>\r\n";
+    + "</div>\n\n            <div class='span3'>\n\n                <div class='btn-group pull-right'>\n                    <button type='button' id='first' class='btn'>First</button>\n                    <button type='button' id='previous' class='btn'>Previous</button>\n                    <button type='button' id='next' class='btn'>Next</button>\n                    <button type='button' id='last' class='btn'>Last</button>\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
   });
 
@@ -175,7 +175,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\r\n            <li><a href='#/students/";
+  buffer += "\n            <li><a href='#/students/";
   if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -183,17 +183,17 @@ function program1(depth0,data) {
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</a></li>\r\n        ";
+    + "</a></li>\n        ";
   return buffer;
   }
 
-  buffer += "<h2>Students</h2>\r\n\r\n<section>\r\n\r\n    <ul>\r\n        ";
+  buffer += "<h2>Students</h2>\n\n<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
   if (stack1 = helpers.students) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.students; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.students) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n    </ul>\r\n\r\n</section>\r\n";
+  buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
   });;
 
@@ -1618,7 +1618,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     didResize: function () {
 
-        this.snapshotsTimelineView.render();
         this.editorView.didResize();
     },
 
@@ -1719,47 +1718,45 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     /* Render */
 
-    drawLine: function (leftOffset, y, x) {
+    drawTimeline: function (leftOffset, y, x) {
 
         // Line
-        var line = this.canvas.path('M ' + leftOffset + ' ' + y + ' L ' + x + ' ' + y);
-        line.toBack();
+        var timeline = this.canvas.path('M ' + leftOffset + ' ' + y + ' L ' + x + ' ' + y);
+        $(timeline.node).attr('class', 'timeline');
 
-        // Style
-        $(line.node).attr('class', 'line');
+        // Move back on z-axis
+        timeline.toBack();
     },
 
-    drawSnapshotCircle: function (snapshot, x, y, radius) {
+    drawSnapshot: function (snapshot, x, y, radius) {
 
         var self = this;
 
-        // Snapshot circle
-        var snapshotCircle = self.canvas.circle(x, y, radius);
-        snapshotCircle.data('snapshot', snapshot);
+        // Snapshot element
+        var snapshotElement = self.canvas.circle(x, y, radius);
+        $(snapshotElement.node).attr('class', 'snapshot');
 
-        var file = snapshot.get('files').findWhere({ name: this.fileName });
+        // Set models for snapshot element
+        var file = snapshot.get('files').findWhere({ name: this.filename });
 
-        snapshotCircle.data('file', file);
+        snapshotElement.data('snapshot', snapshot);
+        snapshotElement.data('file', file);
 
-        // Style
-        $(snapshotCircle.node).attr('class', 'circle');
-
-        snapshotCircle.click(function () {
+        snapshotElement.click(function () {
 
             var snapshot = this.data('snapshot');
-
             var file = this.data('file');
 
-            // Navigate
+            // Navigate to snapshot and file
             self.parentView.navigate(snapshot, file);
         });
 
-        snapshotCircle.mouseover(function () {
+        snapshotElement.mouseover(function () {
 
             this.animate({transform: 's1.4'}, 150);
         });
 
-        snapshotCircle.mouseout(function () {
+        snapshotElement.mouseout(function () {
 
             this.animate({transform: 's1'}, 150);
         });
@@ -1767,32 +1764,32 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     drawPointer: function (x, y, radius) {
 
-        var pointerSet = this.canvas.set();
-
-        var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
-
-        $(pointerArea.node).attr('class', 'pointer-area');
-
         var width = 8;
 
         var pointerX = x - width / 2;
         var pointerY = y + 25;
 
+        // Set
+        var pointerSet = this.canvas.set();
+
+        // Pointer area
+        var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
+        $(pointerArea.node).attr('class', 'pointer-area');
+
+        pointerSet.push(pointerArea);
+
+        // Pointer line
         var pointerLineX = x;
         var pointerLineY = pointerY - width;
 
-        var pointerLine = this.canvas.path('M' +
-                                           pointerLineX +
-                                           ' ' +
-                                           pointerLineY +
-                                           ', L' +
-                                           pointerLineX +
-                                           ' ' +
-                                           0);
+        var pointerLine = this.canvas.path('M' + pointerLineX + ' ' + pointerLineY + ', L' + pointerLineX + ' ' + 0);
 
-        pointerLine.toBack();
         $(pointerLine.node).attr('class', 'pointer');
+        pointerLine.toBack();
 
+        pointerSet.push(pointerLine);
+
+        // Pointer
         var pointer = this.canvas.path('M' +
                                         pointerX +
                                         ' ' +
@@ -1809,8 +1806,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         $(pointer.node).attr('class', 'pointer');
 
-        pointerSet.push(pointerArea);
-        pointerSet.push(pointerLine);
         pointerSet.push(pointer);
     },
 
@@ -1842,8 +1837,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                 leftOffset = x;
             }
 
-            self.drawSnapshotCircle(snapshot, x, y, radius);
+            self.drawSnapshot(snapshot, x, y, radius);
 
+            // Draw pointer on current snapshot
             if (index === self.currentSnapshotIndex) {
                 self.drawPointer(x, y, radius);
             }
@@ -1853,17 +1849,16 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             }
         });
 
-        this.drawLine(leftOffset, y, x);
+        this.drawTimeline(leftOffset, y, x);
     },
 
     /* Update */
 
-    update: function (collection, currentSnapshotIndex, fileName) {
+    update: function (collection, currentSnapshotIndex, filename) {
 
         this.collection = collection;
         this.currentSnapshotIndex = currentSnapshotIndex;
-
-        this.fileName = fileName;
+        this.filename = filename;
 
         this.render();
     }

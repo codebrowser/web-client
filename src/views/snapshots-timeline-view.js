@@ -16,47 +16,45 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     /* Render */
 
-    drawLine: function (leftOffset, y, x) {
+    drawTimeline: function (leftOffset, y, x) {
 
         // Line
-        var line = this.canvas.path('M ' + leftOffset + ' ' + y + ' L ' + x + ' ' + y);
-        line.toBack();
+        var timeline = this.canvas.path('M ' + leftOffset + ' ' + y + ' L ' + x + ' ' + y);
+        $(timeline.node).attr('class', 'timeline');
 
-        // Style
-        $(line.node).attr('class', 'line');
+        // Move back on z-axis
+        timeline.toBack();
     },
 
-    drawSnapshotCircle: function (snapshot, x, y, radius) {
+    drawSnapshot: function (snapshot, x, y, radius) {
 
         var self = this;
 
-        // Snapshot circle
-        var snapshotCircle = self.canvas.circle(x, y, radius);
-        snapshotCircle.data('snapshot', snapshot);
+        // Snapshot element
+        var snapshotElement = self.canvas.circle(x, y, radius);
+        $(snapshotElement.node).attr('class', 'snapshot');
 
-        var file = snapshot.get('files').findWhere({ name: this.fileName });
+        // Set models for snapshot element
+        var file = snapshot.get('files').findWhere({ name: this.filename });
 
-        snapshotCircle.data('file', file);
+        snapshotElement.data('snapshot', snapshot);
+        snapshotElement.data('file', file);
 
-        // Style
-        $(snapshotCircle.node).attr('class', 'circle');
-
-        snapshotCircle.click(function () {
+        snapshotElement.click(function () {
 
             var snapshot = this.data('snapshot');
-
             var file = this.data('file');
 
-            // Navigate
+            // Navigate to snapshot and file
             self.parentView.navigate(snapshot, file);
         });
 
-        snapshotCircle.mouseover(function () {
+        snapshotElement.mouseover(function () {
 
             this.animate({transform: 's1.4'}, 150);
         });
 
-        snapshotCircle.mouseout(function () {
+        snapshotElement.mouseout(function () {
 
             this.animate({transform: 's1'}, 150);
         });
@@ -64,32 +62,32 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     drawPointer: function (x, y, radius) {
 
-        var pointerSet = this.canvas.set();
-
-        var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
-
-        $(pointerArea.node).attr('class', 'pointer-area');
-
         var width = 8;
 
         var pointerX = x - width / 2;
         var pointerY = y + 25;
 
+        // Set
+        var pointerSet = this.canvas.set();
+
+        // Pointer area
+        var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
+        $(pointerArea.node).attr('class', 'pointer-area');
+
+        pointerSet.push(pointerArea);
+
+        // Pointer line
         var pointerLineX = x;
         var pointerLineY = pointerY - width;
 
-        var pointerLine = this.canvas.path('M' +
-                                           pointerLineX +
-                                           ' ' +
-                                           pointerLineY +
-                                           ', L' +
-                                           pointerLineX +
-                                           ' ' +
-                                           0);
+        var pointerLine = this.canvas.path('M' + pointerLineX + ' ' + pointerLineY + ', L' + pointerLineX + ' ' + 0);
 
-        pointerLine.toBack();
         $(pointerLine.node).attr('class', 'pointer');
+        pointerLine.toBack();
 
+        pointerSet.push(pointerLine);
+
+        // Pointer
         var pointer = this.canvas.path('M' +
                                         pointerX +
                                         ' ' +
@@ -106,8 +104,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         $(pointer.node).attr('class', 'pointer');
 
-        pointerSet.push(pointerArea);
-        pointerSet.push(pointerLine);
         pointerSet.push(pointer);
     },
 
@@ -139,8 +135,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                 leftOffset = x;
             }
 
-            self.drawSnapshotCircle(snapshot, x, y, radius);
+            self.drawSnapshot(snapshot, x, y, radius);
 
+            // Draw pointer on current snapshot
             if (index === self.currentSnapshotIndex) {
                 self.drawPointer(x, y, radius);
             }
@@ -150,17 +147,16 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             }
         });
 
-        this.drawLine(leftOffset, y, x);
+        this.drawTimeline(leftOffset, y, x);
     },
 
     /* Update */
 
-    update: function (collection, currentSnapshotIndex, fileName) {
+    update: function (collection, currentSnapshotIndex, filename) {
 
         this.collection = collection;
         this.currentSnapshotIndex = currentSnapshotIndex;
-
-        this.fileName = fileName;
+        this.filename = filename;
 
         this.render();
     }

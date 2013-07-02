@@ -140,21 +140,21 @@
 
 }
 
-#snapshots-timeline-container .line {
+#snapshots-timeline-container .timeline {
 
     stroke-width: 1px;
     stroke: #80929c;
 
 }
 
-#snapshots-timeline-container .circle {
+#snapshots-timeline-container .snapshot {
 
     stroke: #55656d;
     fill: #80929c;
 
 }
 
-#snapshots-timeline-container .circle:hover {
+#snapshots-timeline-container .snapshot:hover {
 
     stroke: #272f33;
     fill: #4e585e;
