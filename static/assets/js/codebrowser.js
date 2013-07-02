@@ -606,6 +606,10 @@ codebrowser.model.Exercise = Backbone.RelationalModel.extend({
 
 codebrowser.model.File = Backbone.RelationalModel.extend({
 
+    /* Cache */
+
+    content: null,
+
     urlRoot: function () {
 
         return config.api.main.root +
@@ -624,9 +628,21 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     fetchContent: function (callback) {
 
+        // Return content from cache
+        if (this.content) {
+
+            callback(this.content, null);
+
+            return;
+        }
+
+        var self = this;
+
         var request = $.get(this.urlRoot() + '/' + this.id + '/content', function (content) {
 
-            callback(content, null);
+            self.content = content;
+
+            callback(self.content, null);
         });
 
         request.fail(function () {
