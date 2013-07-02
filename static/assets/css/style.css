@@ -133,7 +133,7 @@
 #snapshots-timeline-container {
 
     margin: 25px auto;
-    padding: 20px;
+    padding: 10px;
     border: 1px solid #c5d6de;
     border-radius: 4px;
     background-color: #e6f1f6;
@@ -161,6 +161,12 @@
 
 }
 
+#snapshots-timeline-container .pointer-area {
+
+    stroke-width: 0;
+
+}
+
 #snapshots-timeline-container .pointer {
 
     stroke: #272f33;
@@ -168,9 +174,10 @@
 
 }
 
-#snapshots-timeline-container .pointer-area {
+#snapshots-timeline-container .pointer-line {
 
-    stroke-width: 0;
+    stroke-width: 2px;
+    stroke: #4e585e;
 
 }
 

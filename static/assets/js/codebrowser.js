@@ -1753,7 +1753,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         snapshotElement.mouseover(function () {
 
-            this.animate({transform: 's1.4'}, 150);
+            this.animate({transform: 's1.2'}, 150);
         });
 
         snapshotElement.mouseout(function () {
@@ -1764,10 +1764,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     drawPointer: function (x, y, radius) {
 
-        var width = 8;
+        var width = 7;
 
         var pointerX = x - width / 2;
-        var pointerY = y + 25;
+        var pointerY = y + 27;
 
         // Set
         var pointerSet = this.canvas.set();
@@ -1784,7 +1784,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var pointerLine = this.canvas.path('M' + pointerLineX + ' ' + pointerLineY + ', L' + pointerLineX + ' ' + 0);
 
-        $(pointerLine.node).attr('class', 'pointer');
+        $(pointerLine.node).attr('class', 'pointer-line');
         pointerLine.toBack();
 
         pointerSet.push(pointerLine);
@@ -1828,7 +1828,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             var distance = 100;
 
             // TODO: Weight by amount of differences
-            var radius = 8;
+            var radius = 7;
 
             x += (radius * 2);
 
