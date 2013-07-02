@@ -36,9 +36,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var file = snapshot.get('files').findWhere({ name: this.fileName });
 
-        if (file) {
-            snapshotCircle.data('file', file);
-        }
+        snapshotCircle.data('file', file);
 
         // Style
         $(snapshotCircle.node).attr('class', 'circle');
@@ -157,12 +155,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     /* Update */
 
-    update: function (collection, currentSnapshotIndex, fileId) {
+    update: function (collection, currentSnapshotIndex, fileName) {
 
         this.collection = collection;
         this.currentSnapshotIndex = currentSnapshotIndex;
 
-        this.fileName = this.collection.at(currentSnapshotIndex).get('files').get(fileId).get('name');
+        this.fileName = fileName;
 
         this.render();
     }
