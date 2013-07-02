@@ -140,6 +140,14 @@
 
 }
 
+#snapshots-timeline-container .area {
+
+    stroke-width: 0;
+    fill: #fff;
+    fill-opacity: 0;
+
+}
+
 #snapshots-timeline-container .timeline {
 
     stroke-width: 1px;
@@ -164,7 +172,7 @@
 
 #snapshots-timeline-container .pointer-area {
 
-    stroke-width: 0;
+    cursor: move;
 
 }
 

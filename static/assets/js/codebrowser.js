@@ -1704,6 +1704,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     id: 'snapshots-timeline-container',
 
+    /* Dragging */
+
+    dragging: false,
+
+    /* Initialise */
+
     initialize: function (options) {
 
         // Parent view
@@ -1736,11 +1742,18 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var snapshotElement = self.canvas.circle(x, y, radius);
         $(snapshotElement.node).attr('class', 'snapshot');
 
+        // Snapshot area
+        var snapshotArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
+        $(snapshotArea.node).attr('class', 'area snapshot-area');
+
         // Set models for snapshot element
         var file = snapshot.get('files').findWhere({ name: this.filename });
 
         snapshotElement.data('snapshot', snapshot);
         snapshotElement.data('file', file);
+
+        snapshotArea.data('snapshot', snapshot);
+        snapshotArea.data('file', file);
 
         snapshotElement.click(function () {
 
@@ -1772,12 +1785,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Set
         var pointerSet = this.canvas.set();
 
-        // Pointer area
-        var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
-        $(pointerArea.node).attr('class', 'pointer-area');
-
-        pointerSet.push(pointerArea);
-
         // Pointer line
         var pointerLineX = x;
         var pointerLineY = pointerY - width / 2;
@@ -1807,6 +1814,51 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         $(pointer.node).attr('class', 'pointer');
 
         pointerSet.push(pointer);
+
+        // Pointer area
+        var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
+        $(pointerArea.node).attr('class', 'area pointer-area');
+
+        pointerSet.push(pointerArea);
+
+        var self = this;
+
+        var onMove = function (dx) {
+
+            pointerSet.transform('T ' + dx + ', 0');
+        }
+
+        var onStart = function () {
+
+            self.dragging = true;
+        }
+
+        var onEnd = function () {
+
+            self.dragging = false;
+            self.render();
+        }
+
+        // Dragging
+        pointerSet.drag(onMove, onStart, onEnd).onDragOver(function (element) {
+
+            // Snapshot element
+            if (element.data('snapshot')) {
+
+                var index = self.collection.indexOf(element.data('snapshot'));
+
+                // Left
+                if (index > self.currentSnapshotIndex) {
+
+                    self.parentView.next();
+
+                // Right
+                } else if (index < self.currentSnapshotIndex) {
+
+                    self.parentView.previous();
+                }
+            }
+        });
     },
 
     render: function () {
@@ -1860,7 +1912,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.currentSnapshotIndex = currentSnapshotIndex;
         this.filename = filename;
 
-        this.render();
+        // Render if user not dragging
+        if (!this.dragging) {
+            this.render();
+        }
     }
 });
 ;
