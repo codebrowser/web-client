@@ -78,7 +78,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Pointer line
         var pointerLineX = x;
-        var pointerLineY = pointerY - width;
+        var pointerLineY = pointerY - width / 2;
 
         var pointerLine = this.canvas.path('M' + pointerLineX + ' ' + pointerLineY + ', L' + pointerLineX + ' ' + 0);
 
