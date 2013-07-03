@@ -133,16 +133,17 @@
 #snapshots-timeline-container {
 
     margin: 25px auto;
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #c5d6de;
     border-radius: 4px;
-    background-color: #e6f1f6;
 
 }
 
 #snapshots-timeline-container text {
 
-    font-size: 13px !important;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 12px !important;
+    fill: #6d8089;
 
 }
 
@@ -156,29 +157,29 @@
 
 #snapshots-timeline-container .timeline {
 
-    stroke-width: 1px;
-    stroke: #80929c;
+    stroke-width: 3px;
+    stroke: #c5d6de;
 
 }
 
 #snapshots-timeline-container .snapshot-index {
 
-    fill: #80929c;
+    fill: #97b2c0;
+    font-size: 11px !important;
 
 }
 
 #snapshots-timeline-container .snapshot {
 
-    stroke: #55656d;
-    fill: #80929c;
+    stroke: #53666f;
+    fill: #fff;
     cursor: pointer;
 
 }
 
 #snapshots-timeline-container .snapshot:hover {
 
-    stroke: #272f33;
-    fill: #4e585e;
+    fill: #7995a2;
 
 }
 
@@ -197,8 +198,8 @@
 
 #snapshots-timeline-container .pointer-line {
 
-    stroke-width: 2px;
-    stroke: #4e585e;
+    stroke-width: 1px;
+    stroke: #c5d6de;
 
 }
 

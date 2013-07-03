@@ -1774,7 +1774,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         /* jshint newcap: false */
 
-        this.canvas = Raphael(this.el, '100%', 71);
+        this.canvas = Raphael(this.el, '100%', 81);
 
         /* jshint newcap: true */
     },
@@ -1810,7 +1810,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
 
-        this.canvas.text(x - radius - distance / 2, y + 15, duration);
+        this.canvas.text(x - radius - distance / 2, y + 20, duration);
     },
 
     renderTimeline: function (leftOffset, y, x) {
@@ -1826,7 +1826,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     renderSnapshotIndex: function (index, x) {
 
         // Snapshot index element
-        var snapshotIndex = this.canvas.text(x, 6.5, index + 1);
+        var snapshotIndex = this.canvas.text(x, 5, index + 1);
 
         $(snapshotIndex.node).attr('class', 'snapshot-index');
     },
@@ -1967,11 +1967,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             var weight = self.distanceWeight(index, min, max);
 
-            // Weight by time between snapshots
+            // Weight by duration between snapshots
             var distance = 50 * weight;
 
             // TODO: Weight by amount of differences
-            var radius = 7;
+            var radius = 8;
 
             x += (radius * 2);
 
