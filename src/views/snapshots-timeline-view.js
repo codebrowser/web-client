@@ -148,7 +148,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         });
     },
 
-    renderDuration: function (previousSnapshot, snapshot, x, y) {
+    renderDuration: function (previousSnapshot, snapshot, x, y, radius, distance) {
 
         if (!previousSnapshot) {
             return;
@@ -156,7 +156,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
 
-        var text = this.canvas.text(x - 65, y + 15, '+ ' + duration);
+        var text = this.canvas.text(x - radius - distance / 2, y + 15, duration);
         text.attr({ 'font-size': 13 });
     },
 
@@ -191,7 +191,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             var previousSnapshot = self.collection.at(index - 1);
 
             // Render duration between snapshots
-            self.renderDuration(previousSnapshot, snapshot, x, y);
+            self.renderDuration(previousSnapshot, snapshot, x, y, radius, distance);
 
             self.renderSnapshot(snapshot, x, y, radius);
 
