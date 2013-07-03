@@ -1871,6 +1871,19 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         });
     },
 
+    renderDuration: function (previousSnapshot, snapshot, x, y) {
+
+        if (!previousSnapshot) {
+            return;
+        }
+
+        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'));
+        duration = codebrowser.helper.Duration.simplify(duration);
+
+        var text = this.canvas.text(x - 65, y + 15, '+' + duration);
+        text.attr({ 'font-size': 13 });
+    },
+
     render: function () {
 
         // Clear canvas
@@ -1917,19 +1930,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         });
 
         this.renderTimeline(leftOffset, y, x);
-    },
-
-    renderDuration: function (previousSnapshot, snapshot, x, y) {
-
-        if (!previousSnapshot) {
-            return;
-        }
-
-        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'));
-        duration = codebrowser.helper.Duration.simplify(duration);
-
-        var text = this.canvas.text(x - 65, y + 15, '+' + duration);
-        text.attr({ 'font-size': 13 });
     },
 
     /* Update */
