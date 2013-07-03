@@ -191,7 +191,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     render: function () {
 
         var min = this.collection.getMinDuration();
-        var max = this.collection.getMaxDuration();
+
+        // 10 minute max
+        var max = Math.min(300000, this.collection.getMaxDuration());
 
         // Clear canvas
         this.canvas.clear();
