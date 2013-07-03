@@ -870,9 +870,9 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         }
     },
 
-    getDifference: function (current, previous) {
+    getDuration: function (fromIndex, toIndex) {
 
-        return this.at(current).get('snapshotTime') - this.at(previous).get('snapshotTime');
+        return this.at(fromIndex).get('snapshotTime') - this.at(toIndex).get('snapshotTime');
     },
 
     getMinDuration: function () {
@@ -881,13 +881,18 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
         var min = Number.MAX_VALUE;
 
+        // Find min duration
         this.each(function (snapshot, index) {
 
-            if (index !== 0) {
+            if (index === 0) {
+                return;
+            }
 
-                if (self.getDifference(index, index - 1) < min) {
-                    min = self.getDifference(index, index - 1);
-                }
+            var duration = self.getDuration(index, index - 1);
+
+            // Found new min
+            if (duration < min) {
+                min = duration;
             }
         });
 
@@ -900,13 +905,18 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
         var max = Number.MIN_VALUE;
 
+        // Find max duration
         this.each(function (snapshot, index) {
 
-            if (index !== 0) {
+            if (index === 0) {
+                return;
+            }
 
-                if (self.getDifference(index, index - 1) > max) {
-                    max = self.getDifference(index, index - 1);
-                }
+            var duration = self.getDuration(index, index - 1);
+
+            // Found new max
+            if (duration > max) {
+                max = duration;
             }
         });
 
@@ -1769,30 +1779,39 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         /* jshint newcap: true */
     },
 
-    calculateDistanceWeight: function (index, min, max) {
+    distanceWeight: function (index, min, max) {
 
-        var weight = 1;
+        var weight = 0;
 
+        // First snapshot has static weight
         if (index === 0) {
-            return weight;
+            return 1;
         }
 
-        var difference = this.collection.getDifference(index, index - 1);
+        // Duration between snapshots
+        var duration = this.collection.getDuration(index, index - 1);
 
         // Scale between 1 and 4
-        weight = 3 * (difference - min) / (max - min) + 1;
+        weight = 3 * (duration - min) / (max - min) + 1;
 
         // Round up to 2 decimals
         weight = Math.round(weight * 100) / 100;
 
-        if (weight > 4) {
-            weight = 4;
-        }
-
-        return weight;
+        return Math.min(4, weight);
     },
 
     /* Render */
+
+    renderDuration: function (previousSnapshot, snapshot, x, y, radius, distance) {
+
+        if (!previousSnapshot) {
+            return;
+        }
+
+        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
+
+        this.canvas.text(x - radius - distance / 2, y + 15, duration);
+    },
 
     renderTimeline: function (leftOffset, y, x) {
 
@@ -1802,6 +1821,14 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Move back on z-axis
         timeline.toBack();
+    },
+
+    renderSnapshotIndex: function (index, x, y) {
+
+        // Snapshot index element
+        var snapshotIndex = this.canvas.text(x, y - 30, index + 1);
+
+        $(snapshotIndex.node).attr('class', 'snapshot-index');
     },
 
     renderSnapshot: function (snapshot, x, y, radius) {
@@ -1836,19 +1863,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         snapshotElement.mouseover(function () {
 
-            this.animate({ transform: 's1.2' }, 150);
+            this.animate({ transform: 'S 1.2' }, 150);
         });
 
         snapshotElement.mouseout(function () {
 
-            this.animate({ transform: 's1' }, 150);
+            this.animate({ transform: 'S 1' }, 150);
         });
-    },
-
-    renderSnapshotIndex: function (index, x, y) {
-
-        var text = this.canvas.text(x, y - 30, index + 1);
-        $(text.node).attr('class', 'snapshot-index');
     },
 
     renderPointer: function (x, y, radius) {
@@ -1926,18 +1947,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         });
     },
 
-    renderDuration: function (previousSnapshot, snapshot, x, y, radius, distance) {
-
-        if (!previousSnapshot) {
-            return;
-        }
-
-        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
-
-        this.canvas.text(x - radius - distance / 2, y + 15, duration);
-    },
-
     render: function () {
+
+        var min = this.collection.getMinDuration();
+        var max = this.collection.getMaxDuration();
 
         // Clear canvas
         this.canvas.clear();
@@ -1950,12 +1963,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var self = this;
 
-        var min = this.collection.getMinDuration(); // 970
-        var max = this.collection.getMaxDuration(); // 675415
-
         this.collection.each(function (snapshot, index) {
 
-            var weight = self.calculateDistanceWeight(index, min, max);
+            var weight = self.distanceWeight(index, min, max);
 
             // Weight by time between snapshots
             var distance = 50 * weight;
@@ -1965,11 +1975,14 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             x += (radius * 2);
 
-
             if (index === 0) {
+
                 // Left offset
                 leftOffset = x;
+
             } else {
+
+                // Move right by distance
                 x += distance;
             }
 
@@ -1981,9 +1994,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             // Render index of the snapshot
             self.renderSnapshotIndex(index, x, y);
 
+            // Render snapshot
             self.renderSnapshot(snapshot, x, y, radius);
 
-            // Draw pointer on current snapshot
+            // Render pointer on current snapshot
             if (index === self.currentSnapshotIndex) {
                 self.renderPointer(x, y, radius);
             }

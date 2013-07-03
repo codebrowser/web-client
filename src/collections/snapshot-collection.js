@@ -33,9 +33,9 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         }
     },
 
-    getDifference: function (current, previous) {
+    getDuration: function (fromIndex, toIndex) {
 
-        return this.at(current).get('snapshotTime') - this.at(previous).get('snapshotTime');
+        return this.at(fromIndex).get('snapshotTime') - this.at(toIndex).get('snapshotTime');
     },
 
     getMinDuration: function () {
@@ -44,13 +44,18 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
         var min = Number.MAX_VALUE;
 
+        // Find min duration
         this.each(function (snapshot, index) {
 
-            if (index !== 0) {
+            if (index === 0) {
+                return;
+            }
 
-                if (self.getDifference(index, index - 1) < min) {
-                    min = self.getDifference(index, index - 1);
-                }
+            var duration = self.getDuration(index, index - 1);
+
+            // Found new min
+            if (duration < min) {
+                min = duration;
             }
         });
 
@@ -63,13 +68,18 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
         var max = Number.MIN_VALUE;
 
+        // Find max duration
         this.each(function (snapshot, index) {
 
-            if (index !== 0) {
+            if (index === 0) {
+                return;
+            }
 
-                if (self.getDifference(index, index - 1) > max) {
-                    max = self.getDifference(index, index - 1);
-                }
+            var duration = self.getDuration(index, index - 1);
+
+            // Found new max
+            if (duration > max) {
+                max = duration;
             }
         });
 
