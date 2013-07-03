@@ -48,6 +48,7 @@ codebrowser.helper.Duration = {
 
         if (simplify) {
             timeUnit = timeUnit.slice(0, 1);
+            return value + timeUnit;
         }
 
         return value + ' ' + timeUnit;

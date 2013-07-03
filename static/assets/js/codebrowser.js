@@ -387,6 +387,7 @@ codebrowser.helper.Duration = {
 
         if (simplify) {
             timeUnit = timeUnit.slice(0, 1);
+            return value + timeUnit;
         }
 
         return value + ' ' + timeUnit;
@@ -1862,7 +1863,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
 
-        var text = this.canvas.text(x - 65, y + 15, '+' + duration);
+        var text = this.canvas.text(x - 65, y + 15, '+ ' + duration);
         text.attr({ 'font-size': 13 });
     },
 
