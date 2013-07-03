@@ -140,6 +140,12 @@
 
 }
 
+#snapshots-timeline-container text {
+
+    font-size: 13px !important;
+
+}
+
 #snapshots-timeline-container .area {
 
     stroke-width: 0;
@@ -152,6 +158,12 @@
 
     stroke-width: 1px;
     stroke: #80929c;
+
+}
+
+#snapshots-timeline-container .snapshot-index {
+
+    fill: #80929c;
 
 }
 

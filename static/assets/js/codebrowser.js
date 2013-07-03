@@ -1779,6 +1779,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         });
     },
 
+    renderSnapshotIndex: function (index, x, y) {
+
+        var text = this.canvas.text(x, y - 30, index + 1);
+        $(text.node).attr('class', 'snapshot-index');
+    },
+
     renderPointer: function (x, y, radius) {
 
         // Set
@@ -1862,8 +1868,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
 
-        var text = this.canvas.text(x - radius - distance / 2, y + 15, duration);
-        text.attr({ 'font-size': 13 });
+        this.canvas.text(x - radius - distance / 2, y + 15, duration);
     },
 
     render: function () {
@@ -1898,6 +1903,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             // Render duration between snapshots
             self.renderDuration(previousSnapshot, snapshot, x, y, radius, distance);
+
+            // Render index of the snapshot
+            self.renderSnapshotIndex(index, x, y);
 
             self.renderSnapshot(snapshot, x, y, radius);
 
