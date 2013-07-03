@@ -31,5 +31,48 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             this.courseId = options.courseId;
             this.exerciseId = options.exerciseId;
         }
-    }
+    },
+
+    getDifference: function (current, previous) {
+
+        return this.at(current).get('snapshotTime') - this.at(previous).get('snapshotTime');
+    },
+
+    getMinDuration: function () {
+
+        var self = this;
+
+        var min = Number.MAX_VALUE;
+
+        this.each(function (snapshot, index) {
+
+            if (index !== 0) {
+
+                if (self.getDifference(index, index - 1) < min) {
+                    min = self.getDifference(index, index - 1);
+                }
+            }
+        });
+
+        return min;
+    },
+
+    getMaxDuration: function () {
+
+        var self = this;
+
+        var max = Number.MIN_VALUE;
+
+        this.each(function (snapshot, index) {
+
+            if (index !== 0) {
+
+                if (self.getDifference(index, index - 1) > max) {
+                    max = self.getDifference(index, index - 1);
+                }
+            }
+        });
+
+        return max;
+    },
 });

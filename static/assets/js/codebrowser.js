@@ -868,7 +868,50 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             this.courseId = options.courseId;
             this.exerciseId = options.exerciseId;
         }
-    }
+    },
+
+    getDifference: function (current, previous) {
+
+        return this.at(current).get('snapshotTime') - this.at(previous).get('snapshotTime');
+    },
+
+    getMinDuration: function () {
+
+        var self = this;
+
+        var min = Number.MAX_VALUE;
+
+        this.each(function (snapshot, index) {
+
+            if (index !== 0) {
+
+                if (self.getDifference(index, index - 1) < min) {
+                    min = self.getDifference(index, index - 1);
+                }
+            }
+        });
+
+        return min;
+    },
+
+    getMaxDuration: function () {
+
+        var self = this;
+
+        var max = Number.MIN_VALUE;
+
+        this.each(function (snapshot, index) {
+
+            if (index !== 0) {
+
+                if (self.getDifference(index, index - 1) > max) {
+                    max = self.getDifference(index, index - 1);
+                }
+            }
+        });
+
+        return max;
+    },
 });
 ;
 
@@ -1884,19 +1927,27 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var self = this;
 
+        var min = this.collection.getMinDuration(); // 970
+        var max = this.collection.getMaxDuration(); // 675415
+
         this.collection.each(function (snapshot, index) {
 
-            // TODO: Weight by time between snapshots
-            var distance = 100;
+            var weight = self.calculateDistanceWeight(index, min, max);
+
+            // Weight by time between snapshots
+            var distance = 50 * weight;
 
             // TODO: Weight by amount of differences
             var radius = 7;
 
             x += (radius * 2);
 
-            // Left offset
+
             if (index === 0) {
+                // Left offset
                 leftOffset = x;
+            } else {
+                x += distance;
             }
 
             var previousSnapshot = self.collection.at(index - 1);
@@ -1913,13 +1964,32 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             if (index === self.currentSnapshotIndex) {
                 self.renderPointer(x, y, radius);
             }
-
-            if (index !== self.collection.length - 1) {
-                x += distance;
-            }
         });
 
         this.renderTimeline(leftOffset, y, x);
+    },
+
+    calculateDistanceWeight: function (index, min, max) {
+
+        var weight = 1;
+
+        if (index === 0) {
+            return weight;
+        }
+
+        var difference = this.collection.getDifference(index, index - 1);
+
+        // Scale between 1 and 4
+        weight = 3 * (difference - min) / (max - min) + 1;
+
+        // Round up to 2 decimals
+        weight = Math.round(weight * 100) / 100;
+
+        if (weight > 4) {
+            weight = 4;
+        }
+
+        return weight;
     },
 
     /* Update */
