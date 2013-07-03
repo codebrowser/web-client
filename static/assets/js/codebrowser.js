@@ -1928,7 +1928,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'));
         duration = codebrowser.helper.Duration.simplify(duration);
 
-        var text = this.canvas.text(x - 65, y + 15, duration);
+        var text = this.canvas.text(x - 65, y + 15, '+' + duration);
         text.attr({ 'font-size': 13 });
     },
 
