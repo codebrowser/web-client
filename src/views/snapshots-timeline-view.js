@@ -20,6 +20,29 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         /* jshint newcap: true */
     },
 
+    calculateDistanceWeight: function (index, min, max) {
+
+        var weight = 1;
+
+        if (index === 0) {
+            return weight;
+        }
+
+        var difference = this.collection.getDifference(index, index - 1);
+
+        // Scale between 1 and 4
+        weight = 3 * (difference - min) / (max - min) + 1;
+
+        // Round up to 2 decimals
+        weight = Math.round(weight * 100) / 100;
+
+        if (weight > 4) {
+            weight = 4;
+        }
+
+        return weight;
+    },
+
     /* Render */
 
     renderTimeline: function (leftOffset, y, x) {
@@ -218,29 +241,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         });
 
         this.renderTimeline(leftOffset, y, x);
-    },
-
-    calculateDistanceWeight: function (index, min, max) {
-
-        var weight = 1;
-
-        if (index === 0) {
-            return weight;
-        }
-
-        var difference = this.collection.getDifference(index, index - 1);
-
-        // Scale between 1 and 4
-        weight = 3 * (difference - min) / (max - min) + 1;
-
-        // Round up to 2 decimals
-        weight = Math.round(weight * 100) / 100;
-
-        if (weight > 4) {
-            weight = 4;
-        }
-
-        return weight;
     },
 
     /* Update */
