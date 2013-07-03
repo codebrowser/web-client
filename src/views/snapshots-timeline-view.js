@@ -15,7 +15,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         /* jshint newcap: false */
 
-        this.canvas = Raphael(this.el, '100%', 61);
+        this.canvas = Raphael(this.el, '100%', 71);
 
         /* jshint newcap: true */
     },
@@ -64,10 +64,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         timeline.toBack();
     },
 
-    renderSnapshotIndex: function (index, x, y) {
+    renderSnapshotIndex: function (index, x) {
 
         // Snapshot index element
-        var snapshotIndex = this.canvas.text(x, y - 30, index + 1);
+        var snapshotIndex = this.canvas.text(x, 6.5, index + 1);
 
         $(snapshotIndex.node).attr('class', 'snapshot-index');
     },
@@ -233,7 +233,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             self.renderDuration(previousSnapshot, snapshot, x, y, radius, distance);
 
             // Render index of the snapshot
-            self.renderSnapshotIndex(index, x, y);
+            self.renderSnapshotIndex(index, x);
 
             // Render snapshot
             self.renderSnapshot(snapshot, x, y, radius);
