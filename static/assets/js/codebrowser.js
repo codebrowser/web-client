@@ -339,7 +339,7 @@ Handlebars.registerHelper('date', function (date) {
 
 codebrowser.helper.Duration = {
 
-    calculate: function (time, previousTime) {
+    calculate: function (time, previousTime, simplify) {
 
         var difference = time - previousTime;
 
@@ -385,28 +385,11 @@ codebrowser.helper.Duration = {
             timeUnit += 's';
         }
 
+        if (simplify) {
+            timeUnit = timeUnit.slice(0, 1);
+        }
+
         return value + ' ' + timeUnit;
-    },
-
-    simplify: function (duration) {
-
-        if (duration.indexOf('second') !== -1) {
-            duration = duration.slice(0, duration.indexOf('s') + 1);
-        }
-
-        if (duration.indexOf('minute') !== -1) {
-            duration = duration.slice(0, duration.indexOf('m') + 1);
-        }
-
-        if (duration.indexOf('hour') !== -1) {
-            duration = duration.slice(0, duration.indexOf('h') + 1);
-        }
-
-        if (duration.indexOf('day') !== -1) {
-            duration = duration.slice(0, duration.indexOf('d') + 1);
-        }
-
-        return duration.replace(' ', '');
     }
 }
 
@@ -1877,8 +1860,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             return;
         }
 
-        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'));
-        duration = codebrowser.helper.Duration.simplify(duration);
+        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
 
         var text = this.canvas.text(x - 65, y + 15, '+' + duration);
         text.attr({ 'font-size': 13 });
