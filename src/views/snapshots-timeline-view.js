@@ -10,6 +10,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     initialize: function (options) {
 
+        // Hide view until needed
+        this.$el.hide();
+
         // Parent view
         this.parentView = options.parentView;
 
@@ -256,6 +259,14 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.collection = collection;
         this.currentSnapshotIndex = currentSnapshotIndex;
         this.filename = filename;
+
+        // No need to show timeline
+        if (this.collection.length === 1) {
+            return;
+        }
+
+        // Show view if necessary
+        this.$el.show();
 
         // Render if user is not dragging
         if (!this.dragging) {
