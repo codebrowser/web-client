@@ -113,7 +113,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         });
     },
 
-    renderPointer: function (x, y, radius) {
+    renderPointer: function (x, radius) {
 
         // Set
         var pointerSet = this.canvas.set();
@@ -121,7 +121,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var width = 7;
 
         var pointerX = x - width / 2;
-        var pointerY = y + 27;
+        var pointerY = this.canvas.height;
 
         var pointerLineX = x;
         var pointerLineY = pointerY - width / 2;
@@ -240,7 +240,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             // Render pointer on current snapshot
             if (index === self.currentSnapshotIndex) {
-                self.renderPointer(x, y, radius);
+                self.renderPointer(x, radius);
             }
         });
 
