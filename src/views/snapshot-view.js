@@ -72,6 +72,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Unbind keydown
         $(document).off('keydown', this.keydown);
 
+        // Remove timeline
+        this.snapshotsTimelineView.remove();
+
         // Remove editor
         this.editorView.remove();
 
