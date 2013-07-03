@@ -47,6 +47,27 @@ codebrowser.helper.Duration = {
         }
 
         return value + ' ' + timeUnit;
+    },
+
+    simplify: function (duration) {
+
+        if (duration.indexOf('second') !== -1) {
+            duration = duration.slice(0, duration.indexOf('s') + 1);
+        }
+
+        if (duration.indexOf('minute') !== -1) {
+            duration = duration.slice(0, duration.indexOf('m') + 1);
+        }
+
+        if (duration.indexOf('hour') !== -1) {
+            duration = duration.slice(0, duration.indexOf('h') + 1);
+        }
+
+        if (duration.indexOf('day') !== -1) {
+            duration = duration.slice(0, duration.indexOf('d') + 1);
+        }
+
+        return duration.replace(' ', '');
     }
 }
 
