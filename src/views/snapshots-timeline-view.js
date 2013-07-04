@@ -6,6 +6,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     width: 0,
 
+    /* Scrolling */
+
+    scroll: null,
+
     /* Dragging */
 
     dragging: false,
@@ -313,7 +317,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     dragEnd: function () {
 
+        // Clear scroll
+        clearInterval(this.scroll);
+        this.scroll = false;
+
         this.dragging = false;
+
         this.render();
     },
 
@@ -328,15 +337,43 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var leftOffset = canvasOffset.left;
         var rightOffset = canvasOffset.left + viewWidth;
 
+        var self = this;
+
         // Move timeline to left
         if (x < leftOffset + 100) {
-            this.moveTimeline(-20);
+
+            if (!this.scroll) {
+
+                // Scroll to the left
+                this.scroll = setInterval(function () {
+
+                    self.moveTimeline(-1);
+
+                }, 1000 / 60);
+            }
+
+            return;
         }
 
         // Move timeline to right
         if (x > rightOffset - 100) {
-            this.moveTimeline(20);
+
+            if (!this.scroll) {
+
+                // Scroll to the right
+                this.scroll = setInterval(function () {
+
+                    self.moveTimeline(1);
+
+                }, 1000 / 60);
+            }
+
+            return;
         }
+
+        // Clear scroll
+        clearInterval(this.scroll);
+        this.scroll = false;
     },
 
     dragOver: function (element) {
