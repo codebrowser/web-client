@@ -1812,7 +1812,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Can't move dx to left
         if ((x + dx) < 0 && dx < 0) {
 
-            // Move remainder, but don't go over 0
+            // Move by remainder, but don't go under 0
             this.paper.setViewBox(Math.max(0, 0 - x), 0, viewWidth, this.paper.height, false);
 
             return;
@@ -1824,13 +1824,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             // Remainder
             var remainder = this.width - x - viewWidth;
 
-            // Move remainder
+            // Move by remainder
             this.paper.setViewBox(x + remainder, 0, viewWidth, this.paper.height, false);
 
             return;
         }
 
-        // Move dx
+        // Move viewbox
         this.paper.setViewBox(x + dx, 0, viewWidth, this.paper.height, false);
     },
 
@@ -2068,6 +2068,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     dragMove: function (dx, dy, x) {
 
+        // Move pointer set
         this.pointerSet.transform('T ' + dx + ', 0');
 
         var viewWidth = $(this.paper.canvas).width();
