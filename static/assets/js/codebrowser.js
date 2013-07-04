@@ -1529,8 +1529,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
-        var self = this;
-
         // Timeline
         this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
         this.$el.append(this.snapshotsTimelineView.el);
@@ -1544,28 +1542,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.append(this.editorView.el);
 
         // Bind resize
-        this.resize = function () {
-
-            self.didResize();
-        }
-
-        $(window).resize(this.resize);
+        $(window).resize($.proxy(this.resize, this));
 
         // Bind keydown
-        this.keydown = function () {
-
-            // Left
-            if (event.keyCode === 37) {
-                self.previous();
-            }
-
-            // Right
-            if (event.keyCode === 39) {
-                self.next();
-            }
-        }
-
-        $(document).keydown(this.keydown);
+        $(document).keydown($.proxy(this.keydown, this));
     },
 
     /* Remove */
@@ -1676,9 +1656,27 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     /* Events */
 
+    resize: function () {
+
+        this.didResize();
+    },
+
     didResize: function () {
 
         this.editorView.didResize();
+    },
+
+    keydown: function (event) {
+
+        // Left
+        if (event.keyCode === 37) {
+            this.previous();
+        }
+
+        // Right
+        if (event.keyCode === 39) {
+            this.next();
+        }
     },
 
     /* Actions */
@@ -2202,6 +2200,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     routes: {
 
+        'students/:studentId':         'courses',
         'students/:studentId/courses': 'courses'
 
     },
@@ -2253,6 +2252,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     routes: {
 
+        'students/:studentId/courses/:courseId':           'exercises',
         'students/:studentId/courses/:courseId/exercises': 'exercises'
 
     },
@@ -2304,6 +2304,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
+        'students/:studentId/courses/:courseId/exercises/:exerciseId':                                     'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots':                           'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId':               'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId': 'snapshot'
