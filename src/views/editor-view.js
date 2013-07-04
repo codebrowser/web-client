@@ -47,11 +47,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     diff: false,
 
-    canDiff: function () {
-
-        return this.model !== this.previousModel;
-    },
-
     differences: new codebrowser.model.Diff('', ''),
 
     /* Inspector */
@@ -246,12 +241,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Both models are the same
         if (this.previousModel === this.model) {
 
-            // Clear differences
-            this.differences = new codebrowser.model.Diff('', ''),
-
-            // Disable split and diff view
+            // Disable split
             this.toggleSplit(false);
-            this.toggleDiff(false);
 
         } else {
 
@@ -259,11 +250,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
             if (!this.split) {
                 this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
             }
+        }
 
-            // Restore diff state if necessary
-            if (!this.diff) {
-                this.toggleDiff(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
-            }
+        // Restore diff state if necessary
+        if (!this.diff) {
+            this.toggleDiff(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
         }
 
         // Fetch previous file only if the models are not the same
@@ -288,9 +279,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 throw new Error('Failed file fetch.');
             }
 
-            // If both models are the same, set the same content to the side editor
+            // If both models are the same, current model is a new file, set empty content to the side editor
             if (self.previousModel === self.model) {
-                self.setContent(self.sideEditor, content, mode);
+
+                self.setContent(self.sideEditor, null, mode);
+
+                fileSynced();
             }
 
             self.setContent(self.mainEditor, content, mode);
