@@ -217,7 +217,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // 10 minute max
         var max = Math.min(300000, this.collection.getMaxDuration());
 
-        // Clear canvas
+        // Clear paper
         this.paper.clear();
 
         // Center point
