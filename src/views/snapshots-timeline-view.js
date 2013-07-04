@@ -205,7 +205,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         this.pointerSet.push(pointerArea);
 
-        // Dragging
+        // Bind drag and drag over
         this.pointerSet.drag(this.dragMove, this.dragStart, this.dragEnd, this, this, this)
                        .onDragOver($.proxy(this.dragOver, this));
     },
