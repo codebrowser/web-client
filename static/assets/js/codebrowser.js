@@ -1922,7 +1922,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     renderPointer: function (x, radius) {
 
         // Set
-        var pointerSet = this.paper.set();
+        this.pointerSet = this.paper.set();
 
         var width = 7;
 
@@ -1938,7 +1938,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         pointerLine.toBack();
 
-        pointerSet.push(pointerLine);
+        this.pointerSet.push(pointerLine);
 
         // Pointer element
         var pointer = this.paper.path('M' +
@@ -1957,59 +1957,17 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         $(pointer.node).attr('class', 'pointer');
 
-        pointerSet.push(pointer);
+        this.pointerSet.push(pointer);
 
         // Pointer area element
         var pointerArea = this.paper.rect(x - radius, 0, radius * 2, this.paper.height);
         $(pointerArea.node).attr('class', 'area pointer');
 
-        pointerSet.push(pointerArea);
-
-        var self = this;
-
-        // Dragging events
-        var onMove = function (dx, dy, x) {
-
-            pointerSet.transform('T ' + dx + ', 0');
-
-            var viewWidth = $(self.paper.canvas).width();
-            var canvasOffset = $(self.paper.canvas).offset();
-
-            var leftOffset = canvasOffset.left;
-            var rightOffset = canvasOffset.left + viewWidth;
-
-            // Move timeline to left
-            if (x < leftOffset + 100) {
-
-                self.moveTimeline(-100);
-            }
-
-            // Move timeline to right
-            if (x > rightOffset - 100) {
-
-                self.moveTimeline(100);
-            }
-        }
-
-        var onStart = function () {
-
-            self.dragging = true;
-        }
-
-        var onEnd = function () {
-
-            self.dragging = false;
-            self.render();
-        }
+        this.pointerSet.push(pointerArea);
 
         // Dragging
-        pointerSet.drag(onMove, onStart, onEnd).onDragOver(function (element) {
-
-            // Snapshot element
-            if (element.data('snapshot')) {
-                self.parentView.navigate(element.data('snapshot'), element.data('file'));
-            }
-        });
+        this.pointerSet.drag(this.dragMove, this.dragStart, this.dragEnd, this, this, this)
+                       .onDragOver($.proxy(this.dragOver, this));
     },
 
     render: function () {
@@ -2103,6 +2061,50 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Render if user is not dragging
         if (!this.dragging) {
             this.render();
+        }
+    },
+
+    /* Events */
+
+    dragStart: function () {
+
+        this.dragging = true;
+    },
+
+    dragEnd: function () {
+
+        this.dragging = false;
+        this.render();
+    },
+
+    dragMove: function (dx, dy, x) {
+
+        this.pointerSet.transform('T ' + dx + ', 0');
+
+        var viewWidth = $(this.paper.canvas).width();
+        var canvasOffset = $(this.paper.canvas).offset();
+
+        var leftOffset = canvasOffset.left;
+        var rightOffset = canvasOffset.left + viewWidth;
+
+        // Move timeline to left
+        if (x < leftOffset + 100) {
+
+            this.moveTimeline(-100);
+        }
+
+        // Move timeline to right
+        if (x > rightOffset - 100) {
+
+            this.moveTimeline(100);
+        }
+    },
+
+    dragOver: function (element) {
+
+        // Snapshot element
+        if (element.data('snapshot')) {
+            this.parentView.navigate(element.data('snapshot'), element.data('file'));
         }
     }
 });
