@@ -1823,8 +1823,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Can't move dx to left
         if ((x + dx) < 0 && dx < 0) {
 
-            // Move remainder
-            this.paper.setViewBox(0 - x, 0, viewWidth, this.paper.height, false);
+            // Move remainder, but don't go over 0
+            this.paper.setViewBox(Math.max(0, 0 - x), 0, viewWidth, this.paper.height, false);
 
             return;
         }
