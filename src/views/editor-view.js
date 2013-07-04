@@ -251,7 +251,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 this.toggleSplit(localStorage.getItem(config.storage.view.EditorView.split) === 'true');
             }
         }
-        
+
         // Restore diff state if necessary
         if (!this.diff) {
             this.toggleDiff(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
@@ -279,10 +279,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 throw new Error('Failed file fetch.');
             }
 
-            // If both models are the same, current model is a new file
-            // Set empty content to the side editor
+            // If both models are the same, current model is a new file, set empty content to the side editor
             if (self.previousModel === self.model) {
+
                 self.setContent(self.sideEditor, null, mode);
+
                 fileSynced();
             }
 

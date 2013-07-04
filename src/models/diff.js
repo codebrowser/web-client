@@ -25,7 +25,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 
     var from = difflib.stringAsLines(previousContent);
     var to = difflib.stringAsLines(content);
-    
+
     // Create diff
     var sequenceMatcher = new difflib.SequenceMatcher(from, to);
 
