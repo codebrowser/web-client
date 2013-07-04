@@ -354,7 +354,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                 this.scroll = setInterval(function () {
 
                     // Move timeline to the left
-                    self.moveTimeline(-1);
+                    self.moveTimeline(-5);
 
                 }, 1000 / 60);
             }
@@ -371,7 +371,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                 this.scroll = setInterval(function () {
 
                     // Move timeline to the right
-                    self.moveTimeline(1);
+                    self.moveTimeline(5);
 
                 }, 1000 / 60);
             }
