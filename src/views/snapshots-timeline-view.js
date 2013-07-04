@@ -2,6 +2,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     id: 'snapshots-timeline-container',
 
+    /* Absolute width */
+
+    width: 0,
+
     /* Dragging */
 
     dragging: false,
@@ -18,7 +22,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         /* jshint newcap: false */
 
-        this.canvas = Raphael(this.el, '100%', 81);
+        this.paper = Raphael(this.el, '100%', 81);
 
         /* jshint newcap: true */
     },
@@ -27,7 +31,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var weight = 0;
 
-        // First snapshot has static weight
+        // First snapshot has a static weight
         if (index === 0) {
             return 1;
         }
@@ -44,6 +48,43 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         return Math.min(4, weight);
     },
 
+    moveTimeline: function (dx) {
+
+        var x = 0;
+
+        // View width
+        var viewWidth = $(this.paper.canvas).width();
+
+        // Current x of view
+        if (this.paper._viewBox) {
+            x = this.paper._viewBox[0];
+        }
+
+        // Can't move dx to left
+        if ((x + dx) < 0 && dx < 0) {
+
+            // Move remainder
+            this.paper.setViewBox(0 - x, 0, viewWidth, this.paper.height, false);
+
+            return;
+        }
+
+        // Can't move dx to right
+        if ((x + viewWidth + dx) >= this.width && dx > 0) {
+
+            // Remainder
+            var remainder = this.width - x - viewWidth;
+
+            // Move remainder
+            this.paper.setViewBox(x + remainder, 0, viewWidth, this.paper.height, false);
+
+            return;
+        }
+
+        // Move dx
+        this.paper.setViewBox(x + dx, 0, viewWidth, this.paper.height, false);
+    },
+
     /* Render */
 
     renderDuration: function (previousSnapshot, snapshot, x, y, radius, distance) {
@@ -52,15 +93,17 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             return;
         }
 
+        // Duration label
         var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
 
-        this.canvas.text(x - radius - distance / 2, y + 20, duration);
+        // Duration element
+        this.paper.text(x - radius - distance / 2, y + 20, duration);
     },
 
     renderTimeline: function (leftOffset, y, x) {
 
         // Timeline element
-        var timeline = this.canvas.path('M ' + leftOffset + ' ' + y + ' L ' + x + ' ' + y);
+        var timeline = this.paper.path('M ' + leftOffset + ' ' + y + ' L ' + x + ' ' + y);
         $(timeline.node).attr('class', 'timeline');
 
         // Move back on z-axis
@@ -70,7 +113,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     renderSnapshotIndex: function (index, x) {
 
         // Snapshot index element
-        var snapshotIndex = this.canvas.text(x, 5, index + 1);
+        var snapshotIndex = this.paper.text(x, 5, index + 1);
 
         $(snapshotIndex.node).attr('class', 'snapshot-index');
     },
@@ -80,11 +123,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var self = this;
 
         // Snapshot area element
-        var snapshotArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
+        var snapshotArea = this.paper.rect(x - radius, 0, radius * 2, this.paper.height);
         $(snapshotArea.node).attr('class', 'area');
 
         // Snapshot element
-        var snapshotElement = self.canvas.circle(x, y, radius);
+        var snapshotElement = self.paper.circle(x, y, radius);
         $(snapshotElement.node).attr('class', 'snapshot');
 
         // Set models for snapshot and snapshot area elements
@@ -119,18 +162,18 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     renderPointer: function (x, radius) {
 
         // Set
-        var pointerSet = this.canvas.set();
+        var pointerSet = this.paper.set();
 
         var width = 7;
 
         var pointerX = x - width / 2;
-        var pointerY = this.canvas.height;
+        var pointerY = this.paper.height;
 
         var pointerLineX = x;
         var pointerLineY = pointerY - width / 2;
 
         // Pointer line element
-        var pointerLine = this.canvas.path('M' + pointerLineX + ' ' + pointerLineY + ', L' + pointerLineX + ' ' + 0);
+        var pointerLine = this.paper.path('M' + pointerLineX + ' ' + pointerLineY + ', L' + pointerLineX + ' ' + 0);
         $(pointerLine.node).attr('class', 'pointer-line');
 
         pointerLine.toBack();
@@ -138,26 +181,26 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         pointerSet.push(pointerLine);
 
         // Pointer element
-        var pointer = this.canvas.path('M' +
-                                        pointerX +
-                                        ' ' +
-                                        pointerY +
-                                        ', L' +
-                                        (pointerX + width / 2) +
-                                        ' ' +
-                                        (pointerY - width) +
-                                        ', ' +
-                                        (pointerX + width) +
-                                        ' ' +
-                                        pointerY +
-                                        'Z');
+        var pointer = this.paper.path('M' +
+                                      pointerX +
+                                      ' ' +
+                                      pointerY +
+                                      ', L' +
+                                      (pointerX + width / 2) +
+                                      ' ' +
+                                      (pointerY - width) +
+                                      ', ' +
+                                      (pointerX + width) +
+                                      ' ' +
+                                      pointerY +
+                                      'Z');
 
         $(pointer.node).attr('class', 'pointer');
 
         pointerSet.push(pointer);
 
         // Pointer area element
-        var pointerArea = this.canvas.rect(x - radius, 0, radius * 2, this.canvas.height);
+        var pointerArea = this.paper.rect(x - radius, 0, radius * 2, this.paper.height);
         $(pointerArea.node).attr('class', 'area pointer');
 
         pointerSet.push(pointerArea);
@@ -165,9 +208,27 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var self = this;
 
         // Dragging events
-        var onMove = function (dx) {
+        var onMove = function (dx, dy, x) {
 
             pointerSet.transform('T ' + dx + ', 0');
+
+            var viewWidth = $(self.paper.canvas).width();
+            var canvasOffset = $(self.paper.canvas).offset();
+
+            var leftOffset = canvasOffset.left;
+            var rightOffset = canvasOffset.left + viewWidth;
+
+            // Move timeline to left
+            if (x < leftOffset + 100) {
+
+                self.moveTimeline(-100);
+            }
+
+            // Move timeline to right
+            if (x > rightOffset - 100) {
+
+                self.moveTimeline(100);
+            }
         }
 
         var onStart = function () {
@@ -199,12 +260,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var max = Math.min(300000, this.collection.getMaxDuration());
 
         // Clear canvas
-        this.canvas.clear();
+        this.paper.clear();
 
         // Center point
-        var y = this.canvas.height / 2 + 3;
+        var y = this.paper.height / 2 + 3;
 
         var leftOffset = 0;
+        var rightOffset = 0;
         var x = 0;
 
         var self = this;
@@ -232,6 +294,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                 x += distance;
             }
 
+            if (index === self.collection.length - 1) {
+
+                // Right offset
+                rightOffset = radius;
+            }
+
             var previousSnapshot = self.collection.at(index - 1);
 
             // Render duration between snapshots
@@ -249,7 +317,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             }
         });
 
+        // Render timeline
         this.renderTimeline(leftOffset, y, x);
+
+        // Absolute width
+        this.width = leftOffset + x + rightOffset;
     },
 
     /* Update */
