@@ -107,11 +107,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#diff', navigationContainerOutput).addClass('active');
         }
 
-        // Disable diff button if editor can not diff
-        if (!this.editorView.canDiff()) {
-            $('#diff', navigationContainerOutput).attr('disabled', true);
-        }
-
         // First snapshot, disable the buttons for first and previous
         if (index === 0) {
             $('#first', navigationContainerOutput).attr('disabled', true);
