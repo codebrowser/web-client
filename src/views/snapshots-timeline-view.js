@@ -329,13 +329,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Move timeline to left
         if (x < leftOffset + 100) {
-
             this.moveTimeline(-20);
         }
 
         // Move timeline to right
         if (x > rightOffset - 100) {
-
             this.moveTimeline(20);
         }
     },
