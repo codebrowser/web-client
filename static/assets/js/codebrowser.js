@@ -1769,7 +1769,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Hide view until needed
         this.$el.hide();
 
-        // Parent view
         this.parentView = options.parentView;
 
         /* jshint newcap: false */
@@ -1793,10 +1792,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     isVisible: function (x) {
 
-        // View x
         var viewX = this.getViewX();
-
-        // View width
         var viewWidth = $(this.paper.canvas).width();
 
         return (x >= viewX && x <= viewX + viewWidth);
@@ -1825,18 +1821,22 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     setViewBox: function (x) {
 
-        // View width
         var viewWidth = $(this.paper.canvas).width();
 
         // Set view box
         this.paper.setViewBox(x, 0, viewWidth, this.paper.height, false);
     },
 
+    centerOn: function (x) {
+
+        var viewWidth = $(this.paper.canvas).width();
+
+        this.setViewBox(x - (viewWidth / 2));
+    },
+
     moveTimeline: function (dx) {
 
         var viewX = this.getViewX();
-
-        // View width
         var viewWidth = $(this.paper.canvas).width();
 
         // Can't move dx to left
@@ -1851,7 +1851,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Can't move dx to right
         if ((viewX + viewWidth + dx) >= this.width && dx > 0) {
 
-            // Remainder
             var remainder = this.width - viewX - viewWidth;
 
             // Move by remainder
@@ -1946,7 +1945,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     renderPointer: function (x, radius) {
 
-        // Set
+        // Pointer set
         this.pointerSet = this.paper.set();
 
         var width = 7;
@@ -2062,11 +2061,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                 // Make current snapshot element visible
                 if (!self.isVisible(snapshotElementCx)) {
 
-                    // View width
-                    var viewWidth = $(self.paper.canvas).width();
-
-                    // Move view box
-                    self.setViewBox(snapshotElementCx - (viewWidth / 2));
+                    self.centerOn(snapshotElementCx);
                 }
 
                 // Render pointer on current snapshot
