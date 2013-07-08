@@ -41,6 +41,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         courseCollection.fetch({
 
             cache: true,
+            expires: 3600,
 
             success: function () {
 
