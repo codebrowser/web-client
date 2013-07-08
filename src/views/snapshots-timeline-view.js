@@ -320,12 +320,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     dragEnd: function () {
 
-        // Clear scroll
-        clearInterval(this.scroll);
-        this.scroll = false;
-
         this.dragging = false;
 
+        this.stopScroll();
         this.render();
     },
 
@@ -343,21 +340,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var leftOffset = canvasOffset.left;
         var rightOffset = canvasOffset.left + viewWidth;
 
-        var self = this;
-
         // Move timeline to left
         if (x < leftOffset + 50) {
 
-            if (!this.scroll) {
-
-                // Scroll to the left
-                this.scroll = setInterval(function () {
-
-                    // Move timeline to the left
-                    self.moveTimeline(-5);
-
-                }, 1000 / 60);
-            }
+            this.startScroll(-5);
 
             return;
         }
@@ -365,23 +351,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Move timeline to right
         if (x > rightOffset - 50) {
 
-            if (!this.scroll) {
-
-                // Scroll to the right
-                this.scroll = setInterval(function () {
-
-                    // Move timeline to the right
-                    self.moveTimeline(5);
-
-                }, 1000 / 60);
-            }
+            this.startScroll(5);
 
             return;
         }
 
-        // Clear scroll
-        clearInterval(this.scroll);
-        this.scroll = false;
+        this.stopScroll();
     },
 
     dragOver: function (element) {
@@ -390,5 +365,28 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         if (element.data('snapshot')) {
             this.parentView.navigate(element.data('snapshot'), element.data('file'));
         }
+    },
+
+    /* Actions */
+
+    startScroll: function (dx) {
+
+        var self = this;
+
+        if (!this.scroll) {
+
+            // Scroll dx 60 times a second
+            this.scroll = setInterval(function () {
+
+                self.moveTimeline(dx);
+
+            }, 1000 / 60);
+        }
+    },
+
+    stopScroll: function () {
+
+        clearInterval(this.scroll);
+        this.scroll = false;
     }
 });
