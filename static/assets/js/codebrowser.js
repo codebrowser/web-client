@@ -1814,13 +1814,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Duration between snapshots
         var duration = this.collection.getDuration(index, index - 1);
 
-        // Scale between 1 and 4
-        weight = 3 * (duration - min) / (max - min) + 1;
+        // Scale between 1 and 6
+        weight = 5 * (duration - min) / (max - min) + 1;
 
         // Round up to 2 decimals
         weight = Math.round(weight * 100) / 100;
 
-        return Math.min(4, weight);
+        return Math.min(6, weight);
     },
 
     setViewBox: function (x) {
@@ -2068,7 +2068,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             var weight = self.distanceWeight(index, min, max);
 
             // Weight by duration between snapshots
-            var distance = 50 * weight;
+            var distance = 35 * weight;
 
             // TODO: Weight by amount of differences
             var radius = 8;
