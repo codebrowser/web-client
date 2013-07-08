@@ -35,6 +35,29 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         /* jshint newcap: true */
     },
 
+    getViewX: function () {
+
+        var x = 0;
+
+        // Current x of view
+        if (this.paper._viewBox) {
+            x = this.paper._viewBox[0];
+        }
+
+        return x;
+    },
+
+    isVisible: function (x) {
+
+        // View x
+        var viewX = this.getViewX();
+
+        // View width
+        var viewWidth = $(this.paper.canvas).width();
+
+        return (x >= viewX && x <= viewX + viewWidth);
+    },
+
     distanceWeight: function (index, min, max) {
 
         var weight = 0;
@@ -56,41 +79,45 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         return Math.min(4, weight);
     },
 
+    setViewBox: function (x) {
+
+        // View width
+        var viewWidth = $(this.paper.canvas).width();
+
+        // Set view box
+        this.paper.setViewBox(x, 0, viewWidth, this.paper.height, false);
+    },
+
     moveTimeline: function (dx) {
 
-        var x = 0;
-
-        // Current x of view
-        if (this.paper._viewBox) {
-            x = this.paper._viewBox[0];
-        }
+        var viewX = this.getViewX();
 
         // View width
         var viewWidth = $(this.paper.canvas).width();
 
         // Can't move dx to left
-        if ((x + dx) < 0 && dx < 0) {
+        if ((viewX + dx) < 0 && dx < 0) {
 
             // Move by remainder, but don't go under 0
-            this.paper.setViewBox(Math.max(0, 0 - x), 0, viewWidth, this.paper.height, false);
+            this.setViewBox(Math.max(0, 0 - viewX));
 
             return;
         }
 
         // Can't move dx to right
-        if ((x + viewWidth + dx) >= this.width && dx > 0) {
+        if ((viewX + viewWidth + dx) >= this.width && dx > 0) {
 
             // Remainder
-            var remainder = this.width - x - viewWidth;
+            var remainder = this.width - viewX - viewWidth;
 
             // Move by remainder
-            this.paper.setViewBox(x + remainder, 0, viewWidth, this.paper.height, false);
+            this.setViewBox(viewX + remainder);
 
             return;
         }
 
         // Move viewbox
-        this.paper.setViewBox(x + dx, 0, viewWidth, this.paper.height, false);
+        this.setViewBox(viewX + dx);
 
         // Move pointer set
         this.pointerSetOffsetX += dx;
@@ -169,6 +196,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             this.animate({ transform: 'S 1' }, 150);
         });
+
+        return snapshotElement;
     },
 
     renderPointer: function (x, radius) {
@@ -279,10 +308,24 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             self.renderSnapshotIndex(index, x);
 
             // Render snapshot
-            self.renderSnapshot(snapshot, x, y, radius);
+            var snapshotElement = self.renderSnapshot(snapshot, x, y, radius);
 
-            // Render pointer on current snapshot
+            // Current snapshot
             if (index === self.currentSnapshotIndex) {
+
+                var snapshotElementCx = snapshotElement.attr('cx');
+
+                // Make current snapshot element visible
+                if (!self.isVisible(snapshotElementCx)) {
+
+                    // View width
+                    var viewWidth = $(self.paper.canvas).width();
+
+                    // Move view box
+                    self.setViewBox(snapshotElementCx - (viewWidth / 2));
+                }
+
+                // Render pointer on current snapshot
                 self.renderPointer(x, radius);
             }
         });
