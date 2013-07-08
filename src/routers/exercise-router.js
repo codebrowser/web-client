@@ -33,6 +33,8 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         // Fetch exercise collection
         exerciseCollection.fetch({
 
+            cache: true,
+
             success: function () {
 
                 self.exerciseView.render();

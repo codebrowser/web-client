@@ -33,6 +33,8 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         // Fetch course collection
         courseCollection.fetch({
 
+            cache: true,
+
             success: function () {
 
                 self.courseView.render();

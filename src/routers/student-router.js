@@ -32,6 +32,8 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
         // Fetch student collection
         studentCollection.fetch({
 
+            cache: true,
+
             success: function () {
 
                 self.studentView.render();

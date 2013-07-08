@@ -48,6 +48,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         // Fetch snapshot collection
         snapshotCollection.fetch({
 
+            cache: true,
+
             success: function () {
 
                 var snapshot;
