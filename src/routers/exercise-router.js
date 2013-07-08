@@ -43,6 +43,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         exerciseCollection.fetch({
 
             cache: true,
+            expires: 3600,
 
             success: function () {
 
