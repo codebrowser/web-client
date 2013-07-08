@@ -87,7 +87,26 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var viewWidth = $(this.paper.canvas).width();
 
-        this.setViewBox(x - (viewWidth / 2));
+        var center = x - (viewWidth / 2);
+
+        // Don't go under 0
+        if (center < 0) {
+
+            this.setViewBox(0);
+
+            return;
+        }
+
+        // Don't go over absolute width
+        if (center > (this.width - viewWidth)) {
+
+            this.setViewBox(this.width - viewWidth);
+
+            return;
+        }
+
+        // Center
+        this.setViewBox(center);
     },
 
     moveTimeline: function (dx) {
@@ -267,6 +286,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var rightOffset = 0;
         var x = 0;
 
+        // Current snapshot element
+        var currentSnapshotElement;
+
         var self = this;
 
         this.collection.each(function (snapshot, index) {
@@ -312,13 +334,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             // Current snapshot
             if (index === self.currentSnapshotIndex) {
 
-                var snapshotElementCx = snapshotElement.attr('cx');
-
-                // Make current snapshot element visible
-                if (!self.isVisible(snapshotElementCx)) {
-
-                    self.centerOn(snapshotElementCx);
-                }
+                currentSnapshotElement = snapshotElement;
 
                 // Render pointer on current snapshot
                 self.renderPointer(x, radius);
@@ -330,6 +346,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Absolute width
         this.width = leftOffset + x + rightOffset;
+
+        // Make current snapshot element visible
+        var snapshotElementCx = currentSnapshotElement.attr('cx');
+
+        if (!self.isVisible(snapshotElementCx)) {
+            self.centerOn(snapshotElementCx);
+        }
     },
 
     /* Update */
