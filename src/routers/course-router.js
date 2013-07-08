@@ -22,6 +22,13 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
+    navigate: function (studentId) {
+
+        codebrowser.app.snapshot.navigate('#/students/' +
+                                          studentId +
+                                          '/courses', { replace: true });
+    },
+
     courses: function (studentId) {
 
         var courseCollection = new codebrowser.collection.CourseCollection(null, { studentId: studentId });
@@ -48,12 +55,5 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         });
 
         codebrowser.controller.ViewController.push(this.courseView);
-    },
-
-    navigate: function (studentId) {
-
-        codebrowser.app.snapshot.navigate('#/students/' +
-                                          studentId +
-                                          '/courses', { replace: true });
     }
 });

@@ -22,6 +22,15 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
+    navigate: function (studentId, courseId) {
+
+        codebrowser.app.snapshot.navigate('#/students/' +
+                                          studentId +
+                                          '/courses/' +
+                                          courseId +
+                                          '/exercises', { replace: true });
+    },
+
     exercises: function (studentId, courseId) {
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId, courseId: courseId });
@@ -48,14 +57,5 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         });
 
         codebrowser.controller.ViewController.push(this.exerciseView);
-    },
-
-    navigate: function (studentId, courseId) {
-
-        codebrowser.app.snapshot.navigate('#/students/' +
-                                          studentId +
-                                          '/courses/' +
-                                          courseId +
-                                          '/exercises', { replace: true });
     }
 });
