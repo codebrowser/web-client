@@ -1767,7 +1767,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students/:studentId':         'courses',
+        'students/:studentId':         'navigate',
         'students/:studentId/courses': 'courses'
 
     },
@@ -1798,6 +1798,8 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         // Fetch course collection
         courseCollection.fetch({
 
+            cache: true,
+
             success: function () {
 
                 self.courseView.render();
@@ -1811,6 +1813,13 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         });
 
         codebrowser.controller.ViewController.push(this.courseView);
+    },
+
+    navigate: function (studentId) {
+
+        codebrowser.app.snapshot.navigate('#/students/' +
+                                          studentId +
+                                          '/courses', { replace: true });
     }
 });
 ;
@@ -1819,7 +1828,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students/:studentId/courses/:courseId':           'exercises',
+        'students/:studentId/courses/:courseId':           'navigate',
         'students/:studentId/courses/:courseId/exercises': 'exercises'
 
     },
@@ -1850,6 +1859,8 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         // Fetch exercise collection
         exerciseCollection.fetch({
 
+            cache: true,
+
             success: function () {
 
                 self.exerciseView.render();
@@ -1863,6 +1874,15 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         });
 
         codebrowser.controller.ViewController.push(this.exerciseView);
+    },
+
+    navigate: function (studentId, courseId) {
+
+        codebrowser.app.snapshot.navigate('#/students/' +
+                                          studentId +
+                                          '/courses/' +
+                                          courseId +
+                                          '/exercises', { replace: true });
     }
 });
 ;
@@ -1916,6 +1936,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
         // Fetch snapshot collection
         snapshotCollection.fetch({
+
+            cache: true,
 
             success: function () {
 
@@ -2004,6 +2026,8 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
         // Fetch student collection
         studentCollection.fetch({
+
+            cache: true,
 
             success: function () {
 

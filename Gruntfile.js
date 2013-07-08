@@ -163,6 +163,7 @@ module.exports = function (grunt) {
                          'static/assets/js/underscore-min.js',
                          'static/assets/js/backbone-min.js',
                          'static/assets/js/backbone-relational-min.js',
+                         'static/assets/js/backbone.fetch-cache.min.js',
                          'static/assets/js/handlebars.runtime-min.js',
                          'static/assets/js/ace/ace.js',
                          'static/assets/js/difflib-min.js',
