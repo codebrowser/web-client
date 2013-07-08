@@ -6,6 +6,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     width: 0,
 
+    /* Snapshot elements */
+
+    snapshotElements: [],
+
     /* Pointer */
 
     pointerSetOffsetX: 0,
@@ -286,9 +290,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var rightOffset = 0;
         var x = 0;
 
-        // Current snapshot element
-        var currentSnapshotElement;
-
         var self = this;
 
         this.collection.each(function (snapshot, index) {
@@ -330,11 +331,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             // Render snapshot
             var snapshotElement = self.renderSnapshot(snapshot, x, y, radius);
+            self.snapshotElements.push(snapshotElement);
 
             // Current snapshot
             if (index === self.currentSnapshotIndex) {
-
-                currentSnapshotElement = snapshotElement;
 
                 // Render pointer on current snapshot
                 self.renderPointer(x, radius);
@@ -348,7 +348,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.width = leftOffset + x + rightOffset;
 
         // Make current snapshot element visible
-        var snapshotElementCx = currentSnapshotElement.attr('cx');
+        var snapshotElementCx = this.snapshotElements[this.currentSnapshotIndex].attr('cx');
 
         if (!self.isVisible(snapshotElementCx)) {
             self.centerOn(snapshotElementCx);
