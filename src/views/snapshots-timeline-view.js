@@ -6,7 +6,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     width: 0,
 
-    /* Scrolling */
+    /* Scroll */
 
     scroll: null,
 
