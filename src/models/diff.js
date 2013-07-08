@@ -74,11 +74,6 @@ codebrowser.model.Diff = function (previousContent, content) {
             // Replace contains deleted lines
             if (fromChange > toChange) {
 
-                // Replace
-                if (difference.rowEnd - difference.rowStart !== 0) {
-                    difference.rowEnd -= (changed > delta ? changed : delta);
-                }
-
                 differences.replace.push(difference);
                 differences.all.push(difference);
 
