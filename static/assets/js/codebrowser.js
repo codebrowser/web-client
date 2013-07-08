@@ -1750,7 +1750,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     width: 0,
 
-    /* Scrolling */
+    /* Pointer */
+
+    pointerSetOffsetX: 0,
+
+    /* Scroll */
 
     scroll: null,
 
@@ -1800,13 +1804,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var x = 0;
 
-        // View width
-        var viewWidth = $(this.paper.canvas).width();
-
         // Current x of view
         if (this.paper._viewBox) {
             x = this.paper._viewBox[0];
         }
+
+        // View width
+        var viewWidth = $(this.paper.canvas).width();
 
         // Can't move dx to left
         if ((x + dx) < 0 && dx < 0) {
@@ -1833,6 +1837,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.paper.setViewBox(x + dx, 0, viewWidth, this.paper.height, false);
 
         // Move pointer set
+        this.pointerSetOffsetX += dx;
         this.pointerSet.transform('...t ' + dx + ', 0');
     },
 
@@ -2065,6 +2070,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     dragEnd: function () {
 
         this.dragging = false;
+        this.pointerSetOffsetX = 0;
 
         this.stopScroll();
         this.render();
@@ -2072,11 +2078,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     dragMove: function (dx, dy, x) {
 
-        if (!this.scroll) {
-
-            // Move pointer set
-            this.pointerSet.transform('T ' + dx + ', 0');
-        }
+        // Move pointer set
+        this.pointerSet.transform('T ' + (this.pointerSetOffsetX + dx) + ', 0');
 
         var viewWidth = $(this.paper.canvas).width();
         var canvasOffset = $(this.paper.canvas).offset();
