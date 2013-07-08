@@ -16,13 +16,13 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     /* Actions */
 
-    notFound: function () {
-
-        codebrowser.controller.ViewController.push(this.errorView, true);
-    },
-
     root: function () {
 
         this.navigate('#/students');
+    },
+
+    notFound: function () {
+
+        codebrowser.controller.ViewController.push(this.errorView, true);
     }
 });
