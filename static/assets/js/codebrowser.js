@@ -1767,7 +1767,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students/:studentId':         'courses',
+        'students/:studentId':         'navigate',
         'students/:studentId/courses': 'courses'
 
     },
@@ -1813,6 +1813,13 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         });
 
         codebrowser.controller.ViewController.push(this.courseView);
+    },
+
+    navigate: function (studentId) {
+
+        codebrowser.app.snapshot.navigate('#/students/' +
+                                          studentId +
+                                          '/courses', { replace: true });
     }
 });
 ;
@@ -1821,7 +1828,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students/:studentId/courses/:courseId':           'exercises',
+        'students/:studentId/courses/:courseId':           'navigate',
         'students/:studentId/courses/:courseId/exercises': 'exercises'
 
     },
@@ -1867,6 +1874,15 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         });
 
         codebrowser.controller.ViewController.push(this.exerciseView);
+    },
+
+    navigate: function (studentId, courseId) {
+
+        codebrowser.app.snapshot.navigate('#/students/' +
+                                          studentId +
+                                          '/courses/' +
+                                          courseId +
+                                          '/exercises', { replace: true });
     }
 });
 ;
