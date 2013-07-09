@@ -20,6 +20,11 @@ describe('Duration', function () {
         expect(codebrowser.helper.Duration.calculate(1360329948801, 1359642309317)).toBe('8 days');
     });
 
+    it('should return zero time difference in pluralized form (0 seconds)', function () {
+
+        expect(codebrowser.helper.Duration.calculate(1340339600659, 1340339600659)).toBe('0 seconds');
+    });
+
     it('should return time difference expressed in singular form (1 second/minute/hour/day)', function () {
 
         expect(codebrowser.helper.Duration.calculate(1360339600659, 1360339599653)).toBe('1 second');
