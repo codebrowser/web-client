@@ -42,7 +42,7 @@ codebrowser.helper.Duration = {
             timeUnit = 'second';
         }
 
-        if (value > 1) {
+        if (value !== 1) {
             timeUnit += 's';
         }
 
