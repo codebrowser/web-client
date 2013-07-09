@@ -976,6 +976,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    /* Decorations */
+
     decorations: {
 
         'main-editor': [],
@@ -983,12 +985,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    /* Markers */
+
     markers: {
 
         'main-editor': [],
         'side-editor': []
 
     },
+
+    /* Inserted lines */
 
     insertedLines: {
 
