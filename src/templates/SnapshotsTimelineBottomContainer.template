@@ -6,6 +6,8 @@
 
     </div>
 
+    <div class='center text-center'>. . .</div>
+
     <div class='span2 pull-right'>
 
         <time class='pull-right'>{{date last.snapshotTime}}</time>

@@ -148,6 +148,16 @@
 
 }
 
+#snapshots-timeline-container .center {
+
+    position: absolute;
+    left: 50%;
+    width: 100px;
+    margin-left: -50px;
+    font-weight: bold;
+
+}
+
 #snapshots-timeline-container text {
 
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
