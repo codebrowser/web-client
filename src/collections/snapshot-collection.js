@@ -7,6 +7,7 @@
 codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.Snapshot,
+    differences: [],
 
     url: function () {
 
@@ -85,4 +86,104 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
         return max;
     },
+
+    getDifferences: function() {
+
+        if (this.differences.length > 0) {
+            return this.differences;
+        }
+
+        var previousContent = null;
+        var currentContent = null;
+
+        var syncCalls = 0;
+
+        var self = this;
+
+        // Wait files to be in sync
+        var fileSynced = function(filename) {
+
+            ++syncCalls;
+
+            if (!self.differences[filename]) {
+                self.differences[filename] = [];
+            }
+
+            if (syncCalls % 2 === 0) {
+
+                // Create diff
+                self.differences[filename].push(new codebrowser.model.Diff(previousContent, currentContent));
+
+                syncCalls = 0;
+            }
+        }
+
+        this.each(function(snapshot, index) {
+
+            for (var i = 0; i < snapshot.get('files').length; i++) {
+
+                // New snapshot file, reset sync calls
+                syncCalls = 0;
+
+                self.file = snapshot.get('files').at(i);
+
+                var previousSnapshot = self.at(index - 1);
+
+                if (!previousSnapshot) {
+                    self.previousFile = self.file;
+                } else {
+                    self.previousFile = previousSnapshot.get('files').at(i);
+                }
+
+                if (!self.previousFile) {
+                    self.previousFile = self.file;
+                }
+
+                /* jshint loopfunc: true */
+
+                // Fetch previous file only if the models are not the same
+                if (self.previousFile !== self.file) {
+
+                    self.previousFile.fetchContent(function(content, error) {
+
+                        if (error) {
+                            throw new Error('Failed file fetch.');
+                        }
+
+                        previousContent = content;
+
+                        fileSynced(this.get('name'));
+
+                    }.bind(self.previousFile));
+                }
+
+                // Fetch current file
+                self.file.fetchContent(function(content, error) {
+
+                    if (error) {
+                        throw new Error('Failed file fetch.');
+                    }
+
+                    currentContent = content;
+
+                    // If both models are the same, current model is a new file, set empty content to previous
+                    if (self.previousFile === self.file) {
+
+                        previousContent = '';
+
+                        fileSynced(this.get('name'));
+                    }
+
+                    fileSynced(this.get('name'));
+
+                }.bind(self.file));
+
+                /* jshint loopfunc: false */
+
+            }
+
+        });
+
+        return this.differences;
+    }
 });
