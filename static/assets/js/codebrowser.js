@@ -650,6 +650,15 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
                '/files';
     },
 
+    lines: function () {
+
+        if (!this.content) {
+            return 0;
+        }
+
+        return this.content.split('\n').length;
+    },
+
     /* Callback parameters (content, [error]) are the received data and possible error, respectively. */
 
     fetchContent: function (callback) {
