@@ -8,9 +8,9 @@
 
     <div class='center text-center'>. . .</div>
 
-    <div class='span2 pull-right'>
+    <div class='span3 pull-right'>
 
-        <time class='pull-right'>{{date last.snapshotTime}}</time>
+        <time class='pull-right'>{{date last.snapshotTime}} (+ {{duration last.snapshotTime first.snapshotTime}})</time>
 
     </div>
 
