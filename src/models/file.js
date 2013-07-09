@@ -20,11 +20,6 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
                '/files';
     },
 
-    lines: function () {
-
-        return this.content.split('\n').length;
-    },
-
     getContent: function () {
 
         var content = this.content;
@@ -36,6 +31,11 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
         content = content.replace(/\t/g, '    ');
 
         return content;
+    },
+
+    lines: function () {
+
+        return this.getContent().split('\n').length;
     },
 
     /* Callback parameters (content, [error]) are the received data and possible error, respectively. */
