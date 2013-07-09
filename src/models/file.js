@@ -27,7 +27,15 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     getContent: function () {
 
-        return this.content;
+        var content = this.content;
+
+        // Standardise line endings
+        content = content.replace(/\r\n|\r/g, '\n');
+
+        // Convert tabs to 4 spaces
+        content = content.replace(/\t/g, '    ');
+
+        return content;
     },
 
     /* Callback parameters (content, [error]) are the received data and possible error, respectively. */
