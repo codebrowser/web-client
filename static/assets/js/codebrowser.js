@@ -377,7 +377,7 @@ codebrowser.helper.Duration = {
         var value;
         var timeUnit;
 
-        var seconds = Math.round(difference/1000);
+        var seconds = Math.round(difference / 1000);
 
         if (seconds > 60) {
 
@@ -1989,7 +1989,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         }
 
         // Duration label
-        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
+        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'),
+                                                             previousSnapshot.get('snapshotTime'), true);
 
         // Duration element
         this.paper.text(x - radius - distance / 2, y + 20, duration);
@@ -2494,7 +2495,8 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     exercises: function (studentId, courseId) {
 
-        var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId, courseId: courseId });
+        var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
+                                                                                       courseId: courseId });
 
         this.exerciseView.collection = exerciseCollection;
 

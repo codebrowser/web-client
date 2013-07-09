@@ -33,7 +33,8 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     exercises: function (studentId, courseId) {
 
-        var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId, courseId: courseId });
+        var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
+                                                                                       courseId: courseId });
 
         this.exerciseView.collection = exerciseCollection;
 

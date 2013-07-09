@@ -7,7 +7,7 @@ codebrowser.helper.Duration = {
         var value;
         var timeUnit;
 
-        var seconds = Math.round(difference/1000);
+        var seconds = Math.round(difference / 1000);
 
         if (seconds > 60) {
 
