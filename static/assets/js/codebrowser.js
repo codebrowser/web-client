@@ -640,9 +640,7 @@ codebrowser.model.Exercise = Backbone.RelationalModel.extend({
 
 codebrowser.model.File = Backbone.RelationalModel.extend({
 
-    /* Cache */
-
-    content: null,
+    content: '',
 
     urlRoot: function () {
 
@@ -660,21 +658,22 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     lines: function () {
 
-        if (!this.content) {
-            return 0;
-        }
-
         return this.content.split('\n').length;
+    },
+
+    getContent: function () {
+
+        return this.content;
     },
 
     /* Callback parameters (content, [error]) are the received data and possible error, respectively. */
 
     fetchContent: function (callback) {
 
-        // Return content from cache
-        if (this.content) {
+        // Return content
+        if (this.content.length !== 0) {
 
-            callback(this.content, null);
+            callback(this.getContent(), null);
 
             return;
         }
@@ -685,7 +684,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
             self.content = content;
 
-            callback(self.content, null);
+            callback(self.getContent(), null);
         });
 
         request.fail(function () {
@@ -1152,7 +1151,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             previous: this.previousModel.toJSON(),
             difference: this.differences.getCount(),
-            percentageOfChange: Math.round((this.differences.getCount().total() / Math.max(this.model.lines(), 1)) * 100)
+            percentageOfChange: Math.round((this.differences.getCount().total() / this.model.lines()) * 100)
 
         }
 
@@ -1234,8 +1233,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Wait files to be in sync
         var fileSynced = _.after(2, function() {
 
-            var previousContent = self.previousModel.content;
-            var content = self.model.content;
+            var previousContent = self.previousModel.getContent();
+            var content = self.model.getContent();
 
             // Create diff
             self.differences = new codebrowser.model.Diff(previousContent, content);

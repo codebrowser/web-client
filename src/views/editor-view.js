@@ -148,7 +148,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             previous: this.previousModel.toJSON(),
             difference: this.differences.getCount(),
-            percentageOfChange: Math.round((this.differences.getCount().total() / Math.max(this.model.lines(), 1)) * 100)
+            percentageOfChange: Math.round((this.differences.getCount().total() / this.model.lines()) * 100)
 
         }
 
@@ -230,8 +230,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Wait files to be in sync
         var fileSynced = _.after(2, function() {
 
-            var previousContent = self.previousModel.content;
-            var content = self.model.content;
+            var previousContent = self.previousModel.getContent();
+            var content = self.model.getContent();
 
             // Create diff
             self.differences = new codebrowser.model.Diff(previousContent, content);

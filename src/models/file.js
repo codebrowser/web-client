@@ -4,9 +4,7 @@
 
 codebrowser.model.File = Backbone.RelationalModel.extend({
 
-    /* Cache */
-
-    content: null,
+    content: '',
 
     urlRoot: function () {
 
@@ -24,21 +22,22 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     lines: function () {
 
-        if (!this.content) {
-            return 0;
-        }
-
         return this.content.split('\n').length;
+    },
+
+    getContent: function () {
+
+        return this.content;
     },
 
     /* Callback parameters (content, [error]) are the received data and possible error, respectively. */
 
     fetchContent: function (callback) {
 
-        // Return content from cache
-        if (this.content) {
+        // Return content
+        if (this.content.length !== 0) {
 
-            callback(this.content, null);
+            callback(this.getContent(), null);
 
             return;
         }
@@ -49,7 +48,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
             self.content = content;
 
-            callback(self.content, null);
+            callback(self.getContent(), null);
         });
 
         request.fail(function () {
