@@ -1,0 +1,15 @@
+<div class='row'>
+
+    <div class='span2'>
+
+        <time>{{date first.snapshotTime}}</time>
+
+    </div>
+
+    <div class='span2 pull-right'>
+
+        <time class='pull-right'>{{date last.snapshotTime}}</time>
+
+    </div>
+
+</div>

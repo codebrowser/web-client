@@ -167,6 +167,22 @@ function program1(depth0,data,depth1) {
   return buffer;
   });
 
+this["Handlebars"]["templates"]["SnapshotsTimelineBottomContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class='row'>\n\n    <div class='span2'>\n\n        <time>";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
+    + "</time>\n\n    </div>\n\n    <div class='span2 pull-right'>\n\n        <time class='pull-right'>";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
+    + "</time>\n\n    </div>\n\n</div>\n";
+  return buffer;
+  });
+
 this["Handlebars"]["templates"]["StudentsContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1761,6 +1777,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     id: 'snapshots-timeline-container',
 
+    template: {
+
+        bottomContainer: Handlebars.templates.SnapshotsTimelineBottomContainer
+
+    },
+
     /* Absolute width */
 
     width: 0,
@@ -1795,6 +1817,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.paper = Raphael(this.el, '100%', 81);
 
         /* jshint newcap: true */
+
+        // Bottom container
+        this.bottomContainer = $('<div>');
+        this.$el.append(this.bottomContainer);
     },
 
     getViewX: function () {
@@ -2129,6 +2155,20 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Focus
         this.focus();
+
+        // View attributes
+        var attributes = {
+
+            first: this.collection.first().toJSON(),
+            last: this.collection.last().toJSON()
+
+        }
+
+        // Template for bottom container
+        var bottomContainerOutput = $(this.template.bottomContainer(attributes));
+
+        // Update bottom container
+        this.bottomContainer.html(bottomContainerOutput, bottomContainerOutput);
     },
 
     /* Update */

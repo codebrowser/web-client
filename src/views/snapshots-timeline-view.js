@@ -2,6 +2,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     id: 'snapshots-timeline-container',
 
+    template: {
+
+        bottomContainer: Handlebars.templates.SnapshotsTimelineBottomContainer
+
+    },
+
     /* Absolute width */
 
     width: 0,
@@ -36,6 +42,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.paper = Raphael(this.el, '100%', 81);
 
         /* jshint newcap: true */
+
+        // Bottom container
+        this.bottomContainer = $('<div>');
+        this.$el.append(this.bottomContainer);
     },
 
     getViewX: function () {
@@ -370,6 +380,20 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Focus
         this.focus();
+
+        // View attributes
+        var attributes = {
+
+            first: this.collection.first().toJSON(),
+            last: this.collection.last().toJSON()
+
+        }
+
+        // Template for bottom container
+        var bottomContainerOutput = $(this.template.bottomContainer(attributes));
+
+        // Update bottom container
+        this.bottomContainer.html(bottomContainerOutput, bottomContainerOutput);
     },
 
     /* Update */

@@ -136,6 +136,15 @@
     padding: 15px;
     border: 1px solid #c5d6de;
     border-radius: 4px;
+    font-size: 12px;
+    line-height: normal;
+    color: #6d8089;
+
+}
+
+#snapshots-timeline-container .row {
+
+    margin-top: 10px;
 
 }
 
