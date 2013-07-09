@@ -90,7 +90,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     centerOn: function (x) {
 
         var viewWidth = $(this.paper.canvas).width();
-
         var center = x - (viewWidth / 2);
 
         // Don't go under 0
@@ -124,11 +123,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             if (!this.isVisible(this.snapshotElements[this.currentSnapshotIndex - 1].attr('cx'))) {
                 this.centerOn(cx);
             }
-        }
-
-        // Make current snapshot element visible
-        if (!this.isVisible(cx)) {
-            this.centerOn(cx);
         }
 
         // Make next snapshot element visible
