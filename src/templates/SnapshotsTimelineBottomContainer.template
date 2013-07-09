@@ -2,7 +2,7 @@
 
     <div class='span2'>
 
-        <time>{{date first.snapshotTime}}</time>
+        <time>{{date first.snapshotTime false}}</time>
 
     </div>
 
@@ -10,7 +10,7 @@
 
     <div class='span3 pull-right'>
 
-        <time class='pull-right'>{{date last.snapshotTime}} (+ {{duration last.snapshotTime first.snapshotTime}})</time>
+        <time class='pull-right'>{{date last.snapshotTime false}} (+ {{duration last.snapshotTime first.snapshotTime}})</time>
 
     </div>
 
