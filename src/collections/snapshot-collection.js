@@ -7,7 +7,7 @@
 codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.Snapshot,
-    differences: [],
+    differences: null,
 
     url: function () {
 
@@ -89,9 +89,12 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
     getDifferences: function() {
 
-        if (this.differences.length > 0) {
+        if (this.differences) {
             return this.differences;
         }
+
+        // Initialize
+        this.differences = [];
 
         var previousContent = null;
         var currentContent = null;
@@ -105,6 +108,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
             ++syncCalls;
 
+            // Create namespace for every file name
             if (!self.differences[filename]) {
                 self.differences[filename] = [];
             }
@@ -118,20 +122,26 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             }
         }
 
-        this.each(function(snapshot, index) {
+        this.each(function (snapshot, index) {
 
-            for (var i = 0; i < snapshot.get('files').length; i++) {
-
+            var files = snapshot.get('files');
+            
+            // Calculate differences for every file of each snapshot
+            files.each(function (file, i) {
+                
                 // New snapshot file, reset sync calls
                 syncCalls = 0;
 
-                self.file = snapshot.get('files').at(i);
+                self.file = file;
 
                 var previousSnapshot = self.at(index - 1);
 
+                // If previous snapshot doesn't exist, current file doesn't have earlier version of it
                 if (!previousSnapshot) {
+                    // Set previous file to current file
                     self.previousFile = self.file;
                 } else {
+                    // Get previous version of the current file from the previous snapshot
                     self.previousFile = previousSnapshot.get('files').at(i);
                 }
 
@@ -139,12 +149,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     self.previousFile = self.file;
                 }
 
-                /* jshint loopfunc: true */
-
                 // Fetch previous file only if the models are not the same
                 if (self.previousFile !== self.file) {
 
-                    self.previousFile.fetchContent(function(content, error) {
+                    self.previousFile.fetchContent(function (content, error) {
 
                         if (error) {
                             throw new Error('Failed file fetch.');
@@ -158,7 +166,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 }
 
                 // Fetch current file
-                self.file.fetchContent(function(content, error) {
+                self.file.fetchContent(function (content, error) {
 
                     if (error) {
                         throw new Error('Failed file fetch.');
@@ -178,10 +186,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                 }.bind(self.file));
 
-                /* jshint loopfunc: false */
-
-            }
-
+            });
         });
 
         return this.differences;
