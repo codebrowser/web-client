@@ -49,7 +49,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         snapshotCollection.fetch({
 
             cache: true,
-            expires: 3600,
+            expires: config.cache.expires,
 
             success: function () {
 

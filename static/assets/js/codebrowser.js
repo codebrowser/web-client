@@ -229,6 +229,14 @@ var config = {
         }
     },
 
+    /* Cache */
+
+    cache: {
+
+        expires: 3600
+
+    },
+
     /* View */
 
     view: {
@@ -2354,7 +2362,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         courseCollection.fetch({
 
             cache: true,
-            expires: 3600,
+            expires: config.cache.expires,
 
             success: function () {
 
@@ -2418,7 +2426,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         exerciseCollection.fetch({
 
             cache: true,
-            expires: 3600,
+            expires: config.cache.expires,
 
             success: function () {
 
@@ -2488,7 +2496,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         snapshotCollection.fetch({
 
             cache: true,
-            expires: 3600,
+            expires: config.cache.expires,
 
             success: function () {
 
@@ -2579,7 +2587,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
         studentCollection.fetch({
 
             cache: true,
-            expires: 3600,
+            expires: config.cache.expires,
 
             success: function () {
 
