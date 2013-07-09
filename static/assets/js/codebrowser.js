@@ -1225,8 +1225,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Wait files to be in sync
         var fileSynced = _.after(2, function() {
 
-            var previousContent = self.sideEditor.getValue();
-            var content = self.mainEditor.getValue();
+            var previousContent = self.previousModel.content;
+            var content = self.model.content;
 
             // Create diff
             self.differences = new codebrowser.model.Diff(previousContent, content);
