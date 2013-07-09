@@ -19,6 +19,9 @@
 
             <dl class="dl-horizontal pull-left">
 
+              <dt>Change</dt>
+              <dd>{{percentageOfChange}} %</dd>
+
               <dt>Insert</dt>
               <dd>{{difference.insert}} {{pluralize difference.insert 'line'}}</dd>
 

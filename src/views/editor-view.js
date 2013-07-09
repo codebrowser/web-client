@@ -147,7 +147,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var attributes = {
 
             previous: this.previousModel.toJSON(),
-            difference: this.differences.getCount()
+            difference: this.differences.getCount(),
+            percentageOfChange: Math.round((this.differences.getCount().total() / Math.max(this.model.lines(), 1)) * 100)
 
         }
 
