@@ -98,7 +98,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
     remove: function () {
         
         // Remove settings container
-        this.bottomContainer.remove();
+        this.settingsContainer.remove();
 
         Backbone.View.prototype.remove.call(this);
     },

@@ -282,7 +282,6 @@
     background-color: rgba(0, 0, 0, 0.05);
     font-size: 12px;
     text-shadow: 0 1px 0 white;
-    line-height: 30px;
     color: rgba(0, 0, 0, 0.6);
 
 }
@@ -293,7 +292,6 @@
     margin: 0;
     font-size: inherit;
     font-weight: 500;
-    line-height: inherit;
     visibility: hidden;
 
 }
