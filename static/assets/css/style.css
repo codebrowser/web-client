@@ -58,6 +58,13 @@
 
 }
 
+.icon-settings {
+
+    background-image: url('../img/settings.png');
+    background-position: center;
+
+}
+
 /* Responsiveness */
 
 @media screen and (min-width: 1200px) {
