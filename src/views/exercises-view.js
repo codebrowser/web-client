@@ -1,12 +1,7 @@
 codebrowser.view.ExercisesView = Backbone.View.extend({
 
     id: 'exercises-container',
-
-    template: {
-
-        exercisesContainer: Handlebars.templates.ExercisesContainer
-
-    },
+    template: Handlebars.templates.ExercisesContainer,
 
     /* Render */
 
@@ -20,10 +15,9 @@ codebrowser.view.ExercisesView = Backbone.View.extend({
 
         }
 
-        // Template for exercises container
-        var exercisesContainerOutput = $(this.template.exercisesContainer(model));
+        // Template
+        var output = $(this.template(model));
 
-        // Update exercises container
-        this.$el.html(exercisesContainerOutput);
+        this.$el.html(output);
     }
 });

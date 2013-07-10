@@ -986,12 +986,7 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 codebrowser.view.CoursesView = Backbone.View.extend({
 
     id: 'courses-container',
-
-    template: {
-
-        coursesContainer: Handlebars.templates.CoursesContainer
-
-    },
+    template: Handlebars.templates.CoursesContainer,
 
     /* Render */
 
@@ -1004,11 +999,10 @@ codebrowser.view.CoursesView = Backbone.View.extend({
 
         }
 
-        // Template for courses container
-        var coursesContainerOutput = $(this.template.coursesContainer(model));
+        // Template
+        var output = $(this.template(model));
 
-        // Update courses container
-        this.$el.html(coursesContainerOutput);
+        this.$el.html(output);
     }
 });
 ;
@@ -1517,12 +1511,7 @@ codebrowser.view.ErrorView = Backbone.View.extend({
 codebrowser.view.ExercisesView = Backbone.View.extend({
 
     id: 'exercises-container',
-
-    template: {
-
-        exercisesContainer: Handlebars.templates.ExercisesContainer
-
-    },
+    template: Handlebars.templates.ExercisesContainer,
 
     /* Render */
 
@@ -1536,11 +1525,10 @@ codebrowser.view.ExercisesView = Backbone.View.extend({
 
         }
 
-        // Template for exercises container
-        var exercisesContainerOutput = $(this.template.exercisesContainer(model));
+        // Template
+        var output = $(this.template(model));
 
-        // Update exercises container
-        this.$el.html(exercisesContainerOutput);
+        this.$el.html(output);
     }
 });
 ;
@@ -2317,12 +2305,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 codebrowser.view.StudentsView = Backbone.View.extend({
 
     id: 'students-container',
-
-    template: {
-
-        studentsContainer: Handlebars.templates.StudentsContainer
-
-    },
+    template: Handlebars.templates.StudentsContainer,
 
     /* Render */
 
@@ -2334,11 +2317,10 @@ codebrowser.view.StudentsView = Backbone.View.extend({
 
         }
 
-        // Template for students container
-        var studentsContainerOutput = $(this.template.studentsContainer(model));
+        // Template
+        var output = $(this.template(model));
 
-        // Update students container
-        this.$el.html(studentsContainerOutput);
+        this.$el.html(output);
     }
 });
 ;
