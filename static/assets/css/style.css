@@ -231,15 +231,72 @@
 
 /* Snapshot */
 
-#navigation-container {
+#snapshot-navigation-container {
 
     height: 30px;
 
 }
 
-#navigation-container .text-center {
+#snapshot-navigation-container .text-center {
 
     line-height: 30px;
+
+}
+
+/* Snapshot files */
+
+#snapshot-files-container {
+
+    position: absolute;
+    padding: 0 10px 10px 10px;
+    width: 200px;
+    border-top: 4px solid rgba(0, 0, 0, 0.1);
+
+}
+
+#snapshot-files-container header {
+
+    margin: 5px 0;
+
+}
+
+#snapshot-files-container header h1 {
+
+    display: inline;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 32px;
+
+}
+
+#snapshot-files-container ul {
+
+    margin: 0;
+    list-style: none;
+
+}
+
+#snapshot-files-container ul li {
+
+    margin: 2px 0;
+    padding: 2px 0;
+
+}
+
+#snapshot-files-container ul li a {
+
+    display: inline-block;
+    padding: 0 0 0 10px;
+    width: 190px;
+    color: rgba(0, 0, 0, 0.7);
+    text-decoration: none;
+
+}
+
+#snapshot-files-container ul li:hover {
+
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
 
 }
 
@@ -247,7 +304,7 @@
 
 #editor-container {
 
-    margin: 10px 0;
+    margin: 10px 0 10px 230px;
 
 }
 

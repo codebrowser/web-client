@@ -132,7 +132,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<footer>\r\n    \r\n    <p>Code Browser rocks</p>\r\n\r\n    <span class='pull-right'>\r\n\r\n        <!-- Button to trigger modal -->\r\n        <a href='#myModal' data-toggle='modal'><i class='icon-settings icon-gray'></i></a>\r\n\r\n        <!-- Modal -->\r\n        <div id='myModal' class='modal hide fade' tabindex='-1'>\r\n\r\n            <div class='modal-header'>\r\n\r\n                <button type='button' class='close' data-dismiss='modal'>×</button>\r\n                <h4>Settings</h4>\r\n\r\n            </div>\r\n\r\n            <div class='modal-body'>\r\n\r\n                <h5>Font size:</h5>\r\n\r\n                <select id='font-size'>\r\n                    <option value='12'>Normal</option>\r\n                    <option value='14'>Large</option>\r\n                    <option value='16'>Larger</option>\r\n                </select>\r\n\r\n            </div>\r\n\r\n            <div class='modal-footer'>\r\n\r\n                <button class='btn' data-dismiss='modal'>Close</button>\r\n                <button class='btn btn-primary' id='settings' data-dismiss='modal'>Save</button>\r\n\r\n            </div>\r\n\r\n    </span>\r\n\r\n</footer>";
   });
 
-this["Handlebars"]["templates"]["SnapshotNavigationContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+this["Handlebars"]["templates"]["SnapshotFilesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
@@ -140,7 +140,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\r\n                    <li><a href='#/students/"
+  buffer += "\r\n        <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -156,26 +156,36 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\r\n                ";
+    + "</a></li>\r\n    ";
   return buffer;
   }
 
-  buffer += "<div class='row'>\r\n\r\n    <div class='span6'>\r\n\r\n        <div class='btn-group'>\r\n\r\n            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> "
+  buffer += "<header>\r\n\r\n    <i class='icon-folder-close icon-gray'></i> <h1>"
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " <span class='caret'></span></a>\r\n\r\n            <ul class='dropdown-menu'>\r\n                ";
+    + "</h1>\r\n\r\n</header>\r\n\r\n<ul>\r\n    ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack2 = helpers.files) { stack2 = stack2.call(depth0, options); }
   else { stack2 = depth0.files; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if (!helpers.files) { stack2 = blockHelperMissing.call(depth0, stack2, options); }
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\r\n            </ul>\r\n\r\n        </div>\r\n\r\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\r\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\r\n\r\n    </div>\r\n\r\n    <div class='span4 pull-right'>\r\n\r\n        <div class='row'>\r\n\r\n            <div class='span1 text-center'>";
-  if (stack2 = helpers.current) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = depth0.current; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  buffer += escapeExpression(stack2)
+  buffer += "\r\n</ul>\r\n";
+  return buffer;
+  });
+
+this["Handlebars"]["templates"]["SnapshotNavigationContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class='row'>\r\n\r\n    <div class='span2'>\r\n\r\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\r\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\r\n\r\n    </div>\r\n\r\n    <div class='span4 pull-right'>\r\n\r\n        <div class='row'>\r\n\r\n            <div class='span1 text-center'>";
+  if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
     + " / ";
-  if (stack2 = helpers.total) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = depth0.total; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  buffer += escapeExpression(stack2)
+  if (stack1 = helpers.total) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.total; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
     + "</div>\r\n\r\n            <div class='span3'>\r\n\r\n                <div class='btn-group pull-right'>\r\n                    <button type='button' id='first' class='btn'>First</button>\r\n                    <button type='button' id='previous' class='btn'>Previous</button>\r\n                    <button type='button' id='next' class='btn'>Next</button>\r\n                    <button type='button' id='last' class='btn'>Last</button>\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n</div>\r\n";
   return buffer;
   });

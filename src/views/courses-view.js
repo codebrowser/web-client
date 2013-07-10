@@ -1,12 +1,7 @@
 codebrowser.view.CoursesView = Backbone.View.extend({
 
     id: 'courses-container',
-
-    template: {
-
-        coursesContainer: Handlebars.templates.CoursesContainer
-
-    },
+    template: Handlebars.templates.CoursesContainer,
 
     /* Render */
 
@@ -19,10 +14,9 @@ codebrowser.view.CoursesView = Backbone.View.extend({
 
         }
 
-        // Template for courses container
-        var coursesContainerOutput = $(this.template.coursesContainer(model));
+        // Template
+        var output = $(this.template(model));
 
-        // Update courses container
-        this.$el.html(coursesContainerOutput);
+        this.$el.html(output);
     }
 });
