@@ -2,6 +2,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     id: 'snapshots-timeline-container',
 
+    template: {
+
+        bottomContainer: Handlebars.templates.SnapshotsTimelineBottomContainer
+
+    },
+
     /* Absolute width */
 
     width: 0,
@@ -36,6 +42,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.paper = Raphael(this.el, '100%', 81);
 
         /* jshint newcap: true */
+
+        // Bottom container
+        this.bottomContainer = $('<div>');
+        this.$el.append(this.bottomContainer);
     },
 
     getViewX: function () {
@@ -90,7 +100,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     centerOn: function (x) {
 
         var viewWidth = $(this.paper.canvas).width();
-
         var center = x - (viewWidth / 2);
 
         // Don't go under 0
@@ -124,11 +133,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             if (!this.isVisible(this.snapshotElements[this.currentSnapshotIndex - 1].attr('cx'))) {
                 this.centerOn(cx);
             }
-        }
-
-        // Make current snapshot element visible
-        if (!this.isVisible(cx)) {
-            this.centerOn(cx);
         }
 
         // Make next snapshot element visible
@@ -182,7 +186,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         }
 
         // Duration label
-        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
+        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'),
+                                                             previousSnapshot.get('snapshotTime'), true);
 
         // Duration element
         this.paper.text(x - radius - distance / 2, y + 20, duration);
@@ -376,6 +381,20 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Focus
         this.focus();
+
+        // View attributes
+        var attributes = {
+
+            first: this.collection.first().toJSON(),
+            last: this.collection.last().toJSON()
+
+        }
+
+        // Template for bottom container
+        var bottomContainerOutput = $(this.template.bottomContainer(attributes));
+
+        // Update bottom container
+        this.bottomContainer.html(bottomContainerOutput, bottomContainerOutput);
     },
 
     /* Update */
@@ -401,6 +420,15 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     },
 
     /* Events */
+
+    didResize: function () {
+
+        // Cx of the current snapshot element
+        var cx = this.snapshotElements[this.currentSnapshotIndex].attr('cx');
+
+        this.render();
+        this.centerOn(cx);
+    },
 
     dragStart: function () {
 

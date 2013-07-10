@@ -28,12 +28,21 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.append(this.snapshotsTimelineView.el);
 
         // Navigation
-        this.navigationContainer = $('<div>', { id: 'navigation-container' });
+        this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
         this.$el.append(this.navigationContainer);
+
+        // Content container
+        var contentContainer = $('<div>', { id: 'snapshot-content-container' });
+
+        // Files
+        this.snapshotFilesView = new codebrowser.view.SnapshotFilesView();
+        contentContainer.append(this.snapshotFilesView.el);
 
         // Editor
         this.editorView = new codebrowser.view.EditorView();
-        this.$el.append(this.editorView.el);
+        contentContainer.append(this.editorView.el);
+
+        this.$el.append(contentContainer);
 
         // Bind resize
         $(window).resize($.proxy(this.resize, this));
@@ -137,6 +146,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Update timeline
         this.snapshotsTimelineView.update(this.collection, index, filename);
 
+        // Update files
+        this.snapshotFilesView.update(this.model);
+
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
 
@@ -152,6 +164,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     didResize: function () {
 
+        this.snapshotsTimelineView.didResize();
         this.editorView.didResize();
     },
 

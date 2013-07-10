@@ -15,6 +15,11 @@ describe('Config', function () {
         expect(config.api.main.root).toBe('http://t-avihavai.users.cs.helsinki.fi/cb-back/app/');
     });
 
+    it('should have correct expiration for cache', function () {
+
+        expect(config.cache.expires).toBe(3600);
+    });
+
     it('should have correct ID for view container', function () {
 
         expect(config.view.container).toBe('#container');

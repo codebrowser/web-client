@@ -30,6 +30,14 @@ var config = {
         }
     },
 
+    /* Cache */
+
+    cache: {
+
+        expires: 3600
+
+    },
+
     /* View */
 
     view: {

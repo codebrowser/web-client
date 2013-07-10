@@ -6,8 +6,12 @@ codebrowser.model.Diff = function (previousContent, content) {
 
         replace:  0,
         insert:   0,
-        'delete': 0
+        'delete': 0,
 
+        total: function () {
+
+            return this.replace + this.insert + this['delete'];
+        }
     }
 
     /* Differences */

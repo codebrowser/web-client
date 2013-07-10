@@ -1,0 +1,17 @@
+<div class='row'>
+
+    <div class='span2'>
+
+        <time>{{date first.snapshotTime false}}</time>
+
+    </div>
+
+    <div class='center text-center'>. . .</div>
+
+    <div class='span3 pull-right'>
+
+        <time class='pull-right'>{{date last.snapshotTime false}} (+ {{duration last.snapshotTime first.snapshotTime}})</time>
+
+    </div>
+
+</div>

@@ -36,7 +36,7 @@ function program1(depth0,data,depth1) {
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
   buffer += "<header>\r\n\r\n    <h1>";
@@ -52,7 +52,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + " –</time>\r\n                <time>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + "</time>\r\n\r\n           '\r\n\r\n           data-content='\r\n\r\n            <dl class=\"dl-horizontal pull-left\">\r\n\r\n              <dt>Insert</dt>\r\n              <dd>"
+    + "</time>\r\n\r\n           '\r\n\r\n           data-content='\r\n\r\n            <dl class=\"dl-horizontal pull-left\">\r\n\r\n              <dt>Change</dt>\r\n              <dd>";
+  if (stack2 = helpers.percentageOfChange) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.percentageOfChange; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + " %</dd>\r\n\r\n              <dt>Insert</dt>\r\n              <dd>"
     + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " ";
   options = {hash:{},data:data};
@@ -119,7 +123,7 @@ function program1(depth0,data,depth1) {
   return buffer;
   });
 
-this["Handlebars"]["templates"]["SnapshotNavigationContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+this["Handlebars"]["templates"]["SnapshotFilesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
@@ -127,7 +131,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\r\n                    <li><a href='#/students/"
+  buffer += "\r\n        <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -143,27 +147,56 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\r\n                ";
+    + "</a></li>\r\n    ";
   return buffer;
   }
 
-  buffer += "<div class='row'>\r\n\r\n    <div class='span6'>\r\n\r\n        <div class='btn-group'>\r\n\r\n            <a class='btn dropdown-toggle' data-toggle='dropdown' href='#'><i class='icon-folder-close icon-gray'></i> "
+  buffer += "<header>\r\n\r\n    <i class='icon-folder-close icon-gray'></i> <h1>"
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " <span class='caret'></span></a>\r\n\r\n            <ul class='dropdown-menu'>\r\n                ";
+    + "</h1>\r\n\r\n</header>\r\n\r\n<ul>\r\n    ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack2 = helpers.files) { stack2 = stack2.call(depth0, options); }
   else { stack2 = depth0.files; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if (!helpers.files) { stack2 = blockHelperMissing.call(depth0, stack2, options); }
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\r\n            </ul>\r\n\r\n        </div>\r\n\r\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\r\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\r\n\r\n    </div>\r\n\r\n    <div class='span4 pull-right'>\r\n\r\n        <div class='row'>\r\n\r\n            <div class='span1 text-center'>";
-  if (stack2 = helpers.current) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = depth0.current; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  buffer += escapeExpression(stack2)
+  buffer += "\r\n</ul>\r\n";
+  return buffer;
+  });
+
+this["Handlebars"]["templates"]["SnapshotNavigationContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class='row'>\r\n\r\n    <div class='span2'>\r\n\r\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\r\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\r\n\r\n    </div>\r\n\r\n    <div class='span4 pull-right'>\r\n\r\n        <div class='row'>\r\n\r\n            <div class='span1 text-center'>";
+  if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
     + " / ";
-  if (stack2 = helpers.total) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = depth0.total; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  buffer += escapeExpression(stack2)
+  if (stack1 = helpers.total) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.total; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
     + "</div>\r\n\r\n            <div class='span3'>\r\n\r\n                <div class='btn-group pull-right'>\r\n                    <button type='button' id='first' class='btn'>First</button>\r\n                    <button type='button' id='previous' class='btn'>Previous</button>\r\n                    <button type='button' id='next' class='btn'>Next</button>\r\n                    <button type='button' id='last' class='btn'>Last</button>\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n</div>\r\n";
+  return buffer;
+  });
+
+this["Handlebars"]["templates"]["SnapshotsTimelineBottomContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class='row'>\r\n\r\n    <div class='span2'>\r\n\r\n        <time>";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), false, options) : helperMissing.call(depth0, "date", ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), false, options)))
+    + "</time>\r\n\r\n    </div>\r\n\r\n    <div class='center text-center'>. . .</div>\r\n\r\n    <div class='span3 pull-right'>\r\n\r\n        <time class='pull-right'>";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), false, options) : helperMissing.call(depth0, "date", ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), false, options)))
+    + " (+ ";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.duration || depth0.duration),stack1 ? stack1.call(depth0, ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "duration", ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
+    + ")</time>\r\n\r\n    </div>\r\n\r\n</div>\r\n";
   return buffer;
   });
 
@@ -227,6 +260,14 @@ var config = {
             root: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/'
 
         }
+    },
+
+    /* Cache */
+
+    cache: {
+
+        expires: 3600
+
     },
 
     /* View */
@@ -331,9 +372,13 @@ codebrowser.helper.AceMode = {
 }
 ;
 
-Handlebars.registerHelper('date', function (date) {
+Handlebars.registerHelper('date', function (date, precise) {
 
-    return moment(new Date(date)).format('D.M.YYYY HH.mm.ss');
+    if (precise) {
+        return moment(new Date(date)).format('D.M.YYYY HH.mm.ss');
+    }
+
+    return moment(new Date(date)).format('D.M.YYYY HH.mm');
 });
 ;
 
@@ -346,7 +391,7 @@ codebrowser.helper.Duration = {
         var value;
         var timeUnit;
 
-        var seconds = Math.round(difference/1000);
+        var seconds = Math.round(difference / 1000);
 
         if (seconds > 60) {
 
@@ -381,7 +426,7 @@ codebrowser.helper.Duration = {
             timeUnit = 'second';
         }
 
-        if (value > 1) {
+        if (value !== 1) {
             timeUnit += 's';
         }
 
@@ -438,8 +483,12 @@ codebrowser.model.Diff = function (previousContent, content) {
 
         replace:  0,
         insert:   0,
-        'delete': 0
+        'delete': 0,
 
+        total: function () {
+
+            return this.replace + this.insert + this['delete'];
+        }
     }
 
     /* Differences */
@@ -605,9 +654,7 @@ codebrowser.model.Exercise = Backbone.RelationalModel.extend({
 
 codebrowser.model.File = Backbone.RelationalModel.extend({
 
-    /* Cache */
-
-    content: null,
+    content: '',
 
     urlRoot: function () {
 
@@ -623,14 +670,32 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
                '/files';
     },
 
+    getContent: function () {
+
+        var content = this.content;
+
+        // Standardise line endings
+        content = content.replace(/\r\n|\r/g, '\n');
+
+        // Convert tabs to 4 spaces
+        content = content.replace(/\t/g, '    ');
+
+        return content;
+    },
+
+    lines: function () {
+
+        return this.getContent().split('\n').length;
+    },
+
     /* Callback parameters (content, [error]) are the received data and possible error, respectively. */
 
     fetchContent: function (callback) {
 
-        // Return content from cache
-        if (this.content) {
+        // Return content
+        if (this.content.length !== 0) {
 
-            callback(this.content, null);
+            callback(this.getContent(), null);
 
             return;
         }
@@ -641,7 +706,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
             self.content = content;
 
-            callback(self.content, null);
+            callback(self.getContent(), null);
         });
 
         request.fail(function () {
@@ -1041,12 +1106,7 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 codebrowser.view.CoursesView = Backbone.View.extend({
 
     id: 'courses-container',
-
-    template: {
-
-        coursesContainer: Handlebars.templates.CoursesContainer
-
-    },
+    template: Handlebars.templates.CoursesContainer,
 
     /* Render */
 
@@ -1059,11 +1119,10 @@ codebrowser.view.CoursesView = Backbone.View.extend({
 
         }
 
-        // Template for courses container
-        var coursesContainerOutput = $(this.template.coursesContainer(model));
+        // Template
+        var output = $(this.template(model));
 
-        // Update courses container
-        this.$el.html(coursesContainerOutput);
+        this.$el.html(output);
     }
 });
 ;
@@ -1078,6 +1137,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    /* Decorations */
+
     decorations: {
 
         'main-editor': [],
@@ -1085,12 +1146,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    /* Markers */
+
     markers: {
 
         'main-editor': [],
         'side-editor': []
 
     },
+
+    /* Inserted lines */
 
     insertedLines: {
 
@@ -1211,7 +1276,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var attributes = {
 
             previous: this.previousModel.toJSON(),
-            difference: this.differences.getCount()
+            difference: this.differences.getCount(),
+            percentageOfChange: Math.round((this.differences.getCount().total() / this.model.lines()) * 100)
 
         }
 
@@ -1565,12 +1631,7 @@ codebrowser.view.ErrorView = Backbone.View.extend({
 codebrowser.view.ExercisesView = Backbone.View.extend({
 
     id: 'exercises-container',
-
-    template: {
-
-        exercisesContainer: Handlebars.templates.ExercisesContainer
-
-    },
+    template: Handlebars.templates.ExercisesContainer,
 
     /* Render */
 
@@ -1584,11 +1645,10 @@ codebrowser.view.ExercisesView = Backbone.View.extend({
 
         }
 
-        // Template for exercises container
-        var exercisesContainerOutput = $(this.template.exercisesContainer(model));
+        // Template
+        var output = $(this.template(model));
 
-        // Update exercises container
-        this.$el.html(exercisesContainerOutput);
+        this.$el.html(output);
     }
 });
 ;
@@ -1599,6 +1659,32 @@ codebrowser.view.NotFoundErrorView = codebrowser.view.ErrorView.extend({
 
         message: 'Not Found.'
 
+    }
+});
+;
+
+codebrowser.view.SnapshotFilesView = Backbone.View.extend({
+
+    id: 'snapshot-files-container',
+    template: Handlebars.templates.SnapshotFilesContainer,
+
+    /* Render */
+
+    render: function () {
+
+        // Template
+        var output = $(this.template(this.model.toJSON()));
+
+        this.$el.html(output);
+    },
+
+    /* Update */
+
+    update: function (snapshot) {
+
+        this.model = snapshot;
+
+        this.render();
     }
 });
 ;
@@ -1633,12 +1719,21 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.append(this.snapshotsTimelineView.el);
 
         // Navigation
-        this.navigationContainer = $('<div>', { id: 'navigation-container' });
+        this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
         this.$el.append(this.navigationContainer);
+
+        // Content container
+        var contentContainer = $('<div>', { id: 'snapshot-content-container' });
+
+        // Files
+        this.snapshotFilesView = new codebrowser.view.SnapshotFilesView();
+        contentContainer.append(this.snapshotFilesView.el);
 
         // Editor
         this.editorView = new codebrowser.view.EditorView();
-        this.$el.append(this.editorView.el);
+        contentContainer.append(this.editorView.el);
+
+        this.$el.append(contentContainer);
 
         // Bind resize
         $(window).resize($.proxy(this.resize, this));
@@ -1742,6 +1837,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Update timeline
         this.snapshotsTimelineView.update(this.collection, index, filename);
 
+        // Update files
+        this.snapshotFilesView.update(this.model);
+
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
 
@@ -1757,6 +1855,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     didResize: function () {
 
+        this.snapshotsTimelineView.didResize();
         this.editorView.didResize();
     },
 
@@ -1856,6 +1955,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     id: 'snapshots-timeline-container',
 
+    template: {
+
+        bottomContainer: Handlebars.templates.SnapshotsTimelineBottomContainer
+
+    },
+
     /* Absolute width */
 
     width: 0,
@@ -1890,6 +1995,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.paper = Raphael(this.el, '100%', 81);
 
         /* jshint newcap: true */
+
+        // Bottom container
+        this.bottomContainer = $('<div>');
+        this.$el.append(this.bottomContainer);
     },
 
     getViewX: function () {
@@ -1944,7 +2053,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     centerOn: function (x) {
 
         var viewWidth = $(this.paper.canvas).width();
-
         var center = x - (viewWidth / 2);
 
         // Don't go under 0
@@ -1978,11 +2086,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             if (!this.isVisible(this.snapshotElements[this.currentSnapshotIndex - 1].attr('cx'))) {
                 this.centerOn(cx);
             }
-        }
-
-        // Make current snapshot element visible
-        if (!this.isVisible(cx)) {
-            this.centerOn(cx);
         }
 
         // Make next snapshot element visible
@@ -2036,7 +2139,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         }
 
         // Duration label
-        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'), previousSnapshot.get('snapshotTime'), true);
+        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'),
+                                                             previousSnapshot.get('snapshotTime'), true);
 
         // Duration element
         this.paper.text(x - radius - distance / 2, y + 20, duration);
@@ -2230,6 +2334,20 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Focus
         this.focus();
+
+        // View attributes
+        var attributes = {
+
+            first: this.collection.first().toJSON(),
+            last: this.collection.last().toJSON()
+
+        }
+
+        // Template for bottom container
+        var bottomContainerOutput = $(this.template.bottomContainer(attributes));
+
+        // Update bottom container
+        this.bottomContainer.html(bottomContainerOutput, bottomContainerOutput);
     },
 
     /* Update */
@@ -2255,6 +2373,15 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     },
 
     /* Events */
+
+    didResize: function () {
+
+        // Cx of the current snapshot element
+        var cx = this.snapshotElements[this.currentSnapshotIndex].attr('cx');
+
+        this.render();
+        this.centerOn(cx);
+    },
 
     dragStart: function () {
 
@@ -2336,12 +2463,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 codebrowser.view.StudentsView = Backbone.View.extend({
 
     id: 'students-container',
-
-    template: {
-
-        studentsContainer: Handlebars.templates.StudentsContainer
-
-    },
+    template: Handlebars.templates.StudentsContainer,
 
     /* Render */
 
@@ -2353,11 +2475,10 @@ codebrowser.view.StudentsView = Backbone.View.extend({
 
         }
 
-        // Template for students container
-        var studentsContainerOutput = $(this.template.studentsContainer(model));
+        // Template
+        var output = $(this.template(model));
 
-        // Update students container
-        this.$el.html(studentsContainerOutput);
+        this.$el.html(output);
     }
 });
 ;
@@ -2464,7 +2585,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         courseCollection.fetch({
 
             cache: true,
-            expires: 3600,
+            expires: config.cache.expires,
 
             success: function () {
 
@@ -2518,7 +2639,8 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     exercises: function (studentId, courseId) {
 
-        var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId, courseId: courseId });
+        var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
+                                                                                       courseId: courseId });
 
         this.exerciseView.collection = exerciseCollection;
 
@@ -2528,7 +2650,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         exerciseCollection.fetch({
 
             cache: true,
-            expires: 3600,
+            expires: config.cache.expires,
 
             success: function () {
 
@@ -2598,7 +2720,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         snapshotCollection.fetch({
 
             cache: true,
-            expires: 3600,
+            expires: config.cache.expires,
 
             success: function () {
 
@@ -2689,7 +2811,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
         studentCollection.fetch({
 
             cache: true,
-            expires: 3600,
+            expires: config.cache.expires,
 
             success: function () {
 

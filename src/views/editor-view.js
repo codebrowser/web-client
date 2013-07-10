@@ -8,6 +8,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    /* Decorations */
+
     decorations: {
 
         'main-editor': [],
@@ -15,12 +17,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     },
 
+    /* Markers */
+
     markers: {
 
         'main-editor': [],
         'side-editor': []
 
     },
+
+    /* Inserted lines */
 
     insertedLines: {
 
@@ -141,7 +147,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         var attributes = {
 
             previous: this.previousModel.toJSON(),
-            difference: this.differences.getCount()
+            difference: this.differences.getCount(),
+            percentageOfChange: Math.round((this.differences.getCount().total() / this.model.lines()) * 100)
 
         }
 

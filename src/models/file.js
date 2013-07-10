@@ -4,9 +4,7 @@
 
 codebrowser.model.File = Backbone.RelationalModel.extend({
 
-    /* Cache */
-
-    content: null,
+    content: '',
 
     urlRoot: function () {
 
@@ -22,14 +20,32 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
                '/files';
     },
 
+    getContent: function () {
+
+        var content = this.content;
+
+        // Standardise line endings
+        content = content.replace(/\r\n|\r/g, '\n');
+
+        // Convert tabs to 4 spaces
+        content = content.replace(/\t/g, '    ');
+
+        return content;
+    },
+
+    lines: function () {
+
+        return this.getContent().split('\n').length;
+    },
+
     /* Callback parameters (content, [error]) are the received data and possible error, respectively. */
 
     fetchContent: function (callback) {
 
-        // Return content from cache
-        if (this.content) {
+        // Return content
+        if (this.content.length !== 0) {
 
-            callback(this.content, null);
+            callback(this.getContent(), null);
 
             return;
         }
@@ -40,7 +56,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
             self.content = content;
 
-            callback(self.content, null);
+            callback(self.getContent(), null);
         });
 
         request.fail(function () {

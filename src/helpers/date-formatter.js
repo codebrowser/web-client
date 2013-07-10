@@ -1,4 +1,8 @@
-Handlebars.registerHelper('date', function (date) {
+Handlebars.registerHelper('date', function (date, precise) {
 
-    return moment(new Date(date)).format('D.M.YYYY HH.mm.ss');
+    if (precise) {
+        return moment(new Date(date)).format('D.M.YYYY HH.mm.ss');
+    }
+
+    return moment(new Date(date)).format('D.M.YYYY HH.mm');
 });
