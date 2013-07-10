@@ -92,33 +92,28 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         if (this.differences) {
             return this.differences;
         }
-
         // Initialize
         this.differences = [];
 
         var previousContent = null;
         var currentContent = null;
 
-        var syncCalls = 0;
-
         var self = this;
 
         // Wait files to be in sync
-        var fileSynced = function(filename) {
+        var fileSynced = function(filename, syncCalls) {
 
-            ++syncCalls;
+            syncCalls.value += 1;
 
             // Create namespace for every file name
-            if (!self.differences[filename]) {
+            if (filename && !self.differences[filename]) {
                 self.differences[filename] = [];
             }
 
-            if (syncCalls % 2 === 0) {
+            if (syncCalls.value % 2 === 0) {
 
                 // Create diff
                 self.differences[filename].push(new codebrowser.model.Diff(previousContent, currentContent));
-
-                syncCalls = 0;
             }
         }
 
@@ -129,34 +124,36 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             // Calculate differences for every file of each snapshot
             files.each(function (file, i) {
                 
-                // New snapshot file, reset sync calls
-                syncCalls = 0;
+                // New snapshot file, new sync calls object
+                var syncCalls = {
+                    value: 0
+                }
 
-                self.file = file;
-                self.previousFile = null;
+                var currentFile = file;
+                var previousFile = null;
 
                 var previousSnapshot = self.at(index - 1);
 
                 // If previous snapshot doesn't exist, current file doesn't have earlier version of it
                 if (!previousSnapshot) {
                     // Set previous file to current file
-                    self.previousFile = self.file;
+                    previousFile = currentFile;
                 } else {
                     // Get previous version of the current file from the previous snapshot
-                    self.previousFile = previousSnapshot.get('files').at(i);
+                    previousFile = previousSnapshot.get('files').at(i);
                 }
 
-                if (!self.previousFile) {
-                    self.previousFile = self.file;
+                if (!previousFile) {
+                    previousFile = currentFile;
                 }
                 
-                // Bind files to fetching
-                var fileArray = [self.file, self.previousFile];
+                // Bind files and sync calls to fetching
+                var fileArray = [currentFile, previousFile, syncCalls];
 
                 // Fetch previous file only if the models are not the same
-                if (self.previousFile !== self.file) {
+                if (previousFile !== currentFile) {
 
-                    self.previousFile.fetchContent(function (content, error) {
+                    previousFile.fetchContent(function (content, error) {
 
                         if (error) {
                             throw new Error('Failed file fetch.');
@@ -164,13 +161,13 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                         previousContent = content;
 
-                        fileSynced(this.get('name'));
+                        fileSynced(this[1].get('name'), this[2]);
 
-                    }.bind(self.previousFile));
+                    }.bind(fileArray));
                 }
 
                 // Fetch current file
-                self.file.fetchContent(function (content, error) {
+                currentFile.fetchContent(function (content, error) {
 
                     if (error) {
                         throw new Error('Failed file fetch.');
@@ -183,10 +180,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                         previousContent = '';
 
-                        fileSynced(this[0].get('name'));
+                        fileSynced(this[0].get('name'), this[2]);
                     }
 
-                    fileSynced(this[0].get('name'));
+                    fileSynced(this[0].get('name'), this[2]);
 
                 }.bind(fileArray));
 
