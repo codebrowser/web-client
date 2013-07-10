@@ -129,7 +129,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<footer>\r\n    \r\n    <span class='pull-right'>\r\n\r\n        <!-- Button to trigger modal -->\r\n        <a href='#myModal' data-toggle='modal'><i class='icon-settings icon-gray'></i></a>\r\n\r\n        <!-- Modal -->\r\n        <div id='myModal' class='modal hide fade' tabindex='-1'>\r\n\r\n            <div class='modal-header'>\r\n\r\n                <button type='button' class='close' data-dismiss='modal'>×</button>\r\n                <h4>Settings</h4>\r\n\r\n            </div>\r\n\r\n            <div class='modal-body'>\r\n\r\n                <h5>Font size:</h5>\r\n\r\n                <select id='font-size'>\r\n                    <option value='12'>Normal</option>\r\n                    <option value='14'>Large</option>\r\n                    <option value='16'>Larger</option>\r\n                </select>\r\n\r\n            </div>\r\n\r\n            <div class='modal-footer'>\r\n\r\n                <button class='btn' data-dismiss='modal'>Close</button>\r\n                <button class='btn btn-primary' id='settings' data-dismiss='modal'>Save</button>\r\n\r\n            </div>\r\n\r\n    </span>\r\n\r\n</footer>";
+  return "<footer>\r\n    \r\n    <p>Code Browser rocks</p>\r\n\r\n    <span class='pull-right'>\r\n\r\n        <!-- Button to trigger modal -->\r\n        <a href='#myModal' data-toggle='modal'><i class='icon-settings icon-gray'></i></a>\r\n\r\n        <!-- Modal -->\r\n        <div id='myModal' class='modal hide fade' tabindex='-1'>\r\n\r\n            <div class='modal-header'>\r\n\r\n                <button type='button' class='close' data-dismiss='modal'>×</button>\r\n                <h4>Settings</h4>\r\n\r\n            </div>\r\n\r\n            <div class='modal-body'>\r\n\r\n                <h5>Font size:</h5>\r\n\r\n                <select id='font-size'>\r\n                    <option value='12'>Normal</option>\r\n                    <option value='14'>Large</option>\r\n                    <option value='16'>Larger</option>\r\n                </select>\r\n\r\n            </div>\r\n\r\n            <div class='modal-footer'>\r\n\r\n                <button class='btn' data-dismiss='modal'>Close</button>\r\n                <button class='btn btn-primary' id='settings' data-dismiss='modal'>Save</button>\r\n\r\n            </div>\r\n\r\n    </span>\r\n\r\n</footer>";
   });
 
 this["Handlebars"]["templates"]["SnapshotNavigationContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -1091,8 +1091,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.$el.hide();
 
         // Elements
-        this.topContainer = $('<div>');
-        this.bottomContainer = new codebrowser.view.SettingsView({ parentView: this });
+        this.topContainer = $('<div>', { id: 'top-container' });
+        this.settingsContainer = new codebrowser.view.SettingsView({ parentView: this });
         this.editorElement = $('<div>', { id: 'editor' });
 
         // Elements for editors
@@ -1106,7 +1106,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Append elements to parent
         this.$el.append(this.topContainer);
         this.$el.append(this.editorElement);
-        this.$el.append(this.bottomContainer.el);
+        this.$el.append(this.settingsContainer.el);
 
         // Create Ace editor
         this.sideEditor = ace.edit(this.sideEditorElement.get(0));
@@ -1115,6 +1115,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
+    },
+
+    /* Remove */
+            
+    remove: function () {
+        
+        // Remove settings container
+        this.bottomContainer.remove();
+
+        Backbone.View.prototype.remove.call(this);
     },
 
     /* Reset */

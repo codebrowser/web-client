@@ -274,6 +274,30 @@
 
 }
 
+#settings-container footer {
+
+    padding: 0 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 4px 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+    font-size: 12px;
+    text-shadow: 0 1px 0 white;
+    line-height: 30px;
+    color: rgba(0, 0, 0, 0.6);
+
+}
+
+#settings-container p {
+
+    display: inline;
+    margin: 0;
+    font-size: inherit;
+    font-weight: 500;
+    line-height: inherit;
+    visibility: hidden;
+
+}
+
 #editor {
 
     overflow: hidden;
