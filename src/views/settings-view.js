@@ -1,6 +1,6 @@
 codebrowser.view.SettingsView = Backbone.View.extend({
 
-    id: 'top-container',
+    id: 'settings-container',
 
     template: {
 
