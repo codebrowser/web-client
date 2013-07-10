@@ -67,8 +67,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.$el.hide();
 
         // Elements
-        this.topContainer = $('<div>');
-        this.bottomContainer = new codebrowser.view.SettingsView({ parentView: this });
+        this.topContainer = $('<div>', { id: 'top-container' });
+        this.settingsContainer = new codebrowser.view.SettingsView({ parentView: this });
         this.editorElement = $('<div>', { id: 'editor' });
 
         // Elements for editors
@@ -82,7 +82,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Append elements to parent
         this.$el.append(this.topContainer);
         this.$el.append(this.editorElement);
-        this.$el.append(this.bottomContainer.el);
+        this.$el.append(this.settingsContainer.el);
 
         // Create Ace editor
         this.sideEditor = ace.edit(this.sideEditorElement.get(0));
@@ -91,6 +91,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editor
         config.editor.configure(this.sideEditor);
         config.editor.configure(this.mainEditor);
+    },
+
+    /* Remove */
+            
+    remove: function () {
+        
+        // Remove settings container
+        this.bottomContainer.remove();
+
+        Backbone.View.prototype.remove.call(this);
     },
 
     /* Reset */
