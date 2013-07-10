@@ -133,6 +133,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 syncCalls = 0;
 
                 self.file = file;
+                self.previousFile = null;
 
                 var previousSnapshot = self.at(index - 1);
 
@@ -148,6 +149,9 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 if (!self.previousFile) {
                     self.previousFile = self.file;
                 }
+                
+                // Bind files to fetching
+                var fileArray = [self.file, self.previousFile];
 
                 // Fetch previous file only if the models are not the same
                 if (self.previousFile !== self.file) {
@@ -175,16 +179,16 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     currentContent = content;
 
                     // If both models are the same, current model is a new file, set empty content to previous
-                    if (self.previousFile === self.file) {
+                    if (this[0] === this[1]) {
 
                         previousContent = '';
 
-                        fileSynced(this.get('name'));
+                        fileSynced(this[0].get('name'));
                     }
 
-                    fileSynced(this.get('name'));
+                    fileSynced(this[0].get('name'));
 
-                }.bind(self.file));
+                }.bind(fileArray));
 
             });
         });
