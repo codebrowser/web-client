@@ -224,13 +224,13 @@
 
 /* Snapshot */
 
-#navigation-container {
+#snapshot-navigation-container {
 
     height: 30px;
 
 }
 
-#navigation-container .text-center {
+#snapshot-navigation-container .text-center {
 
     line-height: 30px;
 

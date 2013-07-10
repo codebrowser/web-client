@@ -28,7 +28,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.append(this.snapshotsTimelineView.el);
 
         // Navigation
-        this.navigationContainer = $('<div>', { id: 'navigation-container' });
+        this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
         this.$el.append(this.navigationContainer);
 
         // Content container
