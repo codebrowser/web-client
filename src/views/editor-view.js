@@ -67,7 +67,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.$el.hide();
 
         // Elements
-        this.topContainer = $('<div>', { id: 'top-container' });
+        this.topContainer = $('<div>');
         this.settingsContainer = new codebrowser.view.SettingsView({ parentView: this });
         this.editorElement = $('<div>', { id: 'editor' });
 
