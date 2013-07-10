@@ -16,6 +16,7 @@ codebrowser.view.SettingsView = Backbone.View.extend({
     initialize: function (options) {
         
         this.parentView = options.parentView;
+        this.render();
     },
 
     /* Render */

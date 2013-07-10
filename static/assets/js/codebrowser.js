@@ -1191,8 +1191,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
         if (this.inspector) {
             $('#editor-inspector').popover('toggle');
         }
-        
-        this.bottomContainer.render();
     },
 
     fold: function (editor, folds) {
@@ -1586,6 +1584,7 @@ codebrowser.view.SettingsView = Backbone.View.extend({
     initialize: function (options) {
         
         this.parentView = options.parentView;
+        this.render();
     },
 
     /* Render */
