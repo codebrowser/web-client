@@ -1003,7 +1003,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             syncCalls.value += 1;
 
             // Create namespace for every file name
-            if (filename && !self.differences[filename]) {
+            if (!self.differences[filename]) {
                 self.differences[filename] = [];
             }
 
@@ -1021,11 +1021,6 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             // Calculate differences for every file of each snapshot
             files.each(function (file, i) {
                 
-                // New snapshot file, new sync calls object
-                var syncCalls = {
-                    value: 0
-                }
-
                 var currentFile = file;
                 var previousFile = null;
 
@@ -1040,12 +1035,24 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     previousFile = previousSnapshot.get('files').at(i);
                 }
 
+                // Couldn't find file from previous snapshot, set previous file to current file
                 if (!previousFile) {
                     previousFile = currentFile;
                 }
                 
+                if (previousFile.get('name') !== currentFile.get('name')) {
+                    previousFile = currentFile;
+                }
+                
                 // Bind files and sync calls to fetching
-                var fileArray = [currentFile, previousFile, syncCalls];
+                var data = {
+                    
+                    currentFile: currentFile,
+                    previousFile: previousFile,
+                    syncCalls: {
+                        value: 0
+                    }
+                }
 
                 // Fetch previous file only if the models are not the same
                 if (previousFile !== currentFile) {
@@ -1058,9 +1065,9 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                         previousContent = content;
 
-                        fileSynced(this[1].get('name'), this[2]);
+                        fileSynced(this.previousFile.get('name'), this.syncCalls);
 
-                    }.bind(fileArray));
+                    }.bind(data));
                 }
 
                 // Fetch current file
@@ -1073,16 +1080,16 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     currentContent = content;
 
                     // If both models are the same, current model is a new file, set empty content to previous
-                    if (this[0] === this[1]) {
+                    if (this.currentFile === this.previousFile) {
 
                         previousContent = '';
 
-                        fileSynced(this[0].get('name'), this[2]);
+                        fileSynced(this.currentFile.get('name'), this.syncCalls);
                     }
 
-                    fileSynced(this[0].get('name'), this[2]);
+                    fileSynced(this.currentFile.get('name'), this.syncCalls);
 
-                }.bind(fileArray));
+                }.bind(data));
 
             });
         });
