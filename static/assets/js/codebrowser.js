@@ -984,7 +984,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         return max;
     },
 
-    getDifferences: function() {
+    getDifferences: function (callback) {
 
         if (this.differences) {
             return this.differences;
@@ -998,7 +998,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         var self = this;
 
         // Wait files to be in sync
-        var fileSynced = function(filename, syncCalls) {
+        var fileSynced = function (filename, syncCalls, snapshotIndex, fileIndex) {
 
             syncCalls.value += 1;
 
@@ -1011,6 +1011,11 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                 // Create diff
                 self.differences[filename].push(new codebrowser.model.Diff(previousContent, currentContent));
+                
+                // Diffed last file of last snapshot, return diffs
+                if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
+                    callback(self.differences);
+                }
             }
         }
 
@@ -1065,7 +1070,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                         previousContent = content;
 
-                        fileSynced(this.previousFile.get('name'), this.syncCalls);
+                        fileSynced(this.previousFile.get('name'), this.syncCalls, index, i);
 
                     }.bind(data));
                 }
@@ -1084,10 +1089,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                         previousContent = '';
 
-                        fileSynced(this.currentFile.get('name'), this.syncCalls);
+                        fileSynced(this.currentFile.get('name'), this.syncCalls, index, i);
                     }
 
-                    fileSynced(this.currentFile.get('name'), this.syncCalls);
+                    fileSynced(this.currentFile.get('name'), this.syncCalls, index, i);
 
                 }.bind(data));
 
