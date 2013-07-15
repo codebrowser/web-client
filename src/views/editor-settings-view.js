@@ -22,8 +22,15 @@ codebrowser.view.EditorSettingsView = Backbone.View.extend({
 
     render: function () {
 
+        var fontSize = parseInt(localStorage.getItem(config.storage.setting.editor.fontSize), 10);
+
         // Template
-        var output = this.template;
+        var output = $(this.template());
+
+        // Restore font size
+        if (fontSize) {
+            $('[data-id="font-size"] option[value="' + fontSize + '"]', output).prop('selected', true);
+        }
 
         this.$el.html(output);
     },
