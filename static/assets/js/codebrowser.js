@@ -324,29 +324,22 @@ var codebrowser = {
 
     initialize: function () {
 
-//        // Oops! Catch all global unhandled errors
-//        window.onerror = function () {
-//
-//            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
-//            codebrowser.controller.ViewController.push(errorView, true);
-//        }
-//
-//        // Initialise routers
-//        codebrowser.app.base = new codebrowser.router.BaseRouter();
-//        codebrowser.app.student = new codebrowser.router.StudentRouter();
-//        codebrowser.app.course = new codebrowser.router.CourseRouter();
-//        codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
-//        codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
-//
-//        // History
-//        Backbone.history.start();
-        var collection = new codebrowser.collection.SnapshotCollection(null, {studentId:167,courseId:1,exerciseId:210});
-        collection.fetch({async:false});
+        // Oops! Catch all global unhandled errors
+        window.onerror = function () {
 
-        collection.getDifferences(function (differences) {
-            console.log(differences);
-            console.log(collection.getDifference(0, 'Paaohjelma.java'));
-        });
+            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+            codebrowser.controller.ViewController.push(errorView, true);
+        }
+
+        // Initialise routers
+        codebrowser.app.base = new codebrowser.router.BaseRouter();
+        codebrowser.app.student = new codebrowser.router.StudentRouter();
+        codebrowser.app.course = new codebrowser.router.CourseRouter();
+        codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
+        codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
+
+        // History
+        Backbone.history.start();
     }
 }
 ;
@@ -2067,6 +2060,27 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         return (x >= viewX && x <= viewX + viewWidth);
     },
 
+    snapshotWeight: function (index) {
+
+        var min = 0;
+        var max = 100;
+
+        var weight = 1;
+
+        var diff = this.differences[index];
+
+        var percentage = Math.round((diff.total / diff.lines) * 100);
+
+        // Scale between 1 and 2
+        weight = 2 * (percentage - min) / (max - min) + 1;
+
+        // Round to nearest .5
+        weight = Math.round(weight * 2) / 2;
+
+        return Math.min(2, weight);
+
+    },
+
     distanceWeight: function (index, min, max) {
 
         var weight = 0;
@@ -2330,8 +2344,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             // Weight by duration between snapshots
             var distance = 35 * weight;
 
-            // TODO: Weight by amount of differences
-            var radius = 8;
+            weight = self.snapshotWeight(index);
+
+            // Weight by amount of differences
+            var radius = 8 * weight;
 
             x += (radius * 2);
 
@@ -2401,21 +2417,29 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     update: function (collection, currentSnapshotIndex, filename) {
 
         this.collection = collection;
-        this.currentSnapshotIndex = currentSnapshotIndex;
-        this.filename = filename;
 
-        // No need to show timeline
-        if (this.collection.length === 1) {
-            return;
-        }
+        var self = this;
 
-        // Show view if necessary
-        this.$el.show();
+        this.collection.getDifferences(function (differences) {
 
-        // Render if user is not dragging
-        if (!this.dragging) {
-            this.render();
-        }
+            self.differences = differences;
+
+            self.currentSnapshotIndex = currentSnapshotIndex;
+            self.filename = filename;
+
+            // No need to show timeline
+            if (self.collection.length === 1) {
+                return;
+            }
+
+            // Show view if necessary
+            self.$el.show();
+
+            // Render if user is not dragging
+            if (!self.dragging) {
+                self.render();
+            }
+        });
     },
 
     /* Events */
