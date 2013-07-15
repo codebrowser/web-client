@@ -1,5 +1,10 @@
 describe('Config', function () {
 
+    it('should have correct storage key for Editor font-size setting', function () {
+
+        expect(config.storage.setting.editor.fontSize).toBe('codebrowser.setting.editor.fontSize');
+    });
+
     it('should have correct storage key for SnapshotView files state', function () {
 
         expect(config.storage.view.SnapshotView.files).toBe('codebrowser.view.SnapshotView.files');

@@ -33,6 +33,15 @@ function program1(depth0,data,depth1) {
   return buffer;
   });
 
+this["Handlebars"]["templates"]["EditorSettingsContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<footer>\n\n    <a href='#editor-settings' data-toggle='modal' class='pull-right'><i class='icon-wrench icon-gray'></i></a>\n\n    <div id='editor-settings' class='modal hide fade' tabindex='-1' data-backdrop='false'>\n\n        <div class='modal-header'>\n\n            <header>\n\n                <button type='button' class='close' data-dismiss='modal'>×</button>\n\n                <h1>Settings</h1>\n\n            </header>\n\n        </div>\n\n        <div class='modal-body'>\n\n            <form class='form-horizontal'>\n\n                <fieldset>\n\n                    <div class='control-group'>\n\n                        <label class='control-label' for='font-size'>Font size</label>\n\n                        <div class='controls'>\n\n                            <select data-id='font-size'>\n                                <option value='12'>Normal</option>\n                                <option value='14'>Larger</option>\n                                <option value='16'>Large</option>\n                            </select>\n\n                        </div>\n\n                    </div>\n\n                </fieldset>\n\n            </form>\n\n        </div>\n\n        <div class='modal-footer'>\n\n            <button class='btn' data-dismiss='modal'>Cancel</button>\n            <button id='editor-settings-save' class='btn btn-primary' data-dismiss='modal'>Save</button>\n\n        </div>\n\n</footer>\n";
+  });
+
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -121,15 +130,6 @@ function program1(depth0,data,depth1) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
-  });
-
-this["Handlebars"]["templates"]["SettingsContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<footer>\n    \n    <p>Code Browser rocks</p>\n\n    <span class='pull-right'>\n\n        <!-- Button to trigger modal -->\n        <a href='#myModal' data-toggle='modal'><i class='icon-settings icon-gray'></i></a>\n\n        <!-- Modal -->\n        <div id='myModal' class='modal hide fade' tabindex='-1'>\n\n            <div class='modal-header'>\n\n                <button type='button' class='close' data-dismiss='modal'>×</button>\n                <h4>Settings</h4>\n\n            </div>\n\n            <div class='modal-body'>\n\n                <h5>Font size:</h5>\n\n                <select id='font-size'>\n                    <option value='12'>Normal</option>\n                    <option value='14'>Large</option>\n                    <option value='16'>Larger</option>\n                </select>\n\n            </div>\n\n            <div class='modal-footer'>\n\n                <button class='btn' data-dismiss='modal'>Close</button>\n                <button class='btn btn-primary' id='settings' data-dismiss='modal'>Save</button>\n\n            </div>\n\n    </span>\n\n</footer>";
   });
 
 this["Handlebars"]["templates"]["SnapshotFilesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {

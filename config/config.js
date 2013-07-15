@@ -8,6 +8,15 @@ var config = {
 
     storage: {
 
+        setting: {
+
+            editor: {
+
+                fontSize: 'codebrowser.setting.editor.fontSize'
+
+            }
+        },
+
         view: {
 
             SnapshotView: {
@@ -66,7 +75,7 @@ var config = {
 
             // Text
             editor.setTheme('ace/theme/light');
-            editor.setFontSize(parseInt(localStorage.getItem('font-size'), 10) || 12);
+            editor.setFontSize(parseInt(localStorage.getItem(config.storage.setting.editor.fontSize), 10) || 12);
             editor.getSession().setTabSize(4);
             editor.getSession().setUseWrapMode(true);
             editor.getSession().setWrapLimitRange(120, 120);

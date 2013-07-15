@@ -33,6 +33,15 @@ function program1(depth0,data,depth1) {
   return buffer;
   });
 
+this["Handlebars"]["templates"]["EditorSettingsContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<footer>\n\n    <a href='#editor-settings' data-toggle='modal' class='pull-right'><i class='icon-wrench icon-gray'></i></a>\n\n    <div id='editor-settings' class='modal hide fade' tabindex='-1' data-backdrop='false'>\n\n        <div class='modal-header'>\n\n            <header>\n\n                <button type='button' class='close' data-dismiss='modal'>×</button>\n\n                <h1>Settings</h1>\n\n            </header>\n\n        </div>\n\n        <div class='modal-body'>\n\n            <form class='form-horizontal'>\n\n                <fieldset>\n\n                    <div class='control-group'>\n\n                        <label class='control-label' for='font-size'>Font size</label>\n\n                        <div class='controls'>\n\n                            <select data-id='font-size'>\n                                <option value='12'>Normal</option>\n                                <option value='14'>Larger</option>\n                                <option value='16'>Large</option>\n                            </select>\n\n                        </div>\n\n                    </div>\n\n                </fieldset>\n\n            </form>\n\n        </div>\n\n        <div class='modal-footer'>\n\n            <button class='btn' data-dismiss='modal'>Cancel</button>\n            <button id='editor-settings-save' class='btn btn-primary' data-dismiss='modal'>Save</button>\n\n        </div>\n\n</footer>\n";
+  });
+
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -121,15 +130,6 @@ function program1(depth0,data,depth1) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
-  });
-
-this["Handlebars"]["templates"]["SettingsContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<footer>\n    \n    <p>Code Browser rocks</p>\n\n    <span class='pull-right'>\n\n        <!-- Button to trigger modal -->\n        <a href='#myModal' data-toggle='modal'><i class='icon-settings icon-gray'></i></a>\n\n        <!-- Modal -->\n        <div id='myModal' class='modal hide fade' tabindex='-1'>\n\n            <div class='modal-header'>\n\n                <button type='button' class='close' data-dismiss='modal'>×</button>\n                <h4>Settings</h4>\n\n            </div>\n\n            <div class='modal-body'>\n\n                <h5>Font size:</h5>\n\n                <select id='font-size'>\n                    <option value='12'>Normal</option>\n                    <option value='14'>Large</option>\n                    <option value='16'>Larger</option>\n                </select>\n\n            </div>\n\n            <div class='modal-footer'>\n\n                <button class='btn' data-dismiss='modal'>Close</button>\n                <button class='btn btn-primary' id='settings' data-dismiss='modal'>Save</button>\n\n            </div>\n\n    </span>\n\n</footer>";
   });
 
 this["Handlebars"]["templates"]["SnapshotFilesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -253,6 +253,15 @@ var config = {
 
     storage: {
 
+        setting: {
+
+            editor: {
+
+                fontSize: 'codebrowser.setting.editor.fontSize'
+
+            }
+        },
+
         view: {
 
             SnapshotView: {
@@ -311,7 +320,7 @@ var config = {
 
             // Text
             editor.setTheme('ace/theme/light');
-            editor.setFontSize(parseInt(localStorage.getItem('font-size'), 10) || 12);
+            editor.setFontSize(parseInt(localStorage.getItem(config.storage.setting.editor.fontSize), 10) || 12);
             editor.getSession().setTabSize(4);
             editor.getSession().setUseWrapMode(true);
             editor.getSession().setWrapLimitRange(120, 120);
@@ -1036,6 +1045,49 @@ codebrowser.view.CoursesView = Backbone.View.extend({
 });
 ;
 
+codebrowser.view.EditorSettingsView = Backbone.View.extend({
+
+    id: 'editor-settings-container',
+    template: Handlebars.templates.EditorSettingsContainer,
+
+    events: {
+
+        'click #editor-settings-save': 'save'
+
+    },
+
+    /* Initialise */
+
+    initialize: function (options) {
+
+        this.parentView = options.parentView;
+
+        this.render();
+    },
+
+    /* Render */
+
+    render: function () {
+
+        // Template
+        var output = this.template();
+
+        this.$el.html(output);
+    },
+
+    /* Actions */
+
+    save: function () {
+
+        // Set font size
+        localStorage.setItem(config.storage.setting.editor.fontSize, $('[data-id="font-size"] option:selected', this.$el).val());
+
+        // Configure
+        this.parentView.configure();
+    }
+});
+;
+
 codebrowser.view.EditorView = Backbone.View.extend({
 
     id: 'editor-container',
@@ -1105,9 +1157,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.$el.hide();
 
         // Elements
-        this.topContainer = $('<div>');
-        this.settingsContainer = new codebrowser.view.SettingsView({ parentView: this });
+        this.topContainer = $('<div>', { id: 'editor-top-container' });
         this.editorElement = $('<div>', { id: 'editor' });
+        this.settingsView = new codebrowser.view.EditorSettingsView({ parentView: this });
 
         // Elements for editors
         this.sideEditorElement = $('<div>', { id: 'side-editor', height: '800px' }).hide();
@@ -1120,7 +1172,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Append elements to parent
         this.$el.append(this.topContainer);
         this.$el.append(this.editorElement);
-        this.$el.append(this.settingsContainer.el);
+        this.$el.append(this.settingsView.el);
 
         // Create Ace editor
         this.sideEditor = ace.edit(this.sideEditorElement.get(0));
@@ -1132,16 +1184,23 @@ codebrowser.view.EditorView = Backbone.View.extend({
     },
 
     /* Remove */
-            
+
     remove: function () {
-        
-        // Remove settings container
-        this.settingsContainer.remove();
+
+        // Remove settings
+        this.settingsView.remove();
 
         Backbone.View.prototype.remove.call(this);
     },
 
     /* Reset */
+
+    configure: function () {
+
+        // Re-configure editors
+        config.editor.configure(this.mainEditor);
+        config.editor.configure(this.sideEditor);
+    },
 
     removeDecorations: function (editor) {
 
@@ -1586,51 +1645,6 @@ codebrowser.view.NotFoundErrorView = codebrowser.view.ErrorView.extend({
 
         message: 'Not Found.'
 
-    }
-});
-;
-
-codebrowser.view.SettingsView = Backbone.View.extend({
-
-    id: 'settings-container',
-
-    template: {
-
-        settingsContainer: Handlebars.templates.SettingsContainer
-
-    },
-    
-    events: {
-        
-        'click #settings': 'settings'
-    },
-    
-    initialize: function (options) {
-        
-        this.parentView = options.parentView;
-        this.render();
-    },
-
-    /* Render */
-
-    render: function () {
-
-        // Template for settings container
-        var settingsContainerOutput = $(this.template.settingsContainer());
-        
-        // Update settings container
-        this.$el.html(settingsContainerOutput);
-    },
-            
-    settings: function () {
-
-        // Set font size
-        var font = $('#font-size option:selected').val();
-        localStorage.setItem('font-size', font);
-        
-        // Re-configure editors
-        config.editor.configure(this.parentView.mainEditor);
-        config.editor.configure(this.parentView.sideEditor);
     }
 });
 ;
