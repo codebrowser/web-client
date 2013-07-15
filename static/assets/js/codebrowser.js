@@ -1011,15 +1011,11 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     previousFile = currentFile;
                 } else {
                     // Get previous version of the current file from the previous snapshot
-                    previousFile = previousSnapshot.get('files').at(i);
+                    previousFile = previousSnapshot.get('files').findWhere({ name: currentFile.get('name') });
                 }
 
                 // Couldn't find file from previous snapshot, set previous file to current file
                 if (!previousFile) {
-                    previousFile = currentFile;
-                }
-
-                if (previousFile.get('name') !== currentFile.get('name')) {
                     previousFile = currentFile;
                 }
 
