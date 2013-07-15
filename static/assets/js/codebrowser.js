@@ -323,7 +323,7 @@ var codebrowser = {
     router: {},
 
     initialize: function () {
-//
+
 //        // Oops! Catch all global unhandled errors
 //        window.onerror = function () {
 //
@@ -345,6 +345,7 @@ var codebrowser = {
 
         collection.getDifferences(function (differences) {
             console.log(differences);
+            console.log(collection.getDifference(0, 'Paaohjelma.java'));
         });
     }
 }
@@ -993,7 +994,8 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
     getDifferences: function (callback) {
 
         if (this.differences.length === this.length) {
-            return this.differences;
+            callback(this.differences);
+            return;
         }
 
         var self = this;
@@ -1049,13 +1051,13 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                         }
 
                         // Create namespace for every file name
-                        if (!self.differences[snapshotIndex][filename]) {
-                            self.differences[snapshotIndex][filename] = [];
+                        if (!self.differences[snapshotIndex].filename) {
+                            self.differences[snapshotIndex][filename] = null;
                         }
 
                         // Create diff
                         var diff = new codebrowser.model.Diff(previousContent, data.currentFile.getContent());
-                        self.differences[snapshotIndex][filename].push(diff);
+                        self.differences[snapshotIndex][filename] = diff;
 
                         // Diffed last file of last snapshot, return diffs
                         if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
@@ -1099,6 +1101,23 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         });
 
         return this.differences;
+    },
+
+    getDifference: function (index, filename) {
+
+        var diff = this.differences[index];
+
+        if (!diff) {
+            return null;
+        }
+
+        var fileDiff = diff[filename];
+
+        if (!fileDiff) {
+            return null;
+        }
+
+        return fileDiff;
     }
 });
 ;
@@ -1198,10 +1217,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     /* Initialise */
 
-    initialize: function () {
+    initialize: function (options) {
 
         // Hide view until needed
         this.$el.hide();
+
+        this.parentView = options.parentView;
 
         // Elements
         this.topContainer = $('<div>');
@@ -1370,8 +1391,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var previousContent = self.sideEditor.getValue();
             var content = self.mainEditor.getValue();
 
-            // Create diff
-            self.differences = new codebrowser.model.Diff(previousContent, content);
+            // Get diff from a collection or create a new diff
+            self.differences = self.parentView.collection.getDifference(self.parentView.collection.indexOf(self.parentView.model), self.model.get('name')) ||
+                               new codebrowser.model.Diff(previousContent, content);
 
             // Re-render diff
             self.toggleDiff(self.diff);
@@ -1738,7 +1760,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         contentContainer.append(this.snapshotFilesView.el);
 
         // Editor
-        this.editorView = new codebrowser.view.EditorView();
+        this.editorView = new codebrowser.view.EditorView({ parentView: this });
         contentContainer.append(this.editorView.el);
 
         this.$el.append(contentContainer);

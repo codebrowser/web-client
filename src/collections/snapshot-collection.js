@@ -90,7 +90,8 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
     getDifferences: function (callback) {
 
         if (this.differences.length === this.length) {
-            return this.differences;
+            callback(this.differences);
+            return;
         }
 
         var self = this;
@@ -146,13 +147,13 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                         }
 
                         // Create namespace for every file name
-                        if (!self.differences[snapshotIndex][filename]) {
-                            self.differences[snapshotIndex][filename] = [];
+                        if (!self.differences[snapshotIndex].filename) {
+                            self.differences[snapshotIndex][filename] = null;
                         }
 
                         // Create diff
                         var diff = new codebrowser.model.Diff(previousContent, data.currentFile.getContent());
-                        self.differences[snapshotIndex][filename].push(diff);
+                        self.differences[snapshotIndex][filename] = diff;
 
                         // Diffed last file of last snapshot, return diffs
                         if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
@@ -196,5 +197,22 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         });
 
         return this.differences;
+    },
+
+    getDifference: function (index, filename) {
+
+        var diff = this.differences[index];
+
+        if (!diff) {
+            return null;
+        }
+
+        var fileDiff = diff[filename];
+
+        if (!fileDiff) {
+            return null;
+        }
+
+        return fileDiff;
     }
 });

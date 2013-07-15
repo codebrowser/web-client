@@ -61,10 +61,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     /* Initialise */
 
-    initialize: function () {
+    initialize: function (options) {
 
         // Hide view until needed
         this.$el.hide();
+
+        this.parentView = options.parentView;
 
         // Elements
         this.topContainer = $('<div>');
@@ -233,8 +235,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var previousContent = self.sideEditor.getValue();
             var content = self.mainEditor.getValue();
 
-            // Create diff
-            self.differences = new codebrowser.model.Diff(previousContent, content);
+            // Get diff from a collection or create a new diff
+            self.differences = self.parentView.collection.getDifference(self.parentView.collection.indexOf(self.parentView.model), self.model.get('name')) ||
+                               new codebrowser.model.Diff(previousContent, content);
 
             // Re-render diff
             self.toggleDiff(self.diff);

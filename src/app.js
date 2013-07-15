@@ -20,7 +20,7 @@ var codebrowser = {
     router: {},
 
     initialize: function () {
-//
+
 //        // Oops! Catch all global unhandled errors
 //        window.onerror = function () {
 //
@@ -42,6 +42,7 @@ var codebrowser = {
 
         collection.getDifferences(function (differences) {
             console.log(differences);
+            console.log(collection.getDifference(0, 'Paaohjelma.java'));
         });
     }
 }
