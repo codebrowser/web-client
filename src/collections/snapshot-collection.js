@@ -92,6 +92,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         if (this.differences) {
             return this.differences;
         }
+
         // Initialize
         this.differences = [];
 
