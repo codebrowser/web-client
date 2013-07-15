@@ -39,7 +39,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<footer>\n\n    <a href='#editor-settings' data-toggle='modal' class='pull-right'><i class='icon-wrench icon-gray'></i></a>\n\n    <div id='editor-settings' class='modal hide fade' tabindex='-1' data-backdrop='false'>\n\n        <div class='modal-header'>\n\n            <header>\n\n                <button type='button' class='close' data-dismiss='modal'>×</button>\n\n                <h1>Settings</h1>\n\n            </header>\n\n        </div>\n\n        <div class='modal-body'>\n\n            <form class='form-horizontal'>\n\n                <fieldset>\n\n                    <div class='control-group'>\n\n                        <label class='control-label' for='font-size'>Font size</label>\n\n                        <div class='controls'>\n\n                            <select data-id='font-size'>\n                                <option value='12'>Normal</option>\n                                <option value='14'>Larger</option>\n                                <option value='16'>Large</option>\n                            </select>\n\n                        </div>\n\n                    </div>\n\n                </fieldset>\n\n            </form>\n\n        </div>\n\n        <div class='modal-footer'>\n\n            <button class='btn' data-dismiss='modal'>Cancel</button>\n            <button data-id='save' class='btn btn-primary' data-dismiss='modal'>Save</button>\n\n        </div>\n\n</footer>\n";
+  return "<footer>\n\n    <a href='#editor-settings' data-toggle='modal' class='pull-right'><i class='icon-wrench icon-gray'></i></a>\n\n    <div id='editor-settings' class='modal hide fade' tabindex='-1' data-backdrop='false'>\n\n        <div class='modal-header'>\n\n            <header>\n\n                <button type='button' class='close' data-dismiss='modal'>×</button>\n\n                <h1>Settings</h1>\n\n            </header>\n\n        </div>\n\n        <div class='modal-body'>\n\n            <form class='form-horizontal'>\n\n                <fieldset>\n\n                    <div class='control-group'>\n\n                        <label class='checkbox'>\n                            <input type='checkbox' data-id='ignore-empty-lines'> Ignore empty lines (improves diff results)\n                        </label>\n\n                    </div>\n\n                    <div class='control-group'>\n\n                        <label class='control-label' for='font-size'>Font size</label>\n\n                        <div class='controls'>\n\n                            <select data-id='font-size'>\n                                <option value='12'>Normal</option>\n                                <option value='14'>Larger</option>\n                                <option value='16'>Large</option>\n                            </select>\n\n                        </div>\n\n                    </div>\n\n                </fieldset>\n\n            </form>\n\n        </div>\n\n        <div class='modal-footer'>\n\n            <button class='btn' data-dismiss='modal'>Cancel</button>\n            <button data-id='save' class='btn btn-primary' data-dismiss='modal'>Save</button>\n\n        </div>\n\n</footer>\n";
   });
 
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -257,7 +257,8 @@ var config = {
 
             editor: {
 
-                fontSize: 'codebrowser.setting.editor.fontSize'
+                ignoreEmptyLines: 'codebrowser.setting.editor.ignoreEmptyLines',
+                fontSize:         'codebrowser.setting.editor.fontSize'
 
             }
         },
@@ -580,6 +581,18 @@ codebrowser.model.Diff = function (previousContent, content) {
             var changed = operation[2] - operation[1];
             var delta = lines - changed;
 
+            // Replaced something to nothing
+            if (to.slice(operation[3], operation[4]).join('').length === 0) {
+
+                difference.type = 'delete';
+            }
+
+            // Replaced nothing to something
+            if (from.slice(operation[1], operation[2]).join('').length === 0) {
+
+                difference.type = 'insert';
+            }
+
             // Replace contains deleted lines
             if (fromChange > toChange) {
 
@@ -700,6 +713,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     getContent: function () {
 
+        var ignoreEmptyLines = localStorage.getItem(config.storage.setting.editor.ignoreEmptyLines);
         var content = this.content;
 
         // Standardise line endings
@@ -707,6 +721,11 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
         // Convert tabs to 4 spaces
         content = content.replace(/\t/g, '    ');
+
+        // Trim empty lines
+        if (ignoreEmptyLines && ignoreEmptyLines === 'true') {
+            content = content.replace(/^ +$/gm, '');
+        }
 
         return content;
     },
@@ -1069,10 +1088,16 @@ codebrowser.view.EditorSettingsView = Backbone.View.extend({
 
     render: function () {
 
+        var ignoreEmptyLines = localStorage.getItem(config.storage.setting.editor.ignoreEmptyLines);
         var fontSize = parseInt(localStorage.getItem(config.storage.setting.editor.fontSize), 10);
 
         // Template
         var output = $(this.template());
+
+        // Restore ignore empty lines
+        if (ignoreEmptyLines) {
+            $('[data-id="ignore-empty-lines"]', output).prop('checked', ignoreEmptyLines === 'true');
+        }
 
         // Restore font size
         if (fontSize) {
@@ -1085,6 +1110,9 @@ codebrowser.view.EditorSettingsView = Backbone.View.extend({
     /* Actions */
 
     save: function () {
+
+        // Ignore empty lines
+        localStorage.setItem(config.storage.setting.editor.ignoreEmptyLines, $('[data-id="ignore-empty-lines"]').prop('checked'));
 
         // Set font size
         localStorage.setItem(config.storage.setting.editor.fontSize, $('[data-id="font-size"] option:selected', this.$el).val());
@@ -1207,6 +1235,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editors
         config.editor.configure(this.mainEditor);
         config.editor.configure(this.sideEditor);
+
+        // Update
+        this.update(this.previousModel, this.model);
     },
 
     removeDecorations: function (editor) {

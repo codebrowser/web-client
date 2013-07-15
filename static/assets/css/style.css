@@ -113,6 +113,21 @@ a .icon-gray:hover {
 
 }
 
+/* Forms */
+
+.control-group .checkbox {
+
+    padding: 0;
+
+}
+
+.control-group .checkbox input {
+
+    margin-left: 148px;
+    margin-right: 20px;
+
+}
+
 /* Popover */
 
 .popover-title time {

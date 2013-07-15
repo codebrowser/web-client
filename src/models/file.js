@@ -22,6 +22,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     getContent: function () {
 
+        var ignoreEmptyLines = localStorage.getItem(config.storage.setting.editor.ignoreEmptyLines);
         var content = this.content;
 
         // Standardise line endings
@@ -29,6 +30,11 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
         // Convert tabs to 4 spaces
         content = content.replace(/\t/g, '    ');
+
+        // Trim empty lines
+        if (ignoreEmptyLines && ignoreEmptyLines === 'true') {
+            content = content.replace(/^ +$/gm, '');
+        }
 
         return content;
     },

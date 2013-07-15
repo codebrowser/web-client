@@ -110,6 +110,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Configure editors
         config.editor.configure(this.mainEditor);
         config.editor.configure(this.sideEditor);
+
+        // Update
+        this.update(this.previousModel, this.model);
     },
 
     removeDecorations: function (editor) {

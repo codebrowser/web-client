@@ -12,7 +12,8 @@ var config = {
 
             editor: {
 
-                fontSize: 'codebrowser.setting.editor.fontSize'
+                ignoreEmptyLines: 'codebrowser.setting.editor.ignoreEmptyLines',
+                fontSize:         'codebrowser.setting.editor.fontSize'
 
             }
         },

@@ -1,5 +1,10 @@
 describe('Config', function () {
 
+    it('should have correct storage key for Editor ignore empty lines setting', function () {
+
+        expect(config.storage.setting.editor.ignoreEmptyLines).toBe('codebrowser.setting.editor.ignoreEmptyLines');
+    });
+
     it('should have correct storage key for Editor font-size setting', function () {
 
         expect(config.storage.setting.editor.fontSize).toBe('codebrowser.setting.editor.fontSize');
