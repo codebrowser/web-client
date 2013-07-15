@@ -127,11 +127,15 @@
 
 }
 
-/* Container */
+/* Brand */
 
-#container {
+#brand {
 
-    margin: 20px 0;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgba(0, 0, 0, 0.6);
 
 }
 
