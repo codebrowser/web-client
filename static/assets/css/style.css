@@ -44,6 +44,12 @@
 
 }
 
+a .icon-gray:hover {
+
+    opacity: 0.8;
+
+}
+
 .icon-folder {
 
     background-image: url('../img/folder.png');
