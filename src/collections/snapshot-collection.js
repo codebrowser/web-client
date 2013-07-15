@@ -122,7 +122,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     previousFile = currentFile;
                 }
 
-                // Bind files and sync calls to fetching
+                // Bind necessary data to fetching
                 var data = {
 
                     currentFile: currentFile,
@@ -219,12 +219,6 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             return null;
         }
 
-        var fileDiff = diff[filename];
-
-        if (!fileDiff) {
-            return null;
-        }
-
-        return fileDiff;
+        return diff[filename];
     }
 });
