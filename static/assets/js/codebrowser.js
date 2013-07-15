@@ -323,23 +323,29 @@ var codebrowser = {
     router: {},
 
     initialize: function () {
+//
+//        // Oops! Catch all global unhandled errors
+//        window.onerror = function () {
+//
+//            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+//            codebrowser.controller.ViewController.push(errorView, true);
+//        }
+//
+//        // Initialise routers
+//        codebrowser.app.base = new codebrowser.router.BaseRouter();
+//        codebrowser.app.student = new codebrowser.router.StudentRouter();
+//        codebrowser.app.course = new codebrowser.router.CourseRouter();
+//        codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
+//        codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
+//
+//        // History
+//        Backbone.history.start();
+        var collection = new codebrowser.collection.SnapshotCollection(null, {studentId:167,courseId:1,exerciseId:210});
+        collection.fetch({async:false});
 
-        // Oops! Catch all global unhandled errors
-        window.onerror = function () {
-
-            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
-            codebrowser.controller.ViewController.push(errorView, true);
-        }
-
-        // Initialise routers
-        codebrowser.app.base = new codebrowser.router.BaseRouter();
-        codebrowser.app.student = new codebrowser.router.StudentRouter();
-        codebrowser.app.course = new codebrowser.router.CourseRouter();
-        codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
-        codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
-
-        // History
-        Backbone.history.start();
+        collection.getDifferences(function (differences) {
+            console.log(differences);
+        });
     }
 }
 ;
@@ -1001,6 +1007,12 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             data.syncCalls.value += 1;
             var filename = data.currentFile.get('name');
 
+            var previousContent = data.previousFile.getContent();
+
+            if (data.previousFile === data.currentFile) {
+                previousContent = '';
+            }
+
             if (!self.differences[snapshotIndex]) {
                 self.differences[snapshotIndex] = [];
             }
@@ -1013,7 +1025,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             if (data.syncCalls.value % 2 === 0) {
 
                 // Create diff
-                var diff = new codebrowser.model.Diff(data.previousFile.getContent(), data.currentFile.getContent());
+                var diff = new codebrowser.model.Diff(previousContent, data.currentFile.getContent());
 
                 var change = Math.round((diff.getCount().total() / data.currentFile.lines()) * 100);
 
@@ -1041,7 +1053,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 // If previous snapshot doesn't exist, current file doesn't have earlier version of it
                 if (!previousSnapshot) {
                     // Set previous file to current file
-                    previousFile = _.clone(currentFile);
+                    previousFile = currentFile;
                 } else {
                     // Get previous version of the current file from the previous snapshot
                     previousFile = previousSnapshot.get('files').at(i);
@@ -1049,11 +1061,11 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                 // Couldn't find file from previous snapshot, set previous file to current file
                 if (!previousFile) {
-                    previousFile = _.clone(currentFile);
+                    previousFile = currentFile;
                 }
 
                 if (previousFile.get('name') !== currentFile.get('name')) {
-                    previousFile = _.clone(currentFile);
+                    previousFile = currentFile;
                 }
 
                 // Bind files and sync calls to fetching
@@ -1067,7 +1079,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 }
 
                 // Fetch previous file only if the models are not the same
-                if (previousFile.id !== currentFile.id) {
+                if (previousFile !== currentFile) {
 
                     previousFile.fetchContent(function (content, error) {
 
@@ -1088,9 +1100,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     }
 
                     // If both models are the same, current model is a new file, set empty content to previous
-                    if (this.currentFile.id === this.previousFile.id) {
-
-                        this.previousFile.content = '';
+                    if (this.currentFile === this.previousFile) {
 
                         fileSynced(this, index, i);
                     }
