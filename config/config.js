@@ -10,6 +10,12 @@ var config = {
 
         view: {
 
+            SnapshotView: {
+
+                files: 'codebrowser.view.SnapshotView.files'
+
+            },
+
             EditorView: {
 
                 split: 'codebrowser.view.EditorView.split',

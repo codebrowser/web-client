@@ -44,6 +44,13 @@
 
 }
 
+.icon-folder {
+
+    background-image: url('../img/folder.png');
+    background-position: center;
+
+}
+
 .icon-split-editor {
 
     background-image: url('../img/split-view.png');
@@ -240,7 +247,7 @@
 
 #snapshot-files-container {
 
-    position: absolute;
+    float: left;
     padding: 0 10px 10px 10px;
     width: 200px;
     border-top: 4px solid rgba(0, 0, 0, 0.1);
@@ -297,7 +304,7 @@
 
 #editor-container {
 
-    margin: 10px 0 10px 230px;
+    margin: 10px 0;
 
 }
 
