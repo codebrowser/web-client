@@ -1046,8 +1046,14 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                             previousContent = '';
                         }
 
+                        // Divide diffs by snapshot indexes
                         if (!self.differences[snapshotIndex]) {
                             self.differences[snapshotIndex] = [];
+                        }
+
+                        if (!self.differences[snapshotIndex].total) {
+                            self.differences[snapshotIndex].lines = 0;
+                            self.differences[snapshotIndex].total = 0;
                         }
 
                         // Create namespace for every file name
@@ -1057,6 +1063,11 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                         // Create diff
                         var diff = new codebrowser.model.Diff(previousContent, data.currentFile.getContent());
+
+                        // Keep count how many lines were in snapshot's files overall and how many lines of them changed
+                        self.differences[snapshotIndex].total += diff.getCount().total();
+                        self.differences[snapshotIndex].lines += data.currentFile.lines();
+
                         self.differences[snapshotIndex][filename] = diff;
 
                         // Diffed last file of last snapshot, return diffs
