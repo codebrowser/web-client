@@ -6,6 +6,6 @@
 
 <ul>
     {{#files}}
-        <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
+        <li data-id='{{id}}'><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
     {{/files}}
 </ul>

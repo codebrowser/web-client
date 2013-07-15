@@ -162,7 +162,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.snapshotsTimelineView.update(this.collection, index, filename);
 
         // Update files
-        this.snapshotFilesView.update(this.model);
+        this.snapshotFilesView.update(this.model, this.file);
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
