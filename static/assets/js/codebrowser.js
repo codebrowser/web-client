@@ -1035,9 +1035,14 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                     currentFile: currentFile,
                     previousFile: previousFile,
+                    snapshotIndex: index,
+                    fileIndex: i,
 
                     // Wait files to be in sync
-                    fileSynced: _.after(2, function (snapshotIndex, fileIndex) {
+                    fileSynced: _.after(2, function () {
+
+                        var snapshotIndex = data.snapshotIndex;
+                        var fileIndex = data.fileIndex;
 
                         var filename = data.currentFile.get('name');
                         var previousContent = data.previousFile.getContent();
@@ -1086,7 +1091,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                             throw new Error('Failed file fetch.');
                         }
 
-                        this.fileSynced(index,i);
+                        this.fileSynced();
 
                     }.bind(data));
                 }
@@ -1101,10 +1106,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     // If both models are the same, current model is a new file, set empty content to previous
                     if (this.currentFile === this.previousFile) {
 
-                        this.fileSynced(index,i);
+                        this.fileSynced();
                     }
 
-                    this.fileSynced(index,i);
+                    this.fileSynced();
 
                 }.bind(data));
 
