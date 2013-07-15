@@ -1667,7 +1667,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Template for navigation container
-        var navigationContainerOutput = $(this.template.navigationContainer(_.extend(this.model.toJSON(), attributes)));
+        var navigationContainerOutput = $(this.template.navigationContainer(attributes));
 
         // Split view is enabled, set split button as active
         if (this.editorView.split) {
