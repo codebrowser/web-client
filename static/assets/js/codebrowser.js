@@ -1038,7 +1038,7 @@ codebrowser.view.CoursesView = Backbone.View.extend({
         }
 
         // Template
-        var output = $(this.template(model));
+        var output = this.template(model);
 
         this.$el.html(output);
     }
@@ -1639,7 +1639,7 @@ codebrowser.view.ExercisesView = Backbone.View.extend({
         }
 
         // Template
-        var output = $(this.template(model));
+        var output = this.template(model);
 
         this.$el.html(output);
     }
@@ -2392,7 +2392,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         }
 
         // Template for bottom container
-        var bottomContainerOutput = $(this.template.bottomContainer(attributes));
+        var bottomContainerOutput = this.template.bottomContainer(attributes);
 
         // Update bottom container
         this.bottomContainer.html(bottomContainerOutput, bottomContainerOutput);
@@ -2524,7 +2524,7 @@ codebrowser.view.StudentsView = Backbone.View.extend({
         }
 
         // Template
-        var output = $(this.template(model));
+        var output = this.template(model);
 
         this.$el.html(output);
     }

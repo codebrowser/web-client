@@ -391,7 +391,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         }
 
         // Template for bottom container
-        var bottomContainerOutput = $(this.template.bottomContainer(attributes));
+        var bottomContainerOutput = this.template.bottomContainer(attributes);
 
         // Update bottom container
         this.bottomContainer.html(bottomContainerOutput, bottomContainerOutput);
