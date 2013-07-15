@@ -326,6 +326,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
             $('#editor-inspector').popover('toggle');
             $('#editor-inspector').popover('toggle');
         }
+
+        // Editors can get confused after a resize
+        this.mainEditor.resize();
+        this.sideEditor.resize();
+        this.mainEditor.renderer.updateFull();
+        this.sideEditor.renderer.updateFull();
     },
 
     didSplit: function () {

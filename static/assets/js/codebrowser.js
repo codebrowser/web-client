@@ -140,7 +140,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\n        <li><a href='#/students/"
+  buffer += "\n        <li data-id='";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "'><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -178,7 +182,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class='row'>\n\n    <div class='span2'>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
+  buffer += "<div class='row'>\n\n    <div class='span2'>\n\n        <button id='toggleFiles' type='button' class='btn' data-toggle='button'><i class='icon-folder icon-gray'></i></button>\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
   if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -250,6 +254,12 @@ var config = {
     storage: {
 
         view: {
+
+            SnapshotView: {
+
+                files: 'codebrowser.view.SnapshotView.files'
+
+            },
 
             EditorView: {
 
@@ -1354,6 +1364,12 @@ codebrowser.view.EditorView = Backbone.View.extend({
             $('#editor-inspector').popover('toggle');
             $('#editor-inspector').popover('toggle');
         }
+
+        // Editors can get confused after a resize
+        this.mainEditor.resize();
+        this.sideEditor.resize();
+        this.mainEditor.renderer.updateFull();
+        this.sideEditor.renderer.updateFull();
     },
 
     didSplit: function () {
@@ -1631,14 +1647,19 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
         // Template
         var output = $(this.template(this.model.toJSON()));
 
+        // Active file
+        var activeFileElement = $('[data-id="' + this.file.id + '"]', output);
+        activeFileElement.addClass('active');
+
         this.$el.html(output);
     },
 
     /* Update */
 
-    update: function (snapshot) {
+    update: function (snapshot, file) {
 
         this.model = snapshot;
+        this.file = file;
 
         this.render();
     }
@@ -1657,14 +1678,19 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
-        'click #split':    'split',
-        'click #diff':     'diff',
-        'click #first':    'first',
-        'click #previous': 'previous',
-        'click #next':     'next',
-        'click #last':     'last'
+        'click #toggleFiles': 'toggleFiles',
+        'click #split':       'split',
+        'click #diff':        'diff',
+        'click #first':       'first',
+        'click #previous':    'previous',
+        'click #next':        'next',
+        'click #last':        'last'
 
     },
+
+    /* Files */
+
+    files: true,
 
     /* Initialise */
 
@@ -1733,7 +1759,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Template for navigation container
-        var navigationContainerOutput = $(this.template.navigationContainer(_.extend(this.model.toJSON(), attributes)));
+        var navigationContainerOutput = $(this.template.navigationContainer(attributes));
+
+        // Files is enabled, set toggleFiles button as active
+        if (this.files) {
+            $('#toggleFiles', navigationContainerOutput).addClass('active');
+        }
 
         // Split view is enabled, set split button as active
         if (this.editorView.split) {
@@ -1772,6 +1803,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.model = snapshot;
 
+        // Restore files state if necessary
+        if (this.files) {
+            this.toggleFiles(null, localStorage.getItem(config.storage.view.SnapshotView.files) === 'true');
+        }
+
         // Previous snapshot
         var index = this.collection.indexOf(snapshot);
         var previousSnapshot = this.collection.at(index - 1);
@@ -1794,7 +1830,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.snapshotsTimelineView.update(this.collection, index, filename);
 
         // Update files
-        this.snapshotFilesView.update(this.model);
+        this.snapshotFilesView.update(this.model, this.file);
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
@@ -1829,6 +1865,41 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     },
 
     /* Actions */
+
+    toggleFiles: function (event, files) {
+
+        // Use parameter if given, otherwise toggle internal files state
+        if (files !== undefined) {
+
+            this.files = files;
+
+        } else {
+
+            this.files = !this.files;
+
+            // Store files state
+            localStorage.setItem(config.storage.view.SnapshotView.files, this.files);
+        }
+
+        // Enable files
+        if (this.files) {
+
+            // Move editor view
+            this.editorView.$el.css('margin-left', this.snapshotFilesView.$el.width() + 30);
+            this.editorView.didResize();
+
+            this.snapshotFilesView.$el.show();
+
+            return;
+        }
+
+        // Disable files
+        this.snapshotFilesView.$el.hide();
+
+        // Move editor view
+        this.editorView.$el.css('margin-left', 0);
+        this.editorView.didResize();
+    },
 
     split: function () {
 

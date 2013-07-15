@@ -1,5 +1,10 @@
 describe('Config', function () {
 
+    it('should have correct storage key for SnapshotView files state', function () {
+
+        expect(config.storage.view.SnapshotView.files).toBe('codebrowser.view.SnapshotView.files');
+    });
+
     it('should have correct storage key for EditorView split state', function () {
 
         expect(config.storage.view.EditorView.split).toBe('codebrowser.view.EditorView.split');

@@ -44,6 +44,13 @@
 
 }
 
+.icon-folder {
+
+    background-image: url('../img/folder.png');
+    background-position: center;
+
+}
+
 .icon-split-editor {
 
     background-image: url('../img/split-view.png');
@@ -247,7 +254,7 @@
 
 #snapshot-files-container {
 
-    position: absolute;
+    float: left;
     padding: 0 10px 10px 10px;
     width: 200px;
     border-top: 4px solid rgba(0, 0, 0, 0.1);
@@ -257,6 +264,8 @@
 #snapshot-files-container header {
 
     margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
 
 }
 
@@ -283,6 +292,13 @@
 
 }
 
+#snapshot-files-container ul li.active {
+
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+
+}
+
 #snapshot-files-container ul li a {
 
     display: inline-block;
@@ -295,7 +311,7 @@
 
 #snapshot-files-container ul li:hover {
 
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 2px;
 
 }
@@ -304,7 +320,7 @@
 
 #editor-container {
 
-    margin: 10px 0 10px 230px;
+    margin: 10px 0;
 
 }
 
