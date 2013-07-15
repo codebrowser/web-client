@@ -5,7 +5,7 @@ codebrowser.view.EditorSettingsView = Backbone.View.extend({
 
     events: {
 
-        'click #editor-settings-save': 'save'
+        'click [data-id="save"]': 'save'
 
     },
 
@@ -23,7 +23,7 @@ codebrowser.view.EditorSettingsView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var output = this.template();
+        var output = this.template;
 
         this.$el.html(output);
     },

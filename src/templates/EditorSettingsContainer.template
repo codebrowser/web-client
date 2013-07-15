@@ -47,7 +47,7 @@
         <div class='modal-footer'>
 
             <button class='btn' data-dismiss='modal'>Cancel</button>
-            <button id='editor-settings-save' class='btn btn-primary' data-dismiss='modal'>Save</button>
+            <button data-id='save' class='btn btn-primary' data-dismiss='modal'>Save</button>
 
         </div>
 

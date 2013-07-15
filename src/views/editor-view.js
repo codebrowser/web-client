@@ -107,7 +107,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     configure: function () {
 
-        // Re-configure editors
+        // Configure editors
         config.editor.configure(this.mainEditor);
         config.editor.configure(this.sideEditor);
     },
