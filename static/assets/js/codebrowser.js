@@ -9,7 +9,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\r\n            <li><a href='#/students/"
+  buffer += "\n            <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/";
   if (stack2 = helpers.id) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
@@ -19,17 +19,17 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\r\n        ";
+    + "</a></li>\n        ";
   return buffer;
   }
 
-  buffer += "<h2>Courses</h2>\r\n\r\n<section>\r\n\r\n    <ul>\r\n        ";
+  buffer += "<h2>Courses</h2>\n\n<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack1 = helpers.courses) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.courses; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.courses) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n    </ul>\r\n\r\n</section>\r\n";
+  buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
   });
 
@@ -39,39 +39,39 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  buffer += "<header>\r\n\r\n    <h1>";
+  buffer += "<header>\n\n    <h1>";
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</h1>\r\n\r\n    <span class='pull-right'>\r\n\r\n        + ";
+    + "</h1>\n\n    <span class='pull-right'>\n\n        + ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.duration || depth0.duration),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "duration", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + "\r\n\r\n        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom'\r\n\r\n           data-original-title='\r\n\r\n                <time>";
+    + "\n\n        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom'\n\n           data-original-title='\n\n                <time>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + " –</time>\r\n                <time>";
+    + " –</time>\n                <time>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "date", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + "</time>\r\n\r\n           '\r\n\r\n           data-content='\r\n\r\n            <dl class=\"dl-horizontal pull-left\">\r\n\r\n              <dt>Change</dt>\r\n              <dd>";
+    + "</time>\n\n           '\n\n           data-content='\n\n            <dl class=\"dl-horizontal pull-left\">\n\n              <dt>Change</dt>\n              <dd>";
   if (stack2 = helpers.percentageOfChange) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.percentageOfChange; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + " %</dd>\r\n\r\n              <dt>Insert</dt>\r\n              <dd>"
+    + " %</dd>\n\n              <dt>Insert</dt>\n              <dd>"
     + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.pluralize || depth0.pluralize),stack1 ? stack1.call(depth0, ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert), "line", options) : helperMissing.call(depth0, "pluralize", ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.insert), "line", options)))
-    + "</dd>\r\n\r\n              <dt>Replace</dt>\r\n              <dd>"
+    + "</dd>\n\n              <dt>Replace</dt>\n              <dd>"
     + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.replace)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.pluralize || depth0.pluralize),stack1 ? stack1.call(depth0, ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.replace), "line", options) : helperMissing.call(depth0, "pluralize", ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1.replace), "line", options)))
-    + "</dd>\r\n\r\n              <dt>Delete</dt>\r\n              <dd>"
+    + "</dd>\n\n              <dt>Delete</dt>\n              <dd>"
     + escapeExpression(((stack1 = ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1['delete'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + " ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.pluralize || depth0.pluralize),stack1 ? stack1.call(depth0, ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1['delete']), "line", options) : helperMissing.call(depth0, "pluralize", ((stack1 = depth0.difference),stack1 == null || stack1 === false ? stack1 : stack1['delete']), "line", options)))
-    + "</dd>\r\n\r\n            </dl>\r\n\r\n        '><i class='icon-info-sign icon-gray'></i></a>\r\n\r\n    </span>\r\n\r\n</header>\r\n";
+    + "</dd>\n\n            </dl>\n\n        '><i class='icon-info-sign icon-gray'></i></a>\n\n    </span>\n\n</header>\n";
   return buffer;
   });
 
@@ -85,7 +85,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (stack1 = helpers.message) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.message; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</p>\r\n";
+    + "</p>\n";
   return buffer;
   });
 
@@ -97,7 +97,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\r\n            <li><a href='#/students/"
+  buffer += "\n            <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -109,17 +109,17 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\r\n        ";
+    + "</a></li>\n        ";
   return buffer;
   }
 
-  buffer += "<h2>Exercises</h2>\r\n\r\n<section>\r\n\r\n    <ul>\r\n        ";
+  buffer += "<h2>Exercises</h2>\n\n<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack1 = helpers.exercises) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.exercises; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.exercises) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n    </ul>\r\n\r\n</section>\r\n";
+  buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
   });
 
@@ -131,7 +131,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\r\n        <li><a href='#/students/"
+  buffer += "\n        <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -147,19 +147,19 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\r\n    ";
+    + "</a></li>\n    ";
   return buffer;
   }
 
-  buffer += "<header>\r\n\r\n    <i class='icon-folder-close icon-gray'></i> <h1>"
+  buffer += "<header>\n\n    <i class='icon-folder-close icon-gray'></i> <h1>"
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h1>\r\n\r\n</header>\r\n\r\n<ul>\r\n    ";
+    + "</h1>\n\n</header>\n\n<ul>\n    ";
   options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
   if (stack2 = helpers.files) { stack2 = stack2.call(depth0, options); }
   else { stack2 = depth0.files; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   if (!helpers.files) { stack2 = blockHelperMissing.call(depth0, stack2, options); }
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\r\n</ul>\r\n";
+  buffer += "\n</ul>\n";
   return buffer;
   });
 
@@ -169,7 +169,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class='row'>\r\n\r\n    <div class='span2'>\r\n\r\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\r\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\r\n\r\n    </div>\r\n\r\n    <div class='span4 pull-right'>\r\n\r\n        <div class='row'>\r\n\r\n            <div class='span1 text-center'>";
+  buffer += "<div class='row'>\n\n    <div class='span2'>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
   if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -177,7 +177,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (stack1 = helpers.total) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.total; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</div>\r\n\r\n            <div class='span3'>\r\n\r\n                <div class='btn-group pull-right'>\r\n                    <button type='button' id='first' class='btn'>First</button>\r\n                    <button type='button' id='previous' class='btn'>Previous</button>\r\n                    <button type='button' id='next' class='btn'>Next</button>\r\n                    <button type='button' id='last' class='btn'>Last</button>\r\n                </div>\r\n\r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n\r\n</div>\r\n";
+    + "</div>\n\n            <div class='span3'>\n\n                <div class='btn-group pull-right'>\n                    <button type='button' id='first' class='btn'>First</button>\n                    <button type='button' id='previous' class='btn'>Previous</button>\n                    <button type='button' id='next' class='btn'>Next</button>\n                    <button type='button' id='last' class='btn'>Last</button>\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n</div>\n";
   return buffer;
   });
 
@@ -187,16 +187,16 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class='row'>\r\n\r\n    <div class='span2'>\r\n\r\n        <time>";
+  buffer += "<div class='row'>\n\n    <div class='span2'>\n\n        <time>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), false, options) : helperMissing.call(depth0, "date", ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), false, options)))
-    + "</time>\r\n\r\n    </div>\r\n\r\n    <div class='center text-center'>. . .</div>\r\n\r\n    <div class='span3 pull-right'>\r\n\r\n        <time class='pull-right'>";
+    + "</time>\n\n    </div>\n\n    <div class='center text-center'>. . .</div>\n\n    <div class='span3 pull-right'>\n\n        <time class='pull-right'>";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.date || depth0.date),stack1 ? stack1.call(depth0, ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), false, options) : helperMissing.call(depth0, "date", ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), false, options)))
     + " (+ ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.duration || depth0.duration),stack1 ? stack1.call(depth0, ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "duration", ((stack1 = depth0.last),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = depth0.first),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
-    + ")</time>\r\n\r\n    </div>\r\n\r\n</div>\r\n";
+    + ")</time>\n\n    </div>\n\n</div>\n";
   return buffer;
   });
 
@@ -208,7 +208,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\r\n            <li><a href='#/students/";
+  buffer += "\n            <li><a href='#/students/";
   if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -216,17 +216,17 @@ function program1(depth0,data) {
   if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "</a></li>\r\n        ";
+    + "</a></li>\n        ";
   return buffer;
   }
 
-  buffer += "<h2>Students</h2>\r\n\r\n<section>\r\n\r\n    <ul>\r\n        ";
+  buffer += "<h2>Students</h2>\n\n<section>\n\n    <ul>\n        ";
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
   if (stack1 = helpers.students) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.students; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.students) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n    </ul>\r\n\r\n</section>\r\n";
+  buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
   });;
 
@@ -324,22 +324,29 @@ var codebrowser = {
 
     initialize: function () {
 
-        // Oops! Catch all global unhandled errors
-        window.onerror = function () {
+//        // Oops! Catch all global unhandled errors
+//        window.onerror = function () {
+//
+//            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+//            codebrowser.controller.ViewController.push(errorView, true);
+//        }
+//
+//        // Initialise routers
+//        codebrowser.app.base = new codebrowser.router.BaseRouter();
+//        codebrowser.app.student = new codebrowser.router.StudentRouter();
+//        codebrowser.app.course = new codebrowser.router.CourseRouter();
+//        codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
+//        codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
+//
+//        // History
+//        Backbone.history.start();
 
-            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
-            codebrowser.controller.ViewController.push(errorView, true);
-        }
+        var collection = new codebrowser.collection.SnapshotCollection(null, {studentId:7,courseId:1,exerciseId:3});
+        collection.fetch({async:false});
 
-        // Initialise routers
-        codebrowser.app.base = new codebrowser.router.BaseRouter();
-        codebrowser.app.student = new codebrowser.router.StudentRouter();
-        codebrowser.app.course = new codebrowser.router.CourseRouter();
-        codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
-        codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
-
-        // History
-        Backbone.history.start();
+        collection.getDifferences(function (differences) {
+            console.log(differences);
+        });
     }
 }
 ;
@@ -992,26 +999,32 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         // Initialize
         this.differences = [];
 
-        var previousContent = null;
-        var currentContent = null;
-
         var self = this;
 
         // Wait files to be in sync
-        var fileSynced = function (filename, syncCalls, snapshotIndex, fileIndex) {
+        var fileSynced = function (data, snapshotIndex, fileIndex) {
 
-            syncCalls.value += 1;
+            data.syncCalls.value += 1;
+            var filename = data.currentFile.get('name');
 
-            // Create namespace for every file name
-            if (!self.differences[filename]) {
-                self.differences[filename] = [];
+            if (!self.differences[snapshotIndex]) {
+                self.differences[snapshotIndex] = [];
             }
 
-            if (syncCalls.value % 2 === 0) {
+            // Create namespace for every file name
+            if (!self.differences[snapshotIndex][filename]) {
+                self.differences[snapshotIndex][filename] = [];
+            }
+
+            if (data.syncCalls.value % 2 === 0) {
 
                 // Create diff
-                self.differences[filename].push(new codebrowser.model.Diff(previousContent, currentContent));
-                
+                var diff = new codebrowser.model.Diff(data.previousFile.getContent(), data.currentFile.getContent());
+
+                var change = Math.round((diff.getCount().total() / data.currentFile.lines()) * 100);
+
+                self.differences[snapshotIndex][filename].push(change);
+
                 // Diffed last file of last snapshot, return diffs
                 if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
                     callback(self.differences);
@@ -1022,10 +1035,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         this.each(function (snapshot, index) {
 
             var files = snapshot.get('files');
-            
+
             // Calculate differences for every file of each snapshot
             files.each(function (file, i) {
-                
+
                 var currentFile = file;
                 var previousFile = null;
 
@@ -1034,7 +1047,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 // If previous snapshot doesn't exist, current file doesn't have earlier version of it
                 if (!previousSnapshot) {
                     // Set previous file to current file
-                    previousFile = currentFile;
+                    previousFile = _.clone(currentFile);
                 } else {
                     // Get previous version of the current file from the previous snapshot
                     previousFile = previousSnapshot.get('files').at(i);
@@ -1042,16 +1055,16 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                 // Couldn't find file from previous snapshot, set previous file to current file
                 if (!previousFile) {
-                    previousFile = currentFile;
+                    previousFile = _.clone(currentFile);
                 }
-                
+
                 if (previousFile.get('name') !== currentFile.get('name')) {
-                    previousFile = currentFile;
+                    previousFile = _.clone(currentFile);
                 }
-                
+
                 // Bind files and sync calls to fetching
                 var data = {
-                    
+
                     currentFile: currentFile,
                     previousFile: previousFile,
                     syncCalls: {
@@ -1060,7 +1073,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 }
 
                 // Fetch previous file only if the models are not the same
-                if (previousFile !== currentFile) {
+                if (previousFile.id !== currentFile.id) {
 
                     previousFile.fetchContent(function (content, error) {
 
@@ -1068,9 +1081,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                             throw new Error('Failed file fetch.');
                         }
 
-                        previousContent = content;
-
-                        fileSynced(this.previousFile.get('name'), this.syncCalls, index, i);
+                        fileSynced(this, index, i);
 
                     }.bind(data));
                 }
@@ -1082,17 +1093,15 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                         throw new Error('Failed file fetch.');
                     }
 
-                    currentContent = content;
-
                     // If both models are the same, current model is a new file, set empty content to previous
-                    if (this.currentFile === this.previousFile) {
+                    if (this.currentFile.id === this.previousFile.id) {
 
-                        previousContent = '';
+                        this.previousFile.content = '';
 
-                        fileSynced(this.currentFile.get('name'), this.syncCalls, index, i);
+                        fileSynced(this, index, i);
                     }
 
-                    fileSynced(this.currentFile.get('name'), this.syncCalls, index, i);
+                    fileSynced(this, index, i);
 
                 }.bind(data));
 

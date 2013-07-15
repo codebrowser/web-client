@@ -95,26 +95,32 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         // Initialize
         this.differences = [];
 
-        var previousContent = null;
-        var currentContent = null;
-
         var self = this;
 
         // Wait files to be in sync
-        var fileSynced = function (filename, syncCalls, snapshotIndex, fileIndex) {
+        var fileSynced = function (data, snapshotIndex, fileIndex) {
 
-            syncCalls.value += 1;
+            data.syncCalls.value += 1;
+            var filename = data.currentFile.get('name');
 
-            // Create namespace for every file name
-            if (!self.differences[filename]) {
-                self.differences[filename] = [];
+            if (!self.differences[snapshotIndex]) {
+                self.differences[snapshotIndex] = [];
             }
 
-            if (syncCalls.value % 2 === 0) {
+            // Create namespace for every file name
+            if (!self.differences[snapshotIndex][filename]) {
+                self.differences[snapshotIndex][filename] = [];
+            }
+
+            if (data.syncCalls.value % 2 === 0) {
 
                 // Create diff
-                self.differences[filename].push(new codebrowser.model.Diff(previousContent, currentContent));
-                
+                var diff = new codebrowser.model.Diff(data.previousFile.getContent(), data.currentFile.getContent());
+
+                var change = Math.round((diff.getCount().total() / data.currentFile.lines()) * 100);
+
+                self.differences[snapshotIndex][filename].push(change);
+
                 // Diffed last file of last snapshot, return diffs
                 if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
                     callback(self.differences);
@@ -125,10 +131,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         this.each(function (snapshot, index) {
 
             var files = snapshot.get('files');
-            
+
             // Calculate differences for every file of each snapshot
             files.each(function (file, i) {
-                
+
                 var currentFile = file;
                 var previousFile = null;
 
@@ -137,7 +143,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 // If previous snapshot doesn't exist, current file doesn't have earlier version of it
                 if (!previousSnapshot) {
                     // Set previous file to current file
-                    previousFile = currentFile;
+                    previousFile = _.clone(currentFile);
                 } else {
                     // Get previous version of the current file from the previous snapshot
                     previousFile = previousSnapshot.get('files').at(i);
@@ -145,16 +151,16 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                 // Couldn't find file from previous snapshot, set previous file to current file
                 if (!previousFile) {
-                    previousFile = currentFile;
+                    previousFile = _.clone(currentFile);
                 }
-                
+
                 if (previousFile.get('name') !== currentFile.get('name')) {
-                    previousFile = currentFile;
+                    previousFile = _.clone(currentFile);
                 }
-                
+
                 // Bind files and sync calls to fetching
                 var data = {
-                    
+
                     currentFile: currentFile,
                     previousFile: previousFile,
                     syncCalls: {
@@ -163,7 +169,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 }
 
                 // Fetch previous file only if the models are not the same
-                if (previousFile !== currentFile) {
+                if (previousFile.id !== currentFile.id) {
 
                     previousFile.fetchContent(function (content, error) {
 
@@ -171,9 +177,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                             throw new Error('Failed file fetch.');
                         }
 
-                        previousContent = content;
-
-                        fileSynced(this.previousFile.get('name'), this.syncCalls, index, i);
+                        fileSynced(this, index, i);
 
                     }.bind(data));
                 }
@@ -185,17 +189,15 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                         throw new Error('Failed file fetch.');
                     }
 
-                    currentContent = content;
-
                     // If both models are the same, current model is a new file, set empty content to previous
-                    if (this.currentFile === this.previousFile) {
+                    if (this.currentFile.id === this.previousFile.id) {
 
-                        previousContent = '';
+                        this.previousFile.content = '';
 
-                        fileSynced(this.currentFile.get('name'), this.syncCalls, index, i);
+                        fileSynced(this, index, i);
                     }
 
-                    fileSynced(this.currentFile.get('name'), this.syncCalls, index, i);
+                    fileSynced(this, index, i);
 
                 }.bind(data));
 
