@@ -1001,43 +1001,6 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
         var self = this;
 
-        // Wait files to be in sync
-        var fileSynced = function (data, snapshotIndex, fileIndex) {
-
-            data.syncCalls.value += 1;
-            var filename = data.currentFile.get('name');
-
-            var previousContent = data.previousFile.getContent();
-
-            if (data.previousFile === data.currentFile) {
-                previousContent = '';
-            }
-
-            if (!self.differences[snapshotIndex]) {
-                self.differences[snapshotIndex] = [];
-            }
-
-            // Create namespace for every file name
-            if (!self.differences[snapshotIndex][filename]) {
-                self.differences[snapshotIndex][filename] = [];
-            }
-
-            if (data.syncCalls.value % 2 === 0) {
-
-                // Create diff
-                var diff = new codebrowser.model.Diff(previousContent, data.currentFile.getContent());
-
-                var change = Math.round((diff.getCount().total() / data.currentFile.lines()) * 100);
-
-                self.differences[snapshotIndex][filename].push(change);
-
-                // Diffed last file of last snapshot, return diffs
-                if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
-                    callback(self.differences);
-                }
-            }
-        }
-
         this.each(function (snapshot, index) {
 
             var files = snapshot.get('files');
@@ -1073,9 +1036,38 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                     currentFile: currentFile,
                     previousFile: previousFile,
-                    syncCalls: {
-                        value: 0
-                    }
+
+                    // Wait files to be in sync
+                    fileSynced: _.after(2, function (snapshotIndex, fileIndex) {
+
+                        var filename = data.currentFile.get('name');
+                        var previousContent = data.previousFile.getContent();
+
+                        if (data.previousFile === data.currentFile) {
+                            previousContent = '';
+                        }
+
+                        if (!self.differences[snapshotIndex]) {
+                            self.differences[snapshotIndex] = [];
+                        }
+
+                        // Create namespace for every file name
+                        if (!self.differences[snapshotIndex][filename]) {
+                            self.differences[snapshotIndex][filename] = [];
+                        }
+
+                        // Create diff
+                        var diff = new codebrowser.model.Diff(previousContent, data.currentFile.getContent());
+
+                        var change = Math.round((diff.getCount().total() / data.currentFile.lines()) * 100);
+
+                        self.differences[snapshotIndex][filename].push(change);
+
+                        // Diffed last file of last snapshot, return diffs
+                        if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
+                            callback(self.differences);
+                        }
+                    })
                 }
 
                 // Fetch previous file only if the models are not the same
@@ -1087,7 +1079,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                             throw new Error('Failed file fetch.');
                         }
 
-                        fileSynced(this, index, i);
+                        this.fileSynced(index,i);
 
                     }.bind(data));
                 }
@@ -1102,10 +1094,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     // If both models are the same, current model is a new file, set empty content to previous
                     if (this.currentFile === this.previousFile) {
 
-                        fileSynced(this, index, i);
+                        this.fileSynced(index,i);
                     }
 
-                    fileSynced(this, index, i);
+                    this.fileSynced(index,i);
 
                 }.bind(data));
 
