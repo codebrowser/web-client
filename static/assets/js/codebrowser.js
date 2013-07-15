@@ -2058,9 +2058,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     snapshotWeight: function (index) {
 
-        var min = 0;
-        var max = 100;
-
         var weight = 1;
 
         var diff = this.differences[index];
@@ -2068,7 +2065,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var percentage = Math.round((diff.total / diff.lines) * 100);
 
         // Scale between 1 and 2
-        weight = 2 * (percentage - min) / (max - min) + 1;
+        weight = 2 * (percentage - 0) / (100 - 0) + 1;
 
         // Round to nearest .5
         weight = Math.round(weight * 2) / 2;
