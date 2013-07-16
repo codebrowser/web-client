@@ -582,13 +582,13 @@ codebrowser.model.Diff = function (previousContent, content) {
             var delta = lines - changed;
 
             // Replaced something to nothing
-            if (to.slice(operation[3], operation[4]).join('').length === 0) {
+            if (to[operation[3]].length === 0) {
 
                 difference.type = 'delete';
             }
 
             // Replaced nothing to something
-            if (from.slice(operation[1], operation[2]).join('').length === 0) {
+            if (from[operation[1]].length === 0) {
 
                 difference.type = 'insert';
             }
