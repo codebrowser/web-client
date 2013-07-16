@@ -70,14 +70,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     snapshotWeight: function (index) {
 
-        var weight = 1;
+        var difference = this.differences[index];
 
-        var diff = this.differences[index];
-
-        var percentage = Math.round((diff.total / diff.lines) * 100);
+        var weight = 0.8;
+        var percentage = Math.round((difference.total / difference.lines) * 100);
 
         if (percentage === 0) {
-            return 0.7;
+            return weight;
         }
 
         // Scale between 1 and 2
@@ -211,7 +210,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                                                              previousSnapshot.get('snapshotTime'), true);
 
         // Duration element
-        this.paper.text(x - radius - distance / 2, y + 20, duration);
+        this.paper.text(x - radius - distance / 2, y + 25, duration);
     },
 
     renderTimeline: function (leftOffset, y, x) {
@@ -234,10 +233,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     renderSnapshotWeight: function (index, x, y) {
 
-        var diff = this.differences[index];
+        var difference = this.differences[index];
 
-        var percentage = (diff.total / diff.lines + 1).toFixed(2);
+        var percentage = (difference.total / difference.lines + 1).toFixed(2);
 
+        // Snapshot has no changes
         if (percentage === '1.00') {
             return;
         }
@@ -248,6 +248,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             percentage = percentage.slice(0,1);
         }
 
+        // Snapshot weight element
         var snapshotWeight = this.paper.text(x, y, percentage);
 
         $(snapshotWeight.node).attr('class', 'snapshot-weight');
@@ -368,15 +369,14 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         this.collection.each(function (snapshot, index) {
 
-            var weight = self.distanceWeight(index, min, max);
+            var distanceWeight = self.distanceWeight(index, min, max);
+            var snapshotWeight = self.snapshotWeight(index);
 
             // Weight by duration between snapshots
-            var distance = 35 * weight;
-
-            weight = self.snapshotWeight(index);
+            var distance = 40 * distanceWeight;
 
             // Weight by amount of differences between snapshots
-            var radius = 11 * weight;
+            var radius = 12 * snapshotWeight;
 
             x += (radius * 2);
 
@@ -409,6 +409,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             var snapshotElement = self.renderSnapshot(snapshot, x, y, radius);
             self.snapshotElements.push(snapshotElement);
 
+            // Render weight for the snapshot
             self.renderSnapshotWeight(index, x, y);
 
             // Current snapshot

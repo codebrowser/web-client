@@ -1043,6 +1043,17 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         return max;
     },
 
+    getDifference: function (index, filename) {
+
+        var difference = this.differences[index];
+
+        if (!difference) {
+            return null;
+        }
+
+        return difference[filename];
+    },
+
     getDifferences: function (callback) {
 
         if (this.differences.length === this.length) {
@@ -1054,23 +1065,44 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
         this.each(function (snapshot, index) {
 
+            var previousSnapshot = self.at(index - 1);
+
+            // Divide diffs by snapshot indexes
+            if (!self.differences[index]) {
+
+                self.differences[index] = {
+
+                    total: 0,
+                    lines: 0
+
+                }
+            }
+
             var files = snapshot.get('files');
 
             // Calculate differences for every file of each snapshot
             files.each(function (file, i) {
 
+                var filename = file.get('name');
+
+                // Create namespace for every file name
+                if (!self.differences[index].filename) {
+                    self.differences[index][filename] = null;
+                }
+
                 var currentFile = file;
                 var previousFile = null;
 
-                var previousSnapshot = self.at(index - 1);
-
                 // If previous snapshot doesn't exist, current file doesn't have earlier version of it
                 if (!previousSnapshot) {
+
                     // Set previous file to current file
                     previousFile = currentFile;
+
                 } else {
+
                     // Get previous version of the current file from the previous snapshot
-                    previousFile = previousSnapshot.get('files').findWhere({ name: currentFile.get('name') });
+                    previousFile = previousSnapshot.get('files').findWhere({ name: filename });
                 }
 
                 // Couldn't find file from previous snapshot, set previous file to current file
@@ -1078,8 +1110,8 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     previousFile = currentFile;
                 }
 
-                // Bind necessary data to fetching
-                var data = {
+                // Bind necessary context for fetching
+                var context = {
 
                     currentFile: currentFile,
                     previousFile: previousFile,
@@ -1089,49 +1121,29 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     // Wait files to be in sync
                     fileSynced: _.after(2, function () {
 
-                        var snapshotIndex = data.snapshotIndex;
-                        var fileIndex = data.fileIndex;
+                        var snapshotIndex = context.snapshotIndex;
+                        var fileIndex = context.fileIndex;
 
-                        var filename = data.currentFile.get('name');
-                        var previousContent = data.previousFile.getContent();
+                        var filename = context.currentFile.get('name');
+                        var previousContent = context.previousFile.getContent();
 
-                        if (data.previousFile === data.currentFile) {
+                        // New file
+                        if (context.previousFile === context.currentFile) {
                             previousContent = '';
                         }
 
-                        // Divide diffs by snapshot indexes
-                        if (!self.differences[snapshotIndex]) {
-                            self.differences[snapshotIndex] = [];
-                        }
+                        // Create difference
+                        var difference = new codebrowser.model.Diff(previousContent, context.currentFile.getContent());
 
-                        if (!self.differences[snapshotIndex].total) {
-                            self.differences[snapshotIndex].total = 0;
-                        }
+                        // Count how many lines were in snapshot's files overall and how many lines of them changed
+                        self.differences[snapshotIndex].total += difference.getCount().total();
+                        self.differences[snapshotIndex].lines += context.currentFile.lines();
 
-                        if (!self.differences[snapshotIndex].lines) {
-                            self.differences[snapshotIndex].lines = 0;
-                        }
-
-                        // Create namespace for every file name
-                        if (!self.differences[snapshotIndex].filename) {
-                            self.differences[snapshotIndex][filename] = null;
-                        }
-
-                        // Create diff
-                        var diff = new codebrowser.model.Diff(previousContent, data.currentFile.getContent());
-
-                        // Keep count how many lines were in snapshot's files overall and how many lines of them changed
-                        self.differences[snapshotIndex].total += diff.getCount().total();
-                        self.differences[snapshotIndex].lines += data.currentFile.lines();
-
-                        self.differences[snapshotIndex][filename] = diff;
+                        self.differences[snapshotIndex][filename] = difference;
 
                         // Diffed last file of last snapshot, return diffs
                         if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
-
-                            if (self.differences.length === self.length) {
-                                callback(self.differences);
-                            }
+                            callback(self.differences);
                         }
                     })
                 }
@@ -1147,7 +1159,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                         this.fileSynced();
 
-                    }.bind(data));
+                    }.bind(context));
                 }
 
                 // Fetch current file
@@ -1165,23 +1177,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                     this.fileSynced();
 
-                }.bind(data));
+                }.bind(context));
 
             });
         });
-
-        return this.differences;
-    },
-
-    getDifference: function (index, filename) {
-
-        var diff = this.differences[index];
-
-        if (!diff) {
-            return null;
-        }
-
-        return diff[filename];
     }
 });
 ;
@@ -2311,14 +2310,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     snapshotWeight: function (index) {
 
-        var weight = 1;
+        var difference = this.differences[index];
 
-        var diff = this.differences[index];
-
-        var percentage = Math.round((diff.total / diff.lines) * 100);
+        var weight = 0.8;
+        var percentage = Math.round((difference.total / difference.lines) * 100);
 
         if (percentage === 0) {
-            return 0.7;
+            return weight;
         }
 
         // Scale between 1 and 2
@@ -2452,7 +2450,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                                                              previousSnapshot.get('snapshotTime'), true);
 
         // Duration element
-        this.paper.text(x - radius - distance / 2, y + 20, duration);
+        this.paper.text(x - radius - distance / 2, y + 25, duration);
     },
 
     renderTimeline: function (leftOffset, y, x) {
@@ -2475,10 +2473,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     renderSnapshotWeight: function (index, x, y) {
 
-        var diff = this.differences[index];
+        var difference = this.differences[index];
 
-        var percentage = (diff.total / diff.lines + 1).toFixed(2);
+        var percentage = (difference.total / difference.lines + 1).toFixed(2);
 
+        // Snapshot has no changes
         if (percentage === '1.00') {
             return;
         }
@@ -2489,6 +2488,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             percentage = percentage.slice(0,1);
         }
 
+        // Snapshot weight element
         var snapshotWeight = this.paper.text(x, y, percentage);
 
         $(snapshotWeight.node).attr('class', 'snapshot-weight');
@@ -2609,15 +2609,14 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         this.collection.each(function (snapshot, index) {
 
-            var weight = self.distanceWeight(index, min, max);
+            var distanceWeight = self.distanceWeight(index, min, max);
+            var snapshotWeight = self.snapshotWeight(index);
 
             // Weight by duration between snapshots
-            var distance = 35 * weight;
-
-            weight = self.snapshotWeight(index);
+            var distance = 40 * distanceWeight;
 
             // Weight by amount of differences between snapshots
-            var radius = 11 * weight;
+            var radius = 12 * snapshotWeight;
 
             x += (radius * 2);
 
@@ -2650,6 +2649,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             var snapshotElement = self.renderSnapshot(snapshot, x, y, radius);
             self.snapshotElements.push(snapshotElement);
 
+            // Render weight for the snapshot
             self.renderSnapshotWeight(index, x, y);
 
             // Current snapshot
