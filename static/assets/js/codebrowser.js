@@ -2064,6 +2064,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var percentage = Math.round((diff.total / diff.lines) * 100);
 
+        if (percentage === 0) {
+            return 0.7;
+        }
+
         // Scale between 1 and 2
         weight = 2 * percentage / 100 + 1;
 
