@@ -583,7 +583,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             var delta = lines - changed;
 
             // Replaced something to nothing
-            if (to[operation[3]].length === 0) {
+            if (to.slice(operation[3], operation[4]).join('').length === 0) {
 
                 // Should overwrite previous line
                 difference.overwrite = true;
@@ -592,7 +592,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             }
 
             // Replaced nothing to something
-            if (from[operation[1]].length === 0) {
+            if (from.slice(operation[1], operation[2]).join('').length === 0) {
 
                 difference.type = 'insert';
             }
