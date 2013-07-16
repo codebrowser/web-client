@@ -53,5 +53,8 @@ codebrowser.view.EditorSettingsView = Backbone.View.extend({
 
         // Configure
         this.parentView.configure();
+
+        // Update
+        this.parentView.update(this.parentView.previousModel, this.parentView.model);
     }
 });
