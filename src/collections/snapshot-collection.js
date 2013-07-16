@@ -172,7 +172,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                         // Diffed last file of last snapshot, return diffs
                         if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
-                            callback(self.differences);
+
+                            if (self.differences.length === self.length) {
+                                callback(self.differences);
+                            }
                         }
                     })
                 }

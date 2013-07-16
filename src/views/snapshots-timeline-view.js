@@ -74,8 +74,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var diff = this.differences[index];
 
-        console.log(diff);
-
         var percentage = Math.round((diff.total / diff.lines) * 100);
 
         // Scale between 1 and 2
@@ -85,25 +83,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         weight = Math.round(weight * 2) / 2;
 
         return Math.min(2, weight);
-    },
-
-    renderSnapshotWeight: function (index, x, y) {
-
-        var diff = this.differences[index];
-
-        var percentage = (diff.total / diff.lines + 1).toFixed(2);
-
-        if (percentage === '1.00') {
-            return;
-        }
-
-        if (percentage !== '2.00') {
-            percentage = percentage.slice(1);
-        } else {
-            percentage = percentage.slice(0,1);
-        }
-
-        this.paper.text(x, y, percentage);
     },
 
     distanceWeight: function (index, min, max) {
@@ -247,6 +226,27 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var snapshotIndex = this.paper.text(x, 5, index + 1);
 
         $(snapshotIndex.node).attr('class', 'snapshot-index');
+    },
+
+    renderSnapshotWeight: function (index, x, y) {
+
+        var diff = this.differences[index];
+
+        var percentage = (diff.total / diff.lines + 1).toFixed(2);
+
+        if (percentage === '1.00') {
+            return;
+        }
+
+        if (percentage !== '2.00') {
+            percentage = percentage.slice(1);
+        } else {
+            percentage = percentage.slice(0,1);
+        }
+
+        var snapshotWeight = this.paper.text(x, y, percentage);
+
+        $(snapshotWeight.node).attr('class', 'snapshot-weight');
     },
 
     renderSnapshot: function (snapshot, x, y, radius) {

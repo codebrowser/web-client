@@ -181,6 +181,14 @@
 
 }
 
+#snapshots-timeline-container .snapshot-weight {
+
+    font-size: 11px !important;
+
+    cursor: pointer;
+
+}
+
 #snapshots-timeline-container .snapshot-index {
 
     fill: #97b2c0;
