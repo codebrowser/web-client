@@ -44,7 +44,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         contentContainer.append(this.snapshotFilesView.el);
 
         // Editor
-        this.editorView = new codebrowser.view.EditorView({ parentView: this });
+        this.editorView = new codebrowser.view.EditorView();
         contentContainer.append(this.editorView.el);
 
         this.$el.append(contentContainer);

@@ -1350,12 +1350,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     /* Initialise */
 
-    initialize: function (options) {
+    initialize: function () {
 
         // Hide view until needed
         this.$el.hide();
-
-        this.parentView = options.parentView;
 
         // Elements
         this.topContainer = $('<div>', { id: 'editor-top-container' });
@@ -1561,9 +1559,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var previousContent = self.sideEditor.getValue();
             var content = self.mainEditor.getValue();
 
-            // Get diff from a collection or create a new diff
-            self.differences = self.parentView.collection.getDifference(self.parentView.collection.indexOf(self.parentView.model), self.model.get('name')) ||
-                               new codebrowser.model.Diff(previousContent, content);
+            // Create difference
+            self.differences = new codebrowser.model.Diff(previousContent, content);
 
             // Re-render diff
             self.toggleDiff(self.diff);
@@ -1972,7 +1969,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         contentContainer.append(this.snapshotFilesView.el);
 
         // Editor
-        this.editorView = new codebrowser.view.EditorView({ parentView: this });
+        this.editorView = new codebrowser.view.EditorView();
         contentContainer.append(this.editorView.el);
 
         this.$el.append(contentContainer);
