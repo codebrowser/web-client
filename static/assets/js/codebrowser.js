@@ -556,10 +556,11 @@ codebrowser.model.Diff = function (previousContent, content) {
 
         var difference = {
 
-            type:     operation[0],
-            rowStart: operation[3],
-            rowEnd:   operation[4] - 1,
-            offset:   offset
+            type:      operation[0],
+            rowStart:  operation[3],
+            rowEnd:    operation[4] - 1,
+            offset:    offset,
+            overwrite: false
 
         }
 
@@ -583,6 +584,9 @@ codebrowser.model.Diff = function (previousContent, content) {
 
             // Replaced something to nothing
             if (to[operation[3]].length === 0) {
+
+                // Should overwrite previous line
+                difference.overwrite = true;
 
                 difference.type = 'delete';
             }
@@ -641,7 +645,12 @@ codebrowser.model.Diff = function (previousContent, content) {
 
             // Deleted lines
             var deletedAsLines = from.slice(operation[1], operation[2]);
-            var deleted = deletedAsLines.join('\n') + '\n';
+            var deleted = deletedAsLines.join('\n');
+
+            // Add line ending if we don't overwrite
+            if (!difference.overwrite) {
+                deleted += '\n';
+            }
 
             difference.rowStart = operation[1] + deleteOffset;
             difference.rowEnd = operation[2] - 1 + deleteOffset;
@@ -650,11 +659,14 @@ codebrowser.model.Diff = function (previousContent, content) {
                                                 fromRowEnd: operation[2] - 1,
                                                 lines: deleted });
 
-            // Delete increases offsets
-            var increase = difference.rowEnd - difference.rowStart + 1;
+            // Delete increases offsets if we don't overwrite
+            if (!difference.overwrite) {
 
-            offset += increase;
-            deleteOffset += increase;
+                var increase = difference.rowEnd - difference.rowStart + 1;
+
+                offset += increase;
+                deleteOffset += increase;
+            }
         }
 
         // Increase lines
@@ -1158,7 +1170,15 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     insertedLines: {
 
-        'main-editor': [],
+        'main-editor': []
+
+    },
+
+    /* Replaced lines */
+
+    replacedLines: {
+
+        'main-editor': []
 
     },
 
@@ -1271,6 +1291,24 @@ codebrowser.view.EditorView = Backbone.View.extend({
         }
     },
 
+    resetReplacedLines: function (editor) {
+
+        var Range = ace.require('ace/range').Range;
+
+        // Reset replaced lines from editor
+        while (this.replacedLines[editor.container.id].length > 0) {
+
+            var difference = this.replacedLines[editor.container.id].pop();
+
+            this.mainEditor.getSession()
+                           .replace(new Range(difference.rowStart,
+                                              0,
+                                              difference.rowEnd,
+                                              this.mainEditor.getSession().getLength()),
+                                    difference.lines);
+        }
+    },
+
     clearDiff: function () {
 
         // Remove decorations
@@ -1279,6 +1317,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Remove inserted lines
         this.removeInsertedLines(this.mainEditor);
+
+        // Reset replaced lines
+        this.resetReplacedLines(this.mainEditor);
 
         // Remove markers
         this.removeMarkers(this.mainEditor);
@@ -1554,23 +1595,45 @@ codebrowser.view.EditorView = Backbone.View.extend({
                     if (!this.split) {
 
                         // Add removed lines to main editor
-                        this.mainEditor.getSession()
-                                       .insert({ row: difference.rowStart + difference.offset, column: 0 },
-                                               difference.lines);
+                        if (!difference.overwrite) {
+
+                            this.mainEditor.getSession()
+                                           .insert({ row: difference.rowStart + difference.offset, column: 0 },
+                                                   difference.lines);
+
+                            // Remember removed lines
+                            this.insertedLines['main-editor'].push({
+
+                                rowStart: difference.rowStart + difference.offset,
+                                rowEnd: difference.rowEnd + 1 + difference.offset
+
+                            });
+
+                        // Overwrite previous lines
+                        } else {
+
+                            // Remember replaced lines
+                            this.replacedLines['main-editor'].push({
+
+                                rowStart: difference.rowStart,
+                                rowEnd: difference.rowEnd,
+                                lines: this.mainEditor.getSession().getLines(difference.rowStart, difference.rowEnd).join('\n')
+
+                            });
+
+                            this.mainEditor.getSession()
+                                           .replace(new Range(difference.rowStart,
+                                                              0,
+                                                              difference.rowEnd,
+                                                              this.mainEditor.getSession().getLength()),
+                                                    difference.lines);
+                        }
 
                         // Decorate gutter
                         this.decorateGutter(this.mainEditor,
                                             difference.rowStart + difference.offset,
                                             difference.rowEnd + difference.offset,
                                             'delete');
-
-                        // Remember removed lines
-                        this.insertedLines['main-editor'].push({
-
-                            rowStart: difference.rowStart + difference.offset,
-                            rowEnd: difference.rowEnd + 1 + difference.offset
-
-                        });
 
                     // If split view is enabled, show removed lines in side editor
                     } else {
