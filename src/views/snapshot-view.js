@@ -10,14 +10,19 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
-        'click #split':    'split',
-        'click #diff':     'diff',
-        'click #first':    'first',
-        'click #previous': 'previous',
-        'click #next':     'next',
-        'click #last':     'last'
+        'click #toggleFiles': 'toggleFiles',
+        'click #split':       'split',
+        'click #diff':        'diff',
+        'click #first':       'first',
+        'click #previous':    'previous',
+        'click #next':        'next',
+        'click #last':        'last'
 
     },
+
+    /* Files */
+
+    files: true,
 
     /* Initialise */
 
@@ -86,7 +91,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Template for navigation container
-        var navigationContainerOutput = $(this.template.navigationContainer(_.extend(this.model.toJSON(), attributes)));
+        var navigationContainerOutput = $(this.template.navigationContainer(attributes));
+
+        // Files is enabled, set toggleFiles button as active
+        if (this.files) {
+            $('#toggleFiles', navigationContainerOutput).addClass('active');
+        }
 
         // Split view is enabled, set split button as active
         if (this.editorView.split) {
@@ -125,6 +135,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.model = snapshot;
 
+        // Restore files state if necessary
+        if (this.files) {
+            this.toggleFiles(null, localStorage.getItem(config.storage.view.SnapshotView.files) === 'true');
+        }
+
         // Previous snapshot
         var index = this.collection.indexOf(snapshot);
         var previousSnapshot = this.collection.at(index - 1);
@@ -147,7 +162,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.snapshotsTimelineView.update(this.collection, index, filename);
 
         // Update files
-        this.snapshotFilesView.update(this.model);
+        this.snapshotFilesView.update(this.model, this.file);
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
@@ -182,6 +197,41 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     },
 
     /* Actions */
+
+    toggleFiles: function (event, files) {
+
+        // Use parameter if given, otherwise toggle internal files state
+        if (files !== undefined) {
+
+            this.files = files;
+
+        } else {
+
+            this.files = !this.files;
+
+            // Store files state
+            localStorage.setItem(config.storage.view.SnapshotView.files, this.files);
+        }
+
+        // Enable files
+        if (this.files) {
+
+            // Move editor view
+            this.editorView.$el.css('margin-left', this.snapshotFilesView.$el.width() + 30);
+            this.editorView.didResize();
+
+            this.snapshotFilesView.$el.show();
+
+            return;
+        }
+
+        // Disable files
+        this.snapshotFilesView.$el.hide();
+
+        // Move editor view
+        this.editorView.$el.css('margin-left', 0);
+        this.editorView.didResize();
+    },
 
     split: function () {
 

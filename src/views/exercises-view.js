@@ -16,7 +16,7 @@ codebrowser.view.ExercisesView = Backbone.View.extend({
         }
 
         // Template
-        var output = $(this.template(model));
+        var output = this.template(model);
 
         this.$el.html(output);
     }

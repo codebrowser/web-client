@@ -50,10 +50,11 @@ codebrowser.model.Diff = function (previousContent, content) {
 
         var difference = {
 
-            type:     operation[0],
-            rowStart: operation[3],
-            rowEnd:   operation[4] - 1,
-            offset:   offset
+            type:      operation[0],
+            rowStart:  operation[3],
+            rowEnd:    operation[4] - 1,
+            offset:    offset,
+            overwrite: false
 
         }
 
@@ -74,6 +75,21 @@ codebrowser.model.Diff = function (previousContent, content) {
             var lines = difference.rowEnd - difference.rowStart + 1;
             var changed = operation[2] - operation[1];
             var delta = lines - changed;
+
+            // Replaced something to nothing
+            if (to.slice(operation[3], operation[4]).join('').length === 0) {
+
+                // Should overwrite previous line
+                difference.overwrite = true;
+
+                difference.type = 'delete';
+            }
+
+            // Replaced nothing to something
+            if (from.slice(operation[1], operation[2]).join('').length === 0) {
+
+                difference.type = 'insert';
+            }
 
             // Replace contains deleted lines
             if (fromChange > toChange) {
@@ -123,7 +139,12 @@ codebrowser.model.Diff = function (previousContent, content) {
 
             // Deleted lines
             var deletedAsLines = from.slice(operation[1], operation[2]);
-            var deleted = deletedAsLines.join('\n') + '\n';
+            var deleted = deletedAsLines.join('\n');
+
+            // Add line ending if we don't overwrite
+            if (!difference.overwrite) {
+                deleted += '\n';
+            }
 
             difference.rowStart = operation[1] + deleteOffset;
             difference.rowEnd = operation[2] - 1 + deleteOffset;
@@ -132,11 +153,14 @@ codebrowser.model.Diff = function (previousContent, content) {
                                                 fromRowEnd: operation[2] - 1,
                                                 lines: deleted });
 
-            // Delete increases offsets
-            var increase = difference.rowEnd - difference.rowStart + 1;
+            // Delete increases offsets if we don't overwrite
+            if (!difference.overwrite) {
 
-            offset += increase;
-            deleteOffset += increase;
+                var increase = difference.rowEnd - difference.rowStart + 1;
+
+                offset += increase;
+                deleteOffset += increase;
+            }
         }
 
         // Increase lines

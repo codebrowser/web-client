@@ -1,5 +1,20 @@
 describe('Config', function () {
 
+    it('should have correct storage key for Editor ignore empty lines setting', function () {
+
+        expect(config.storage.setting.editor.ignoreEmptyLines).toBe('codebrowser.setting.editor.ignoreEmptyLines');
+    });
+
+    it('should have correct storage key for Editor font-size setting', function () {
+
+        expect(config.storage.setting.editor.fontSize).toBe('codebrowser.setting.editor.fontSize');
+    });
+
+    it('should have correct storage key for SnapshotView files state', function () {
+
+        expect(config.storage.view.SnapshotView.files).toBe('codebrowser.view.SnapshotView.files');
+    });
+
     it('should have correct storage key for EditorView split state', function () {
 
         expect(config.storage.view.EditorView.split).toBe('codebrowser.view.EditorView.split');

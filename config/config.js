@@ -8,7 +8,23 @@ var config = {
 
     storage: {
 
+        setting: {
+
+            editor: {
+
+                ignoreEmptyLines: 'codebrowser.setting.editor.ignoreEmptyLines',
+                fontSize:         'codebrowser.setting.editor.fontSize'
+
+            }
+        },
+
         view: {
+
+            SnapshotView: {
+
+                files: 'codebrowser.view.SnapshotView.files'
+
+            },
 
             EditorView: {
 
@@ -60,7 +76,7 @@ var config = {
 
             // Text
             editor.setTheme('ace/theme/light');
-            editor.setFontSize(12);
+            editor.setFontSize(parseInt(localStorage.getItem(config.storage.setting.editor.fontSize), 10) || 12);
             editor.getSession().setTabSize(4);
             editor.getSession().setUseWrapMode(true);
             editor.getSession().setWrapLimitRange(120, 120);

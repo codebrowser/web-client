@@ -44,6 +44,19 @@
 
 }
 
+a .icon-gray:hover {
+
+    opacity: 0.8;
+
+}
+
+.icon-folder {
+
+    background-image: url('../img/folder.png');
+    background-position: center;
+
+}
+
 .icon-split-editor {
 
     background-image: url('../img/split-view.png');
@@ -58,7 +71,7 @@
 
 }
 
-/* Responsiveness */
+/* Responsiveness - Width */
 
 @media screen and (min-width: 1200px) {
 
@@ -67,7 +80,6 @@
         width: 1000px;
 
     }
-
 }
 
 @media screen and (min-width: 1400px) {
@@ -77,7 +89,6 @@
         width: 1200px;
 
     }
-
 }
 
 @media screen and (min-width: 1600px) {
@@ -87,7 +98,6 @@
         width: 1400px;
 
     }
-
 }
 
 @media screen and (min-width: 1800px) {
@@ -97,6 +107,31 @@
         width: 1600px;
 
     }
+}
+
+/* Responsiveness - Height */
+
+@media screen and (max-height: 600px) {
+
+    #side-editor, #main-editor {
+
+        height: 600px !important;
+
+    }
+}
+
+/* Forms */
+
+.control-group .checkbox {
+
+    padding: 0;
+
+}
+
+.control-group .checkbox input {
+
+    margin-left: 148px;
+    margin-right: 20px;
 
 }
 
@@ -120,11 +155,15 @@
 
 }
 
-/* Container */
+/* Brand */
 
-#container {
+#brand {
 
-    margin: 20px 0;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 20px;
+    color: rgba(0, 0, 0, 0.6);
 
 }
 
@@ -257,7 +296,7 @@
 
 #snapshot-files-container {
 
-    position: absolute;
+    float: left;
     padding: 0 10px 10px 10px;
     width: 200px;
     border-top: 4px solid rgba(0, 0, 0, 0.1);
@@ -267,6 +306,8 @@
 #snapshot-files-container header {
 
     margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
 
 }
 
@@ -293,6 +334,13 @@
 
 }
 
+#snapshot-files-container ul li.active {
+
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+
+}
+
 #snapshot-files-container ul li a {
 
     display: inline-block;
@@ -305,20 +353,26 @@
 
 #snapshot-files-container ul li:hover {
 
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 2px;
 
 }
 
 /* Editor */
 
-#editor-container {
+#side-editor, #main-editor {
 
-    margin: 10px 0 10px 230px;
+    height: 800px;
 
 }
 
-#editor-container header {
+#editor-container {
+
+    margin: 10px 0;
+
+}
+
+#editor-top-container header {
 
     padding: 0 10px;
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -331,7 +385,7 @@
 
 }
 
-#editor-container header h1 {
+#editor-top-container header h1 {
 
     display: inline;
     margin: 0;
@@ -346,7 +400,7 @@
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-top: 0;
-    border-radius: 0 0 4px 4px;
+    border-bottom: 0;
 
 }
 
@@ -422,5 +476,30 @@
 #editor .decoration.gutter-delete:before {
 
     content: '-';
+
+}
+
+/* Editor settings */
+
+#editor-settings-container {
+
+    padding: 2px 5px;
+    height: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 4px 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+
+}
+
+#editor-settings header h1 {
+
+    font-size: 18px;
+    line-height: normal;
+
+}
+
+#editor-settings header .close {
+
+    line-height: 16px;
 
 }

@@ -30,7 +30,15 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     insertedLines: {
 
-        'main-editor': [],
+        'main-editor': []
+
+    },
+
+    /* Replaced lines */
+
+    replacedLines: {
+
+        'main-editor': []
 
     },
 
@@ -69,12 +77,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.parentView = options.parentView;
 
         // Elements
-        this.topContainer = $('<div>');
+        this.topContainer = $('<div>', { id: 'editor-top-container' });
         this.editorElement = $('<div>', { id: 'editor' });
+        this.settingsView = new codebrowser.view.EditorSettingsView({ parentView: this });
 
         // Elements for editors
-        this.sideEditorElement = $('<div>', { id: 'side-editor', height: '800px' }).hide();
-        this.mainEditorElement = $('<div>', { id: 'main-editor', height: '800px' });
+        this.sideEditorElement = $('<div>', { id: 'side-editor' }).hide();
+        this.mainEditorElement = $('<div>', { id: 'main-editor' });
 
         // Append editor elements to parent
         this.editorElement.append(this.sideEditorElement);
@@ -83,17 +92,34 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Append elements to parent
         this.$el.append(this.topContainer);
         this.$el.append(this.editorElement);
+        this.$el.append(this.settingsView.el);
 
         // Create Ace editor
         this.sideEditor = ace.edit(this.sideEditorElement.get(0));
         this.mainEditor = ace.edit(this.mainEditorElement.get(0));
 
         // Configure editor
-        config.editor.configure(this.sideEditor);
-        config.editor.configure(this.mainEditor);
+        this.configure();
+    },
+
+    /* Remove */
+
+    remove: function () {
+
+        // Remove settings
+        this.settingsView.remove();
+
+        Backbone.View.prototype.remove.call(this);
     },
 
     /* Reset */
+
+    configure: function () {
+
+        // Configure editors
+        config.editor.configure(this.mainEditor);
+        config.editor.configure(this.sideEditor);
+    },
 
     removeDecorations: function (editor) {
 
@@ -123,7 +149,23 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             var difference = this.insertedLines[editor.container.id].pop();
 
-            editor.getSession().remove(new Range(difference.rowStart, 0, difference.rowEnd, 0));
+            editor.getSession()
+                  .remove(new Range(difference.rowStart, 0, difference.rowEnd, editor.getSession().getLength()));
+        }
+    },
+
+    resetReplacedLines: function (editor) {
+
+        var Range = ace.require('ace/range').Range;
+
+        // Reset replaced lines from editor
+        while (this.replacedLines[editor.container.id].length > 0) {
+
+            var difference = this.replacedLines[editor.container.id].pop();
+
+            editor.getSession()
+                  .replace(new Range(difference.rowStart, 0, difference.rowEnd, editor.getSession().getLength()),
+                           difference.lines);
         }
     },
 
@@ -135,6 +177,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Remove inserted lines
         this.removeInsertedLines(this.mainEditor);
+
+        // Reset replaced lines
+        this.resetReplacedLines(this.mainEditor);
 
         // Remove markers
         this.removeMarkers(this.mainEditor);
@@ -317,6 +362,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             $('#editor-inspector').popover('toggle');
             $('#editor-inspector').popover('toggle');
         }
+
+        // Editors can get confused after a resize
+        this.mainEditor.resize();
+        this.sideEditor.resize();
     },
 
     didSplit: function () {
@@ -407,9 +456,39 @@ codebrowser.view.EditorView = Backbone.View.extend({
                     if (!this.split) {
 
                         // Add removed lines to main editor
-                        this.mainEditor.getSession()
-                                       .insert({ row: difference.rowStart + difference.offset, column: 0 },
-                                               difference.lines);
+                        if (!difference.overwrite) {
+
+                            this.mainEditor.getSession()
+                                           .insert({ row: difference.rowStart + difference.offset, column: 0 },
+                                                   difference.lines);
+
+                            // Remember removed lines
+                            this.insertedLines['main-editor'].push({
+
+                                rowStart: difference.rowStart + difference.offset,
+                                rowEnd: difference.rowEnd + 1 + difference.offset
+
+                            });
+
+                        // Overwrite previous lines
+                        } else {
+
+                            // Remember replaced lines
+                            this.replacedLines['main-editor'].push({
+
+                                rowStart: difference.rowStart,
+                                rowEnd: difference.rowEnd,
+                                lines: this.mainEditor.getSession().getLines(difference.rowStart, difference.rowEnd).join('\n')
+
+                            });
+
+                            this.mainEditor.getSession()
+                                           .replace(new Range(difference.rowStart,
+                                                              0,
+                                                              difference.rowEnd,
+                                                              this.mainEditor.getSession().getLength()),
+                                                    difference.lines);
+                        }
 
                         // Decorate gutter
                         this.decorateGutter(this.mainEditor,
@@ -417,21 +496,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                             difference.rowEnd + difference.offset,
                                             'delete');
 
-                        // Remember removed lines
-                        this.insertedLines['main-editor'].push({
-
-                            rowStart: difference.rowStart + difference.offset,
-                            rowEnd: difference.rowEnd + 1 + difference.offset
-
-                        });
-
                     // If split view is enabled, show removed lines in side editor
                     } else {
 
                         // Add marker for removed line in side editor
                         marker = this.sideEditor
                                      .getSession()
-                                     .addMarker(new Range(difference.fromRowStart, 0, difference.fromRowEnd, 1),
+                                     .addMarker(new Range(difference.fromRowStart,
+                                                          0,
+                                                          difference.fromRowEnd,
+                                                          this.sideEditor.getSession().getLength()),
                                                 difference.type,
                                                 'fullLine');
 
@@ -455,7 +529,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 // Add marker to main editor
                 marker = this.mainEditor
                              .getSession()
-                             .addMarker(new Range(difference.rowStart + offset, 0, difference.rowEnd + offset, 1),
+                             .addMarker(new Range(difference.rowStart + offset,
+                                                  0,
+                                                  difference.rowEnd + offset,
+                                                  this.mainEditor.getSession().getLength()),
                                         difference.type,
                                         'fullLine');
 

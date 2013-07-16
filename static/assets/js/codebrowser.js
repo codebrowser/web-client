@@ -33,6 +33,15 @@ function program1(depth0,data,depth1) {
   return buffer;
   });
 
+this["Handlebars"]["templates"]["EditorSettingsContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<footer>\n\n    <a href='#editor-settings' data-toggle='modal' class='pull-right'><i class='icon-wrench icon-gray'></i></a>\n\n    <div id='editor-settings' class='modal hide fade' tabindex='-1' data-backdrop='false'>\n\n        <div class='modal-header'>\n\n            <header>\n\n                <button type='button' class='close' data-dismiss='modal'>×</button>\n\n                <h1>Settings</h1>\n\n            </header>\n\n        </div>\n\n        <div class='modal-body'>\n\n            <form class='form-horizontal'>\n\n                <fieldset>\n\n                    <div class='control-group'>\n\n                        <label class='checkbox'>\n                            <input type='checkbox' data-id='ignore-empty-lines'> Ignore empty lines (improves diff results)\n                        </label>\n\n                    </div>\n\n                    <div class='control-group'>\n\n                        <label class='control-label' for='font-size'>Font size</label>\n\n                        <div class='controls'>\n\n                            <select data-id='font-size'>\n                                <option value='11'>Small</option>\n                                <option value='12'>Normal</option>\n                                <option value='13'>Larger</option>\n                                <option value='14'>Large</option>\n                                <option value='15'>Extra Large</option>\n                            </select>\n\n                        </div>\n\n                    </div>\n\n                </fieldset>\n\n            </form>\n\n        </div>\n\n        <div class='modal-footer'>\n\n            <button class='btn' data-dismiss='modal'>Cancel</button>\n            <button data-id='save' class='btn btn-primary' data-dismiss='modal'>Save</button>\n\n        </div>\n\n</footer>\n";
+  });
+
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -131,7 +140,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\n        <li><a href='#/students/"
+  buffer += "\n        <li data-id='";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "'><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -169,7 +182,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class='row'>\n\n    <div class='span2'>\n\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
+  buffer += "<div class='row'>\n\n    <div class='span2'>\n\n        <button id='toggleFiles' type='button' class='btn' data-toggle='button'><i class='icon-folder icon-gray'></i></button>\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
   if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -240,7 +253,23 @@ var config = {
 
     storage: {
 
+        setting: {
+
+            editor: {
+
+                ignoreEmptyLines: 'codebrowser.setting.editor.ignoreEmptyLines',
+                fontSize:         'codebrowser.setting.editor.fontSize'
+
+            }
+        },
+
         view: {
+
+            SnapshotView: {
+
+                files: 'codebrowser.view.SnapshotView.files'
+
+            },
 
             EditorView: {
 
@@ -292,7 +321,7 @@ var config = {
 
             // Text
             editor.setTheme('ace/theme/light');
-            editor.setFontSize(12);
+            editor.setFontSize(parseInt(localStorage.getItem(config.storage.setting.editor.fontSize), 10) || 12);
             editor.getSession().setTabSize(4);
             editor.getSession().setUseWrapMode(true);
             editor.getSession().setWrapLimitRange(120, 120);
@@ -527,10 +556,11 @@ codebrowser.model.Diff = function (previousContent, content) {
 
         var difference = {
 
-            type:     operation[0],
-            rowStart: operation[3],
-            rowEnd:   operation[4] - 1,
-            offset:   offset
+            type:      operation[0],
+            rowStart:  operation[3],
+            rowEnd:    operation[4] - 1,
+            offset:    offset,
+            overwrite: false
 
         }
 
@@ -551,6 +581,21 @@ codebrowser.model.Diff = function (previousContent, content) {
             var lines = difference.rowEnd - difference.rowStart + 1;
             var changed = operation[2] - operation[1];
             var delta = lines - changed;
+
+            // Replaced something to nothing
+            if (to.slice(operation[3], operation[4]).join('').length === 0) {
+
+                // Should overwrite previous line
+                difference.overwrite = true;
+
+                difference.type = 'delete';
+            }
+
+            // Replaced nothing to something
+            if (from.slice(operation[1], operation[2]).join('').length === 0) {
+
+                difference.type = 'insert';
+            }
 
             // Replace contains deleted lines
             if (fromChange > toChange) {
@@ -600,7 +645,12 @@ codebrowser.model.Diff = function (previousContent, content) {
 
             // Deleted lines
             var deletedAsLines = from.slice(operation[1], operation[2]);
-            var deleted = deletedAsLines.join('\n') + '\n';
+            var deleted = deletedAsLines.join('\n');
+
+            // Add line ending if we don't overwrite
+            if (!difference.overwrite) {
+                deleted += '\n';
+            }
 
             difference.rowStart = operation[1] + deleteOffset;
             difference.rowEnd = operation[2] - 1 + deleteOffset;
@@ -609,11 +659,14 @@ codebrowser.model.Diff = function (previousContent, content) {
                                                 fromRowEnd: operation[2] - 1,
                                                 lines: deleted });
 
-            // Delete increases offsets
-            var increase = difference.rowEnd - difference.rowStart + 1;
+            // Delete increases offsets if we don't overwrite
+            if (!difference.overwrite) {
 
-            offset += increase;
-            deleteOffset += increase;
+                var increase = difference.rowEnd - difference.rowStart + 1;
+
+                offset += increase;
+                deleteOffset += increase;
+            }
         }
 
         // Increase lines
@@ -672,6 +725,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
     getContent: function () {
 
+        var ignoreEmptyLines = localStorage.getItem(config.storage.setting.editor.ignoreEmptyLines);
         var content = this.content;
 
         // Standardise line endings
@@ -679,6 +733,11 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
 
         // Convert tabs to 4 spaces
         content = content.replace(/\t/g, '    ');
+
+        // Trim empty lines
+        if (ignoreEmptyLines && ignoreEmptyLines === 'true') {
+            content = content.replace(/^ +$/gm, '');
+        }
 
         return content;
     },
@@ -1152,9 +1211,71 @@ codebrowser.view.CoursesView = Backbone.View.extend({
         }
 
         // Template
-        var output = $(this.template(model));
+        var output = this.template(model);
 
         this.$el.html(output);
+    }
+});
+;
+
+codebrowser.view.EditorSettingsView = Backbone.View.extend({
+
+    id: 'editor-settings-container',
+    template: Handlebars.templates.EditorSettingsContainer,
+
+    events: {
+
+        'click [data-id="save"]': 'save'
+
+    },
+
+    /* Initialise */
+
+    initialize: function (options) {
+
+        this.parentView = options.parentView;
+
+        this.render();
+    },
+
+    /* Render */
+
+    render: function () {
+
+        var ignoreEmptyLines = localStorage.getItem(config.storage.setting.editor.ignoreEmptyLines);
+        var fontSize = parseInt(localStorage.getItem(config.storage.setting.editor.fontSize), 10);
+
+        // Template
+        var output = $(this.template());
+
+        // Restore ignore empty lines
+        if (ignoreEmptyLines) {
+            $('[data-id="ignore-empty-lines"]', output).prop('checked', ignoreEmptyLines === 'true');
+        }
+
+        // Restore font size
+        if (fontSize) {
+            $('[data-id="font-size"] option[value="' + fontSize + '"]', output).prop('selected', true);
+        }
+
+        this.$el.html(output);
+    },
+
+    /* Actions */
+
+    save: function () {
+
+        // Ignore empty lines
+        localStorage.setItem(config.storage.setting.editor.ignoreEmptyLines, $('[data-id="ignore-empty-lines"]').prop('checked'));
+
+        // Set font size
+        localStorage.setItem(config.storage.setting.editor.fontSize, $('[data-id="font-size"] option:selected', this.$el).val());
+
+        // Configure
+        this.parentView.configure();
+
+        // Update
+        this.parentView.update(this.parentView.previousModel, this.parentView.model);
     }
 });
 ;
@@ -1191,7 +1312,15 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     insertedLines: {
 
-        'main-editor': [],
+        'main-editor': []
+
+    },
+
+    /* Replaced lines */
+
+    replacedLines: {
+
+        'main-editor': []
 
     },
 
@@ -1230,12 +1359,13 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.parentView = options.parentView;
 
         // Elements
-        this.topContainer = $('<div>');
+        this.topContainer = $('<div>', { id: 'editor-top-container' });
         this.editorElement = $('<div>', { id: 'editor' });
+        this.settingsView = new codebrowser.view.EditorSettingsView({ parentView: this });
 
         // Elements for editors
-        this.sideEditorElement = $('<div>', { id: 'side-editor', height: '800px' }).hide();
-        this.mainEditorElement = $('<div>', { id: 'main-editor', height: '800px' });
+        this.sideEditorElement = $('<div>', { id: 'side-editor' }).hide();
+        this.mainEditorElement = $('<div>', { id: 'main-editor' });
 
         // Append editor elements to parent
         this.editorElement.append(this.sideEditorElement);
@@ -1244,17 +1374,34 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // Append elements to parent
         this.$el.append(this.topContainer);
         this.$el.append(this.editorElement);
+        this.$el.append(this.settingsView.el);
 
         // Create Ace editor
         this.sideEditor = ace.edit(this.sideEditorElement.get(0));
         this.mainEditor = ace.edit(this.mainEditorElement.get(0));
 
         // Configure editor
-        config.editor.configure(this.sideEditor);
-        config.editor.configure(this.mainEditor);
+        this.configure();
+    },
+
+    /* Remove */
+
+    remove: function () {
+
+        // Remove settings
+        this.settingsView.remove();
+
+        Backbone.View.prototype.remove.call(this);
     },
 
     /* Reset */
+
+    configure: function () {
+
+        // Configure editors
+        config.editor.configure(this.mainEditor);
+        config.editor.configure(this.sideEditor);
+    },
 
     removeDecorations: function (editor) {
 
@@ -1284,7 +1431,23 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             var difference = this.insertedLines[editor.container.id].pop();
 
-            editor.getSession().remove(new Range(difference.rowStart, 0, difference.rowEnd, 0));
+            editor.getSession()
+                  .remove(new Range(difference.rowStart, 0, difference.rowEnd, editor.getSession().getLength()));
+        }
+    },
+
+    resetReplacedLines: function (editor) {
+
+        var Range = ace.require('ace/range').Range;
+
+        // Reset replaced lines from editor
+        while (this.replacedLines[editor.container.id].length > 0) {
+
+            var difference = this.replacedLines[editor.container.id].pop();
+
+            editor.getSession()
+                  .replace(new Range(difference.rowStart, 0, difference.rowEnd, editor.getSession().getLength()),
+                           difference.lines);
         }
     },
 
@@ -1296,6 +1459,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
         // Remove inserted lines
         this.removeInsertedLines(this.mainEditor);
+
+        // Reset replaced lines
+        this.resetReplacedLines(this.mainEditor);
 
         // Remove markers
         this.removeMarkers(this.mainEditor);
@@ -1478,6 +1644,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             $('#editor-inspector').popover('toggle');
             $('#editor-inspector').popover('toggle');
         }
+
+        // Editors can get confused after a resize
+        this.mainEditor.resize();
+        this.sideEditor.resize();
     },
 
     didSplit: function () {
@@ -1568,9 +1738,39 @@ codebrowser.view.EditorView = Backbone.View.extend({
                     if (!this.split) {
 
                         // Add removed lines to main editor
-                        this.mainEditor.getSession()
-                                       .insert({ row: difference.rowStart + difference.offset, column: 0 },
-                                               difference.lines);
+                        if (!difference.overwrite) {
+
+                            this.mainEditor.getSession()
+                                           .insert({ row: difference.rowStart + difference.offset, column: 0 },
+                                                   difference.lines);
+
+                            // Remember removed lines
+                            this.insertedLines['main-editor'].push({
+
+                                rowStart: difference.rowStart + difference.offset,
+                                rowEnd: difference.rowEnd + 1 + difference.offset
+
+                            });
+
+                        // Overwrite previous lines
+                        } else {
+
+                            // Remember replaced lines
+                            this.replacedLines['main-editor'].push({
+
+                                rowStart: difference.rowStart,
+                                rowEnd: difference.rowEnd,
+                                lines: this.mainEditor.getSession().getLines(difference.rowStart, difference.rowEnd).join('\n')
+
+                            });
+
+                            this.mainEditor.getSession()
+                                           .replace(new Range(difference.rowStart,
+                                                              0,
+                                                              difference.rowEnd,
+                                                              this.mainEditor.getSession().getLength()),
+                                                    difference.lines);
+                        }
 
                         // Decorate gutter
                         this.decorateGutter(this.mainEditor,
@@ -1578,21 +1778,16 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                             difference.rowEnd + difference.offset,
                                             'delete');
 
-                        // Remember removed lines
-                        this.insertedLines['main-editor'].push({
-
-                            rowStart: difference.rowStart + difference.offset,
-                            rowEnd: difference.rowEnd + 1 + difference.offset
-
-                        });
-
                     // If split view is enabled, show removed lines in side editor
                     } else {
 
                         // Add marker for removed line in side editor
                         marker = this.sideEditor
                                      .getSession()
-                                     .addMarker(new Range(difference.fromRowStart, 0, difference.fromRowEnd, 1),
+                                     .addMarker(new Range(difference.fromRowStart,
+                                                          0,
+                                                          difference.fromRowEnd,
+                                                          this.sideEditor.getSession().getLength()),
                                                 difference.type,
                                                 'fullLine');
 
@@ -1616,7 +1811,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 // Add marker to main editor
                 marker = this.mainEditor
                              .getSession()
-                             .addMarker(new Range(difference.rowStart + offset, 0, difference.rowEnd + offset, 1),
+                             .addMarker(new Range(difference.rowStart + offset,
+                                                  0,
+                                                  difference.rowEnd + offset,
+                                                  this.mainEditor.getSession().getLength()),
                                         difference.type,
                                         'fullLine');
 
@@ -1681,7 +1879,7 @@ codebrowser.view.ExercisesView = Backbone.View.extend({
         }
 
         // Template
-        var output = $(this.template(model));
+        var output = this.template(model);
 
         this.$el.html(output);
     }
@@ -1710,14 +1908,19 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
         // Template
         var output = $(this.template(this.model.toJSON()));
 
+        // Active file
+        var activeFileElement = $('[data-id="' + this.file.id + '"]', output);
+        activeFileElement.addClass('active');
+
         this.$el.html(output);
     },
 
     /* Update */
 
-    update: function (snapshot) {
+    update: function (snapshot, file) {
 
         this.model = snapshot;
+        this.file = file;
 
         this.render();
     }
@@ -1736,14 +1939,19 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
-        'click #split':    'split',
-        'click #diff':     'diff',
-        'click #first':    'first',
-        'click #previous': 'previous',
-        'click #next':     'next',
-        'click #last':     'last'
+        'click #toggleFiles': 'toggleFiles',
+        'click #split':       'split',
+        'click #diff':        'diff',
+        'click #first':       'first',
+        'click #previous':    'previous',
+        'click #next':        'next',
+        'click #last':        'last'
 
     },
+
+    /* Files */
+
+    files: true,
 
     /* Initialise */
 
@@ -1812,7 +2020,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Template for navigation container
-        var navigationContainerOutput = $(this.template.navigationContainer(_.extend(this.model.toJSON(), attributes)));
+        var navigationContainerOutput = $(this.template.navigationContainer(attributes));
+
+        // Files is enabled, set toggleFiles button as active
+        if (this.files) {
+            $('#toggleFiles', navigationContainerOutput).addClass('active');
+        }
 
         // Split view is enabled, set split button as active
         if (this.editorView.split) {
@@ -1851,6 +2064,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.model = snapshot;
 
+        // Restore files state if necessary
+        if (this.files) {
+            this.toggleFiles(null, localStorage.getItem(config.storage.view.SnapshotView.files) === 'true');
+        }
+
         // Previous snapshot
         var index = this.collection.indexOf(snapshot);
         var previousSnapshot = this.collection.at(index - 1);
@@ -1873,7 +2091,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.snapshotsTimelineView.update(this.collection, index, filename);
 
         // Update files
-        this.snapshotFilesView.update(this.model);
+        this.snapshotFilesView.update(this.model, this.file);
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
@@ -1908,6 +2126,41 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     },
 
     /* Actions */
+
+    toggleFiles: function (event, files) {
+
+        // Use parameter if given, otherwise toggle internal files state
+        if (files !== undefined) {
+
+            this.files = files;
+
+        } else {
+
+            this.files = !this.files;
+
+            // Store files state
+            localStorage.setItem(config.storage.view.SnapshotView.files, this.files);
+        }
+
+        // Enable files
+        if (this.files) {
+
+            // Move editor view
+            this.editorView.$el.css('margin-left', this.snapshotFilesView.$el.width() + 30);
+            this.editorView.didResize();
+
+            this.snapshotFilesView.$el.show();
+
+            return;
+        }
+
+        // Disable files
+        this.snapshotFilesView.$el.hide();
+
+        // Move editor view
+        this.editorView.$el.css('margin-left', 0);
+        this.editorView.didResize();
+    },
 
     split: function () {
 
@@ -2425,7 +2678,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         }
 
         // Template for bottom container
-        var bottomContainerOutput = $(this.template.bottomContainer(attributes));
+        var bottomContainerOutput = this.template.bottomContainer(attributes);
 
         // Update bottom container
         this.bottomContainer.html(bottomContainerOutput, bottomContainerOutput);
@@ -2566,7 +2819,7 @@ codebrowser.view.StudentsView = Backbone.View.extend({
         }
 
         // Template
-        var output = $(this.template(model));
+        var output = this.template(model);
 
         this.$el.html(output);
     }
