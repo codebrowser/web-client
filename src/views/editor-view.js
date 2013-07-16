@@ -147,7 +147,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             var difference = this.insertedLines[editor.container.id].pop();
 
-            editor.getSession().remove(new Range(difference.rowStart, 0, difference.rowEnd, 0));
+            editor.getSession()
+                  .remove(new Range(difference.rowStart, 0, difference.rowEnd, editor.getSession().getLength()));
         }
     },
 
@@ -160,12 +161,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
             var difference = this.replacedLines[editor.container.id].pop();
 
-            this.mainEditor.getSession()
-                           .replace(new Range(difference.rowStart,
-                                              0,
-                                              difference.rowEnd,
-                                              this.mainEditor.getSession().getLength()),
-                                    difference.lines);
+            editor.getSession()
+                  .replace(new Range(difference.rowStart, 0, difference.rowEnd, editor.getSession().getLength()),
+                           difference.lines);
         }
     },
 
@@ -501,7 +499,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
                         // Add marker for removed line in side editor
                         marker = this.sideEditor
                                      .getSession()
-                                     .addMarker(new Range(difference.fromRowStart, 0, difference.fromRowEnd, 1),
+                                     .addMarker(new Range(difference.fromRowStart,
+                                                          0,
+                                                          difference.fromRowEnd,
+                                                          this.sideEditor.getSession().getLength()),
                                                 difference.type,
                                                 'fullLine');
 
@@ -525,7 +526,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
                 // Add marker to main editor
                 marker = this.mainEditor
                              .getSession()
-                             .addMarker(new Range(difference.rowStart + offset, 0, difference.rowEnd + offset, 1),
+                             .addMarker(new Range(difference.rowStart + offset,
+                                                  0,
+                                                  difference.rowEnd + offset,
+                                                  this.mainEditor.getSession().getLength()),
                                         difference.type,
                                         'fullLine');
 
