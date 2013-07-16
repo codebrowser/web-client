@@ -149,8 +149,11 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                         }
 
                         if (!self.differences[snapshotIndex].total) {
-                            self.differences[snapshotIndex].lines = 0;
                             self.differences[snapshotIndex].total = 0;
+                        }
+
+                        if (!self.differences[snapshotIndex].lines) {
+                            self.differences[snapshotIndex].lines = 0;
                         }
 
                         // Create namespace for every file name
