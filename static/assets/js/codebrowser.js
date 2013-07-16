@@ -1220,8 +1220,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.settingsView = new codebrowser.view.EditorSettingsView({ parentView: this });
 
         // Elements for editors
-        this.sideEditorElement = $('<div>', { id: 'side-editor', height: '800px' }).hide();
-        this.mainEditorElement = $('<div>', { id: 'main-editor', height: '800px' });
+        this.sideEditorElement = $('<div>', { id: 'side-editor' }).hide();
+        this.mainEditorElement = $('<div>', { id: 'main-editor' });
 
         // Append editor elements to parent
         this.editorElement.append(this.sideEditorElement);

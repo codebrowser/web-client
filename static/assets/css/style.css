@@ -71,7 +71,7 @@ a .icon-gray:hover {
 
 }
 
-/* Responsiveness */
+/* Responsiveness - Width */
 
 @media screen and (min-width: 1200px) {
 
@@ -80,7 +80,6 @@ a .icon-gray:hover {
         width: 1000px;
 
     }
-
 }
 
 @media screen and (min-width: 1400px) {
@@ -90,7 +89,6 @@ a .icon-gray:hover {
         width: 1200px;
 
     }
-
 }
 
 @media screen and (min-width: 1600px) {
@@ -100,7 +98,6 @@ a .icon-gray:hover {
         width: 1400px;
 
     }
-
 }
 
 @media screen and (min-width: 1800px) {
@@ -110,7 +107,17 @@ a .icon-gray:hover {
         width: 1600px;
 
     }
+}
 
+/* Responsiveness - Height */
+
+@media screen and (max-height: 600px) {
+
+    #side-editor, #main-editor {
+
+        height: 600px !important;
+
+    }
 }
 
 /* Forms */
@@ -335,6 +342,12 @@ a .icon-gray:hover {
 }
 
 /* Editor */
+
+#side-editor, #main-editor {
+
+    height: 800px;
+
+}
 
 #editor-container {
 
