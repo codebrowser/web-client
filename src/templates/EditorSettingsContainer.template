@@ -37,9 +37,11 @@
                         <div class='controls'>
 
                             <select data-id='font-size'>
+                                <option value='11'>Small</option>
                                 <option value='12'>Normal</option>
-                                <option value='14'>Larger</option>
-                                <option value='16'>Large</option>
+                                <option value='13'>Larger</option>
+                                <option value='14'>Large</option>
+                                <option value='15'>Extra Large</option>
                             </select>
 
                         </div>
