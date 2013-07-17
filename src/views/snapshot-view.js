@@ -40,7 +40,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var contentContainer = $('<div>', { id: 'snapshot-content-container' });
 
         // Files
-        this.snapshotFilesView = new codebrowser.view.SnapshotFilesView();
+        this.snapshotFilesView = new codebrowser.view.SnapshotFilesView({ parentView: this });
         contentContainer.append(this.snapshotFilesView.el);
 
         // Editor
