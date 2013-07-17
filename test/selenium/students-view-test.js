@@ -1,7 +1,7 @@
 exports.name = 'Students view';
 
 exports.tests = [
-    
+
     {
         name: 'should show from base URL',
         func: function (done) {
@@ -23,7 +23,7 @@ exports.tests = [
             exports.driver
                     .url('localhost:8000')
                     .getSource(function(source) {
-                
+
                 buster.assertions.assert(source.indexOf('student_1002') !== -1);
                 buster.assertions.assert(source.indexOf('student_1003') !== -1);
                 buster.assertions.assert(source.indexOf('student_1004') !== -1);
@@ -31,7 +31,7 @@ exports.tests = [
             }).end(done);
         }
     },
-            
+
     {
         name: 'should render student list with correct URLs',
         func: function (done) {
