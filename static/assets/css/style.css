@@ -227,8 +227,8 @@ a .icon-gray:hover {
 
 #snapshots-timeline-container .snapshot-weight {
 
+    stroke-width: 2px;
     font-size: 11px !important;
-    cursor: pointer;
 
 }
 
@@ -239,11 +239,16 @@ a .icon-gray:hover {
 
 }
 
+#snapshots-timeline-container .area.snapshot {
+
+    cursor: pointer;
+
+}
+
 #snapshots-timeline-container .snapshot {
 
     stroke: #53666f;
     fill: #fff;
-    cursor: pointer;
 
 }
 
