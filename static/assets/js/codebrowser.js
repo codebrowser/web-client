@@ -2576,6 +2576,15 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var snapshotClickArea = this.paper.circle(x, y, radius);
         $(snapshotClickArea.node).attr('class', 'area snapshot');
 
+        // Tooltip
+        $(snapshotClickArea.node).attr({
+
+            'data-toggle': 'tooltip',
+            'title': moment(new Date(snapshot.get('snapshotTime'))).format('D.M.YYYY HH.mm'),
+            'data-container': 'body'
+
+        });
+
         // Set models for snapshot and snapshot area elements
         var file = snapshot.get('files').findWhere({ name: this.filename });
 
@@ -2603,6 +2612,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             // Animate snapshot element
             snapshotElement.animate({ transform: 'S 1.1' }, 150);
+
+            // Show tooltip
+            if (!self.scroll) {
+                $(snapshotClickArea.node).tooltip('show');
+            }
         });
 
         snapshotClickArea.mouseout(function () {
@@ -2612,6 +2626,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
             // Animate snapshot element
             snapshotElement.animate({ transform: 'S 1' }, 150);
+
+            // Hide tooltip
+            $(snapshotClickArea.node).tooltip('hide');
         });
 
         return snapshotElement;
