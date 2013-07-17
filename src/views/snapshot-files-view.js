@@ -21,16 +21,10 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
 
             var files = self.model.get('files');
             
-            for (var i=0; i < files.length; ++i) {
-                
-                var file = files.at(i);
+            files.each(function (file) {
+
                 var fileDifference = difference[file.get('name')];
-                
                 var fileElement = $('[data-id="' + file.id + '"]', output);
-                
-                if (!fileDifference) {
-                    continue;
-                }
                 
                 var lines = file.lines();
                 var total = fileDifference.getCount().total();
@@ -44,7 +38,7 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
                 if (total > 0 && total < lines) {
                     fileElement.addClass('modified');
                 }
-            }
+            });
         });
     },
 

@@ -100,7 +100,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
     getDifferences: function (callback) {
 
-        if (this.differences.length === this.length) {
+        if (this.differences.length === this.length && this.differences[0].total > 0) {
             callback(this.differences);
             return;
         }
