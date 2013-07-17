@@ -247,12 +247,6 @@ a .icon-gray:hover {
 
 }
 
-#snapshots-timeline-container .snapshot:hover {
-
-    fill: #7995a2;
-
-}
-
 #snapshots-timeline-container .area.pointer {
 
     cursor: move;

@@ -254,17 +254,25 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         $(snapshotWeight.node).attr('class', 'snapshot-weight');
     },
 
-    renderSnapshot: function (snapshot, x, y, radius) {
+    renderSnapshot: function (snapshot, index, x, y, radius) {
 
-        var self = this;
+        // Render index of the snapshot
+        this.renderSnapshotIndex(index, x);
 
         // Snapshot area element
         var snapshotArea = this.paper.rect(x - radius, 0, radius * 2, this.paper.height);
         $(snapshotArea.node).attr('class', 'area');
 
         // Snapshot element
-        var snapshotElement = self.paper.circle(x, y, radius);
+        var snapshotElement = this.paper.circle(x, y, radius);
         $(snapshotElement.node).attr('class', 'snapshot');
+
+        // Render weight for the snapshot
+        this.renderSnapshotWeight(index, x, y);
+
+        // Snapshot click area
+        var snapshotClickArea = this.paper.circle(x, y, radius);
+        $(snapshotClickArea.node).attr('class', 'area');
 
         // Set models for snapshot and snapshot area elements
         var file = snapshot.get('files').findWhere({ name: this.filename });
@@ -272,10 +280,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         snapshotArea.data('snapshot', snapshot);
         snapshotArea.data('file', file);
 
-        snapshotElement.data('snapshot', snapshot);
-        snapshotElement.data('file', file);
+        snapshotClickArea.data('snapshot', snapshot);
+        snapshotClickArea.data('file', file);
 
-        snapshotElement.click(function () {
+        var self = this;
+
+        snapshotClickArea.click(function () {
 
             var snapshot = this.data('snapshot');
             var file = this.data('file');
@@ -284,14 +294,22 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             self.parentView.navigate(snapshot, file);
         });
 
-        snapshotElement.mouseover(function () {
+        snapshotClickArea.mouseover(function () {
 
+            // Animate snapshot click area
             this.animate({ transform: 'S 1.2' }, 150);
+
+            // Animate snapshot element
+            snapshotElement.animate({ transform: 'S 1.2' }, 150);
         });
 
-        snapshotElement.mouseout(function () {
+        snapshotClickArea.mouseout(function () {
 
+            // Animate snapshot click area
             this.animate({ transform: 'S 1' }, 150);
+
+            // Animate snapshot element
+            snapshotElement.animate({ transform: 'S 1' }, 150);
         });
 
         return snapshotElement;
@@ -402,15 +420,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             // Render duration between snapshots
             self.renderDuration(previousSnapshot, snapshot, x, y, radius, distance);
 
-            // Render index of the snapshot
-            self.renderSnapshotIndex(index, x);
-
             // Render snapshot
-            var snapshotElement = self.renderSnapshot(snapshot, x, y, radius);
+            var snapshotElement = self.renderSnapshot(snapshot, index, x, y, radius);
             self.snapshotElements.push(snapshotElement);
-
-            // Render weight for the snapshot
-            self.renderSnapshotWeight(index, x, y);
 
             // Current snapshot
             if (index === self.currentSnapshotIndex) {
