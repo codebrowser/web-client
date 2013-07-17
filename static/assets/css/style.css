@@ -318,6 +318,7 @@ a .icon-gray:hover {
 
 #snapshot-files-container ul li {
 
+    border-left: 5px solid #fff;
     margin: 2px 0;
     padding: 2px 0;
 
@@ -325,49 +326,53 @@ a .icon-gray:hover {
 
 #snapshot-files-container ul li.new {
 
-    background-color: rgba(154, 247, 122, 0.6);
     border-radius: 2px;
+    border-color: rgba(154, 247, 122, 0.6) !important;
+    background-color: rgba(154, 247, 122, 0.6);
 
 }
 
 #snapshot-files-container ul li.new:hover {
 
-    background-color: rgba(154, 247, 122, 0.7);
     border-radius: 2px;
+    background-color: rgba(154, 247, 122, 0.7);
 
 }
 
 #snapshot-files-container ul li.modified {
 
-    background-color: rgba(150, 206, 245, 0.6);
     border-radius: 2px;
+    border-color: rgba(150, 206, 245, 0.6) !important;
+    background-color: rgba(150, 206, 245, 0.6);
 
 }
 
 #snapshot-files-container ul li.modified:hover {
 
-    background-color: rgba(150, 206, 245, 0.7);
     border-radius: 2px;
+    background-color: rgba(150, 206, 245, 0.7);
 
 }
 
 #snapshot-files-container ul li.active {
 
-    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 2px;
+    border-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
 
 }
 
 #snapshot-files-container ul li.active:hover {
 
-    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
 
 }
 
 #snapshot-files-container ul li a {
 
     display: inline-block;
+    margin-left: -5px;
     padding: 0 0 0 10px;
     width: 190px;
     color: rgba(0, 0, 0, 0.7);
