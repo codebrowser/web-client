@@ -7,6 +7,10 @@
 codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.Snapshot,
+
+    /* Differences */
+
+    differencesDone: false,
     differences: [],
 
     url: function () {
@@ -100,8 +104,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
     getDifferences: function (callback) {
 
-        if (this.differences.length === this.length && this.differences[0].total > 0) {
+        if (this.differencesDone) {
+
             callback(this.differences);
+
             return;
         }
 
@@ -187,6 +193,9 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
                         // Diffed last file of last snapshot, return diffs
                         if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
+
+                            self.differencesDone = true;
+
                             callback(self.differences);
                         }
                     })
