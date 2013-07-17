@@ -4,7 +4,7 @@ exports.name = 'Students view';
 exports.source = '';
 
 exports.tests = [
-    
+
     {
         name: 'should render student list',
         func: function (done) {
@@ -14,7 +14,7 @@ exports.tests = [
                     .getSource(function(source) {
 
                 exports.source = source;
-                
+
                 buster.assertions.assert(source.indexOf('student_1002') !== -1);
                 buster.assertions.assert(source.indexOf('student_1003') !== -1);
                 buster.assertions.assert(source.indexOf('student_1004') !== -1);
@@ -22,7 +22,7 @@ exports.tests = [
             }).end(done);
         }
     },
-            
+
     {
         name: 'should render student list with correct URLs',
         func: function() {
