@@ -1941,8 +1941,10 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
         // Template
         var output = $(this.template(this.model.toJSON()));
 
-        // Render colours on new and modified files
-        this.renderColours(output);
+        if (this.parentView.editorView.diff) {
+            // Render colours on new and modified files
+            this.renderColours(output);
+        }
 
         // Active file
         var activeFileElement = $('[data-id="' + this.file.id + '"]', output);
@@ -2126,11 +2128,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Update timeline
         this.snapshotsTimelineView.update(this.collection, index, filename);
 
-        // Update files
-        this.snapshotFilesView.update(this.model, this.file);
-
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
+        
+        // Update files
+        this.snapshotFilesView.update(this.model, this.file);
 
         this.render();
     },
@@ -2206,6 +2208,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     diff: function () {
 
         this.editorView.toggleDiff();
+        this.snapshotFilesView.update(this.model, this.file);
     },
 
     /* Actions - Navigation */

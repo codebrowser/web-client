@@ -47,8 +47,10 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
         // Template
         var output = $(this.template(this.model.toJSON()));
 
-        // Render colours on new and modified files
-        this.renderColours(output);
+        if (this.parentView.editorView.diff) {
+            // Render colours on new and modified files
+            this.renderColours(output);
+        }
 
         // Active file
         var activeFileElement = $('[data-id="' + this.file.id + '"]', output);

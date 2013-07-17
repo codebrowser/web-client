@@ -161,11 +161,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Update timeline
         this.snapshotsTimelineView.update(this.collection, index, filename);
 
-        // Update files
-        this.snapshotFilesView.update(this.model, this.file);
-
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
+        
+        // Update files
+        this.snapshotFilesView.update(this.model, this.file);
 
         this.render();
     },
@@ -241,6 +241,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     diff: function () {
 
         this.editorView.toggleDiff();
+        this.snapshotFilesView.update(this.model, this.file);
     },
 
     /* Actions - Navigation */
