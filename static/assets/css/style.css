@@ -248,7 +248,7 @@ a .icon-gray:hover {
 
 #snapshots-timeline-container .snapshot-weight {
 
-    fill: rgba(110, 129, 138, 0.8);
+    fill: #536f7c;
     font-weight: 300 !important;
 
 }
