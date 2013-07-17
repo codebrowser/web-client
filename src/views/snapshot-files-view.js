@@ -3,38 +3,40 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
     id: 'snapshot-files-container',
     template: Handlebars.templates.SnapshotFilesContainer,
 
+    /* Initialise */
+
     initialize: function (options) {
-        
+
         this.parentView = options.parentView;
     },
 
     /* Render */
 
-    renderColours: function (output) {
-        
+    renderDifferences: function (output) {
+
         var self = this;
-        
+
         this.parentView.collection.getDifferences(function (differences) {
-            
+
             var index = self.parentView.collection.indexOf(self.model);
             var difference = differences[index];
 
             var files = self.model.get('files');
-            
+
             files.each(function (file) {
 
                 var fileDifference = difference[file.get('name')];
                 var fileElement = $('[data-id="' + file.id + '"]', output);
-                
+
                 var lines = file.lines();
                 var total = fileDifference.getCount().total();
-                
-                // New file, colour as green
+
+                // New file
                 if (total === lines) {
                     fileElement.addClass('new');
                 }
-                
-                // Modified file, colour as blue
+
+                // Modified file
                 if (total > 0 && total < lines) {
                     fileElement.addClass('modified');
                 }
@@ -48,8 +50,9 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
         var output = $(this.template(this.model.toJSON()));
 
         if (this.parentView.editorView.diff) {
-            // Render colours on new and modified files
-            this.renderColours(output);
+
+            // Render new and modified files
+            this.renderDifferences(output);
         }
 
         // Active file

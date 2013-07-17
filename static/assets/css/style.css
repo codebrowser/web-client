@@ -330,22 +330,43 @@ a .icon-gray:hover {
 }
 
 #snapshot-files-container ul li.new {
-    
+
     background-color: rgba(154, 247, 122, 0.6);
     border-radius: 2px;
-    
+
+}
+
+#snapshot-files-container ul li.new:hover {
+
+    background-color: rgba(154, 247, 122, 0.7);
+    border-radius: 2px;
+
 }
 
 #snapshot-files-container ul li.modified {
-    
+
     background-color: rgba(150, 206, 245, 0.6);
     border-radius: 2px;
-    
+
+}
+
+#snapshot-files-container ul li.modified:hover {
+
+    background-color: rgba(150, 206, 245, 0.7);
+    border-radius: 2px;
+
 }
 
 #snapshot-files-container ul li.active {
 
     background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+
+}
+
+#snapshot-files-container ul li.active:hover {
+
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 2px;
 
 }
@@ -357,13 +378,6 @@ a .icon-gray:hover {
     width: 190px;
     color: rgba(0, 0, 0, 0.7);
     text-decoration: none;
-
-}
-
-#snapshot-files-container ul li:hover {
-
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
 
 }
 
