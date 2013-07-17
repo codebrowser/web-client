@@ -28,7 +28,8 @@
         "editor": true,
         "Handlebars": true,
         "moment": true,
-        "Raphael": true
+        "Raphael": true,
+        "Spinner": true
 
     }
 }

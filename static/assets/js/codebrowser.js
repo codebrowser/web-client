@@ -2315,10 +2315,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     initialize: function (options) {
 
+        this.parentView = options.parentView;
+
         // Hide view until needed
         this.$el.hide();
-
-        this.parentView = options.parentView;
 
         /* jshint newcap: false */
 
@@ -2760,6 +2760,12 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             return;
         }
 
+        // Show view if necessary
+        this.$el.show();
+
+        // Start spinner
+        this.startSpinner();
+
         var self = this;
 
         // Calculate differences between snapshots before continuing
@@ -2770,8 +2776,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             self.currentSnapshotIndex = currentSnapshotIndex;
             self.filename = filename;
 
-            // Show view if necessary
-            self.$el.show();
+            // Stop spinner
+            self.stopSpinner();
 
             // Render if user is not dragging
             if (!self.dragging) {
@@ -2844,6 +2850,35 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     },
 
     /* Actions */
+
+    startSpinner: function () {
+
+        this.spinner = new Spinner({
+
+            lines:      13,
+            length:     4,
+            width:      4,
+            radius:     10,
+            corners:    1,
+            rotate:     0,
+            direction:  1,
+            color:      'rgba(0, 0, 0, 0.4)',
+            speed:      0.8,
+            trail:      60,
+            shadow:     false,
+            hwaccel:    false,
+            className: 'spinner',
+            zIndex:     2e9,
+            top:        'auto',
+            left:       'auto'
+
+        }).spin(this.$el.get(0));
+    },
+
+    stopSpinner: function () {
+
+        this.spinner.stop();
+    },
 
     startScroll: function (dx) {
 
