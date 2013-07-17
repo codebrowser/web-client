@@ -199,8 +199,7 @@ a .icon-gray:hover {
 
 #snapshots-timeline-container text {
 
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 12px !important;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     fill: #6d8089;
     cursor: default;
     -webkit-user-select: none;
@@ -225,10 +224,16 @@ a .icon-gray:hover {
 
 }
 
+#snapshots-timeline-container .duration {
+
+    font-size: 12px !important;
+
+}
+
 #snapshots-timeline-container .snapshot-weight {
 
-    stroke-width: 2px;
-    font-size: 11px !important;
+    fill: rgba(110, 129, 138, 0.8);
+    font-weight: 300 !important;
 
 }
 

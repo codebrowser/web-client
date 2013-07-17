@@ -2493,7 +2493,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
                                                              previousSnapshot.get('snapshotTime'), true);
 
         // Duration element
-        this.paper.text(x - radius - distance / 2, y + 25, duration);
+        var durationElement = this.paper.text(x - radius - distance / 2, y + 30, duration);
+        $(durationElement.node).attr('class', 'duration');
     },
 
     renderTimeline: function (leftOffset, y, x) {
@@ -2517,7 +2518,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     renderSnapshotWeight: function (index, x, y) {
 
         var difference = this.differences[index];
-
         var percentage = (difference.total / difference.lines + 1).toFixed(2);
 
         // Snapshot has no changes
@@ -2532,9 +2532,19 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         }
 
         // Snapshot weight element
-        var snapshotWeight = this.paper.text(x, y, percentage);
+        var snapshotWeightElement = this.paper.text(x, y, percentage);
 
-        $(snapshotWeight.node).attr('class', 'snapshot-weight');
+        // Adjust font size by weight
+        var snapshotWeight = this.snapshotWeight(index);
+        var fontSize = 11;
+
+        if (snapshotWeight > 1) {
+            fontSize *= snapshotWeight;
+        }
+
+        snapshotWeightElement.attr({ 'font-size': fontSize });
+
+        $(snapshotWeightElement.node).attr('class', 'snapshot-weight');
     },
 
     renderSnapshot: function (snapshot, index, x, y, radius) {
@@ -2580,10 +2590,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         snapshotClickArea.mouseover(function () {
 
             // Animate snapshot click area
-            this.animate({ transform: 'S 1.2' }, 150);
+            this.animate({ transform: 'S 1.1' }, 150);
 
             // Animate snapshot element
-            snapshotElement.animate({ transform: 'S 1.2' }, 150);
+            snapshotElement.animate({ transform: 'S 1.1' }, 150);
         });
 
         snapshotClickArea.mouseout(function () {
@@ -2674,7 +2684,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             var snapshotWeight = self.snapshotWeight(index);
 
             // Weight by duration between snapshots
-            var distance = 40 * distanceWeight;
+            var distance = 45 * distanceWeight;
 
             // Weight by amount of differences between snapshots
             var radius = 12 * snapshotWeight;
