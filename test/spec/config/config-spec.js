@@ -5,6 +5,11 @@ describe('Config', function () {
         expect(config.storage.setting.editor.ignoreEmptyLines).toBe('codebrowser.setting.editor.ignoreEmptyLines');
     });
 
+    it('should have correct storage key for Editor theme setting', function () {
+
+        expect(config.storage.setting.editor.theme).toBe('codebrowser.setting.editor.theme');
+    });
+
     it('should have correct storage key for Editor font-size setting', function () {
 
         expect(config.storage.setting.editor.fontSize).toBe('codebrowser.setting.editor.fontSize');

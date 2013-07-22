@@ -34,14 +34,14 @@ codebrowser.view.EditorSettingsView = Backbone.View.extend({
             $('[data-id="ignore-empty-lines"]', output).prop('checked', ignoreEmptyLines === 'true');
         }
 
-        // Restore font size
-        if (fontSize) {
-            $('[data-id="font-size"] option[value="' + fontSize + '"]', output).prop('selected', true);
-        }
-
         // Restore theme
         if (theme) {
             $('[data-id="theme"] option[value="' + theme + '"]', output).prop('selected', true);
+        }
+
+        // Restore font size
+        if (fontSize) {
+            $('[data-id="font-size"] option[value="' + fontSize + '"]', output).prop('selected', true);
         }
 
         this.$el.html(output);
@@ -54,11 +54,11 @@ codebrowser.view.EditorSettingsView = Backbone.View.extend({
         // Ignore empty lines
         localStorage.setItem(config.storage.setting.editor.ignoreEmptyLines, $('[data-id="ignore-empty-lines"]').prop('checked'));
 
-        // Set font size
-        localStorage.setItem(config.storage.setting.editor.fontSize, $('[data-id="font-size"] option:selected', this.$el).val());
-
         // Set theme
         localStorage.setItem(config.storage.setting.editor.theme, $('[data-id="theme"] option:selected', this.$el).val());
+
+        // Set font size
+        localStorage.setItem(config.storage.setting.editor.fontSize, $('[data-id="font-size"] option:selected', this.$el).val());
 
         // Configure
         this.parentView.configure();
