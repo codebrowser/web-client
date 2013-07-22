@@ -498,9 +498,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.$el.show();
 
         // Start spinner
-        if (!this.spinner) {
-            this.startSpinner();
-        }
+        this.startSpinner();
 
         var self = this;
 
@@ -588,6 +586,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     /* Actions */
 
     startSpinner: function () {
+
+        if (this.spinner) {
+            return;
+        }
 
         this.spinner = new Spinner({
 
