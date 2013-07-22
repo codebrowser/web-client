@@ -610,3 +610,9 @@ a .icon-gray:hover {
     line-height: 16px;
 
 }
+
+#editor-settings .modal-body .control-group {
+
+    margin: 4px 0;
+
+}
