@@ -462,6 +462,13 @@ a .icon-gray:hover {
 
 }
 
+#editor .ace-dark .insert {
+
+    box-shadow: 0 0 0 1px rgba(154, 247, 122, 0.4) inset;
+    background-color: rgba(154, 247, 122, 0.4);
+
+}
+
 #editor .replace {
 
     position: absolute;
@@ -470,11 +477,25 @@ a .icon-gray:hover {
 
 }
 
+#editor .ace-dark .replace {
+
+    box-shadow: 0 0 0 1px rgba(150, 206, 245, 0.4) inset;
+    background-color: rgba(150, 206, 245, 0.4);
+
+}
+
 #editor .delete {
 
     position: absolute;
     box-shadow: 0 0 0 1px rgba(250, 130, 130, 0.8) inset;
     background-color: rgba(250, 130, 130, 0.6);
+
+}
+
+#editor .ace-dark .delete {
+
+    box-shadow: 0 0 0 1px rgba(250, 130, 130, 0.4) inset;
+    background-color: rgba(250, 130, 130, 0.4);
 
 }
 
@@ -499,9 +520,21 @@ a .icon-gray:hover {
 
 }
 
+#editor .ace-dark .decoration.gutter-insert {
+
+    background-color: rgba(154, 247, 122, 0.4);
+
+}
+
 #editor .decoration.gutter-insert:before {
 
     content: '+';
+
+}
+
+#editor .ace-dark .decoration.gutter-insert:before {
+
+    color: #CCCCCC;
 
 }
 
@@ -511,9 +544,21 @@ a .icon-gray:hover {
 
 }
 
+#editor .ace-dark .decoration.gutter-replace {
+
+    background-color: rgba(150, 206, 245, 0.4);
+
+}
+
 #editor .decoration.gutter-replace:before {
 
     content: '.';
+
+}
+
+#editor .ace-dark .decoration.gutter-replace:before {
+
+    color: #CCCCCC;
 
 }
 
@@ -523,9 +568,21 @@ a .icon-gray:hover {
 
 }
 
+#editor .ace-dark .decoration.gutter-delete {
+
+    background-color: rgba(250, 130, 130, 0.4);
+
+}
+
 #editor .decoration.gutter-delete:before {
 
     content: '-';
+
+}
+
+#editor .ace-dark .decoration.gutter-delete:before {
+
+    color: #CCCCCC;
 
 }
 
