@@ -150,8 +150,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
             editor.getSession()
                   .remove(new Range(difference.rowStart,
                                     0,
-                                    difference.rowEnd,
-                                    editor.getSession().getLine(difference.rowEnd).length));
+                                    difference.rowEnd + 1,
+                                    0));
         }
     },
 
@@ -273,6 +273,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     update: function (previousFile, file) {
 
+        // Clear diff
+        this.clearDiff();
+
         var self = this;
 
         this.model = file;
@@ -287,8 +290,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
             // Create difference
             self.differences = new codebrowser.model.Diff(previousContent, content);
 
-            // Clear and re-render diff
-            self.clearDiff();
+            // Re-render diff
             self.toggleDiff(self.diff);
 
             self.render();
@@ -470,7 +472,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                             this.insertedLines['main-editor'].push({
 
                                 rowStart: difference.rowStart + difference.offset,
-                                rowEnd: difference.rowEnd + 1 + difference.offset
+                                rowEnd: difference.rowEnd + difference.offset
 
                             });
 
