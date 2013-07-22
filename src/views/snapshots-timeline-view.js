@@ -235,14 +235,14 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     renderSnapshotWeight: function (index, x, y) {
 
         var difference = this.differences[index];
-        var percentage = (difference.total / difference.lines + 1).toFixed(2);
+        var percentage = (difference.total / difference.lines).toFixed(2);
 
         // Snapshot has no changes
-        if (percentage === '1.00') {
+        if (percentage === '0.00') {
             return;
         }
 
-        if (percentage !== '2.00') {
+        if (percentage !== '1.00') {
             percentage = percentage.slice(1);
         } else {
             percentage = percentage.slice(0,1);
@@ -498,9 +498,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.$el.show();
 
         // Start spinner
-        if (!this.spinner) {
-            this.startSpinner();
-        }
+        this.startSpinner();
 
         var self = this;
 
@@ -589,6 +587,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     startSpinner: function () {
 
+        if (this.spinner) {
+            return;
+        }
+
         this.spinner = new Spinner({
 
             lines:      13,
@@ -613,27 +615,32 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     stopSpinner: function () {
 
-        this.spinner.stop();
+        if (this.spinner) {
+            this.spinner.stop();
+        }
     },
 
     startScroll: function (dx) {
 
+        if (this.scroll) {
+            return;
+        }
+
         var self = this;
 
-        if (!this.scroll) {
+        // Scroll dx 60 times a second
+        this.scroll = setInterval(function () {
 
-            // Scroll dx 60 times a second
-            this.scroll = setInterval(function () {
+            self.moveTimeline(dx);
 
-                self.moveTimeline(dx);
-
-            }, 1000 / 60);
-        }
+        }, 1000 / 60);
     },
 
     stopScroll: function () {
 
-        clearInterval(this.scroll);
-        this.scroll = false;
+        if (this.scroll) {
+            clearInterval(this.scroll);
+            this.scroll = false;
+        }
     }
 });
