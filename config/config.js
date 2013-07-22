@@ -13,7 +13,8 @@ var config = {
             editor: {
 
                 ignoreEmptyLines: 'codebrowser.setting.editor.ignoreEmptyLines',
-                fontSize:         'codebrowser.setting.editor.fontSize'
+                fontSize:         'codebrowser.setting.editor.fontSize',
+                theme:            'codebrowser.setting.editor.theme'
 
             }
         },
@@ -75,7 +76,7 @@ var config = {
             editor.getSession().setFoldStyle('markbeginend');
 
             // Text
-            editor.setTheme('ace/theme/light');
+            editor.setTheme(localStorage.getItem(config.storage.setting.editor.theme) || 'ace/theme/light');
             editor.setFontSize(parseInt(localStorage.getItem(config.storage.setting.editor.fontSize), 10) || 12);
             editor.getSession().setTabSize(4);
             editor.getSession().setUseWrapMode(true);

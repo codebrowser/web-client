@@ -46,6 +46,19 @@
 
                         </div>
 
+                    <div class='control-group'>
+
+                        <label class='control-label' for='theme'>Theme</label>
+
+                        <div class='controls'>
+
+                            <select data-id='theme'>
+                                <option value='ace/theme/light'>Light</option>
+                                <option value='ace/theme/dark'>Dark</option>
+                            </select>
+
+                        </div>
+
                     </div>
 
                 </fieldset>
