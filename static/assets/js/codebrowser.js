@@ -2527,14 +2527,14 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
     renderSnapshotWeight: function (index, x, y) {
 
         var difference = this.differences[index];
-        var percentage = (difference.total / difference.lines + 1).toFixed(2);
+        var percentage = (difference.total / difference.lines).toFixed(2);
 
         // Snapshot has no changes
-        if (percentage === '1.00') {
+        if (percentage === '0.00') {
             return;
         }
 
-        if (percentage !== '2.00') {
+        if (percentage !== '1.00') {
             percentage = percentage.slice(1);
         } else {
             percentage = percentage.slice(0,1);
