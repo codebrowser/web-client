@@ -148,7 +148,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var difference = this.insertedLines[editor.container.id].pop();
 
             editor.getSession()
-                  .remove(new Range(difference.rowStart, 0, difference.rowEnd, editor.getSession().getLength()));
+                  .remove(new Range(difference.rowStart,
+                                    0,
+                                    difference.rowEnd,
+                                    editor.getSession().getLine(difference.rowEnd).length));
         }
     },
 
@@ -162,7 +165,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var difference = this.replacedLines[editor.container.id].pop();
 
             editor.getSession()
-                  .replace(new Range(difference.rowStart, 0, difference.rowEnd, editor.getSession().getLength()),
+                  .replace(new Range(difference.rowStart,
+                                     0,
+                                     difference.rowEnd,
+                                     editor.getSession().getLine(difference.rowEnd).length),
                            difference.lines);
         }
     },
@@ -484,7 +490,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                            .replace(new Range(difference.rowStart,
                                                               0,
                                                               difference.rowEnd,
-                                                              this.mainEditor.getSession().getLength()),
+                                                              this.mainEditor.getSession().getLine(difference.rowEnd).length),
                                                     difference.lines);
                         }
 
@@ -503,7 +509,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                      .addMarker(new Range(difference.fromRowStart,
                                                           0,
                                                           difference.fromRowEnd,
-                                                          this.sideEditor.getSession().getLength()),
+                                                          this.sideEditor.getSession().getLine(difference.fromRowEnd).length),
                                                 difference.type,
                                                 'fullLine');
 
@@ -530,7 +536,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                              .addMarker(new Range(difference.rowStart + offset,
                                                   0,
                                                   difference.rowEnd + offset,
-                                                  this.mainEditor.getSession().getLength()),
+                                                  this.mainEditor.getSession().getLine(difference.rowEnd + offset).length),
                                         difference.type,
                                         'fullLine');
 
