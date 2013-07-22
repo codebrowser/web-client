@@ -281,7 +281,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
             // Create difference
             self.differences = new codebrowser.model.Diff(previousContent, content);
 
-            // Re-render diff
+            // Clear and re-render diff
+            self.clearDiff();
             self.toggleDiff(self.diff);
 
             self.render();
