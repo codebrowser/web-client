@@ -510,7 +510,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                                      .addMarker(new Range(difference.fromRowStart,
                                                           0,
                                                           difference.fromRowEnd,
-                                                          this.sideEditor.getSession().getLine(difference.fromRowEnd).length),
+                                                          1),
                                                 difference.type,
                                                 'fullLine');
 
@@ -537,7 +537,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
                              .addMarker(new Range(difference.rowStart + offset,
                                                   0,
                                                   difference.rowEnd + offset,
-                                                  this.mainEditor.getSession().getLine(difference.rowEnd + offset).length),
+                                                  1),
                                         difference.type,
                                         'fullLine');
 
