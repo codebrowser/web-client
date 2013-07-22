@@ -1573,9 +1573,6 @@ codebrowser.view.EditorView = Backbone.View.extend({
 
     update: function (previousFile, file) {
 
-        // Clear diff
-        this.clearDiff();
-
         var self = this;
 
         this.model = file;
