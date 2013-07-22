@@ -2907,28 +2907,33 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     stopSpinner: function () {
 
-        this.spinner.stop();
+        if (this.spinner) {
+            this.spinner.stop();
+        }
     },
 
     startScroll: function (dx) {
 
+        if (this.scroll) {
+            return;
+        }
+
         var self = this;
 
-        if (!this.scroll) {
+        // Scroll dx 60 times a second
+        this.scroll = setInterval(function () {
 
-            // Scroll dx 60 times a second
-            this.scroll = setInterval(function () {
+            self.moveTimeline(dx);
 
-                self.moveTimeline(dx);
-
-            }, 1000 / 60);
-        }
+        }, 1000 / 60);
     },
 
     stopScroll: function () {
 
-        clearInterval(this.scroll);
-        this.scroll = false;
+        if (this.scroll) {
+            clearInterval(this.scroll);
+            this.scroll = false;
+        }
     }
 });
 ;
