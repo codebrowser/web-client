@@ -310,9 +310,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
             }
         }
 
-        // Restore diff state if necessary
+        // Restore or clear diff state
         if (!this.diff) {
             this.toggleDiff(localStorage.getItem(config.storage.view.EditorView.diff) === 'true');
+        } else {
+            this.clearDiff();
         }
 
         // Fetch previous file only if the models are not the same
