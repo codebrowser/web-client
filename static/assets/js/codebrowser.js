@@ -3184,13 +3184,12 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
         var course = codebrowser.model.Course.findOrCreate({ id: courseId });
         this.exercises(null, courseId, { course: course });
-
     },
 
     exercises: function (studentId, courseId, options) {
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
-                                                                                       courseId: courseId });
+                                                                                         courseId: courseId });
 
         if (options.course) {
             exerciseCollection.course = options.course;
