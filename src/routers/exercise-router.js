@@ -2,8 +2,8 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'courses/(:studentId):courseId(/)':                   'navigate',
-        'courses/(:studentId):courseId/exercises(/)':         'exercises',
+        'courses/:courseId(/)':                               'navigateToCourseExercises',
+        'courses/:courseId/exercises(/)':                     'courseExercises',
         'students/:studentId/courses/:courseId(/)':           'navigate',
         'students/:studentId/courses/:courseId/exercises(/)': 'exercises'
 
@@ -24,16 +24,15 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
+    navigateToCourseExercises: function (courseId) {
+
+        codebrowser.app.snapshot.navigate('#/courses/' +
+                                          courseId +
+                                          '/exercises', { replace: true });
+
+    },
+
     navigate: function (studentId, courseId) {
-
-        if (!studentId) {
-
-            codebrowser.app.snapshot.navigate('#/courses/' +
-                                              courseId +
-                                              '/exercises', { replace: true });
-
-            return;
-        }
 
         codebrowser.app.snapshot.navigate('#/students/' +
                                           studentId +
@@ -42,10 +41,20 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
                                           '/exercises', { replace: true });
     },
 
-    exercises: function (studentId, courseId) {
+    courseExercises: function (courseId) {
+
+        var course = codebrowser.model.Course.findOrCreate({ id: courseId });
+        this.exercises(null, courseId, { course: course });
+    },
+
+    exercises: function (studentId, courseId, options) {
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
-                                                                                       courseId: courseId });
+                                                                                         courseId: courseId });
+
+        if (options && options.course) {
+            exerciseCollection.course = options.course;
+        }
 
         this.exerciseView.collection = exerciseCollection;
 

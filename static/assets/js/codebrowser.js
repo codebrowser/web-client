@@ -137,12 +137,24 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["Handlebars"]["templates"]["ExercisesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
 
-function program1(depth0,data,depth1) {
+function program1(depth0,data) {
+  
+  var buffer = "", stack1, options;
+  buffer += "\n\n            ";
+  options = {hash:{},inverse:self.noop,fn:self.programWithDepth(2, program2, data, depth0),data:data};
+  if (stack1 = helpers.exercises) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.exercises; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.exercises) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        ";
+  return buffer;
+  }
+function program2(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\n            <li><a href='#/students/"
+  buffer += "\n                <li><a href='#/students/"
     + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
     + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -154,15 +166,41 @@ function program1(depth0,data,depth1) {
   if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
-    + "</a></li>\n        ";
+    + "</a></li>\n            ";
+  return buffer;
+  }
+
+function program4(depth0,data) {
+  
+  var buffer = "", stack1, options;
+  buffer += "\n\n            ";
+  options = {hash:{},inverse:self.noop,fn:self.programWithDepth(5, program5, data, depth0),data:data};
+  if (stack1 = helpers.exercises) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.exercises; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.exercises) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        ";
+  return buffer;
+  }
+function program5(depth0,data,depth1) {
+  
+  var buffer = "", stack1, stack2;
+  buffer += "\n                <li><a href='#/courses/"
+    + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "/exercises/";
+  if (stack2 = helpers.id) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.id; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/students'>";
+  if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "</a></li>\n            ";
   return buffer;
   }
 
   buffer += "<h2>Exercises</h2>\n\n<section>\n\n    <ul>\n        ";
-  options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
-  if (stack1 = helpers.exercises) { stack1 = stack1.call(depth0, options); }
-  else { stack1 = depth0.exercises; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  if (!helpers.exercises) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  stack1 = helpers['if'].call(depth0, depth0.studentId, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
@@ -947,10 +985,6 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
         /* Fetch exercises related to a course */
         if (this.course) {
             return this.course.url() + '/exercises';
-        }
-
-        if (!this.studentId && this.courseId) {
-            return config.api.main.root + 'courses/' + this.courseId + '/exercises';
         }
 
         /* Fetch exercises related to a student and course */
@@ -3145,8 +3179,8 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'courses/(:studentId):courseId(/)':                   'navigate',
-        'courses/(:studentId):courseId/exercises(/)':         'exercises',
+        'courses/:courseId(/)':                               'navigateToCourseExercises',
+        'courses/:courseId/exercises(/)':                     'courseExercises',
         'students/:studentId/courses/:courseId(/)':           'navigate',
         'students/:studentId/courses/:courseId/exercises(/)': 'exercises'
 
@@ -3167,16 +3201,15 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
+    navigateToCourseExercises: function (courseId) {
+
+        codebrowser.app.snapshot.navigate('#/courses/' +
+                                          courseId +
+                                          '/exercises', { replace: true });
+
+    },
+
     navigate: function (studentId, courseId) {
-
-        if (!studentId) {
-
-            codebrowser.app.snapshot.navigate('#/courses/' +
-                                              courseId +
-                                              '/exercises', { replace: true });
-
-            return;
-        }
 
         codebrowser.app.snapshot.navigate('#/students/' +
                                           studentId +
@@ -3185,10 +3218,20 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
                                           '/exercises', { replace: true });
     },
 
-    exercises: function (studentId, courseId) {
+    courseExercises: function (courseId) {
+
+        var course = codebrowser.model.Course.findOrCreate({ id: courseId });
+        this.exercises(null, courseId, { course: course });
+    },
+
+    exercises: function (studentId, courseId, options) {
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
-                                                                                       courseId: courseId });
+                                                                                         courseId: courseId });
+
+        if (options && options.course) {
+            exerciseCollection.course = options.course;
+        }
 
         this.exerciseView.collection = exerciseCollection;
 

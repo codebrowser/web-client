@@ -5,17 +5,31 @@ exports.tests = [
     {
         name: 'should show from base URL',
         func: function (done) {
-            
+
             exports.driver
                     .url('localhost:8000')
                     .getSource(function(source) {
-                
+
                 buster.assertions.assert(source.indexOf('<h2>Students</h2>') !== -1);
 
             }).end(done);
         }
     },
-    
+
+    {
+        name: 'click',
+        func: function (done) {
+
+            exports.driver
+                    .url('localhost:8000/#/students/7/courses')
+                    .getSource(function (source) {
+
+                console.log(source);
+
+            }).end(done);
+        }
+    },
+
     {
         name: 'should render student list',
         func: function (done) {
@@ -41,7 +55,7 @@ exports.tests = [
                     .getSource(function(source) {
 
                 exports.source = source;
-                
+
                 buster.assertions.assert(source.indexOf('#/students/2/courses') !== -1);
                 buster.assertions.assert(source.indexOf('#/students/7/courses') !== -1);
                 buster.assertions.assert(source.indexOf('#/students/167/courses') !== -1);

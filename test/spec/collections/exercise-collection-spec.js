@@ -16,6 +16,13 @@ describe('ExerciseCollection', function () {
         expect(exercises.model).toBe(codebrowser.model.Exercise);
     });
 
+    it('url should throw error if no studentId is passed', function () {
+
+        exercises = new codebrowser.collection.ExerciseCollection(null, { courseId: 2 });
+
+        expect(function () { exercises.url() }).toThrow(missingOptionsError);
+    });
+
     it('url should throw error if no courseId is passed', function () {
 
         exercises = new codebrowser.collection.ExerciseCollection(null, { studentId: 1 });
