@@ -50,6 +50,11 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
         var self = this;
 
+        // Wait for fetches to be in sync
+        var fetchSynced = _.after(3, function () {
+            self.exerciseView.render();
+        });
+
         if (studentId) {
 
             var student = codebrowser.model.Student.findOrCreate({ id: studentId });
@@ -63,6 +68,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
                 success: function () {
 
                     self.exerciseView.student = student;
+                    fetchSynced();
                 },
 
                 // Student fetch failed
@@ -73,6 +79,9 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
             });
 
+        } else {
+
+            fetchSynced();
         }
 
         var course = codebrowser.model.Course.findOrCreate({ id: courseId });
@@ -90,6 +99,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
             success: function () {
 
                 self.exerciseView.course = course;
+                fetchSynced();
             },
 
             // Course fetch failed
@@ -110,7 +120,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
             success: function () {
 
-                self.exerciseView.render();
+                fetchSynced();
             },
 
             // Exercises fetch failed
