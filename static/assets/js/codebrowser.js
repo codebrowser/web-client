@@ -949,10 +949,6 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
             return this.course.url() + '/exercises';
         }
 
-        if (!this.studentId && this.courseId) {
-            return config.api.main.root + 'courses/' + this.courseId + '/exercises';
-        }
-
         /* Fetch exercises related to a student and course */
         if (!this.studentId || !this.courseId) {
             throw new Error('Options studentId and courseId are required to fetch exercises.');
@@ -3186,14 +3182,19 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     courseExercises: function (courseId) {
 
-        this.exercises(null, courseId);
+        var course = codebrowser.model.Course.findOrCreate({ id: courseId });
+        this.exercises(null, courseId, { course: course });
 
     },
 
-    exercises: function (studentId, courseId) {
+    exercises: function (studentId, courseId, options) {
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
                                                                                        courseId: courseId });
+
+        if (options.course) {
+            exerciseCollection.course = options.course;
+        }
 
         this.exerciseView.collection = exerciseCollection;
 

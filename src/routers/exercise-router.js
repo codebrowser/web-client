@@ -43,14 +43,19 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     courseExercises: function (courseId) {
 
-        this.exercises(null, courseId);
+        var course = codebrowser.model.Course.findOrCreate({ id: courseId });
+        this.exercises(null, courseId, { course: course });
 
     },
 
-    exercises: function (studentId, courseId) {
+    exercises: function (studentId, courseId, options) {
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
                                                                                        courseId: courseId });
+
+        if (options.course) {
+            exerciseCollection.course = options.course;
+        }
 
         this.exerciseView.collection = exerciseCollection;
 
