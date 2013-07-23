@@ -37,6 +37,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         // Wait for fetches to be in sync
         var fetchSynced = _.after(2, function () {
             self.courseView.render();
+            codebrowser.controller.ViewController.push(self.courseView);
         });
 
         var student = codebrowser.model.Student.findOrCreate({ id: studentId });
@@ -82,7 +83,5 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
-
-        codebrowser.controller.ViewController.push(this.courseView);
     }
 });

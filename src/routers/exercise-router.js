@@ -53,6 +53,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         // Wait for fetches to be in sync
         var fetchSynced = _.after(3, function () {
             self.exerciseView.render();
+            codebrowser.controller.ViewController.push(self.exerciseView);
         });
 
         if (studentId) {
@@ -129,7 +130,5 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
-
-        codebrowser.controller.ViewController.push(this.exerciseView);
     }
 });

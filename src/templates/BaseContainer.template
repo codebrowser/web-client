@@ -1,0 +1,12 @@
+<section>
+
+    <ul class='breadcrumb'>
+        <li class='active'>Home</li>
+    </ul>
+
+    <ul>
+        <li><a href='/#/students'>Students</a></li>
+        <li><a href='/#/courses'>Courses</a></li>
+    </ul>
+
+</section>

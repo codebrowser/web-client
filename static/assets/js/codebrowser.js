@@ -1,6 +1,15 @@
 this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 
+this["Handlebars"]["templates"]["BaseContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<section>\n\n    <ul class='breadcrumb'>\n        <li class='active'>Home</li>\n    </ul>\n\n    <ul>\n        <li><a href='/#/students'>Students</a></li>\n        <li><a href='/#/courses'>Courses</a></li>\n    </ul>\n\n</section>\n";
+  });
+
 this["Handlebars"]["templates"]["CoursesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -1333,6 +1342,23 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
     model: codebrowser.model.Student,
     url: config.api.main.root + 'students'
 
+});
+;
+
+codebrowser.view.BaseView = Backbone.View.extend({
+
+    id: 'list-container',
+    template: Handlebars.templates.BaseContainer,
+
+    /* Render */
+
+    render: function () {
+
+        // Template
+        var output = this.template();
+
+        this.$el.html(output);
+    }
 });
 ;
 
@@ -3161,6 +3187,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     initialize: function () {
 
+        this.baseView = new codebrowser.view.BaseView();
         this.errorView = new codebrowser.view.ErrorView({ model: { class: 'alert-error', message: 'Oops!' } });
     },
 
@@ -3168,7 +3195,8 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     root: function () {
 
-        this.navigate('#/students');
+        this.baseView.render();
+        codebrowser.controller.ViewController.push(this.baseView);
     },
 
     notFound: function () {
@@ -3217,6 +3245,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         // Wait for fetches to be in sync
         var fetchSynced = _.after(2, function () {
             self.courseView.render();
+            codebrowser.controller.ViewController.push(self.courseView);
         });
 
         var student = codebrowser.model.Student.findOrCreate({ id: studentId });
@@ -3262,8 +3291,6 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
-
-        codebrowser.controller.ViewController.push(this.courseView);
     }
 });
 ;
@@ -3323,6 +3350,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         // Wait for fetches to be in sync
         var fetchSynced = _.after(3, function () {
             self.exerciseView.render();
+            codebrowser.controller.ViewController.push(self.exerciseView);
         });
 
         if (studentId) {
@@ -3399,8 +3427,6 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
-
-        codebrowser.controller.ViewController.push(this.exerciseView);
     }
 });
 ;
