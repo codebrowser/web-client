@@ -10,6 +10,7 @@ codebrowser.view.CoursesView = Backbone.View.extend({
         var model = {
 
             studentId: this.collection.studentId,
+            student: this.student.toJSON(),
             courses: this.collection.toJSON()
 
         }

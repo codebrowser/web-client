@@ -32,11 +32,32 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     courses: function (studentId) {
 
+        var self = this;
+
+        var student = codebrowser.model.Student.findOrCreate({ id: studentId });
+
+        // Fetch student
+        student.fetch({
+
+            cache: true,
+            expires: config.cache.expires,
+
+            success: function () {
+
+                self.courseView.student = student;
+            },
+
+            // Student fetch failed
+            error: function () {
+
+                self.notFound();
+            }
+
+        });
+
         var courseCollection = new codebrowser.collection.CourseCollection(null, { studentId: studentId });
 
         this.courseView.collection = courseCollection;
-
-        var self = this;
 
         // Fetch course collection
         courseCollection.fetch({

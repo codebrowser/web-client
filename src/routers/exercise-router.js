@@ -43,22 +43,64 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     courseExercises: function (courseId) {
 
-        var course = codebrowser.model.Course.findOrCreate({ id: courseId });
-        this.exercises(null, courseId, { course: course });
+        this.exercises(null, courseId);
     },
 
-    exercises: function (studentId, courseId, options) {
+    exercises: function (studentId, courseId) {
+
+        var self = this;
+
+        if (studentId) {
+
+            var student = codebrowser.model.Student.findOrCreate({ id: studentId });
+
+            // Fetch student
+            student.fetch({
+
+                cache: true,
+                expires: config.cache.expires,
+
+                success: function () {
+
+                    self.exerciseView.student = student;
+                },
+
+                // Student fetch failed
+                error: function () {
+
+                    self.notFound();
+                }
+
+            });
+
+        }
+
+        var course = codebrowser.model.Course.findOrCreate({ id: courseId });
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
                                                                                          courseId: courseId });
+        exerciseCollection.course = course;
 
-        if (options && options.course) {
-            exerciseCollection.course = options.course;
-        }
+        // Fetch course
+        course.fetch({
+
+            cache: true,
+            expires: config.cache.expires,
+
+            success: function () {
+
+                self.exerciseView.course = course;
+            },
+
+            // Course fetch failed
+            error: function () {
+
+                self.notFound();
+            }
+
+        });
 
         this.exerciseView.collection = exerciseCollection;
-
-        var self = this;
 
         // Fetch exercise collection
         exerciseCollection.fetch({

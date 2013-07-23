@@ -1,21 +1,50 @@
-<h2>Exercises</h2>
-
 <section>
 
-    <ul>
+    <ul class='breadcrumb'>
+
+        <li><a href='/'>Home</a> <span class='divider'>/</span></li>
+
         {{#if studentId}}
-
-            {{#exercises}}
-                <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></li>
-            {{/exercises}}
-
-        {{else}}
-
-            {{#exercises}}
-                <li><a href='#/courses/{{../courseId}}/exercises/{{id}}/students'>{{name}}</a></li>
-            {{/exercises}}
-
+            <li><a href='/#/students'>Students</a> <span class='divider'>/</span></li>
+            <li><a href='/#/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
         {{/if}}
+
+        <li><a href='/#/{{#if studentId}}students/{{studentId}}/{{/if}}courses'>Courses</a> <span class='divider'>/</span></li>
+        <li><a href='/#/{{#if studentId}}students/{{studentId}}/{{/if}}courses/{{courseId}}'>{{course.name}}</a> <span class='divider'>/</span></li>
+        <li class='active'>Exercises</li>
+
     </ul>
+
+    <table class='table table-hover'>
+
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {{#if studentId}}
+
+                {{#exercises}}
+                    <tr>
+                        <td class='link'><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></td>
+                    </tr>
+                {{/exercises}}
+
+            {{else}}
+
+                {{#exercises}}
+                    <tr>
+                        <td class='link'><a href='#/courses/{{../courseId}}/exercises/{{id}}/students'>{{name}}</a></td>
+                    </tr>
+                {{/exercises}}
+
+            {{/if}}
+
+        </tbody>
+
+    </table>
 
 </section>
