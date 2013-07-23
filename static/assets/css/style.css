@@ -120,6 +120,47 @@ a .icon-gray:hover {
     }
 }
 
+/* Breadcrumb */
+
+.breadcrumb {
+
+    margin-top: 40px;
+    padding: 6px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
+
+}
+
+.breadcrumb a {
+
+    color: rgba(0, 0, 0, 0.7);
+    text-decoration: none;
+
+}
+
+/* Tables */
+
+.table th {
+
+    font-weight: 400;
+
+}
+
+.table td.link {
+
+    padding: 0;
+
+}
+
+.table td a {
+
+    display: block;
+    padding: 8px;
+    color: rgba(0, 0, 0, 0.6);
+    text-decoration: none;
+
+}
+
 /* Forms */
 
 .control-group .checkbox {
@@ -168,7 +209,7 @@ a .icon-gray:hover {
     font-size: 20px;
     font-weight: 400;
     line-height: 20px;
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.7);
 
 }
 
@@ -399,10 +440,8 @@ a .icon-gray:hover {
 
 #snapshot-files-container ul li a {
 
-    display: inline-block;
-    margin-left: -5px;
+    display: block;
     padding: 0 0 0 10px;
-    width: 190px;
     color: rgba(0, 0, 0, 0.7);
     text-decoration: none;
 

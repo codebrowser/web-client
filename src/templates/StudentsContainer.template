@@ -1,11 +1,26 @@
-<h2>Students</h2>
-
 <section>
 
-    <ul>
-        {{#students}}
-            <li><a href='#/students/{{id}}/courses'>{{name}}</a></li>
-        {{/students}}
+    <ul class='breadcrumb'>
+        <li><a href='/'>Home</a> <span class='divider'>/</span></li>
+        <li class='active'>Students</li>
     </ul>
+
+    <table class='table table-hover'>
+
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#students}}
+                <tr>
+                    <td class='link'><a href='#/students/{{id}}/courses'>{{name}}</a></td>
+                </tr>
+            {{/students}}
+        </tbody>
+
+    </table>
 
 </section>
