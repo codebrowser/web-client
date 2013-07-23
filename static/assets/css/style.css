@@ -137,6 +137,20 @@ a .icon-gray:hover {
 
 }
 
+.breadcrumb a:hover {
+
+    color: rgba(0, 0, 0, 1);
+
+}
+
+/* Lists */
+
+ul.selection a {
+
+    color: rgba(0, 0, 0, 0.6);
+
+}
+
 /* Tables */
 
 .table th {

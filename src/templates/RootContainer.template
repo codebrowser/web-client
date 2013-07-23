@@ -4,7 +4,7 @@
         <li class='active'>Home</li>
     </ul>
 
-    <ul>
+    <ul class='nav nav-tabs nav-stacked selection'>
         <li><a href='/#/students'>Students</a></li>
         <li><a href='/#/courses'>Courses</a></li>
     </ul>
