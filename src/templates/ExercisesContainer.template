@@ -3,9 +3,19 @@
 <section>
 
     <ul>
-        {{#exercises}}
-            <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></li>
-        {{/exercises}}
+        {{#if studentId}}
+
+            {{#exercises}}
+                <li><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></li>
+            {{/exercises}}
+
+        {{else}}
+
+            {{#exercises}}
+                <li><a href='#/courses/{{../courseId}}/exercises/{{id}}/students'>{{name}}</a></li>
+            {{/exercises}}
+
+        {{/if}}
     </ul>
 
 </section>
