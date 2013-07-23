@@ -4,13 +4,16 @@ this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 this["Handlebars"]["templates"]["CoursesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, options, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
 
-function program1(depth0,data,depth1) {
+function program1(depth0,data) {
   
-  var buffer = "", stack1;
+  var buffer = "", stack1, options;
   buffer += "\n\n            ";
-  stack1 = helpers['if'].call(depth0, depth1.studentId, {hash:{},inverse:self.program(4, program4, data),fn:self.programWithDepth(2, program2, data, depth0),data:data});
+  options = {hash:{},inverse:self.noop,fn:self.programWithDepth(2, program2, data, depth0),data:data};
+  if (stack1 = helpers.courses) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.courses; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.courses) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n        ";
   return buffer;
@@ -34,6 +37,18 @@ function program2(depth0,data,depth1) {
 
 function program4(depth0,data) {
   
+  var buffer = "", stack1, options;
+  buffer += "\n\n            ";
+  options = {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data};
+  if (stack1 = helpers.courses) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.courses; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.courses) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        ";
+  return buffer;
+  }
+function program5(depth0,data) {
+  
   var buffer = "", stack1;
   buffer += "\n                <li><a href='#/courses/";
   if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
@@ -48,10 +63,7 @@ function program4(depth0,data) {
   }
 
   buffer += "<h2>Courses</h2>\n\n<section>\n\n    <ul>\n        ";
-  options = {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data};
-  if (stack1 = helpers.courses) { stack1 = stack1.call(depth0, options); }
-  else { stack1 = depth0.courses; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  if (!helpers.courses) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  stack1 = helpers['if'].call(depth0, depth0.studentId, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </ul>\n\n</section>\n";
   return buffer;
