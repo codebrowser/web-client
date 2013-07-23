@@ -197,7 +197,7 @@ module.exports = function (grunt) {
 
             dist: {
 
-                url: 'http://localhost:8000/',
+                url: 'http://localhost:8000/#/students',
                 tests: 'test/selenium/*.js'
 
             },
