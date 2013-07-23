@@ -3145,8 +3145,8 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'courses/(:studentId):courseId(/)':                   'navigate',
-        'courses/(:studentId):courseId/exercises(/)':         'exercises',
+        'courses/:courseId(/)':                               'navigateToCourseExercises',
+        'courses/:courseId/exercises(/)':                     'courseExercises',
         'students/:studentId/courses/:courseId(/)':           'navigate',
         'students/:studentId/courses/:courseId/exercises(/)': 'exercises'
 
@@ -3167,22 +3167,27 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
+    navigateToCourseExercises: function (courseId) {
+
+        codebrowser.app.snapshot.navigate('#/courses/' +
+                                          courseId +
+                                          '/exercises', { replace: true });
+
+    },
+
     navigate: function (studentId, courseId) {
-
-        if (!studentId) {
-
-            codebrowser.app.snapshot.navigate('#/courses/' +
-                                              courseId +
-                                              '/exercises', { replace: true });
-
-            return;
-        }
 
         codebrowser.app.snapshot.navigate('#/students/' +
                                           studentId +
                                           '/courses/' +
                                           courseId +
                                           '/exercises', { replace: true });
+    },
+
+    courseExercises: function (courseId) {
+
+        this.exercises(null, courseId);
+
     },
 
     exercises: function (studentId, courseId) {
