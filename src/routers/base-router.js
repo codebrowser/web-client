@@ -11,7 +11,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+        this.errorView = new codebrowser.view.ErrorView({ model: { class: 'alert-error', message: 'Oops!' } });
     },
 
     /* Actions */

@@ -24,7 +24,7 @@ var codebrowser = {
         // Oops! Catch all global unhandled errors
         window.onerror = function () {
 
-            var errorView = new codebrowser.view.ErrorView({ model: { message: 'Oops!' } });
+            var errorView = new codebrowser.view.ErrorView({ model: { class: 'alert-error', message: 'Oops!' } });
             codebrowser.controller.ViewController.push(errorView, true);
         }
 
