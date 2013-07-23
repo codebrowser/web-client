@@ -1,7 +1,7 @@
-codebrowser.view.BaseView = Backbone.View.extend({
+codebrowser.view.RootView = Backbone.View.extend({
 
-    id: 'list-container',
-    template: Handlebars.templates.BaseContainer,
+    id: 'root-container',
+    template: Handlebars.templates.RootContainer,
 
     /* Render */
 

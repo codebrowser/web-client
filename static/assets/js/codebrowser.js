@@ -1,15 +1,6 @@
 this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
 
-this["Handlebars"]["templates"]["BaseContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<section>\n\n    <ul class='breadcrumb'>\n        <li class='active'>Home</li>\n    </ul>\n\n    <ul>\n        <li><a href='/#/students'>Students</a></li>\n        <li><a href='/#/courses'>Courses</a></li>\n    </ul>\n\n</section>\n";
-  });
-
 this["Handlebars"]["templates"]["CoursesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -272,6 +263,15 @@ function program9(depth0,data,depth1) {
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n        </tbody>\n\n    </table>\n\n</section>\n";
   return buffer;
+  });
+
+this["Handlebars"]["templates"]["RootContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  
+
+
+  return "<section>\n\n    <ul class='breadcrumb'>\n        <li class='active'>Home</li>\n    </ul>\n\n    <ul>\n        <li><a href='/#/students'>Students</a></li>\n        <li><a href='/#/courses'>Courses</a></li>\n    </ul>\n\n</section>\n";
   });
 
 this["Handlebars"]["templates"]["SnapshotFilesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -1345,23 +1345,6 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 });
 ;
 
-codebrowser.view.BaseView = Backbone.View.extend({
-
-    id: 'list-container',
-    template: Handlebars.templates.BaseContainer,
-
-    /* Render */
-
-    render: function () {
-
-        // Template
-        var output = this.template();
-
-        this.$el.html(output);
-    }
-});
-;
-
 codebrowser.view.CoursesView = Backbone.View.extend({
 
     id: 'courses-container',
@@ -2081,6 +2064,23 @@ codebrowser.view.NotFoundErrorView = codebrowser.view.ErrorView.extend({
         class: 'alert-warning',
         message: 'Not Found.'
 
+    }
+});
+;
+
+codebrowser.view.RootView = Backbone.View.extend({
+
+    id: 'root-container',
+    template: Handlebars.templates.RootContainer,
+
+    /* Render */
+
+    render: function () {
+
+        // Template
+        var output = this.template();
+
+        this.$el.html(output);
     }
 });
 ;
@@ -3187,7 +3187,7 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     initialize: function () {
 
-        this.baseView = new codebrowser.view.BaseView();
+        this.rootView = new codebrowser.view.RootView();
         this.errorView = new codebrowser.view.ErrorView({ model: { class: 'alert-error', message: 'Oops!' } });
     },
 
@@ -3195,8 +3195,8 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     root: function () {
 
-        this.baseView.render();
-        codebrowser.controller.ViewController.push(this.baseView);
+        this.rootView.render();
+        codebrowser.controller.ViewController.push(this.rootView);
     },
 
     notFound: function () {
