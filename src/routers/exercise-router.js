@@ -2,8 +2,10 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students/:studentId/courses/:courseId':           'navigate',
-        'students/:studentId/courses/:courseId/exercises': 'exercises'
+        'courses/(:studentId):courseId(/)':                   'navigate',
+        'courses/(:studentId):courseId/exercises(/)':         'exercises',
+        'students/:studentId/courses/:courseId(/)':           'navigate',
+        'students/:studentId/courses/:courseId/exercises(/)': 'exercises'
 
     },
 
@@ -23,6 +25,15 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
     },
 
     navigate: function (studentId, courseId) {
+
+        if (!studentId) {
+
+            codebrowser.app.snapshot.navigate('#/courses/' +
+                                              courseId +
+                                              '/exercises', { replace: true });
+
+            return;
+        }
 
         codebrowser.app.snapshot.navigate('#/students/' +
                                           studentId +

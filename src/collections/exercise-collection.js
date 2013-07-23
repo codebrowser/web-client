@@ -21,6 +21,10 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
             return this.course.url() + '/exercises';
         }
 
+        if (!this.studentId && this.courseId) {
+            return config.api.main.root + 'courses/' + this.courseId + '/exercises';
+        }
+
         /* Fetch exercises related to a student and course */
         if (!this.studentId || !this.courseId) {
             throw new Error('Options studentId and courseId are required to fetch exercises.');

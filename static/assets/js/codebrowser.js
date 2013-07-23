@@ -937,6 +937,10 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
             return this.course.url() + '/exercises';
         }
 
+        if (!this.studentId && this.courseId) {
+            return config.api.main.root + 'courses/' + this.courseId + '/exercises';
+        }
+
         /* Fetch exercises related to a student and course */
         if (!this.studentId || !this.courseId) {
             throw new Error('Options studentId and courseId are required to fetch exercises.');
@@ -3066,9 +3070,9 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'courses':                     'courses',
-        'students/:studentId':         'navigate',
-        'students/:studentId/courses': 'courses'
+        'courses(/)':                     'courses',
+        'students/:studentId(/)':         'navigate',
+        'students/:studentId/courses(/)': 'courses'
 
     },
 
@@ -3129,8 +3133,10 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students/:studentId/courses/:courseId':           'navigate',
-        'students/:studentId/courses/:courseId/exercises': 'exercises'
+        'courses/(:studentId):courseId(/)':                   'navigate',
+        'courses/(:studentId):courseId/exercises(/)':         'exercises',
+        'students/:studentId/courses/:courseId(/)':           'navigate',
+        'students/:studentId/courses/:courseId/exercises(/)': 'exercises'
 
     },
 
@@ -3150,6 +3156,15 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
     },
 
     navigate: function (studentId, courseId) {
+
+        if (!studentId) {
+
+            codebrowser.app.snapshot.navigate('#/courses/' +
+                                              courseId +
+                                              '/exercises', { replace: true });
+
+            return;
+        }
 
         codebrowser.app.snapshot.navigate('#/students/' +
                                           studentId +
@@ -3194,10 +3209,10 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students/:studentId/courses/:courseId/exercises/:exerciseId':                                     'snapshot',
-        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots':                           'snapshot',
-        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId':               'snapshot',
-        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId': 'snapshot'
+        'students/:studentId/courses/:courseId/exercises/:exerciseId(/)':                                     'snapshot',
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots(/)':                           'snapshot',
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId(/)':               'snapshot',
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot'
 
     },
 
@@ -3301,7 +3316,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students': 'courses'
+        'students(/)': 'students'
 
     },
 
@@ -3320,7 +3335,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
-    courses: function () {
+    students: function () {
 
         var studentCollection = new codebrowser.collection.StudentCollection();
 

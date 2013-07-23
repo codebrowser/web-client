@@ -2,9 +2,9 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'courses':                     'courses',
-        'students/:studentId':         'navigate',
-        'students/:studentId/courses': 'courses'
+        'courses(/)':                     'courses',
+        'students/:studentId(/)':         'navigate',
+        'students/:studentId/courses(/)': 'courses'
 
     },
 

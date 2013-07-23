@@ -2,7 +2,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students': 'students'
+        'students(/)': 'students'
 
     },
 

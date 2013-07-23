@@ -2,10 +2,10 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students/:studentId/courses/:courseId/exercises/:exerciseId':                                     'snapshot',
-        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots':                           'snapshot',
-        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId':               'snapshot',
-        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId': 'snapshot'
+        'students/:studentId/courses/:courseId/exercises/:exerciseId(/)':                                     'snapshot',
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots(/)':                           'snapshot',
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId(/)':               'snapshot',
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot'
 
     },
 
