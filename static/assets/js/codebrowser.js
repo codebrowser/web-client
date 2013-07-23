@@ -3229,7 +3229,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
                                                                                          courseId: courseId });
 
-        if (options.course) {
+        if (options && options.course) {
             exerciseCollection.course = options.course;
         }
 
