@@ -2,7 +2,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students': 'courses'
+        'students': 'students'
 
     },
 
@@ -21,7 +21,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
-    courses: function () {
+    students: function () {
 
         var studentCollection = new codebrowser.collection.StudentCollection();
 
