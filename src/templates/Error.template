@@ -1,1 +1,1 @@
-<p>{{message}}</p>
+<p class='alert {{class}}'>{{message}}</p>
