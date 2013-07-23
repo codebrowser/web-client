@@ -4,7 +4,13 @@
 
     <ul>
         {{#courses}}
-            <li><a href='#/students/{{../studentId}}/courses/{{id}}/exercises'>{{name}}</a></li>
+
+            {{#if ../studentId}}
+                <li><a href='#/students/{{../studentId}}/courses/{{id}}/exercises'>{{name}}</a></li>
+            {{else}}
+                <li><a href='#/courses/{{id}}/exercises'>{{name}}</a></li>
+            {{/if}}
+
         {{/courses}}
     </ul>
 
