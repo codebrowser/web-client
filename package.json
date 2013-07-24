@@ -5,8 +5,8 @@
 
     "dependencies": {
 
-    "node-static": "0.6.9",
-    "mustache": "0.7.2"
+        "node-static": "0.6.9",
+        "mustache": "0.7.2"
 
     },
 
@@ -20,7 +20,7 @@
         "grunt-contrib-jshint": "0.6.0",
         "grunt-contrib-jasmine": "0.4.2",
         "grunt-template-jasmine-istanbul": "0.2.4",
-        "grunt-casperjs": "~1.0.6"
+        "grunt-casperjs": "1.0.6"
 
     },
 
