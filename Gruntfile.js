@@ -18,7 +18,7 @@ module.exports = function (grunt) {
             test: {
 
                 files: ['test/config/config.js', 'test/casperjs/*.js', 'test/spec/**/*-spec.js'],
-                tasks: ['jshint:test', 'jshint:spec'],
+                tasks: ['jshint:test', 'jshint:spec', 'jshint:casperjs'],
 
             }
         },
@@ -133,6 +133,16 @@ module.exports = function (grunt) {
 
                 }
             },
+
+            casperjs: {
+
+                src: 'test/casperjs/*.js',
+                options: {
+
+                    jshintrc: 'test/casperjs/jshint.json'
+                }
+
+            }
         },
 
         jasmine: {
