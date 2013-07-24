@@ -181,6 +181,18 @@ module.exports = function (grunt) {
             }
         },
 
+        connect: {
+
+            server: {
+
+                options: {
+
+                    base: 'static'
+
+                }
+            }
+        },
+
         casperjs: {
 
             files: ['test/casperjs/*.js']
@@ -196,12 +208,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-casperjs');
 
     /* Register tasks */
 
     grunt.registerTask('test', ['jshint', 'jasmine']);
-    grunt.registerTask('integration-test', ['casperjs']);
+    grunt.registerTask('integration-test', ['connect', 'casperjs']);
     grunt.registerTask('build', ['handlebars', 'concat', 'uglify']);
     grunt.registerTask('default', ['test', 'integration-test', 'build']);
 }
