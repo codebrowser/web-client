@@ -16,13 +16,16 @@
 
     "globals": {
 
+        "ace": true,
         "Backbone": true,
         "beforeEach": true,
         "codebrowser": true,
         "config": true,
         "describe": true,
+        "document": true,
         "expect": true,
         "it": true,
+        "localStorage": true,
         "runs": true,
         "spyOn": true,
         "waitsFor": true

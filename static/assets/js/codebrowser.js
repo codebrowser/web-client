@@ -78,7 +78,7 @@ function program7(depth0,data) {
   buffer += "<section>\r\n\r\n    <ul class='breadcrumb'>\r\n\r\n        <li><a href='/'>Home</a> <span class='divider'>/</span></li>\r\n\r\n        ";
   stack1 = helpers['if'].call(depth0, depth0.studentId, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\r\n\r\n        <li class='active'>Courses</li>\r\n\r\n    </ul>\r\n\r\n    <table class='table table-hover'>\r\n\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n            </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n\r\n            ";
+  buffer += "\r\n\r\n        <li class='active'>Courses</li>\r\n\r\n    </ul>\r\n\r\n    <h2>Courses</h2>\r\n\r\n    <table class='table table-hover'>\r\n\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n            </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n\r\n            ";
   stack1 = helpers['if'].call(depth0, depth0.studentId, {hash:{},inverse:self.program(6, program6, data),fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\r\n\r\n        </tbody>\r\n\r\n    </table>\r\n\r\n</section>\r\n";
@@ -258,7 +258,7 @@ function program9(depth0,data,depth1) {
   buffer += escapeExpression(stack1)
     + "'>"
     + escapeExpression(((stack1 = ((stack1 = depth0.course),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a> <span class='divider'>/</span></li>\r\n        <li class='active'>Exercises</li>\r\n\r\n    </ul>\r\n\r\n    <table class='table table-hover'>\r\n\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n            </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n\r\n            ";
+    + "</a> <span class='divider'>/</span></li>\r\n        <li class='active'>Exercises</li>\r\n\r\n    </ul>\r\n\r\n    <h2>Exercises</h2>\r\n\r\n    <table class='table table-hover'>\r\n\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n            </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n\r\n            ";
   stack2 = helpers['if'].call(depth0, depth0.studentId, {hash:{},inverse:self.program(8, program8, data),fn:self.program(5, program5, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\r\n\r\n        </tbody>\r\n\r\n    </table>\r\n\r\n</section>\r\n";
@@ -375,7 +375,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<section>\r\n\r\n    <ul class='breadcrumb'>\r\n        <li><a href='/'>Home</a> <span class='divider'>/</span></li>\r\n        <li class='active'>Students</li>\r\n    </ul>\r\n\r\n    <table class='table table-hover'>\r\n\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n            </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n            ";
+  buffer += "<section>\r\n\r\n    <ul class='breadcrumb'>\r\n        <li><a href='/'>Home</a> <span class='divider'>/</span></li>\r\n        <li class='active'>Students</li>\r\n    </ul>\r\n\r\n    <h2>Students</h2>\r\n\r\n    <table class='table table-hover'>\r\n\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n            </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n            ";
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
   if (stack1 = helpers.students) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.students; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
