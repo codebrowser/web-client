@@ -5,6 +5,8 @@
         <li class='active'>Students</li>
     </ul>
 
+    <h2>Students</h2>
+
     <table class='table table-hover'>
 
         <thead>

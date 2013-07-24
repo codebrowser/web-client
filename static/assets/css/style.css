@@ -120,26 +120,14 @@ a .icon-gray:hover {
     }
 }
 
-/* Breadcrumb */
+/* Headers */
 
-.breadcrumb {
+h2 {
 
-    padding: 6px 15px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background-color: rgba(0, 0, 0, 0.05);
-
-}
-
-.breadcrumb a {
-
-    color: rgba(0, 0, 0, 0.7);
-    text-decoration: none;
-
-}
-
-.breadcrumb a:hover {
-
-    color: rgba(0, 0, 0, 1);
+    border-bottom: 4px solid rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
 
 }
 
@@ -148,6 +136,12 @@ a .icon-gray:hover {
 ul.selection a {
 
     color: rgba(0, 0, 0, 0.6);
+
+}
+
+ul.selection a:hover {
+
+    color: rgba(0, 0, 0, 0.8);
 
 }
 
@@ -174,6 +168,12 @@ ul.selection a {
 
 }
 
+.table td a:hover {
+
+    color: rgba(0, 0, 0, 0.8);
+
+}
+
 /* Forms */
 
 .control-group .checkbox {
@@ -187,6 +187,28 @@ ul.selection a {
     margin-left: 148px;
     margin-right: 20px;
 
+}
+
+/* Breadcrumb */
+
+.breadcrumb {
+
+    padding: 6px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
+
+}
+
+.breadcrumb a {
+
+    color: rgba(21, 100, 184, 0.7);
+    text-decoration: none;
+
+}
+
+.breadcrumb a:hover {
+
+    color: rgba(21, 100, 184, 0.8);
 }
 
 /* Popover */
