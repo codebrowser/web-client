@@ -17,8 +17,8 @@ module.exports = function (grunt) {
 
             test: {
 
-                files: ['test/config/config.js', 'test/selenium/*.js', 'test/spec/**/*-spec.js'],
-                tasks: ['jshint:test', 'jshint:spec', 'jshint:selenium'],
+                files: ['test/config/config.js', 'test/casperjs/*.js', 'test/spec/**/*-spec.js'],
+                tasks: ['jshint:test', 'jshint:spec'],
 
             }
         },
@@ -133,16 +133,6 @@ module.exports = function (grunt) {
 
                 }
             },
-
-            selenium: {
-
-                src: 'test/selenium/*.js',
-                options: {
-
-                    jshintrc: 'test/selenium/jshint.json'
-
-                }
-            }
         },
 
         jasmine: {

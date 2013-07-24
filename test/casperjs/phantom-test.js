@@ -1,4 +1,4 @@
-// googletesting.js
+// phantom-test.js
 casper.test.begin('PhantomJS homepage has correct title', 1, function suite(test) {
 
     casper.start("http://www.phantomjs.org", function() {
