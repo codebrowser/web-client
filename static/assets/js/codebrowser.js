@@ -1340,7 +1340,23 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 codebrowser.collection.StudentCollection = Backbone.Collection.extend({
 
     model: codebrowser.model.Student,
-    url: config.api.main.root + 'students'
+
+    url: function () {
+
+        if (this.courseId && this.exerciseId) {
+            return config.api.main.root + 'courses/' + this.courseId + '/exercises/' + this.exerciseId + '/students';
+        }
+
+        return config.api.main.root + 'students';
+    },
+
+    initialize: function (options) {
+
+        if (options) {
+            this.courseId = options.courseId;
+            this.exerciseId = options.exerciseId;
+        }
+    }
 
 });
 ;
@@ -3542,7 +3558,8 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students(/)': 'students'
+        'students(/)':                                         'students',
+        'courses/:courseId/exercises/:exerciseId/students(/)': 'exerciseStudents'
 
     },
 
@@ -3561,9 +3578,15 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
-    students: function () {
+    exerciseStudents: function (courseId, exerciseId) {
 
-        var studentCollection = new codebrowser.collection.StudentCollection();
+        this.students({ courseId: courseId, exerciseId: exerciseId });
+
+    },
+
+    students: function (options) {
+
+        var studentCollection = new codebrowser.collection.StudentCollection(options);
 
         this.studentView.collection = studentCollection;
 
