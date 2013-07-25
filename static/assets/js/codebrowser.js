@@ -2194,15 +2194,15 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
                 var fileElement = $('[data-id="' + file.id + '"]', output);
 
                 var lines = file.lines();
-                var total = fileDifference.getCount().total();
+                var changed = fileDifference.getCount().total();
 
                 // New file
-                if (total === lines) {
+                if (changed === lines) {
                     fileElement.addClass('new');
                 }
 
                 // Modified file
-                if (total > 0 && total < lines) {
+                if (changed > 0 && changed < lines) {
                     fileElement.addClass('modified');
                 }
             });
@@ -3552,7 +3552,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     navigation: function (courseId, exerciseId, studentId) {
 
-        this.snapshot(studentId, courseId, exerciseId, null, null);
+        this.snapshot(studentId, courseId, exerciseId);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {

@@ -37,7 +37,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     navigation: function (courseId, exerciseId, studentId) {
 
-        this.snapshot(studentId, courseId, exerciseId, null, null);
+        this.snapshot(studentId, courseId, exerciseId);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {
