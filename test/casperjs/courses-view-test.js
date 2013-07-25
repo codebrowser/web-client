@@ -8,6 +8,8 @@ casper.test.begin('Courses view', 2, function suite(test) {
 
     casper.then(function() {
         this.waitForUrl('http://localhost:8000/#/courses', function() {
+            this.echo(this.getCurrentUrl());
+            this.echo(this.getHTML());
             test.assertSelectorHasText('li.active', 'Courses', 'has "Courses" label active in the navbar');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises\">ohpe') !== -1, 'has a course with link to exercise list');
         }, function() {
