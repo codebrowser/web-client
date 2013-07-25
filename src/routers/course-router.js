@@ -3,7 +3,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
     routes: {
 
         'courses(/)':                     'courses',
-        'students/:studentId(/)':         'navigate',
+        'students/:studentId(/)':         'navigation',
         'students/:studentId/courses(/)': 'courses'
 
     },
@@ -23,7 +23,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
-    navigate: function (studentId) {
+    navigation: function (studentId) {
 
         codebrowser.app.course.navigate('#/students/' +
                                         studentId +

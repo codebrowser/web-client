@@ -3293,7 +3293,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
     routes: {
 
         'courses(/)':                     'courses',
-        'students/:studentId(/)':         'navigate',
+        'students/:studentId(/)':         'navigation',
         'students/:studentId/courses(/)': 'courses'
 
     },
@@ -3313,7 +3313,7 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
-    navigate: function (studentId) {
+    navigation: function (studentId) {
 
         codebrowser.app.course.navigate('#/students/' +
                                         studentId +
@@ -3383,7 +3383,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
         'courses/:courseId(/)':                               'navigateToCourseExercises',
         'courses/:courseId/exercises(/)':                     'courseExercises',
-        'students/:studentId/courses/:courseId(/)':           'navigate',
+        'students/:studentId/courses/:courseId(/)':           'navigation',
         'students/:studentId/courses/:courseId/exercises(/)': 'exercises'
 
     },
@@ -3411,7 +3411,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     },
 
-    navigate: function (studentId, courseId) {
+    navigation: function (studentId, courseId) {
 
         codebrowser.app.exercise.navigate('#/students/' +
                                           studentId +
@@ -3467,7 +3467,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         var course = codebrowser.model.Course.findOrCreate({ id: courseId });
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
-                                                                                         courseId: courseId });
+                                                                                       courseId: courseId });
         exerciseCollection.course = course;
 
         // Fetch course
@@ -3631,7 +3631,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
     routes: {
 
         'students(/)':                                         'students',
-        'courses/:courseId/exercises/:exerciseId(/)':          'navigate',
+        'courses/:courseId/exercises/:exerciseId(/)':          'navigation',
         'courses/:courseId/exercises/:exerciseId/students(/)': 'exerciseStudents'
 
     },
@@ -3651,7 +3651,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
-    navigate: function (courseId, exerciseId) {
+    navigation: function (courseId, exerciseId) {
 
         codebrowser.app.student.navigate('#/courses/' +
                                          courseId +

@@ -4,7 +4,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
         'courses/:courseId(/)':                               'navigateToCourseExercises',
         'courses/:courseId/exercises(/)':                     'courseExercises',
-        'students/:studentId/courses/:courseId(/)':           'navigate',
+        'students/:studentId/courses/:courseId(/)':           'navigation',
         'students/:studentId/courses/:courseId/exercises(/)': 'exercises'
 
     },
@@ -32,7 +32,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     },
 
-    navigate: function (studentId, courseId) {
+    navigation: function (studentId, courseId) {
 
         codebrowser.app.exercise.navigate('#/students/' +
                                           studentId +
@@ -88,7 +88,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         var course = codebrowser.model.Course.findOrCreate({ id: courseId });
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
-                                                                                         courseId: courseId });
+                                                                                       courseId: courseId });
         exerciseCollection.course = course;
 
         // Fetch course
