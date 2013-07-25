@@ -25,11 +25,11 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     navigate: function (courseId, exerciseId) {
 
-        codebrowser.app.snapshot.navigate('#/courses/' +
-                                          courseId +
-                                          '/exercises/' +
-                                          exerciseId +
-                                          '/students', { replace: true });
+        codebrowser.app.student.navigate('#/courses/' +
+                                         courseId +
+                                         '/exercises/' +
+                                         exerciseId +
+                                         '/students', { replace: true });
 
     },
 

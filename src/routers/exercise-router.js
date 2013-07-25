@@ -26,7 +26,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     navigateToCourseExercises: function (courseId) {
 
-        codebrowser.app.snapshot.navigate('#/courses/' +
+        codebrowser.app.exercise.navigate('#/courses/' +
                                           courseId +
                                           '/exercises', { replace: true });
 
@@ -34,7 +34,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     navigate: function (studentId, courseId) {
 
-        codebrowser.app.snapshot.navigate('#/students/' +
+        codebrowser.app.exercise.navigate('#/students/' +
                                           studentId +
                                           '/courses/' +
                                           courseId +

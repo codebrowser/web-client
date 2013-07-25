@@ -5,7 +5,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         'students/:studentId/courses/:courseId/exercises/:exerciseId(/)':                                     'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots(/)':                           'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId(/)':               'snapshot',
-        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot'
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot',
+        'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots(/)':                           'navigation'
 
     },
 
@@ -32,6 +33,11 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         var errorView = new codebrowser.view.NotFoundErrorView();
 
         codebrowser.controller.ViewController.push(errorView, true);
+    },
+
+    navigation: function (courseId, exerciseId, studentId) {
+
+        this.snapshot(studentId, courseId, exerciseId, null, null);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {

@@ -3315,9 +3315,9 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     navigate: function (studentId) {
 
-        codebrowser.app.snapshot.navigate('#/students/' +
-                                          studentId +
-                                          '/courses', { replace: true });
+        codebrowser.app.course.navigate('#/students/' +
+                                        studentId +
+                                        '/courses', { replace: true });
     },
 
     courses: function (studentId) {
@@ -3405,7 +3405,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     navigateToCourseExercises: function (courseId) {
 
-        codebrowser.app.snapshot.navigate('#/courses/' +
+        codebrowser.app.exercise.navigate('#/courses/' +
                                           courseId +
                                           '/exercises', { replace: true });
 
@@ -3413,7 +3413,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     navigate: function (studentId, courseId) {
 
-        codebrowser.app.snapshot.navigate('#/students/' +
+        codebrowser.app.exercise.navigate('#/students/' +
                                           studentId +
                                           '/courses/' +
                                           courseId +
@@ -3520,7 +3520,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         'students/:studentId/courses/:courseId/exercises/:exerciseId(/)':                                     'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots(/)':                           'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId(/)':               'snapshot',
-        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot'
+        'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot',
+        'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots(/)':                           'navigation'
 
     },
 
@@ -3547,6 +3548,11 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         var errorView = new codebrowser.view.NotFoundErrorView();
 
         codebrowser.controller.ViewController.push(errorView, true);
+    },
+
+    navigation: function (courseId, exerciseId, studentId) {
+
+        this.snapshot(studentId, courseId, exerciseId, null, null);
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {
@@ -3647,11 +3653,11 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     navigate: function (courseId, exerciseId) {
 
-        codebrowser.app.snapshot.navigate('#/courses/' +
-                                          courseId +
-                                          '/exercises/' +
-                                          exerciseId +
-                                          '/students', { replace: true });
+        codebrowser.app.student.navigate('#/courses/' +
+                                         courseId +
+                                         '/exercises/' +
+                                         exerciseId +
+                                         '/students', { replace: true });
 
     },
 
