@@ -5,7 +5,7 @@ casper.test.begin('Courses view', 2, function suite(test) {
         this.clickLabel('Courses', 'a');
 
         // Wait for the new page to load
-        this.waitUntilVisible('body');
+        this.waitForSelector('li.active');
     });
 
     casper.then(function () {
