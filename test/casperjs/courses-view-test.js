@@ -7,7 +7,7 @@ casper.test.begin('Courses view', 2, function suite(test) {
     });
 
     casper.then(function() {
-        this.waitForUrl('http://localhost:8000/#/courses', function() {
+        this.waitForSelector('#courses-container', function() {
             this.echo(this.getCurrentUrl());
             this.echo(this.getHTML());
             test.assertSelectorHasText('li.active', 'Courses', 'has "Courses" label active in the navbar');
