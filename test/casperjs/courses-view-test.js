@@ -4,17 +4,13 @@ casper.test.begin('Courses view', 2, function suite(test) {
 
         this.clickLabel('Courses', 'a');
 
+        // Wait for the new page to load given selector
+        this.waitForSelector('#courses-container');
     });
 
     casper.then(function() {
-        this.waitForSelector('#courses-container', function() {
-            this.echo(this.getCurrentUrl());
-            this.echo(this.getHTML());
-            test.assertSelectorHasText('li.active', 'Courses', 'has "Courses" label active in the navbar');
-            test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises\">ohpe') !== -1, 'has a course with link to exercise list');
-        }, function() {
-            console.log(casper.getHTML());
-        }, 5000);
+        test.assertSelectorHasText('li.active', 'Courses', 'has "Courses" label active in the navbar');
+        test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises\">ohpe') !== -1, 'has a course with link to exercise list');
     });
 
     casper.run(function() {
