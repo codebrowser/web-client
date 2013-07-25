@@ -2,7 +2,9 @@ casper.test.begin('Students view', 3, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
-        this.clickLabel('Students', 'a');
+        this.waitForSelector('#root-container', function () {
+            this.clickLabel('Students', 'a');
+        });
 
     });
 
