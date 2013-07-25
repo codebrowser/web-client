@@ -2,6 +2,14 @@
 
     <ul class='breadcrumb'>
         <li><a href='/'>Home</a> <span class='divider'>/</span></li>
+
+        {{#if course}}
+            <li><a href='/#/courses'>Courses</a> <span class='divider'>/</span></li>
+            <li><a href='/#/courses/{{course.id}}'>{{course.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='/#/courses/{{course.id}}/exercises'>Exercises</a> <span class='divider'>/</span></li>
+            <li><a href='/#/courses/{{course.id}}/exercises/{{exercise.id}}'>{{exercise.name}}</a> <span class='divider'>/</span></li>
+        {{/if}}
+
         <li class='active'>Students</li>
     </ul>
 

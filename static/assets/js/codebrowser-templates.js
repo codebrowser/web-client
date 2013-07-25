@@ -363,6 +363,25 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
+  buffer += "\r\n            <li><a href='/#/courses'>Courses</a> <span class='divider'>/</span></li>\r\n            <li><a href='/#/courses/"
+    + escapeExpression(((stack1 = ((stack1 = depth0.course),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "'>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.course),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a> <span class='divider'>/</span></li>\r\n            <li><a href='/#/courses/"
+    + escapeExpression(((stack1 = ((stack1 = depth0.course),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "/exercises'>Exercises</a> <span class='divider'>/</span></li>\r\n            <li><a href='/#/courses/"
+    + escapeExpression(((stack1 = ((stack1 = depth0.course),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "/exercises/"
+    + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "'>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a> <span class='divider'>/</span></li>\r\n        ";
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
   buffer += "\r\n                <tr>\r\n                    <td class='link'><a href='#/students/";
   if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
@@ -375,8 +394,11 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<section>\r\n\r\n    <ul class='breadcrumb'>\r\n        <li><a href='/'>Home</a> <span class='divider'>/</span></li>\r\n        <li class='active'>Students</li>\r\n    </ul>\r\n\r\n    <h2>Students</h2>\r\n\r\n    <table class='table table-hover'>\r\n\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n            </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n            ";
-  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
+  buffer += "<section>\r\n\r\n    <ul class='breadcrumb'>\r\n        <li><a href='/'>Home</a> <span class='divider'>/</span></li>\r\n\r\n        ";
+  stack1 = helpers['if'].call(depth0, depth0.course, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\r\n\r\n        <li class='active'>Students</li>\r\n    </ul>\r\n\r\n    <h2>Students</h2>\r\n\r\n    <table class='table table-hover'>\r\n\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n            </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n            ";
+  options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data};
   if (stack1 = helpers.students) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.students; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.students) { stack1 = blockHelperMissing.call(depth0, stack1, options); }

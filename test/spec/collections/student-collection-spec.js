@@ -14,6 +14,6 @@ describe('StudentCollection', function () {
 
     it('should have correct URL', function () {
 
-        expect(students.url).toBe(config.api.main.root + 'students');
+        expect(students.url()).toBe(config.api.main.root + 'students');
     });
 });

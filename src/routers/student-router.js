@@ -3,6 +3,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
     routes: {
 
         'students(/)':                                         'students',
+        'courses/:courseId/exercises/:exerciseId(/)':          'navigate',
         'courses/:courseId/exercises/:exerciseId/students(/)': 'exerciseStudents'
 
     },
@@ -22,6 +23,16 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
+    navigate: function (courseId, exerciseId) {
+
+        codebrowser.app.snapshot.navigate('#/courses/' +
+                                          courseId +
+                                          '/exercises/' +
+                                          exerciseId +
+                                          '/students', { replace: true });
+
+    },
+
     exerciseStudents: function (courseId, exerciseId) {
 
         this.students({ courseId: courseId, exerciseId: exerciseId });
@@ -30,11 +41,68 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     students: function (options) {
 
+        var self = this;
+
+        // Wait for fetches to be in sync
+        var fetchSynced = _.after(3, function () {
+            self.studentView.render();
+            codebrowser.controller.ViewController.push(self.studentView);
+        });
+
+        if (options) {
+
+            var course = codebrowser.model.Course.findOrCreate({ id: options.courseId });
+
+            // Fetch course
+            course.fetch({
+
+                cache: true,
+                expires: config.cache.expires,
+
+                success: function() {
+
+                    self.studentView.course = course;
+                    fetchSynced();
+                },
+
+                // Course fetch failed
+                error: function() {
+
+                    self.notFound();
+                }
+
+            });
+
+            var exercise = codebrowser.model.Exercise.findOrCreate({ id: options.exerciseId });
+
+            // Fetch exercise
+            exercise.fetch({
+
+                cache: true,
+                expires: config.cache.expires,
+
+                success: function() {
+
+                    self.studentView.exercise = exercise;
+                    fetchSynced();
+                },
+
+                // Exercise fetch failed
+                error: function() {
+
+                    self.notFound();
+                }
+
+            });
+        } else {
+
+            fetchSynced();
+            fetchSynced();
+        }
+
         var studentCollection = new codebrowser.collection.StudentCollection(options);
 
         this.studentView.collection = studentCollection;
-
-        var self = this;
 
         // Fetch student collection
         studentCollection.fetch({
@@ -44,7 +112,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
             success: function () {
 
-                self.studentView.render();
+                fetchSynced();
             },
 
             // Students fetch failed
@@ -53,7 +121,5 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
-
-        codebrowser.controller.ViewController.push(this.studentView);
     }
 });
