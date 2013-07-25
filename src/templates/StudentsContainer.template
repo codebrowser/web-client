@@ -24,11 +24,25 @@
         </thead>
 
         <tbody>
-            {{#students}}
-                <tr>
-                    <td class='link'><a href='#/students/{{id}}/courses'>{{name}}</a></td>
-                </tr>
-            {{/students}}
+
+            {{#if course}}
+
+                {{#students}}
+                    <tr>
+                        <td class='link'><a href='#/courses/{{../course.id}}/exercises/{{../exercise.id}}/students/{{id}}/snapshots'>{{name}}</a></td>
+                    </tr>
+                {{/students}}
+
+            {{else}}
+
+                {{#students}}
+                    <tr>
+                        <td class='link'><a href='#/students/{{id}}/courses'>{{name}}</a></td>
+                    </tr>
+                {{/students}}
+
+            {{/if}}
+
         </tbody>
 
     </table>
