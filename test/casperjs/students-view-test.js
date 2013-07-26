@@ -1,4 +1,4 @@
-casper.test.begin('Students view', 3, function suite(test) {
+casper.test.begin('Students view', 4, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
@@ -15,6 +15,17 @@ casper.test.begin('Students view', 3, function suite(test) {
             test.assertElementCount('td', 4, 'has three students listed');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses\">student_423') !== -1, 'has a student with link to course list');
         });
+    });
+
+    casper.then(function () {
+
+        this.clickLabel('student_423', 'a');
+        this.waitForUrl('localhost:8000/#/students/2/courses');
+    });
+
+    casper.then(function () {
+
+        test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses/1/exercises">ohpe</a>', 'has a course with link to exercise list'))
     });
 
     casper.run(function() {
