@@ -3,8 +3,8 @@ language: node_js
 node_js:
     - '0.10'
 
-before_install:                                                                                                                                                                                                                              
-    - wget https://phantomjs.googlecode.com/files/phantomjs-1.9.1-linux-i686.tar.bz2                                                                                                                                                             
+before_install:
+    - wget https://phantomjs.googlecode.com/files/phantomjs-1.9.1-linux-i686.tar.bz2
     - tar xjf phantomjs-1.9.1-linux-i686.tar.bz2
     - sudo ln -fs `pwd`/phantomjs-1.9.1-linux-i686/bin/phantomjs /usr/local/bin/phantomjs
     - git clone git://github.com/n1k0/casperjs.git ~/casperjs
@@ -14,8 +14,8 @@ before_install:
     - cd -
 
 before_script:
-    - npm install -g grunt-cli
     - phantomjs --version
+    - npm install -g grunt-cli
 
 notifications:
 
