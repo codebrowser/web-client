@@ -2,16 +2,14 @@ casper.test.begin('Students view', 3, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
-        this.waitForSelector('#root-container', function () {
-            this.clickLabel('Students', 'a');
-        });
+        this.clickLabel('Students', 'a');
 
     });
 
     casper.then(function() {
 
         // Wait for the new page to load
-        this.waitForText('student_423', function () {
+        this.waitForSelector('#students-container', function () {
 
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
             test.assertElementCount('td', 4, 'has three students listed');
