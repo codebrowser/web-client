@@ -158,7 +158,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                 // If previous difference was type 'delete', it shouldn't affect next consecutive
                 // difference with type 'delete', nullify offsets
-                if (this.lastDifferenceType && this.lastDifferenceType === 'delete') {
+                if (this.lastDifferenceType && this.lastDifferenceType === 'delete' && this.increase) {
 
                     difference.offset -= this.increase;
                     difference.rowStart -= this.increase;
