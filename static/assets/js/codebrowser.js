@@ -874,7 +874,6 @@ codebrowser.model.Diff = function (previousContent, content) {
                     difference.offset -= this.increase;
                     difference.rowStart -= this.increase;
                     difference.rowEnd -= this.increase;
-
                 }
 
                 this.increase = difference.rowEnd - difference.rowStart + 1;
