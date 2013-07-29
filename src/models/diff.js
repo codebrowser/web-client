@@ -156,12 +156,24 @@ codebrowser.model.Diff = function (previousContent, content) {
             // Delete increases offsets if we don't overwrite
             if (!difference.overwrite) {
 
-                var increase = difference.rowEnd - difference.rowStart + 1;
+                // If previous difference was type 'delete', it shouldn't affect next consecutive
+                // difference with type 'delete', nullify offsets
+                if (this.lastDifferenceType && this.lastDifferenceType === 'delete') {
 
-                offset += increase;
-                deleteOffset += increase;
+                    difference.offset -= this.increase;
+                    difference.rowStart -= this.increase;
+                    difference.rowEnd -= this.increase;
+
+                }
+
+                this.increase = difference.rowEnd - difference.rowStart + 1;
+
+                offset += this.increase;
+                deleteOffset += this.increase;
             }
         }
+
+        this.lastDifferenceType = difference.type;
 
         // Increase lines
         count[difference.type] += difference.rowEnd - difference.rowStart + 1;

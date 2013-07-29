@@ -163,7 +163,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
-        
+
         // Update files
         this.snapshotFilesView.update(this.model, this.file);
 
