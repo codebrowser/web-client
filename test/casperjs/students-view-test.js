@@ -25,7 +25,7 @@ casper.test.begin('Students view', 4, function suite(test) {
 
     casper.then(function () {
 
-        test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses/1/exercises">ohpe</a>', 'has a course with link to exercise list'))
+        test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses/1/exercises">ohpe</a>') !== -1, 'has a course with link to exercise list');
     });
 
     casper.run(function() {
