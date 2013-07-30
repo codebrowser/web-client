@@ -109,6 +109,8 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             callback(this.differences);
 
             return;
+        } else {
+            return;
         }
 
         var self = this;
