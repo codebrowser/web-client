@@ -769,14 +769,6 @@ codebrowser.model.Diff = function (previousContent, content) {
 
         }
 
-        console.log('type: ' + operation[0]);
-        console.log('fromRowStart: ' + operation[1]);
-        console.log('fromRowEnd: ' + (operation[2] - 1));
-        console.log('');
-        console.log('toRowStart: ' + operation[3]);
-        console.log('toRowEnd: ' + (operation[4] - 1));
-        console.log('--------');
-
         // Ignore equal
         if (difference.type === 'equal') {
             continue;
@@ -794,7 +786,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             var lines = difference.rowEnd - difference.rowStart + 1;
             var changed = operation[2] - operation[1];
 
-//            // Replaced something to nothing
+            // Replaced something to nothing
 //            if (to.slice(operation[3], operation[4]).join('').length === 0) {
 //
 //                // Should overwrite previous line
@@ -802,7 +794,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 //
 //                difference.type = 'delete';
 //
-//                // continue;
+//                continue;
 //            }
 //
 //            // Replaced nothing to something
@@ -810,7 +802,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 //
 //                difference.type = 'insert';
 //
-//                // continue;
+//                continue;
 //            }
 
             // Replace contains deleted lines
@@ -1296,8 +1288,6 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
             callback(this.differences);
 
-            return;
-        } else {
             return;
         }
 
@@ -2299,8 +2289,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     initialize: function () {
 
         // Timeline
-//        this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
-//        this.$el.append(this.snapshotsTimelineView.el);
+        this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
+        this.$el.append(this.snapshotsTimelineView.el);
 
         // Navigation
         this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
@@ -2337,7 +2327,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         $(document).off('keydown', this.keydown);
 
         // Remove timeline
-//        this.snapshotsTimelineView.remove();
+        this.snapshotsTimelineView.remove();
 
         // Remove editor
         this.editorView.remove();
@@ -2429,7 +2419,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var previousFile = previousSnapshot.get('files').findWhere({ name: filename });
 
         // Update timeline
-//        this.snapshotsTimelineView.update(this.collection, index, filename);
+        this.snapshotsTimelineView.update(this.collection, index, filename);
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
@@ -2449,7 +2439,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     didResize: function () {
 
-//        this.snapshotsTimelineView.didResize();
+        this.snapshotsTimelineView.didResize();
         this.editorView.didResize();
     },
 

@@ -58,14 +58,6 @@ codebrowser.model.Diff = function (previousContent, content) {
 
         }
 
-        console.log('type: ' + operation[0]);
-        console.log('fromRowStart: ' + operation[1]);
-        console.log('fromRowEnd: ' + (operation[2] - 1));
-        console.log('');
-        console.log('toRowStart: ' + operation[3]);
-        console.log('toRowEnd: ' + (operation[4] - 1));
-        console.log('--------');
-
         // Ignore equal
         if (difference.type === 'equal') {
             continue;
@@ -83,7 +75,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             var lines = difference.rowEnd - difference.rowStart + 1;
             var changed = operation[2] - operation[1];
 
-//            // Replaced something to nothing
+            // Replaced something to nothing
 //            if (to.slice(operation[3], operation[4]).join('').length === 0) {
 //
 //                // Should overwrite previous line
@@ -91,7 +83,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 //
 //                difference.type = 'delete';
 //
-//                // continue;
+//                continue;
 //            }
 //
 //            // Replaced nothing to something
@@ -99,7 +91,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 //
 //                difference.type = 'insert';
 //
-//                // continue;
+//                continue;
 //            }
 
             // Replace contains deleted lines
