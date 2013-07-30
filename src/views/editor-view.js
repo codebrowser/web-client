@@ -165,10 +165,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var difference = this.replacedLines[editor.container.id].pop();
 
             editor.getSession()
-                  .replace(new Range(difference.rowStart - 1,
+                  .replace(new Range(difference.rowStart,
                                      0,
-                                     difference.rowEnd - 1,
-                                     editor.getSession().getLine(difference.rowEnd - 1).length),
+                                     difference.rowEnd,
+                                     editor.getSession().getLine(difference.rowEnd).length),
                            difference.lines);
         }
     },
@@ -179,11 +179,11 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.removeDecorations(this.mainEditor);
         this.removeDecorations(this.sideEditor);
 
-        // Remove inserted lines
-        this.removeInsertedLines(this.mainEditor);
-
         // Reset replaced lines
         this.resetReplacedLines(this.mainEditor);
+
+        // Remove inserted lines
+        this.removeInsertedLines(this.mainEditor);
 
         // Remove markers
         this.removeMarkers(this.mainEditor);
