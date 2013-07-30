@@ -80,9 +80,8 @@ codebrowser.model.Diff = function (previousContent, content) {
             var toChange = operation[4] - operation[3] - 1;
 
             // Delta
-            var lines = difference.rowEnd - difference.rowStart + 1; // 4 riviä
-            var changed = operation[2] - operation[1]; // 3 riviä
-            var delta = lines - changed; // 1 rivi
+            var lines = difference.rowEnd - difference.rowStart + 1;
+            var changed = operation[2] - operation[1];
 
 //            // Replaced something to nothing
 //            if (to.slice(operation[3], operation[4]).join('').length === 0) {
@@ -125,15 +124,15 @@ codebrowser.model.Diff = function (previousContent, content) {
             if (toChange > fromChange) {
 
                 // Replace
-                difference.rowEnd -= (changed > delta ? changed : delta); // 17 - 3 = 14, replace päättyy riviin 15 (ja alkaa myös siitä)
-
-                var insertRowStart = difference.rowEnd + 1;
+                difference.rowEnd = difference.rowStart + changed - 1;
 
                 differences.replace.push(difference);
                 differences.all.push(difference);
 
                 // Increase replaced lines
                 count.replace += difference.rowEnd - difference.rowStart + 1;
+
+                var insertRowStart = difference.rowEnd + 1;
 
                 // Insert
                 difference = originalDifference;
