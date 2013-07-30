@@ -165,10 +165,10 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var difference = this.replacedLines[editor.container.id].pop();
 
             editor.getSession()
-                  .replace(new Range(difference.rowStart,
+                  .replace(new Range(difference.rowStart - 1,
                                      0,
-                                     difference.rowEnd,
-                                     editor.getSession().getLine(difference.rowEnd).length),
+                                     difference.rowEnd - 1,
+                                     editor.getSession().getLine(difference.rowEnd - 1).length),
                            difference.lines);
         }
     },

@@ -76,23 +76,20 @@ codebrowser.model.Diff = function (previousContent, content) {
             var changed = operation[2] - operation[1];
 
             // Replaced something to nothing
-//            if (to.slice(operation[3], operation[4]).join('').length === 0) {
-//
-//                // Should overwrite previous line
-//                difference.overwrite = true;
-//
-//                difference.type = 'delete';
-//
-//                continue;
-//            }
-//
-//            // Replaced nothing to something
-//            if (from.slice(operation[1], operation[2]).join('').length === 0) {
-//
-//                difference.type = 'insert';
-//
-//                continue;
-//            }
+            if (to.slice(operation[3], operation[4]).join('').length === 0) {
+
+                // Should overwrite previous line
+                difference.overwrite = true;
+
+                difference.type = 'delete';
+            }
+
+            // Replaced nothing to something
+            if (from.slice(operation[1], operation[2]).join('').length === 0) {
+
+                difference.type = 'insert';
+                difference.overwrite = true;
+            }
 
             // Replace contains deleted lines
             if (fromChange > toChange) {
@@ -137,7 +134,7 @@ codebrowser.model.Diff = function (previousContent, content) {
         }
 
         // Insert increases delete offset
-        if (difference.type === 'insert') {
+        if (difference.type === 'insert' && !difference.overwrite) {
             deleteOffset += difference.rowEnd - difference.rowStart + 1;
         }
 
@@ -160,18 +157,18 @@ codebrowser.model.Diff = function (previousContent, content) {
                                                 fromRowEnd: operation[2] - 1,
                                                 lines: deleted });
 
+            // If previous difference was type 'delete', it shouldn't affect next consecutive
+            // difference with type 'delete', nullify offsets. Also, if pure 'replace' was in the middle
+            // of two deletes, it shouldn't affect latter delete
+            if (this.lastDifferenceType && (this.lastDifferenceType === 'delete' || this.lastDifferenceType === 'replace') && this.increase) {
+
+                difference.offset -= this.increase;
+                difference.rowStart -= this.increase;
+                difference.rowEnd -= this.increase;
+            }
+
             // Delete increases offsets if we don't overwrite
             if (!difference.overwrite) {
-
-                // If previous difference was type 'delete', it shouldn't affect next consecutive
-                // difference with type 'delete', nullify offsets. Also, if pure 'replace' was in the middle
-                // of two deletes, it shouldn't affect latter delete
-                if (this.lastDifferenceType && this.lastDifferenceType === 'delete' || this.lastDifferenceType === 'replace' && this.increase) {
-
-                    difference.offset -= this.increase;
-                    difference.rowStart -= this.increase;
-                    difference.rowEnd -= this.increase;
-                }
 
                 this.increase = difference.rowEnd - difference.rowStart + 1;
 
