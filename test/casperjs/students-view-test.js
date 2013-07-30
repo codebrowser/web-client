@@ -20,12 +20,10 @@ casper.test.begin('Students view', 4, function suite(test) {
     casper.then(function () {
 
         this.clickLabel('student_423', 'a');
-        this.waitForUrl('localhost:8000/#/students/2/courses');
-    });
 
-    casper.then(function () {
-
-        test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses/1/exercises">ohpe</a>') !== -1, 'has a course with link to exercise list');
+        this.waitForSelector('#courses-container', function () {
+            test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses/1/exercises">ohpe</a>') !== -1, 'has a course with link to exercise list');
+        });
     });
 
     casper.run(function() {
