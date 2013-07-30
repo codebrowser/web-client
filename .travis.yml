@@ -12,6 +12,7 @@ before_install:
 
 before_script:
     - phantomjs --version
+    - casperjs --version
     - npm install -g grunt-cli
 
 notifications:
