@@ -44,6 +44,8 @@ codebrowser.model.Diff = function (previousContent, content) {
     var offset = 0;
     var deleteOffset = 0;
 
+    var revertOffsets = false;
+
     for (var i = 0; i < operations.length; i++) {
 
         var operation = operations[i];
@@ -160,7 +162,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             // If previous difference was type 'delete', it shouldn't affect next consecutive
             // difference with type 'delete', nullify offsets. Also, if pure 'replace' was in the middle
             // of two deletes, it shouldn't affect latter delete
-            if (this.lastDifferenceType && (this.lastDifferenceType === 'delete' || this.lastDifferenceType === 'replace') && this.increase) {
+            if (revertOffsets && this.increase) {
 
                 difference.offset -= this.increase;
                 difference.rowStart -= this.increase;
@@ -175,9 +177,13 @@ codebrowser.model.Diff = function (previousContent, content) {
                 offset += this.increase;
                 deleteOffset += this.increase;
             }
+
+            revertOffsets = true;
         }
 
-        this.lastDifferenceType = difference.type;
+        if (difference.type !== 'replace' && difference.type !== 'delete') {
+            revertOffsets = false;
+        }
 
         // Increase lines
         count[difference.type] += difference.rowEnd - difference.rowStart + 1;
