@@ -156,9 +156,8 @@ codebrowser.model.Diff = function (previousContent, content) {
             // Delete increases offsets if we don't overwrite
             if (!difference.overwrite) {
 
-                this.increase = difference.rowEnd - difference.rowStart + 1;
-
-                offset += this.increase;
+                var increase = difference.rowEnd - difference.rowStart + 1;
+                offset += increase;
             }
         }
 
