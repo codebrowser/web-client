@@ -481,16 +481,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
                             // Remember replaced lines
                             this.replacedLines['main-editor'].push({
 
-                                rowStart: difference.rowStart,
-                                rowEnd: difference.rowEnd,
-                                lines: this.mainEditor.getSession().getLines(difference.rowStart, difference.rowEnd).join('\n')
+                                rowStart: difference.rowStart + difference.offset,
+                                rowEnd: difference.rowEnd + difference.offset,
+                                lines: this.mainEditor.getSession().getLines(difference.rowStart + difference.offset,
+                                                                             difference.rowEnd + difference.offset).join('\n')
 
                             });
 
                             this.mainEditor.getSession()
-                                           .replace(new Range(difference.rowStart,
+                                           .replace(new Range(difference.rowStart + difference.offset,
                                                               0,
-                                                              difference.rowEnd,
+                                                              difference.rowEnd + difference.offset,
                                                               this.mainEditor.getSession().getLine(difference.rowEnd).length),
                                                     difference.lines);
                         }

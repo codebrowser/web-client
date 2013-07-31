@@ -74,6 +74,22 @@ codebrowser.model.Diff = function (previousContent, content) {
             var lines = difference.rowEnd - difference.rowStart + 1;
             var changed = operation[2] - operation[1];
 
+            // Replaced something to nothing
+            if (to.slice(operation[3], operation[4]).join('').length === 0) {
+
+                // Should overwrite previous line
+                difference.overwrite = true;
+
+                difference.type = 'delete';
+            }
+
+            // Replaced nothing to something
+            if (from.slice(operation[1], operation[2]).join('').length === 0) {
+
+                difference.type = 'insert';
+                difference.overwrite = true;
+            }
+
             // Replace contains deleted lines
             if (fromChange > toChange) {
 
@@ -81,7 +97,7 @@ codebrowser.model.Diff = function (previousContent, content) {
                 differences.all.push(difference);
 
                 // Increase replaced lines
-                count.replace += difference.rowEnd - difference.rowStart + 1;
+                count[difference.type] += difference.rowEnd - difference.rowStart + 1;
 
                 // Delete
                 difference = originalDifference;
@@ -103,7 +119,7 @@ codebrowser.model.Diff = function (previousContent, content) {
                 differences.all.push(difference);
 
                 // Increase replaced lines
-                count.replace += difference.rowEnd - difference.rowStart + 1;
+                count[difference.type] += difference.rowEnd - difference.rowStart + 1;
 
                 var insertRowStart = difference.rowEnd + 1;
 

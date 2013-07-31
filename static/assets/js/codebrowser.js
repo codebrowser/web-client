@@ -785,6 +785,22 @@ codebrowser.model.Diff = function (previousContent, content) {
             var lines = difference.rowEnd - difference.rowStart + 1;
             var changed = operation[2] - operation[1];
 
+            // Replaced something to nothing
+            if (to.slice(operation[3], operation[4]).join('').length === 0) {
+
+                // Should overwrite previous line
+                difference.overwrite = true;
+
+                difference.type = 'delete';
+            }
+
+            // Replaced nothing to something
+            if (from.slice(operation[1], operation[2]).join('').length === 0) {
+
+                difference.type = 'insert';
+                difference.overwrite = true;
+            }
+
             // Replace contains deleted lines
             if (fromChange > toChange) {
 
@@ -792,7 +808,7 @@ codebrowser.model.Diff = function (previousContent, content) {
                 differences.all.push(difference);
 
                 // Increase replaced lines
-                count.replace += difference.rowEnd - difference.rowStart + 1;
+                count[difference.type] += difference.rowEnd - difference.rowStart + 1;
 
                 // Delete
                 difference = originalDifference;
@@ -814,7 +830,7 @@ codebrowser.model.Diff = function (previousContent, content) {
                 differences.all.push(difference);
 
                 // Increase replaced lines
-                count.replace += difference.rowEnd - difference.rowStart + 1;
+                count[difference.type] += difference.rowEnd - difference.rowStart + 1;
 
                 var insertRowStart = difference.rowEnd + 1;
 
@@ -1984,16 +2000,17 @@ codebrowser.view.EditorView = Backbone.View.extend({
                             // Remember replaced lines
                             this.replacedLines['main-editor'].push({
 
-                                rowStart: difference.rowStart,
-                                rowEnd: difference.rowEnd,
-                                lines: this.mainEditor.getSession().getLines(difference.rowStart, difference.rowEnd).join('\n')
+                                rowStart: difference.rowStart + difference.offset,
+                                rowEnd: difference.rowEnd + difference.offset,
+                                lines: this.mainEditor.getSession().getLines(difference.rowStart + difference.offset,
+                                                                             difference.rowEnd + difference.offset).join('\n')
 
                             });
 
                             this.mainEditor.getSession()
-                                           .replace(new Range(difference.rowStart,
+                                           .replace(new Range(difference.rowStart + difference.offset,
                                                               0,
-                                                              difference.rowEnd,
+                                                              difference.rowEnd + difference.offset,
                                                               this.mainEditor.getSession().getLine(difference.rowEnd).length),
                                                     difference.lines);
                         }
