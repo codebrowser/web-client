@@ -1,4 +1,4 @@
-casper.test.begin('Students view', 19, function suite(test) {
+casper.test.begin('Students view', 23, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
@@ -35,6 +35,7 @@ casper.test.begin('Students view', 19, function suite(test) {
         this.waitForSelector('#courses-container', function () {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/students/2/courses') !== -1, 'has correct URL');
+            test.assertElementCount('td', 1, 'has exactly one course listed');
             test.assertTextExists('ohpe', 'has a course named "ohpe"');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses/1/exercises">ohpe</a>') !== -1,
                                                      'course "ohpe" has a correct link to exercise list');
@@ -52,6 +53,7 @@ casper.test.begin('Students view', 19, function suite(test) {
         this.waitForSelector('#courses-container', function () {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/students/320/courses') !== -1, 'has correct URL');
+            test.assertElementCount('td', 1, 'has exactly one course listed');
             test.assertTextExists('ohpe', 'has a course named "ohpe"');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/320/courses/1/exercises">ohpe</a>') !== -1,
                                                      'course "ohpe" has a correct link to exercise list');
@@ -69,6 +71,7 @@ casper.test.begin('Students view', 19, function suite(test) {
         this.waitForSelector('#courses-container', function () {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/students/663/courses') !== -1, 'has correct URL');
+            test.assertElementCount('td', 1, 'has exactly one course listed');
             test.assertTextExists('mooc-ohja', 'has a course named "mooc-ohja"');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/663/courses/662/exercises">mooc-ohja</a>') !== -1,
                                                      'course "mooc-ohja" has a correct link to exercise list');
@@ -86,6 +89,7 @@ casper.test.begin('Students view', 19, function suite(test) {
         this.waitForSelector('#courses-container', function () {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/students/1932/courses') !== -1, 'has correct URL');
+            test.assertElementCount('td', 1, 'has exactly one course listed');
             test.assertTextExists('mooc-ohja', 'has a course named "mooc-ohja"');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/1932/courses/662/exercises">mooc-ohja</a>') !== -1,
                                                      'course "mooc-ohja" has a correct link to exercise list');
