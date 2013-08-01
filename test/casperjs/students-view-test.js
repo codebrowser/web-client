@@ -1,4 +1,4 @@
-casper.test.begin('Students view', 16, function suite(test) {
+casper.test.begin('Students view', 19, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
@@ -14,7 +14,15 @@ casper.test.begin('Students view', 16, function suite(test) {
             test.assertTruthy(this.getCurrentUrl().indexOf('#/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
             test.assertElementCount('td', 4, 'has exactly four students listed');
-            test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses\">student_423') !== -1, 'has a student with link to course list');
+
+            test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses">student_423') !== -1,
+                                                     'has student_423 with a correct link to course list');
+            test.assertTruthy(this.getHTML().indexOf('<a href="#/students/320/courses">student_480') !== -1,
+                                                     'has student_480 with a correct link to course list');
+            test.assertTruthy(this.getHTML().indexOf('<a href="#/students/663/courses">student_13') !== -1,
+                                                     'has student_13 with a correct link to course list');
+            test.assertTruthy(this.getHTML().indexOf('<a href="#/students/1932/courses">student_1312') !== -1,
+                                                     'has student_1312 with a correct link to course list');
         });
     });
 
