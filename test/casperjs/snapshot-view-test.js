@@ -22,7 +22,9 @@ casper.test.begin('Snapshot view', 3, function suite(test) {
 
         this.clickLabel('Viikko4_077.Lyyrakortti', 'a');
 
-        this.waitForSelector('#main-editor', function () {
+        this.waitForSelector('#snapshot-navigation-container', function () {
+
+            console.log(this.getHTML());
 
             test.assertSelectorHasText('#snapshot-navigation-container .span1', '1 / 32', 'first snapshot');
             test.assertSelectorHasText('#editor-top-container header h1', 'Paaohjelma.java', 'correct file name');
