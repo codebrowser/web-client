@@ -16,13 +16,13 @@ casper.test.begin('Students view', 67, function suite(test) {
             test.assertElementCount('td', 4, 'has exactly four students listed');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/2/courses">student_423') !== -1,
-                                                     'has student_423 with a correct link to course list');
+                                                     'has "student_423" with a correct link to course list');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/320/courses">student_480') !== -1,
-                                                     'has student_480 with a correct link to course list');
+                                                     'has "student_480" with a correct link to course list');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/663/courses">student_13') !== -1,
-                                                     'has student_13 with a correct link to course list');
+                                                     'has "student_13" with a correct link to course list');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/1932/courses">student_1312') !== -1,
-                                                     'has student_1312 with a correct link to course list');
+                                                     'has "student_1312" with a correct link to course list');
         });
     });
 
@@ -149,15 +149,15 @@ casper.test.begin('Students view', 67, function suite(test) {
             test.assertTextExists('Viikko9_133.Numerotiedustelu', 'has an exercise named "Numerotiedustelu"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/663/courses/662/exercises/664/snapshots">Viikko11_142.MuistavaSanakirja') !== -1,
-                                                     'has MuistavaSanakirja with a correct link to snapshots');
+                                                     'has "MuistavaSanakirja" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/663/courses/662/exercises/815/snapshots">Viikko12_156.Matopeli') !== -1,
-                                                     'has Matopeli with a correct link to snapshots');
+                                                     'has "Matopeli" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/663/courses/662/exercises/1565/snapshots">Viikko7_114.Sanakirja') !== -1,
-                                                     'has Sanakirja with a correct link to snapshots');
+                                                     'has "Sanakirja" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/663/courses/662/exercises/1662/snapshots">Viikko9_131.UseanKaannoksenSanakirja') !== -1,
-                                                     'has UseanKaannoksenSanakirja with a correct link to snapshots');
+                                                     'has "UseanKaannoksenSanakirja" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/663/courses/662/exercises/1687/snapshots">Viikko9_133.Numerotiedustelu') !== -1,
-                                                     'has Numerotiedustelu with a correct link to snapshots');
+                                                     'has "Numerotiedustelu" with a correct link to snapshots');
 
             casper.back();
             casper.back();
@@ -199,15 +199,15 @@ casper.test.begin('Students view', 67, function suite(test) {
             test.assertTextExists('Viikko9_133.Numerotiedustelu', 'has an exercise named "Numerotiedustelu"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/1932/courses/662/exercises/664/snapshots">Viikko11_142.MuistavaSanakirja') !== -1,
-                                                     'has MuistavaSanakirja with a correct link to snapshots');
+                                                     'has "MuistavaSanakirja" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/1932/courses/662/exercises/815/snapshots">Viikko12_156.Matopeli') !== -1,
-                                                     'has Matopeli with a correct link to snapshots');
+                                                     'has "Matopeli" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/1932/courses/662/exercises/1565/snapshots">Viikko7_114.Sanakirja') !== -1,
-                                                     'has Sanakirja with a correct link to snapshots');
+                                                     'has "Sanakirja" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/1932/courses/662/exercises/1662/snapshots">Viikko9_131.UseanKaannoksenSanakirja') !== -1,
-                                                     'has UseanKaannoksenSanakirja with a correct link to snapshots');
+                                                     'has "UseanKaannoksenSanakirja" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/students/1932/courses/662/exercises/1687/snapshots">Viikko9_133.Numerotiedustelu') !== -1,
-                                                     'has Numerotiedustelu with a correct link to snapshots');
+                                                     'has "Numerotiedustelu" with a correct link to snapshots');
         });
     });
 

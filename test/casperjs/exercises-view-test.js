@@ -55,15 +55,15 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('Viikko9_133.Numerotiedustelu', 'has an exercise named "Numerotiedustelu"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/664/students">Viikko11_142.MuistavaSanakirja') !== -1,
-                                                     'has MuistavaSanakirja with a correct link to student list');
+                                                     'has "MuistavaSanakirja" with a correct link to student list');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/815/students">Viikko12_156.Matopeli') !== -1,
-                                                     'has Matopeli with a correct link to student list');
+                                                     'has "Matopeli" with a correct link to student list');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/1565/students">Viikko7_114.Sanakirja') !== -1,
-                                                     'has Sanakirja with a correct link to student list');
+                                                     'has "Sanakirja" with a correct link to student list');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/1662/students">Viikko9_131.UseanKaannoksenSanakirja') !== -1,
-                                                     'has UseanKaannoksenSanakirja with a correct link to student list');
+                                                     'has "UseanKaannoksenSanakirja" with a correct link to student list');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/1687/students">Viikko9_133.Numerotiedustelu') !== -1,
-                                                     'has Numerotiedustelu with a correct link to student list');
+                                                     'has "Numerotiedustelu" with a correct link to student list');
         });
     });
 
@@ -83,9 +83,9 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/664/students/663/snapshots">student_13') !== -1,
-                                                     'has student_13 with a correct link to snapshots');
+                                                     'has "student_13" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/664/students/1932/snapshots">student_1312') !== -1,
-                                                     'has student_1312 with a correct link to snapshots');
+                                                     'has "student_1312" with a correct link to snapshots');
 
             casper.back();
         });
@@ -107,9 +107,9 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/815/students/663/snapshots">student_13') !== -1,
-                                                     'has student_13 with a correct link to snapshots');
+                                                     'has "student_13" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/815/students/1932/snapshots">student_1312') !== -1,
-                                                     'has student_1312 with a correct link to snapshots');
+                                                     'has "student_1312" with a correct link to snapshots');
 
             casper.back();
         });
@@ -131,9 +131,9 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/1565/students/663/snapshots">student_13') !== -1,
-                                                     'has student_13 with a correct link to snapshots');
+                                                     'has "student_13" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/1565/students/1932/snapshots">student_1312') !== -1,
-                                                     'has student_1312 with a correct link to snapshots');
+                                                     'has "student_1312" with a correct link to snapshots');
 
             casper.back();
         });
@@ -155,9 +155,9 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/1662/students/663/snapshots">student_13') !== -1,
-                                                     'has student_13 with a correct link to snapshots');
+                                                     'has "student_13" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/1662/students/1932/snapshots">student_1312') !== -1,
-                                                     'has student_1312 with a correct link to snapshots');
+                                                     'has "student_1312" with a correct link to snapshots');
 
             casper.back();
         });
@@ -179,9 +179,9 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/1687/students/663/snapshots">student_13') !== -1,
-                                                     'has student_13 with a correct link to snapshots');
+                                                     'has "student_13" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/662/exercises/1687/students/1932/snapshots">student_1312') !== -1,
-                                                     'has student_1312 with a correct link to snapshots');
+                                                     'has "student_1312" with a correct link to snapshots');
 
             casper.back();
             casper.back();
@@ -211,9 +211,9 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('student_480', 'has a student named "student_1312"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises/3/students/2/snapshots">student_423') !== -1,
-                                                     'has student_423 with a correct link to snapshots');
+                                                     'has "student_423" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises/3/students/320/snapshots">student_480') !== -1,
-                                                     'has student_480 with a correct link to snapshots');
+                                                     'has "student_480" with a correct link to snapshots');
 
             casper.back();
         });
@@ -235,9 +235,9 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('student_480', 'has a student named "student_1312"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises/100/students/2/snapshots">student_423') !== -1,
-                                                     'has student_423 with a correct link to snapshots');
+                                                     'has "student_423" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises/100/students/320/snapshots">student_480') !== -1,
-                                                     'has student_480 with a correct link to snapshots');
+                                                     'has "student_480" with a correct link to snapshots');
 
             casper.back();
         });
@@ -259,9 +259,9 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('student_480', 'has a student named "student_1312"');
 
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises/206/students/2/snapshots">student_423') !== -1,
-                                                     'has student_423 with a correct link to snapshots');
+                                                     'has "student_423" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises/206/students/320/snapshots">student_480') !== -1,
-                                                     'has student_480 with a correct link to snapshots');
+                                                     'has "student_480" with a correct link to snapshots');
         });
     });
 
