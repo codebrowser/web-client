@@ -12,6 +12,8 @@ casper.test.begin('Exercises view', 12, function suite(test) {
 
         this.clickLabel('ohpe', 'a');
 
+        this.echo('\nohpe\'s exercise list\n--------------------');
+
         this.waitForSelector('#exercises-container', function () {
 
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
@@ -28,6 +30,8 @@ casper.test.begin('Exercises view', 12, function suite(test) {
     casper.then(function () {
 
         this.clickLabel('mooc-ohja', 'a');
+
+        this.echo('\nmooc-ohja\'s exercise list\n-------------------------');
 
         this.waitForSelector('#exercises-container', function () {
 
