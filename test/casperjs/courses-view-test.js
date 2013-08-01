@@ -1,4 +1,4 @@
-casper.test.begin('Courses view', 5, function suite(test) {
+casper.test.begin('Courses view', 6, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
@@ -11,6 +11,7 @@ casper.test.begin('Courses view', 5, function suite(test) {
         // Wait for the new page to load given selector
         this.waitForSelector('#courses-container', function () {
 
+            test.assertTruthy(this.getCurrentUrl().indexOf('#/courses') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Courses', 'has "Courses" label active in the navbar');
             test.assertElementCount('td', 2, 'has exactly two courses listed');
             test.assertTruthy(this.getHTML().indexOf('<a href="#/courses/1/exercises\">ohpe') !== -1, 'has a course with link to exercise list');

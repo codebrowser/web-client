@@ -1,4 +1,4 @@
-casper.test.begin('Exercises view', 12, function suite(test) {
+casper.test.begin('Exercises view', 14, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
@@ -16,6 +16,7 @@ casper.test.begin('Exercises view', 12, function suite(test) {
 
         this.waitForSelector('#exercises-container', function () {
 
+            test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/1/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
             test.assertElementCount('td', 3, 'has exactly three exercises listed');
             test.assertTextExists('Viikko4_077.Lyyrakortti', 'has an exercise named "Lyyrakortti"');
@@ -35,6 +36,7 @@ casper.test.begin('Exercises view', 12, function suite(test) {
 
         this.waitForSelector('#exercises-container', function () {
 
+            test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/662/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
             test.assertElementCount('td', 5, 'has exactly five exercises listed');
             test.assertTextExists('Viikko11_142.MuistavaSanakirja', 'has an exercise named "MuistavaSanakirja"');
