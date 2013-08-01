@@ -2201,7 +2201,7 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
                 }
 
                 // Modified file
-                if (changed > 0) {
+                if (changed > 0 && changed !== lines) {
                     fileElement.addClass('modified');
                 }
             });
