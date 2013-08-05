@@ -25,7 +25,7 @@
                     <div class='control-group'>
 
                         <label class='checkbox'>
-                            <input type='checkbox' data-id='ignore-empty-lines'> Ignore empty lines (improves diff results)
+                            <input type='checkbox' data-id='ignore-empty-lines' checked> Ignore empty lines (improves diff results)
                         </label>
 
                     </div>
