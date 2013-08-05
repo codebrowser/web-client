@@ -6,7 +6,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots(/)':                           'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId(/)':               'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot',
-        'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots(/)':                           'navigation'
+        'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots(/)':                           'navigation',
+        'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots/:snapshotId/files/:fileId(/)': 'navigation'
 
     },
 
@@ -35,12 +36,12 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         codebrowser.controller.ViewController.push(errorView, true);
     },
 
-    navigation: function (courseId, exerciseId, studentId) {
+    navigation: function (courseId, exerciseId, studentId, snapshotId, fileId) {
 
-        this.snapshot(studentId, courseId, exerciseId);
+        this.snapshot(studentId, courseId, exerciseId, snapshotId, fileId, { courseRoute: true });
     },
 
-    snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId) {
+    snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId, options) {
 
         this.setUp();
 
@@ -48,6 +49,10 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
                                                                                        courseId: courseId,
                                                                                        exerciseId: exerciseId });
         this.snapshotView.collection = snapshotCollection;
+
+        if (options && options.courseRoute) {
+            this.snapshotView.courseRoute = true;
+        }
 
         var self = this;
 

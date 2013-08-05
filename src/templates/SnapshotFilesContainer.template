@@ -5,7 +5,18 @@
 </header>
 
 <ul>
-    {{#files}}
-        <li data-id='{{id}}'><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
-    {{/files}}
+
+    {{#if course}}
+
+        {{#files}}
+            <li data-id='{{id}}'><a href='#/courses/{{../courseId}}/exercises/{{../exerciseId}}/students/{{../studentId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
+        {{/files}}
+
+    {{else}}
+
+        {{#files}}
+            <li data-id='{{id}}'><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
+        {{/files}}
+
+    {{/if}}
 </ul>

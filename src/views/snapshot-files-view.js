@@ -64,9 +64,14 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
 
     /* Update */
 
-    update: function (snapshot, file) {
+    update: function (snapshot, file, courseRoute) {
 
         this.model = snapshot;
+
+        if (courseRoute) {
+            this.model = _.extend(this.model, { course: true });
+        }
+
         this.file = file;
 
         this.render();
