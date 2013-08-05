@@ -11,7 +11,7 @@ To develop this project, you will need to have node.js and npm installed on your
 
 Install Grunt's command line interface globally if necessary with `npm install -g grunt-cli`. You will also need
 PhantomJS and CasperJS to run browser tests. Install PhantomJS with `npm install -g phantomjs`. Download
-[CasperJS](http://casperjs.org/) and look for the installation instructions from [here](http://docs.casperjs.org/en/latest/installation.html).
+[CasperJS](http://casperjs.org/) (1.1-beta1) and look for the installation instructions from [here](http://docs.casperjs.org/en/latest/installation.html).
 Download development dependencies by running `npm install -d`.
 
 ## Run Tests
