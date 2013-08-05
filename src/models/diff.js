@@ -76,7 +76,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 
             // Replaced something to nothing
             if (to.slice(operation[3], operation[4]).join('').length === 0 &&
-               (operation[2] - operation[1]) === 1) {
+                fromChange === 0) {
 
                 // Should overwrite previous line
                 difference.overwrite = true;
@@ -86,7 +86,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 
             // Replaced nothing to something
             if (from.slice(operation[1], operation[2]).join('').length === 0 &&
-               (operation[4] - operation[3]) === 1) {
+                toChange === 0) {
 
                 difference.type = 'insert';
             }
