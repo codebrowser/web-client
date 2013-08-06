@@ -265,6 +265,116 @@ function program9(depth0,data,depth1) {
   return buffer;
   });
 
+this["Handlebars"]["templates"]["NavigationBarContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1, stack2;
+  buffer += "\n\n            <li><a href='/#/courses'>Courses</a> <span class='divider'>/</span></li>\n            <li><a href='/#/courses/";
+  if (stack1 = helpers.courseId) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.courseId; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "'>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.course),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a> <span class='divider'>/</span></li>\n            <li><a href='/#/courses/";
+  if (stack2 = helpers.courseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.courseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/exercises'>Exercises</a> <span class='divider'>/</span></li>\n            <li><a href='/#/courses/";
+  if (stack2 = helpers.courseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.courseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/exercises/";
+  if (stack2 = helpers.exerciseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.exerciseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "'>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a> <span class='divider'>/</span></li>\n            <li><a href='/#/courses/";
+  if (stack2 = helpers.courseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.courseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/exercises/";
+  if (stack2 = helpers.exerciseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.exerciseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/students'>Students</a> <span class='divider'>/</span></li>\n            <li><a href='/#/courses/";
+  if (stack2 = helpers.courseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.courseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/exercises/";
+  if (stack2 = helpers.exerciseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.exerciseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/students/";
+  if (stack2 = helpers.studentId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.studentId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "'>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.student),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a> <span class='divider'>/</span></li>\n\n        ";
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1, stack2;
+  buffer += "\n\n            <li><a href='/#/students'>Students</a> <span class='divider'>/</span></li>\n            <li><a href='/#/students/";
+  if (stack1 = helpers.studentId) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.studentId; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "'>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.student),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a> <span class='divider'>/</span></li>\n            <li><a href='/#/students/";
+  if (stack2 = helpers.studentId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.studentId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/courses'>Courses</a> <span class='divider'>/</span></li>\n            <li><a href='/#/students/";
+  if (stack2 = helpers.studentId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.studentId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/courses/";
+  if (stack2 = helpers.courseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.courseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "'>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.course),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a> <span class='divider'>/</span></li>\n            <li><a href='/#/students/";
+  if (stack2 = helpers.studentId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.studentId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/courses/";
+  if (stack2 = helpers.courseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.courseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/exercises'>Exercises</a> <span class='divider'>/</span></li>\n            <li><a href='/#/students/";
+  if (stack2 = helpers.studentId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.studentId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/courses/";
+  if (stack2 = helpers.courseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.courseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "/exercises/";
+  if (stack2 = helpers.exerciseId) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
+  else { stack2 = depth0.exerciseId; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
+  buffer += escapeExpression(stack2)
+    + "'>"
+    + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a> <span class='divider'>/</span></li>\n\n        ";
+  return buffer;
+  }
+
+  buffer += "<section>\n\n    <ul class='breadcrumb'>\n\n        <li><a href='/'>Home</a> <span class='divider'>/</span></li>\n\n        ";
+  stack1 = helpers['if'].call(depth0, depth0.courseRoute, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        <li class='active'>Snapshots</li>\n\n    </ul>\n\n</section>\n";
+  return buffer;
+  });
+
 this["Handlebars"]["templates"]["RootContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
@@ -360,9 +470,9 @@ function program5(depth0,data,depth1) {
   buffer += "<header>\n\n    <i class='icon-folder-close icon-gray'></i> <h1>"
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h1>\n\n</header>\n\n<ul>\n\n    ";
-  stack2 = helpers['if'].call(depth0, depth0.course, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth0.courseRoute, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</ul>\n";
+  buffer += "\n\n</ul>\n";
   return buffer;
   });
 
@@ -2259,7 +2369,7 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var output = $(this.template(this.model.toJSON()));
+        var output = $(this.template(_.extend(this.model.toJSON(), { courseRoute: this.courseRoute })));
 
         if (this.parentView.editorView.diff) {
 
@@ -2278,11 +2388,9 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
 
     update: function (snapshot, file, courseRoute) {
 
-        this.model = snapshot;
+        this.courseRoute = courseRoute;
 
-        if (courseRoute) {
-            this.model = _.extend(this.model, { course: true });
-        }
+        this.model = snapshot;
 
         this.file = file;
 
@@ -2297,7 +2405,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     template: {
 
-        navigationContainer: Handlebars.templates.SnapshotNavigationContainer
+        navigationbarContainer: Handlebars.templates.NavigationBarContainer,
+        navigationContainer:    Handlebars.templates.SnapshotNavigationContainer
 
     },
 
@@ -2324,6 +2433,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     /* Initialise */
 
     initialize: function () {
+
+        // Navigation bar
+        this.navigationbarContainer = $('<div>', { id: 'navigation-bar-container' });
+        this.$el.append(this.navigationbarContainer);
 
         // Timeline
         this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
@@ -2387,6 +2500,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         }
 
+        // Template for navigation bar container
+        var navigationbarContainerOutput = $(this.template.navigationbarContainer(_.extend(this.model.toJSON(),
+                                            { exercise: this.collection.at(index).get('exercise').toJSON(),
+                                              student:  this.student.toJSON(),
+                                              courseRoute: this.courseRoute })));
+
         // Template for navigation container
         var navigationContainerOutput = $(this.template.navigationContainer(attributes));
 
@@ -2421,6 +2540,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#next', navigationContainerOutput).attr('disabled', true);
             $('#last', navigationContainerOutput).attr('disabled', true);
         }
+
+        // Update navigation bar container
+        this.navigationbarContainer.html(navigationbarContainerOutput);
 
         // Update navigation container
         this.navigationContainer.html(navigationContainerOutput);
@@ -3111,11 +3233,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     update: function (collection, currentSnapshotIndex, filename, courseRoute) {
 
-        if (courseRoute) {
-            this.courseRoute = true;
-        } else {
-            this.courseRoute = false;
-        }
+        this.courseRoute = courseRoute;
 
         this.collection = collection;
 
@@ -3634,6 +3752,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId, options) {
 
+        var self = this;
+
         this.setUp();
 
         var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
@@ -3645,7 +3765,71 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             this.snapshotView.courseRoute = true;
         }
 
-        var self = this;
+        // Wait for fetches to be in sync
+        var fetchSynced = _.after(2, function () {
+            var snapshot;
+
+            // No snapshot ID specified, navigate to first snapshot
+            if (!snapshotId) {
+
+                snapshot = snapshotCollection.at(0);
+
+                self.snapshotView.navigate(snapshot, null, {replace: true});
+
+                return;
+            }
+
+            // Snapshot
+            snapshot = snapshotCollection.get(snapshotId);
+
+            // Invalid snapshot ID
+            if (!snapshot) {
+
+                self.notFound();
+
+                return;
+            }
+
+            // No file ID specified, navigate to first file
+            if (!fileId) {
+
+                self.snapshotView.navigate(snapshot, null);
+
+                return;
+            }
+
+            // Invalid file ID
+            if (!snapshot.get('files').get(fileId)) {
+
+                self.notFound();
+
+                return;
+            }
+
+            self.snapshotView.update(snapshot, fileId);
+        });
+
+        var student = codebrowser.model.Student.findOrCreate({ id: studentId });
+
+        // Fetch student
+        student.fetch({
+
+            cache: true,
+            expires: config.cache.expires,
+
+            success: function () {
+
+                self.snapshotView.student = student;
+                fetchSynced();
+            },
+
+            // Student fetch failed
+            error: function () {
+
+                self.notFound();
+            }
+
+        });
 
         // Fetch snapshot collection
         snapshotCollection.fetch({
@@ -3655,46 +3839,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
             success: function () {
 
-                var snapshot;
-
-                // No snapshot ID specified, navigate to first snapshot
-                if (!snapshotId) {
-
-                    snapshot = snapshotCollection.at(0);
-
-                    self.snapshotView.navigate(snapshot, null, { replace: true });
-
-                    return;
-                }
-
-                // Snapshot
-                snapshot = snapshotCollection.get(snapshotId);
-
-                // Invalid snapshot ID
-                if (!snapshot) {
-
-                    self.notFound();
-
-                    return;
-                }
-
-                // No file ID specified, navigate to first file
-                if (!fileId) {
-
-                    self.snapshotView.navigate(snapshot, null);
-
-                    return;
-                }
-
-                // Invalid file ID
-                if (!snapshot.get('files').get(fileId)) {
-
-                    self.notFound();
-
-                    return;
-                }
-
-                self.snapshotView.update(snapshot, fileId);
+                fetchSynced();
             },
 
             // Snapshots fetch failed
@@ -3711,9 +3856,10 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     routes: {
 
-        'students(/)':                                         'students',
-        'courses/:courseId/exercises/:exerciseId(/)':          'navigation',
-        'courses/:courseId/exercises/:exerciseId/students(/)': 'exerciseStudents'
+        'students(/)':                                                    'students',
+        'courses/:courseId/exercises/:exerciseId(/)':                     'navigation',
+        'courses/:courseId/exercises/:exerciseId/students(/)':            'exerciseStudents',
+        'courses/:courseId/exercises/:exerciseId/students/:studentId(/)': 'exerciseStudents'
 
     },
 

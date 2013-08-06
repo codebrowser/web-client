@@ -43,6 +43,8 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId, options) {
 
+        var self = this;
+
         this.setUp();
 
         var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
@@ -54,7 +56,71 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             this.snapshotView.courseRoute = true;
         }
 
-        var self = this;
+        // Wait for fetches to be in sync
+        var fetchSynced = _.after(2, function () {
+            var snapshot;
+
+            // No snapshot ID specified, navigate to first snapshot
+            if (!snapshotId) {
+
+                snapshot = snapshotCollection.at(0);
+
+                self.snapshotView.navigate(snapshot, null, {replace: true});
+
+                return;
+            }
+
+            // Snapshot
+            snapshot = snapshotCollection.get(snapshotId);
+
+            // Invalid snapshot ID
+            if (!snapshot) {
+
+                self.notFound();
+
+                return;
+            }
+
+            // No file ID specified, navigate to first file
+            if (!fileId) {
+
+                self.snapshotView.navigate(snapshot, null);
+
+                return;
+            }
+
+            // Invalid file ID
+            if (!snapshot.get('files').get(fileId)) {
+
+                self.notFound();
+
+                return;
+            }
+
+            self.snapshotView.update(snapshot, fileId);
+        });
+
+        var student = codebrowser.model.Student.findOrCreate({ id: studentId });
+
+        // Fetch student
+        student.fetch({
+
+            cache: true,
+            expires: config.cache.expires,
+
+            success: function () {
+
+                self.snapshotView.student = student;
+                fetchSynced();
+            },
+
+            // Student fetch failed
+            error: function () {
+
+                self.notFound();
+            }
+
+        });
 
         // Fetch snapshot collection
         snapshotCollection.fetch({
@@ -64,46 +130,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
             success: function () {
 
-                var snapshot;
-
-                // No snapshot ID specified, navigate to first snapshot
-                if (!snapshotId) {
-
-                    snapshot = snapshotCollection.at(0);
-
-                    self.snapshotView.navigate(snapshot, null, { replace: true });
-
-                    return;
-                }
-
-                // Snapshot
-                snapshot = snapshotCollection.get(snapshotId);
-
-                // Invalid snapshot ID
-                if (!snapshot) {
-
-                    self.notFound();
-
-                    return;
-                }
-
-                // No file ID specified, navigate to first file
-                if (!fileId) {
-
-                    self.snapshotView.navigate(snapshot, null);
-
-                    return;
-                }
-
-                // Invalid file ID
-                if (!snapshot.get('files').get(fileId)) {
-
-                    self.notFound();
-
-                    return;
-                }
-
-                self.snapshotView.update(snapshot, fileId);
+                fetchSynced();
             },
 
             // Snapshots fetch failed

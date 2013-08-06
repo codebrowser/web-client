@@ -4,7 +4,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     template: {
 
-        navigationContainer: Handlebars.templates.SnapshotNavigationContainer
+        navigationbarContainer: Handlebars.templates.NavigationBarContainer,
+        navigationContainer:    Handlebars.templates.SnapshotNavigationContainer
 
     },
 
@@ -31,6 +32,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     /* Initialise */
 
     initialize: function () {
+
+        // Navigation bar
+        this.navigationbarContainer = $('<div>', { id: 'navigation-bar-container' });
+        this.$el.append(this.navigationbarContainer);
 
         // Timeline
         this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
@@ -94,6 +99,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         }
 
+        // Template for navigation bar container
+        var navigationbarContainerOutput = $(this.template.navigationbarContainer(_.extend(this.model.toJSON(),
+                                            { exercise: this.collection.at(index).get('exercise').toJSON(),
+                                              student:  this.student.toJSON(),
+                                              courseRoute: this.courseRoute })));
+
         // Template for navigation container
         var navigationContainerOutput = $(this.template.navigationContainer(attributes));
 
@@ -128,6 +139,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#next', navigationContainerOutput).attr('disabled', true);
             $('#last', navigationContainerOutput).attr('disabled', true);
         }
+
+        // Update navigation bar container
+        this.navigationbarContainer.html(navigationbarContainerOutput);
 
         // Update navigation container
         this.navigationContainer.html(navigationContainerOutput);

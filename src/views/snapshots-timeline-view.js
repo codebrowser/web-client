@@ -487,11 +487,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     update: function (collection, currentSnapshotIndex, filename, courseRoute) {
 
-        if (courseRoute) {
-            this.courseRoute = true;
-        } else {
-            this.courseRoute = false;
-        }
+        this.courseRoute = courseRoute;
 
         this.collection = collection;
 
