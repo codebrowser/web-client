@@ -2524,6 +2524,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Remove timeline
         this.snapshotsTimelineView.remove();
 
+        // Remove files view
+        this.snapshotFilesView.remove();
+
         // Remove editor
         this.editorView.remove();
 
@@ -2705,7 +2708,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     diff: function () {
 
         this.editorView.toggleDiff();
-        this.snapshotFilesView.update(this.model, this.file);
+        this.snapshotFilesView.update(this.model, this.file, this.courseRoute);
     },
 
     /* Actions - Navigation */
@@ -3801,10 +3804,20 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
         this.setUp();
 
-        var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
+        var snapshotCollection;
+
+        if (!this.snapshotView.collection) {
+
+            snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
                                                                                        courseId: courseId,
                                                                                        exerciseId: exerciseId });
-        this.snapshotView.collection = snapshotCollection;
+
+            this.snapshotView.collection = snapshotCollection;
+
+        } else {
+
+            snapshotCollection = this.snapshotView.collection;
+        }
 
         if (options && options.courseRoute) {
             this.snapshotView.courseRoute = true;
