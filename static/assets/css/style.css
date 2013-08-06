@@ -201,14 +201,15 @@ ul.selection a:hover {
 
 .breadcrumb a {
 
-    color: rgba(21, 100, 184, 0.7);
+    color: rgba(100, 100, 100, 0.8);
     text-decoration: none;
 
 }
 
 .breadcrumb a:hover {
 
-    color: rgba(21, 100, 184, 0.8);
+    color: rgb(100, 100, 100);
+
 }
 
 /* Popover */
