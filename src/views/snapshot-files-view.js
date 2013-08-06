@@ -47,7 +47,7 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var output = $(this.template(this.model.toJSON()));
+        var output = $(this.template(_.extend(this.model.toJSON(), { courseRoute: this.courseRoute })));
 
         if (this.parentView.editorView.diff) {
 
@@ -64,9 +64,12 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
 
     /* Update */
 
-    update: function (snapshot, file) {
+    update: function (snapshot, file, courseRoute) {
+
+        this.courseRoute = courseRoute;
 
         this.model = snapshot;
+
         this.file = file;
 
         this.render();

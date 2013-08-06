@@ -310,7 +310,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             var file = this.data('file');
 
             // Navigate to snapshot and file
-            self.parentView.navigate(snapshot, file);
+            self.parentView.navigate(snapshot, file, { course: this.courseRoute });
         });
 
         snapshotClickArea.mouseover(function () {
@@ -485,7 +485,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     /* Update */
 
-    update: function (collection, currentSnapshotIndex, filename) {
+    update: function (collection, currentSnapshotIndex, filename, courseRoute) {
+
+        this.courseRoute = courseRoute;
 
         this.collection = collection;
 
@@ -579,7 +581,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Snapshot element
         if (element.data('snapshot')) {
-            this.parentView.navigate(element.data('snapshot'), element.data('file'));
+            this.parentView.navigate(element.data('snapshot'), element.data('file'), { course: this.courseRoute });
         }
     },
 
