@@ -140,7 +140,7 @@ casper.test.begin('Students view', 67, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/students/663/courses/662/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
-            test.assertElementCount('td', 5, 'has exactly three exercises listed');
+            test.assertElementCount('td', 5, 'has exactly five exercises listed');
 
             test.assertTextExists('Viikko11_142.MuistavaSanakirja', 'has an exercise named "MuistavaSanakirja"');
             test.assertTextExists('Viikko12_156.Matopeli', 'has an exercise named "Matopeli"');
@@ -190,7 +190,7 @@ casper.test.begin('Students view', 67, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/students/1932/courses/662/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
-            test.assertElementCount('td', 5, 'has exactly three exercises listed');
+            test.assertElementCount('td', 5, 'has exactly five exercises listed');
 
             test.assertTextExists('Viikko11_142.MuistavaSanakirja', 'has an exercise named "MuistavaSanakirja"');
             test.assertTextExists('Viikko12_156.Matopeli', 'has an exercise named "Matopeli"');
