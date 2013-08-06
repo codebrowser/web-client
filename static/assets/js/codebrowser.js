@@ -3964,6 +3964,30 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
         if (options) {
 
+            var courseFetched = _.after(1, function () {
+
+                var exercise = codebrowser.model.Exercise.findOrCreate({id: options.exerciseId});
+
+                // Fetch exercise
+                exercise.fetch({
+
+                    cache: true,
+                    expires: config.cache.expires,
+
+                    success: function() {
+
+                        self.studentView.exercise = exercise;
+                        fetchSynced();
+                    },
+                    // Exercise fetch failed
+                    error: function() {
+
+                        self.notFound();
+                    }
+
+                });
+            });
+
             var course = codebrowser.model.Course.findOrCreate({ id: options.courseId });
 
             // Fetch course
@@ -3975,6 +3999,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                 success: function() {
 
                     self.studentView.course = course;
+                    courseFetched();
                     fetchSynced();
                 },
 
@@ -3986,27 +4011,6 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
             });
 
-            var exercise = codebrowser.model.Exercise.findOrCreate({ id: options.exerciseId });
-
-            // Fetch exercise
-            exercise.fetch({
-
-                cache: true,
-                expires: config.cache.expires,
-
-                success: function() {
-
-                    self.studentView.exercise = exercise;
-                    fetchSynced();
-                },
-
-                // Exercise fetch failed
-                error: function() {
-
-                    self.notFound();
-                }
-
-            });
         } else {
 
             fetchSynced();
