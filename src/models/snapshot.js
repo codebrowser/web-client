@@ -57,5 +57,23 @@ codebrowser.model.Snapshot = Backbone.RelationalModel.extend({
             this.set('courseId', this.collection.courseId);
             this.set('exerciseId', this.collection.exerciseId);
         }
+    },
+
+    getFiles: function () {
+
+        var files = {};
+
+        this.get('files').each(function (file) {
+
+            var folder = file.getFolder();
+
+            if (!files[folder]) {
+                files[folder] = [];
+            }
+
+            files[folder].push(file.toJSON());
+        });
+
+        return files;
     }
 });

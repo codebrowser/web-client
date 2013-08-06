@@ -46,8 +46,16 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
 
     render: function () {
 
+        // View attributes
+        var attributes = {
+
+            courseRoute: this.courseRoute,
+            files: this.model.getFiles()
+
+        }
+
         // Template
-        var output = $(this.template(_.extend(this.model.toJSON(), { courseRoute: this.courseRoute })));
+        var output = $(this.template(_.extend(this.model.toJSON(), attributes)));
 
         if (this.parentView.editorView.diff) {
 

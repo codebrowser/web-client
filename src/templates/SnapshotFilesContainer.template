@@ -6,18 +6,28 @@
 
 <ul>
 
-    {{#if courseRoute}}
+        {{#each files}}
 
-        {{#files}}
-            <li data-id='{{id}}'><a href='#/courses/{{../courseId}}/exercises/{{../exerciseId}}/students/{{../studentId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
-        {{/files}}
+            {{#if @key}}
 
-    {{else}}
+                <li class='folder'><i class='icon-folder-open icon-gray'></i>{{@key}}</li>
 
-        {{#files}}
-            <li data-id='{{id}}'><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{../exerciseId}}/snapshots/{{../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{name}}</a></li>
-        {{/files}}
+            {{/if}}
 
-    {{/if}}
+            {{#each this}}
+
+                {{#if courseRoute}}
+
+                    <li data-id='{{id}}'><a href='#/courses/{{../../../courseId}}/exercises/{{../../../exerciseId}}/students/{{../../../studentId}}/snapshots/{{../../../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{fileName name}}</a></li>
+
+                {{else}}
+
+                    <li data-id='{{id}}'><a href='#/students/{{../../../studentId}}/courses/{{../../../courseId}}/exercises/{{../../../exerciseId}}/snapshots/{{../../../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{fileName name}}</a></li>
+
+                {{/if}}
+
+            {{/each}}
+
+        {{/each}}
 
 </ul>

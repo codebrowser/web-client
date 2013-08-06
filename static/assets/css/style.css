@@ -429,6 +429,18 @@ ul.selection a:hover {
 
 }
 
+#snapshot-files-container ul li.folder {
+
+    font-weight: 400;
+
+}
+
+#snapshot-files-container ul li.folder i {
+
+    margin-right: 5px;
+
+}
+
 #snapshot-files-container ul li.new {
 
     border-radius: 2px;

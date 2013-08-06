@@ -44,6 +44,16 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
         return this.getContent().split('\n').length;
     },
 
+    getFolder: function () {
+
+        return this.get('name').substring(0, this.get('name').lastIndexOf('/'));
+    },
+
+    getName: function () {
+
+        return _.last(this.get('name').split('/'));
+    },
+
     /* Callback parameters (content, [error]) are the received data and possible error, respectively. */
 
     fetchContent: function (callback) {

@@ -97,13 +97,12 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["Handlebars"]["templates"]["EditorTopContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, stack2, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, functionType="function";
 
 
   buffer += "<header>\n\n    <h1>";
-  if (stack1 = helpers.name) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.name; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1)
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.fileName || depth0.fileName),stack1 ? stack1.call(depth0, depth0.name, options) : helperMissing.call(depth0, "fileName", depth0.name, options)))
     + "</h1>\n\n    <span class='pull-right'>\n\n        + ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.duration || depth0.duration),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "duration", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
@@ -387,90 +386,94 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 this["Handlebars"]["templates"]["SnapshotFilesContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
 
-function program1(depth0,data) {
-  
-  var buffer = "", stack1, options;
-  buffer += "\n\n        ";
-  options = {hash:{},inverse:self.noop,fn:self.programWithDepth(2, program2, data, depth0),data:data};
-  if (stack1 = helpers.files) { stack1 = stack1.call(depth0, options); }
-  else { stack1 = depth0.files; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  if (!helpers.files) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n    ";
-  return buffer;
-  }
-function program2(depth0,data,depth1) {
+function program1(depth0,data,depth1) {
   
   var buffer = "", stack1, stack2;
-  buffer += "\n            <li data-id='";
+  buffer += "\n\n            ";
+  stack2 = helpers['if'].call(depth0, ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.key), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n\n            ";
+  stack2 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.programWithDepth(4, program4, data, depth1),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n\n        ";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n\n                <li class='folder'><i class='icon-folder-open icon-gray'></i>"
+    + escapeExpression(((stack1 = ((stack1 = data),stack1 == null || stack1 === false ? stack1 : stack1.key)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</li>\n\n            ";
+  return buffer;
+  }
+
+function program4(depth0,data,depth2) {
+  
+  var buffer = "", stack1;
+  buffer += "\n\n                ";
+  stack1 = helpers['if'].call(depth0, depth0.courseRoute, {hash:{},inverse:self.programWithDepth(7, program7, data, depth2),fn:self.programWithDepth(5, program5, data, depth2),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n            ";
+  return buffer;
+  }
+function program5(depth0,data,depth3) {
+  
+  var buffer = "", stack1, stack2, options;
+  buffer += "\n\n                    <li data-id='";
   if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "'><a href='#/courses/"
-    + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = depth3.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/exercises/"
-    + escapeExpression(((stack1 = depth1.exerciseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = depth3.exerciseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/students/"
-    + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = depth3.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/snapshots/"
-    + escapeExpression(((stack1 = depth1.id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = depth3.id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/files/";
   if (stack2 = helpers.id) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.id; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
     + "'><i class='icon-file icon-gray'></i> ";
-  if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  buffer += escapeExpression(stack2)
-    + "</a></li>\n        ";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.fileName || depth0.fileName),stack1 ? stack1.call(depth0, depth0.name, options) : helperMissing.call(depth0, "fileName", depth0.name, options)))
+    + "</a></li>\n\n                ";
   return buffer;
   }
 
-function program4(depth0,data) {
+function program7(depth0,data,depth3) {
   
-  var buffer = "", stack1, options;
-  buffer += "\n\n        ";
-  options = {hash:{},inverse:self.noop,fn:self.programWithDepth(5, program5, data, depth0),data:data};
-  if (stack1 = helpers.files) { stack1 = stack1.call(depth0, options); }
-  else { stack1 = depth0.files; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  if (!helpers.files) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n    ";
-  return buffer;
-  }
-function program5(depth0,data,depth1) {
-  
-  var buffer = "", stack1, stack2;
-  buffer += "\n            <li data-id='";
+  var buffer = "", stack1, stack2, options;
+  buffer += "\n\n                    <li data-id='";
   if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "'><a href='#/students/"
-    + escapeExpression(((stack1 = depth1.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = depth3.studentId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/courses/"
-    + escapeExpression(((stack1 = depth1.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = depth3.courseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/exercises/"
-    + escapeExpression(((stack1 = depth1.exerciseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = depth3.exerciseId),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/snapshots/"
-    + escapeExpression(((stack1 = depth1.id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + escapeExpression(((stack1 = depth3.id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "/files/";
   if (stack2 = helpers.id) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = depth0.id; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
   buffer += escapeExpression(stack2)
     + "'><i class='icon-file icon-gray'></i> ";
-  if (stack2 = helpers.name) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
-  else { stack2 = depth0.name; stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2; }
-  buffer += escapeExpression(stack2)
-    + "</a></li>\n        ";
+  options = {hash:{},data:data};
+  buffer += escapeExpression(((stack1 = helpers.fileName || depth0.fileName),stack1 ? stack1.call(depth0, depth0.name, options) : helperMissing.call(depth0, "fileName", depth0.name, options)))
+    + "</a></li>\n\n                ";
   return buffer;
   }
 
   buffer += "<header>\n\n    <i class='icon-folder-close icon-gray'></i> <h1>"
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h1>\n\n</header>\n\n<ul>\n\n    ";
-  stack2 = helpers['if'].call(depth0, depth0.courseRoute, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
+    + "</h1>\n\n</header>\n\n<ul>\n\n        ";
+  stack2 = helpers.each.call(depth0, depth0.files, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n</ul>\n";
   return buffer;
