@@ -526,8 +526,11 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     didResize: function () {
 
-        this.stopSpinner();
-        this.startSpinner();
+        // Relocate spinner if necessary
+        if (this.spinner) {
+            this.stopSpinner();
+            this.startSpinner();
+        }
 
         // Rendering finished
         if (this.snapshotElements.length === this.collection.length) {
