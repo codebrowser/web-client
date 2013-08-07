@@ -3577,7 +3577,6 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         // Fetch student
         student.fetch({
 
-            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
@@ -3602,7 +3601,6 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         // Fetch course collection
         courseCollection.fetch({
 
-            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
@@ -3686,7 +3684,6 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
             // Fetch student
             student.fetch({
 
-                prefill: true,
                 cache: true,
                 expires: config.cache.expires,
 
@@ -3718,7 +3715,6 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         // Fetch course
         course.fetch({
 
-            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
@@ -3741,7 +3737,6 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         // Fetch exercise collection
         exerciseCollection.fetch({
 
-            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
@@ -3773,6 +3768,13 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialise */
+
+    initialize: function () {
+
+        this.setUp();
+    },
+
     setUp: function () {
 
         if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
@@ -3802,11 +3804,20 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
         this.setUp();
 
-        var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
+        var snapshotCollection;
+
+        if (!this.snapshotView.collection) {
+
+            snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
                                                                                        courseId: courseId,
                                                                                        exerciseId: exerciseId });
 
-        this.snapshotView.collection = snapshotCollection;
+            this.snapshotView.collection = snapshotCollection;
+
+        } else {
+
+            snapshotCollection = this.snapshotView.collection;
+        }
 
         if (options && options.courseRoute) {
             this.snapshotView.courseRoute = true;
@@ -3861,7 +3872,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         // Fetch student
         student.fetch({
 
-            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
@@ -3882,7 +3892,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         // Fetch snapshot collection
         snapshotCollection.fetch({
 
-            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
@@ -3962,7 +3971,6 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                 // Fetch exercise
                 exercise.fetch({
 
-                    prefill: true,
                     cache: true,
                     expires: config.cache.expires,
 
@@ -3985,7 +3993,6 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
             // Fetch course
             course.fetch({
 
-                prefill: true,
                 cache: true,
                 expires: config.cache.expires,
 
@@ -4017,7 +4024,6 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
         // Fetch student collection
         studentCollection.fetch({
 
-            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
