@@ -11,6 +11,12 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     },
 
+    /* Initialize */
+
+    initialize: function () {
+        this.setUp();
+    },
+
     setUp: function () {
 
         if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
