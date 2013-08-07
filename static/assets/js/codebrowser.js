@@ -1465,6 +1465,8 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             return;
         }
 
+        this.differences = [];
+
         var self = this;
 
         this.each(function (snapshot, index) {
