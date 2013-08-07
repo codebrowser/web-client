@@ -63,6 +63,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
             // Fetch student
             student.fetch({
 
+                prefill: true,
                 cache: true,
                 expires: config.cache.expires,
 
@@ -94,6 +95,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         // Fetch course
         course.fetch({
 
+            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
@@ -116,6 +118,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         // Fetch exercise collection
         exerciseCollection.fetch({
 
+            prefill: true,
             cache: true,
             expires: config.cache.expires,
 

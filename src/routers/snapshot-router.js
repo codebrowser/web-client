@@ -11,13 +11,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     },
 
-    /* Initialise */
-
-    initialize: function () {
-
-        this.setUp();
-    },
-
     setUp: function () {
 
         if (!codebrowser.controller.ViewController.isActive(this.snapshotView)) {
@@ -47,20 +40,11 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
         this.setUp();
 
-        var snapshotCollection;
-
-        if (!this.snapshotView.collection) {
-
-            snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
+        var snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
                                                                                        courseId: courseId,
                                                                                        exerciseId: exerciseId });
 
-            this.snapshotView.collection = snapshotCollection;
-
-        } else {
-
-            snapshotCollection = this.snapshotView.collection;
-        }
+        this.snapshotView.collection = snapshotCollection;
 
         if (options && options.courseRoute) {
             this.snapshotView.courseRoute = true;
@@ -115,6 +99,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         // Fetch student
         student.fetch({
 
+            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
@@ -135,6 +120,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         // Fetch snapshot collection
         snapshotCollection.fetch({
 
+            prefill: true,
             cache: true,
             expires: config.cache.expires,
 
