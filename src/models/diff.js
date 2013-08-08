@@ -147,11 +147,12 @@ codebrowser.model.Diff = function (previousContent, content) {
                 if (to.slice(difference.rowStart, difference.rowEnd).join('').length === 0) {
 
                     difference.type = 'delete';
+                    difference.overwrite = true;
 
                     var newInsert = this.createOperation('insert',
                                                          operation[1],
                                                          operation[2],
-                                                         (operation[3] + difference.rowEnd - difference.rowStart),
+                                                         (operation[3] + (difference.rowEnd - difference.rowStart + 1)),
                                                          operation[4]);
 
                     operations.splice(i + 1, 0, newInsert);
