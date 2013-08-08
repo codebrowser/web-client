@@ -43,7 +43,7 @@ codebrowser.model.Diff = function (previousContent, content) {
     // Offset
     var offset = 0;
 
-    for (var i = 0; i < operations.length; ++i) {
+    for (var i = 0; i < operations.length; i++) {
 
         var operation = operations[i];
 
@@ -56,15 +56,6 @@ codebrowser.model.Diff = function (previousContent, content) {
             overwrite: false
 
         }
-
-        console.log('type: ' + operation[0]);
-        console.log('fromRowStart: ' + operation[1]);
-        console.log('fromRowEnd: ' + (operation[2] - 1));
-        console.log('');
-        console.log('toRowStart: ' + operation[3]);
-        console.log('toRowEnd: ' + (operation[4] - 1));
-        console.log('--------');
-
         // Ignore equal
         if (difference.type === 'equal') {
             continue;
