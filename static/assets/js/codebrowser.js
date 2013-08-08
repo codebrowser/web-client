@@ -903,6 +903,18 @@ codebrowser.model.Diff = function (previousContent, content) {
 
     }
 
+    this.createOperation = function (type, fromRowStart, fromRowEnd, toRowStart, toRowEnd) {
+
+        var newOperation = [];
+        newOperation.push(type);
+        newOperation.push(fromRowStart);
+        newOperation.push(fromRowEnd);
+        newOperation.push(toRowStart);
+        newOperation.push(toRowEnd);
+
+        return newOperation;
+    }
+
     /* Initialise */
 
     var from = difflib.stringAsLines(previousContent);
@@ -934,6 +946,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             overwrite: false
 
         }
+
         // Ignore equal
         if (difference.type === 'equal') {
             continue;
@@ -967,14 +980,13 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                     var operationChange = operation[2] - operation[1];
 
-                    var newOperation = [];
-                    newOperation.push('delete');
-                    newOperation.push(operation[1] + operationChange);
-                    newOperation.push(operation[2] + change);
-                    newOperation.push(operation[3] + operationChange);
-                    newOperation.push(operation[4]);
+                    var newDelete = this.createOperation('delete',
+                                                         operation[1] + operationChange,
+                                                         operation[2] + change,
+                                                         (operation[3] + operationChange),
+                                                         operation[4]);
 
-                    operations.splice(i + 1, 0, newOperation);
+                    operations.splice(i + 1, 0, newDelete);
                 }
             }
 
@@ -1009,21 +1021,36 @@ codebrowser.model.Diff = function (previousContent, content) {
                 // Replace
                 difference.rowEnd = difference.rowStart + changed - 1;
 
-                differences.replace.push(difference);
-                differences.all.push(difference);
+                if (to.slice(difference.rowStart, difference.rowEnd).join('').length === 0) {
 
-                // Increase replaced lines
-                count[difference.type] += difference.rowEnd - difference.rowStart + 1;
+                    difference.type = 'delete';
 
-                var insertRowStart = difference.rowEnd + 1;
+                    var newInsert = this.createOperation('insert',
+                                                         operation[1],
+                                                         operation[2],
+                                                         (operation[3] + difference.rowEnd - difference.rowStart),
+                                                         operation[4]);
 
-                // Insert
-                difference = originalDifference;
+                    operations.splice(i + 1, 0, newInsert);
 
-                difference.type = 'insert';
+                } else {
 
-                // Insert should start from where replace ended
-                difference.rowStart = insertRowStart;
+                    differences.replace.push(difference);
+                    differences.all.push(difference);
+
+                    // Increase replaced lines
+                    count[difference.type] += difference.rowEnd - difference.rowStart + 1;
+
+                    var insertRowStart = difference.rowEnd + 1;
+
+                    // Insert
+                    difference = originalDifference;
+
+                    difference.type = 'insert';
+
+                    // Insert should start from where replace ended
+                    difference.rowStart = insertRowStart;
+                }
             }
         }
 
