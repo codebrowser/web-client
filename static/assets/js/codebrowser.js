@@ -921,7 +921,7 @@ codebrowser.model.Diff = function (previousContent, content) {
     // Offset
     var offset = 0;
 
-    for (var i = 0; i < operations.length; i++) {
+    for (var i = 0; i < operations.length; ++i) {
 
         var operation = operations[i];
 
@@ -934,6 +934,14 @@ codebrowser.model.Diff = function (previousContent, content) {
             overwrite: false
 
         }
+
+        console.log('type: ' + operation[0]);
+        console.log('fromRowStart: ' + operation[1]);
+        console.log('fromRowEnd: ' + (operation[2] - 1));
+        console.log('');
+        console.log('toRowStart: ' + operation[3]);
+        console.log('toRowEnd: ' + (operation[4] - 1));
+        console.log('--------');
 
         // Ignore equal
         if (difference.type === 'equal') {
@@ -953,24 +961,38 @@ codebrowser.model.Diff = function (previousContent, content) {
             var changed = operation[2] - operation[1];
 
             // Replaced something to nothing
-            if (to.slice(operation[3], operation[4]).join('').length === 0 &&
-                fromChange === 0) {
+            if (to.slice(operation[3], operation[4]).join('').length === 0) {
 
                 // Should overwrite previous line
                 difference.overwrite = true;
 
                 difference.type = 'delete';
+
+                if (fromChange - toChange > 0) {
+
+                    var change = fromChange - toChange;
+
+                    operation[2] -= change;
+
+                    var newOperation = [];
+                    newOperation.push('delete');
+                    newOperation.push(operation[1] + 1);
+                    newOperation.push(operation[2] + change);
+                    newOperation.push(operation[3] + 1);
+                    newOperation.push(operation[4]);
+
+                    operations.splice(i + 1, 0, newOperation);
+                }
             }
 
             // Replaced nothing to something
-            if (from.slice(operation[1], operation[2]).join('').length === 0 &&
-                toChange === 0) {
+            if (from.slice(operation[1], operation[2]).join('').length === 0) {
 
                 difference.type = 'insert';
             }
 
             // Replace contains deleted lines
-            if (fromChange > toChange) {
+            if (fromChange > toChange && difference.type !== 'delete') {
 
                 differences.replace.push(difference);
                 differences.all.push(difference);
@@ -989,7 +1011,7 @@ codebrowser.model.Diff = function (previousContent, content) {
             }
 
             // Replace contains inserted lines
-            if (toChange > fromChange) {
+            if (toChange > fromChange && difference.type !== 'insert') {
 
                 // Replace
                 difference.rowEnd = difference.rowStart + changed - 1;
