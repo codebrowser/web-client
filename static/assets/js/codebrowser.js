@@ -959,7 +959,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                 difference.type = 'delete';
 
-                // New deletes
+                // New delete
                 if (fromChange - toChange > 0) {
 
                     var change = fromChange - toChange;
