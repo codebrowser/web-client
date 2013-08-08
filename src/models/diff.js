@@ -85,9 +85,10 @@ codebrowser.model.Diff = function (previousContent, content) {
                 if (fromChange - toChange > 0) {
 
                     var change = fromChange - toChange;
-                    var operationChange = operation[2] - operation[1];
 
                     operation[2] -= change;
+
+                    var operationChange = operation[2] - operation[1];
 
                     var newDelete = [];
 
