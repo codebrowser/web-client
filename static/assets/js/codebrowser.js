@@ -1022,7 +1022,7 @@ codebrowser.model.Diff = function (previousContent, content) {
                 // Replace
                 difference.rowEnd = difference.rowStart + changed - 1;
 
-                if (to.slice(difference.rowStart, difference.rowEnd).join('').length === 0) {
+                if (to.slice(difference.rowStart, difference.rowEnd + 1).join('').length === 0) {
 
                     difference.type = 'delete';
                     difference.overwrite = true;
