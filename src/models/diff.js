@@ -94,6 +94,7 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                 difference.type = 'delete';
 
+                // New delete
                 if (fromChange - toChange > 0) {
 
                     var change = fromChange - toChange;
@@ -108,13 +109,13 @@ codebrowser.model.Diff = function (previousContent, content) {
                                                          (operation[3] + operationChange),
                                                          operation[4]);
 
+                    // Insert new delete
                     operations.splice(i + 1, 0, newDelete);
                 }
             }
 
             // Replaced nothing to something
             if (from.slice(operation[1], operation[2]).join('').length === 0) {
-
                 difference.type = 'insert';
             }
 
