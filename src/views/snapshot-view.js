@@ -33,6 +33,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     initialize: function () {
 
+        // Hide view until needed
+        this.$el.hide();
+
         // Navigation bar
         this.navigationbarContainer = $('<div>', { id: 'navigation-bar-container' });
         this.$el.append(this.navigationbarContainer);
@@ -178,6 +181,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Determine previous file if it exists
         var previousFile = previousSnapshot.get('files').findWhere({ name: filename });
+
+        // Show view if necessary
+        this.$el.show();
 
         // Update timeline
         this.snapshotsTimelineView.update(this.collection, index, filename, this.courseRoute);
