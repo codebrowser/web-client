@@ -959,28 +959,29 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                 difference.type = 'delete';
 
+                // New deletes
                 if (fromChange - toChange > 0) {
 
                     var change = fromChange - toChange;
+                    var operationChange = operation[2] - operation[1];
 
                     operation[2] -= change;
 
-                    var operationChange = operation[2] - operation[1];
+                    var newDelete = [];
 
-                    var newOperation = [];
-                    newOperation.push('delete');
-                    newOperation.push(operation[1] + operationChange);
-                    newOperation.push(operation[2] + change);
-                    newOperation.push(operation[3] + operationChange);
-                    newOperation.push(operation[4]);
+                    newDelete.push('delete');
+                    newDelete.push(operation[1] + operationChange);
+                    newDelete.push(operation[2] + change);
+                    newDelete.push(operation[3] + operationChange);
+                    newDelete.push(operation[4]);
 
-                    operations.splice(i + 1, 0, newOperation);
+                    // Insert new delete
+                    operations.splice(i + 1, 0, newDelete);
                 }
             }
 
             // Replaced nothing to something
             if (from.slice(operation[1], operation[2]).join('').length === 0) {
-
                 difference.type = 'insert';
             }
 
