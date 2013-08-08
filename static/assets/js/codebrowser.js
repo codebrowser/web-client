@@ -413,7 +413,7 @@ function program4(depth0,data,depth2) {
   
   var buffer = "", stack1;
   buffer += "\n\n                ";
-  stack1 = helpers['if'].call(depth0, depth0.courseRoute, {hash:{},inverse:self.programWithDepth(7, program7, data, depth2),fn:self.programWithDepth(5, program5, data, depth2),data:data});
+  stack1 = helpers['if'].call(depth0, depth2.courseRoute, {hash:{},inverse:self.programWithDepth(7, program7, data, depth2),fn:self.programWithDepth(5, program5, data, depth2),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n            ";
   return buffer;
@@ -3776,6 +3776,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots(/)':                           'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId(/)':               'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot',
+        'courses/:courseId/exercises/:exerciseId/students/:studentId(/)':                                     'navigation',
         'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots(/)':                           'navigation',
         'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots/:snapshotId/files/:fileId(/)': 'navigation'
 
@@ -3929,8 +3930,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
         'students(/)':                                                    'students',
         'courses/:courseId/exercises/:exerciseId(/)':                     'navigation',
-        'courses/:courseId/exercises/:exerciseId/students(/)':            'exerciseStudents',
-        'courses/:courseId/exercises/:exerciseId/students/:studentId(/)': 'exerciseStudents'
+        'courses/:courseId/exercises/:exerciseId/students(/)':            'exerciseStudents'
 
     },
 

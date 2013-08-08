@@ -4,8 +4,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
         'students(/)':                                                    'students',
         'courses/:courseId/exercises/:exerciseId(/)':                     'navigation',
-        'courses/:courseId/exercises/:exerciseId/students(/)':            'exerciseStudents',
-        'courses/:courseId/exercises/:exerciseId/students/:studentId(/)': 'exerciseStudents'
+        'courses/:courseId/exercises/:exerciseId/students(/)':            'exerciseStudents'
 
     },
 

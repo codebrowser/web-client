@@ -6,6 +6,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots(/)':                           'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId(/)':               'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot',
+        'courses/:courseId/exercises/:exerciseId/students/:studentId(/)':                                     'navigation',
         'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots(/)':                           'navigation',
         'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots/:snapshotId/files/:fileId(/)': 'navigation'
 

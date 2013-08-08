@@ -413,7 +413,7 @@ function program4(depth0,data,depth2) {
   
   var buffer = "", stack1;
   buffer += "\n\n                ";
-  stack1 = helpers['if'].call(depth0, depth0.courseRoute, {hash:{},inverse:self.programWithDepth(7, program7, data, depth2),fn:self.programWithDepth(5, program5, data, depth2),data:data});
+  stack1 = helpers['if'].call(depth0, depth2.courseRoute, {hash:{},inverse:self.programWithDepth(7, program7, data, depth2),fn:self.programWithDepth(5, program5, data, depth2),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n            ";
   return buffer;

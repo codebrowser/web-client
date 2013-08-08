@@ -16,7 +16,7 @@
 
             {{#each this}}
 
-                {{#if courseRoute}}
+                {{#if ../../courseRoute}}
 
                     <li data-id='{{id}}'><a href='#/courses/{{../../../courseId}}/exercises/{{../../../exerciseId}}/students/{{../../../studentId}}/snapshots/{{../../../id}}/files/{{id}}'><i class='icon-file icon-gray'></i> {{fileName name}}</a></li>
 
