@@ -13,35 +13,48 @@
         <li class='active'>Students</li>
     </ul>
 
-    <h2>Students</h2>
+    <h2>Students ({{students.length}})</h2>
 
     <table class='table table-hover'>
 
         <thead>
             <tr>
+
+                <th>#</th>
                 <th>Name</th>
+
+                {{#unless course}}
+                    <th>Courses</th>
+                {{/unless}}
+
             </tr>
         </thead>
 
         <tbody>
 
-            {{#if course}}
+            {{#students}}
 
-                {{#students}}
-                    <tr>
-                        <td class='link'><a href='#/courses/{{../course.id}}/exercises/{{../exercise.id}}/students/{{id}}/snapshots'>{{name}}</a></td>
-                    </tr>
-                {{/students}}
+                <tr>
 
-            {{else}}
+                    <td class='index'>{{index @index}}</td>
 
-                {{#students}}
-                    <tr>
+                    {{#if ../course}}
+
+                        <td class='link'><a href='#/courses/{{../../course.id}}/exercises/{{../../exercise.id}}/students/{{id}}/snapshots'>{{name}}</a></td>
+
+                    {{else}}
+
                         <td class='link'><a href='#/students/{{id}}/courses'>{{name}}</a></td>
-                    </tr>
-                {{/students}}
 
-            {{/if}}
+                    {{/if}}
+
+                    {{#unless ../course}}
+                        <td>{{courses.length}}</td>
+                    {{/unless}}
+
+                </tr>
+
+            {{/students}}
 
         </tbody>
 

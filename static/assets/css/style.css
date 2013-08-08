@@ -153,6 +153,12 @@ ul.selection a:hover {
 
 }
 
+.table td.index {
+
+    width: 25px;
+
+}
+
 .table td.link {
 
     padding: 0;

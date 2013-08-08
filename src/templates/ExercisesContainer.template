@@ -15,35 +15,38 @@
 
     </ul>
 
-    <h2>Exercises</h2>
+    <h2>Exercises ({{exercises.length}})</h2>
 
     <table class='table table-hover'>
 
         <thead>
             <tr>
+                <th>#</th>
                 <th>Name</th>
             </tr>
         </thead>
 
         <tbody>
 
-            {{#if studentId}}
+            {{#exercises}}
 
-                {{#exercises}}
-                    <tr>
-                        <td class='link'><a href='#/students/{{../studentId}}/courses/{{../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></td>
-                    </tr>
-                {{/exercises}}
+                <tr>
 
-            {{else}}
+                    <td class='index'>{{index @index}}</td>
 
-                {{#exercises}}
-                    <tr>
-                        <td class='link'><a href='#/courses/{{../courseId}}/exercises/{{id}}/students'>{{name}}</a></td>
-                    </tr>
-                {{/exercises}}
+                    {{#if ../studentId}}
 
-            {{/if}}
+                        <td class='link'><a href='#/students/{{../../studentId}}/courses/{{../../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></td>
+
+                    {{else}}
+
+                        <td class='link'><a href='#/courses/{{../../courseId}}/exercises/{{id}}/students'>{{name}}</a></td>
+
+                    {{/if}}
+
+                </tr>
+
+            {{/exercises}}
 
         </tbody>
 

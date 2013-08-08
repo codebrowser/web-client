@@ -18,7 +18,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/1/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
-            test.assertElementCount('td', 3, 'has exactly three exercises listed');
+            test.assertElementCount('tbody tr', 3, 'has exactly three exercises listed');
 
             test.assertTextExists('Viikko4_077.Lyyrakortti', 'has an exercise named "Lyyrakortti"');
             test.assertTextExists('Viikko5_086.LyyrakorttiJaKassapaate', 'has an exercise named "LyyrakorttiJaKassapaate"');
@@ -46,7 +46,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/662/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
-            test.assertElementCount('td', 5, 'has exactly five exercises listed');
+            test.assertElementCount('tbody tr', 5, 'has exactly five exercises listed');
 
             test.assertTextExists('Viikko11_142.MuistavaSanakirja', 'has an exercise named "MuistavaSanakirja"');
             test.assertTextExists('Viikko12_156.Matopeli', 'has an exercise named "Matopeli"');
@@ -77,7 +77,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/662/exercises/664/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('td', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
@@ -101,7 +101,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/662/exercises/815/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('td', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
@@ -125,7 +125,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/662/exercises/1565/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('td', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
@@ -149,7 +149,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/662/exercises/1662/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('td', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
@@ -173,7 +173,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/662/exercises/1687/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('td', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
@@ -205,7 +205,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/1/exercises/3/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('td', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_423', 'has a student named "student_13"');
             test.assertTextExists('student_480', 'has a student named "student_1312"');
@@ -229,7 +229,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/1/exercises/100/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('td', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_423', 'has a student named "student_13"');
             test.assertTextExists('student_480', 'has a student named "student_1312"');
@@ -253,7 +253,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('#/courses/1/exercises/206/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('td', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_423', 'has a student named "student_13"');
             test.assertTextExists('student_480', 'has a student named "student_1312"');
