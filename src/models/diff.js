@@ -87,11 +87,13 @@ codebrowser.model.Diff = function (previousContent, content) {
 
                     operation[2] -= change;
 
+                    var operationChange = operation[2] - operation[1];
+
                     var newOperation = [];
                     newOperation.push('delete');
-                    newOperation.push(operation[1] + 1);
+                    newOperation.push(operation[1] + operationChange);
                     newOperation.push(operation[2] + change);
-                    newOperation.push(operation[3] + 1);
+                    newOperation.push(operation[3] + operationChange);
                     newOperation.push(operation[4]);
 
                     operations.splice(i + 1, 0, newOperation);
