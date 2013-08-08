@@ -256,6 +256,27 @@ ul.selection a:hover {
 
 }
 
+/* Structure */
+
+#loading {
+
+    position: absolute;
+    z-index: -1;
+
+}
+
+#container {
+
+    background-color: #fff;
+
+}
+
+#wrapper {
+
+    min-height: 20px;
+
+}
+
 /* Footer */
 
 #footer {
