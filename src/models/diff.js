@@ -25,6 +25,18 @@ codebrowser.model.Diff = function (previousContent, content) {
 
     }
 
+    this.createOperation = function (type, fromRowStart, fromRowEnd, toRowStart, toRowEnd) {
+
+        var newOperation = [];
+        newOperation.push(type);
+        newOperation.push(fromRowStart);
+        newOperation.push(fromRowEnd);
+        newOperation.push(toRowStart);
+        newOperation.push(toRowEnd);
+
+        return newOperation;
+    }
+
     /* Initialise */
 
     var from = difflib.stringAsLines(previousContent);
@@ -75,24 +87,40 @@ codebrowser.model.Diff = function (previousContent, content) {
             var changed = operation[2] - operation[1];
 
             // Replaced something to nothing
-            if (to.slice(operation[3], operation[4]).join('').length === 0 &&
-                fromChange === 0) {
+            if (to.slice(operation[3], operation[4]).join('').length === 0) {
 
                 // Should overwrite previous line
                 difference.overwrite = true;
 
                 difference.type = 'delete';
+
+                // New delete
+                if (fromChange - toChange > 0) {
+
+                    var change = fromChange - toChange;
+
+                    operation[2] -= change;
+
+                    var operationChange = operation[2] - operation[1];
+
+                    var newDelete = this.createOperation('delete',
+                                                         operation[1] + operationChange,
+                                                         operation[2] + change,
+                                                         (operation[3] + operationChange),
+                                                         operation[4]);
+
+                    // Insert new delete
+                    operations.splice(i + 1, 0, newDelete);
+                }
             }
 
             // Replaced nothing to something
-            if (from.slice(operation[1], operation[2]).join('').length === 0 &&
-                toChange === 0) {
-
+            if (from.slice(operation[1], operation[2]).join('').length === 0) {
                 difference.type = 'insert';
             }
 
             // Replace contains deleted lines
-            if (fromChange > toChange) {
+            if (fromChange > toChange && difference.type !== 'delete') {
 
                 differences.replace.push(difference);
                 differences.all.push(difference);
@@ -111,26 +139,42 @@ codebrowser.model.Diff = function (previousContent, content) {
             }
 
             // Replace contains inserted lines
-            if (toChange > fromChange) {
+            if (toChange > fromChange && difference.type !== 'insert') {
 
                 // Replace
                 difference.rowEnd = difference.rowStart + changed - 1;
 
-                differences.replace.push(difference);
-                differences.all.push(difference);
+                if (to.slice(difference.rowStart, difference.rowEnd + 1).join('').length === 0) {
 
-                // Increase replaced lines
-                count[difference.type] += difference.rowEnd - difference.rowStart + 1;
+                    difference.type = 'delete';
+                    difference.overwrite = true;
 
-                var insertRowStart = difference.rowEnd + 1;
+                    var newInsert = this.createOperation('insert',
+                                                         operation[1],
+                                                         operation[2],
+                                                         (operation[3] + (difference.rowEnd - difference.rowStart + 1)),
+                                                         operation[4]);
 
-                // Insert
-                difference = originalDifference;
+                    operations.splice(i + 1, 0, newInsert);
 
-                difference.type = 'insert';
+                } else {
 
-                // Insert should start from where replace ended
-                difference.rowStart = insertRowStart;
+                    differences.replace.push(difference);
+                    differences.all.push(difference);
+
+                    // Increase replaced lines
+                    count[difference.type] += difference.rowEnd - difference.rowStart + 1;
+
+                    var insertRowStart = difference.rowEnd + 1;
+
+                    // Insert
+                    difference = originalDifference;
+
+                    difference.type = 'insert';
+
+                    // Insert should start from where replace ended
+                    difference.rowStart = insertRowStart;
+                }
             }
         }
 
