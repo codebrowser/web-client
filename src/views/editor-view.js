@@ -197,6 +197,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         // View attributes
         var attributes = {
 
+            split: this.split,
             previous: this.previousModel.toJSON(),
             difference: this.differences.getCount(),
             percentageOfChange: Math.round((this.differences.getCount().total() / this.model.lines()) * 100)
@@ -387,6 +388,9 @@ codebrowser.view.EditorView = Backbone.View.extend({
         this.sideEditor.resize();
         this.mainEditor.renderer.updateFull();
         this.sideEditor.renderer.updateFull();
+
+        // Render
+        this.render();
     },
 
     /* Actions */

@@ -1,40 +1,55 @@
 <header>
 
-    <h1>{{fileName name}}</h1>
+    <section>
 
-    <span class='pull-right'>
+        <h1>{{fileName name}}</h1>
 
-        + {{duration snapshot.snapshotTime previous.snapshot.snapshotTime}}
+        <span class='pull-right'>
 
-        <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom'
+            + {{duration snapshot.snapshotTime previous.snapshot.snapshotTime}}
 
-           data-original-title='
+            <a id='editor-inspector' href='#' data-toggle='popover' data-placement='bottom'
 
-                <time>{{date previous.snapshot.snapshotTime}} –</time>
-                <time>{{date snapshot.snapshotTime}}</time>
+               data-original-title='
 
-           '
+                    <time>{{date previous.snapshot.snapshotTime}} –</time>
+                    <time>{{date snapshot.snapshotTime}}</time>
 
-           data-content='
+               '
 
-            <dl class="dl-horizontal pull-left">
+               data-content='
 
-              <dt>Change</dt>
-              <dd>{{percentageOfChange}} %</dd>
+                <dl class="dl-horizontal pull-left">
 
-              <dt>Insert</dt>
-              <dd>{{difference.insert}} {{pluralize difference.insert 'line'}}</dd>
+                  <dt>Change</dt>
+                  <dd>{{percentageOfChange}} %</dd>
 
-              <dt>Replace</dt>
-              <dd>{{difference.replace}} {{pluralize difference.replace 'line'}}</dd>
+                  <dt>Insert</dt>
+                  <dd>{{difference.insert}} {{pluralize difference.insert 'line'}}</dd>
 
-              <dt>Delete</dt>
-              <dd>{{difference.delete}} {{pluralize difference.delete 'line'}}</dd>
+                  <dt>Replace</dt>
+                  <dd>{{difference.replace}} {{pluralize difference.replace 'line'}}</dd>
 
-            </dl>
+                  <dt>Delete</dt>
+                  <dd>{{difference.delete}} {{pluralize difference.delete 'line'}}</dd>
 
-        '><i class='icon-info-sign icon-gray'></i></a>
+                </dl>
 
-    </span>
+            '><i class='icon-info-sign icon-gray'></i></a>
+
+        </span>
+
+    </section>
+
+    {{#if split}}
+
+        <section class='split'>
+
+            <div class='previous'><span>Previous</span></div>
+            <div class='current'><span>Current</span></div>
+
+        </section>
+
+    {{/if}}
 
 </header>

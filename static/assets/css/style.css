@@ -512,7 +512,6 @@ ul.selection a:hover {
 
 #editor-top-container header {
 
-    padding: 0 10px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 4px 4px 0 0;
     background-color: rgba(0, 0, 0, 0.05);
@@ -530,6 +529,47 @@ ul.selection a:hover {
     font-size: inherit;
     font-weight: 500;
     line-height: inherit;
+
+}
+
+#editor-top-container header section {
+
+    margin: 0;
+    padding: 0 10px;
+
+}
+
+#editor-top-container header section.split {
+
+    padding: 0;
+    height: 30px;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+
+}
+
+
+#editor-top-container header section.split div {
+
+    width: 50%;
+
+}
+
+#editor-top-container header section.split div span {
+
+    padding: 0 10px;
+
+}
+
+#editor-top-container header section.split div.previous {
+
+    float: left;
+
+}
+
+#editor-top-container header section.split div.current {
+
+    float: right;
+    box-shadow: 1px 0 0 0 rgba(0, 0, 0, 0.1) inset;
 
 }
 
