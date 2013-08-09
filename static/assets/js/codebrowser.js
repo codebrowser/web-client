@@ -3854,6 +3854,9 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     },
 
+    studentId: null,
+    exerciseId: null,
+
     /* Initialise */
 
     initialize: function () {
@@ -3892,13 +3895,16 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
         var snapshotCollection;
 
-        if (!this.snapshotView.collection) {
+        if (!this.snapshotView.collection || (this.studentId !== studentId && this.exerciseId !== exerciseId)) {
 
             snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
                                                                                        courseId: courseId,
                                                                                        exerciseId: exerciseId });
 
             this.snapshotView.collection = snapshotCollection;
+
+            this.studentId = studentId;
+            this.exerciseId = exerciseId;
 
         } else {
 
