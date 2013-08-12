@@ -412,9 +412,9 @@ ul.selection a:hover {
 
 }
 
-/* Snapshot files */
+/* Snapshot browser */
 
-#snapshot-files-container {
+#snapshot-browser-container {
 
     float: left;
     padding: 0 10px 10px 10px;
@@ -422,6 +422,8 @@ ul.selection a:hover {
     border-top: 4px solid rgba(0, 0, 0, 0.1);
 
 }
+
+/* Snapshot files */
 
 #snapshot-files-container header {
 

@@ -17,9 +17,9 @@ describe('Config', function () {
         expect(config.storage.setting.editor.fontSize).toBe('codebrowser.setting.editor.fontSize');
     });
 
-    it('should have correct storage key for SnapshotView files state', function () {
+    it('should have correct storage key for SnapshotView browser state', function () {
 
-        expect(config.storage.view.SnapshotView.files).toBe('codebrowser.view.SnapshotView.files');
+        expect(config.storage.view.SnapshotView.browser).toBe('codebrowser.view.SnapshotView.browser');
     });
 
     it('should have correct storage key for EditorView split state', function () {

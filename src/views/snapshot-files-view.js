@@ -7,7 +7,7 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
 
     initialize: function (options) {
 
-        this.parentView = options.parentView;
+        this.parentView = options.parentView.parentView;
     },
 
     /* Render */

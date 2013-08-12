@@ -2,7 +2,7 @@
 
     <div class='span2'>
 
-        <button id='toggleFiles' type='button' class='btn' data-toggle='button'><i class='icon-folder icon-gray'></i></button>
+        <button id='toggleBrowser' type='button' class='btn' data-toggle='button'><i class='icon-folder icon-gray'></i></button>
         <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>
         <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>
 

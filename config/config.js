@@ -23,7 +23,7 @@ var config = {
 
             SnapshotView: {
 
-                files: 'codebrowser.view.SnapshotView.files'
+                browser: 'codebrowser.view.SnapshotView.browser'
 
             },
 

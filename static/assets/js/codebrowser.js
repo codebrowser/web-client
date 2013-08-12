@@ -507,7 +507,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class='row'>\n\n    <div class='span2'>\n\n        <button id='toggleFiles' type='button' class='btn' data-toggle='button'><i class='icon-folder icon-gray'></i></button>\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
+  buffer += "<div class='row'>\n\n    <div class='span2'>\n\n        <button id='toggleBrowser' type='button' class='btn' data-toggle='button'><i class='icon-folder icon-gray'></i></button>\n        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>\n        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>\n\n    </div>\n\n    <div class='span4 pull-right'>\n\n        <div class='row'>\n\n            <div class='span1 text-center'>";
   if (stack1 = helpers.current) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.current; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -683,7 +683,7 @@ var config = {
 
             SnapshotView: {
 
-                files: 'codebrowser.view.SnapshotView.files'
+                browser: 'codebrowser.view.SnapshotView.browser'
 
             },
 
@@ -2463,6 +2463,41 @@ codebrowser.view.RootView = Backbone.View.extend({
 });
 ;
 
+codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
+
+    id: 'snapshot-browser-container',
+
+    /* Initialise */
+
+    initialize: function (options) {
+
+        this.parentView = options.parentView;
+
+        // Files
+        this.snapshotFilesView = new codebrowser.view.SnapshotFilesView({ parentView: this });
+        this.$el.append(this.snapshotFilesView.el);
+    },
+
+    /* Remove */
+
+    remove: function () {
+
+        // Remove files view
+        this.snapshotFilesView.remove();
+
+        Backbone.View.prototype.remove.call(this);
+    },
+
+    /* Update */
+
+    update: function (snapshot, file, courseRoute) {
+
+        // Update files view
+        this.snapshotFilesView.update(snapshot, file, courseRoute);
+    }
+});
+;
+
 codebrowser.view.SnapshotFilesView = Backbone.View.extend({
 
     id: 'snapshot-files-container',
@@ -2472,7 +2507,7 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
 
     initialize: function (options) {
 
-        this.parentView = options.parentView;
+        this.parentView = options.parentView.parentView;
     },
 
     /* Render */
@@ -2563,13 +2598,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
-        'click #toggleFiles': 'toggleFiles',
-        'click #split':       'split',
-        'click #diff':        'diff',
-        'click #first':       'first',
-        'click #previous':    'previous',
-        'click #next':        'next',
-        'click #last':        'last'
+        'click #toggleBrowser': 'toggleBrowser',
+        'click #split':         'split',
+        'click #diff':          'diff',
+        'click #first':         'first',
+        'click #previous':      'previous',
+        'click #next':          'next',
+        'click #last':          'last'
 
     },
 
@@ -2577,9 +2612,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     courseRoute: false,
 
-    /* Files */
+    /* Browser */
 
-    files: true,
+    browser: true,
 
     /* Initialise */
 
@@ -2603,9 +2638,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Content container
         var contentContainer = $('<div>', { id: 'snapshot-content-container' });
 
-        // Files
-        this.snapshotFilesView = new codebrowser.view.SnapshotFilesView({ parentView: this });
-        contentContainer.append(this.snapshotFilesView.el);
+        // Browser
+        this.snapshotBrowserView = new codebrowser.view.SnapshotBrowserView({ parentView: this });
+        contentContainer.append(this.snapshotBrowserView.el);
 
         // Editor
         this.editorView = new codebrowser.view.EditorView();
@@ -2633,8 +2668,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Remove timeline
         this.snapshotsTimelineView.remove();
 
-        // Remove files view
-        this.snapshotFilesView.remove();
+        // Remove browser view
+        this.snapshotBrowserView.remove();
 
         // Remove editor
         this.editorView.remove();
@@ -2666,9 +2701,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Template for navigation container
         var navigationContainerOutput = $(this.template.navigationContainer(attributes));
 
-        // Files is enabled, set toggleFiles button as active
-        if (this.files) {
-            $('#toggleFiles', navigationContainerOutput).addClass('active');
+        // Browser is enabled, set toggleBrowser button as active
+        if (this.browser) {
+            $('#toggleBrowser', navigationContainerOutput).addClass('active');
         }
 
         // Split view is enabled, set split button as active
@@ -2711,9 +2746,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.model = snapshot;
 
-        // Restore files state if necessary
-        if (this.files) {
-            this.toggleFiles(null, localStorage.getItem(config.storage.view.SnapshotView.files) === 'true');
+        // Restore browser state if necessary
+        if (this.browser) {
+            this.toggleBrowser(null, localStorage.getItem(config.storage.view.SnapshotView.browser) === 'true');
         }
 
         // Previous snapshot
@@ -2743,8 +2778,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
 
-        // Update files
-        this.snapshotFilesView.update(this.model, this.file, this.courseRoute);
+        // Update browser
+        this.snapshotBrowserView.update(this.model, this.file, this.courseRoute);
 
         this.render();
     },
@@ -2777,35 +2812,35 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     /* Actions */
 
-    toggleFiles: function (event, files) {
+    toggleBrowser: function (event, browser) {
 
-        // Use parameter if given, otherwise toggle internal files state
-        if (files !== undefined) {
+        // Use parameter if given, otherwise toggle internal browser state
+        if (browser !== undefined) {
 
-            this.files = files;
+            this.browser = browser;
 
         } else {
 
-            this.files = !this.files;
+            this.browser = !this.browser;
 
-            // Store files state
-            localStorage.setItem(config.storage.view.SnapshotView.files, this.files);
+            // Store browser state
+            localStorage.setItem(config.storage.view.SnapshotView.browser, this.browser);
         }
 
-        // Enable files
-        if (this.files) {
+        // Enable browser
+        if (this.browser) {
 
             // Move editor view
-            this.editorView.$el.css('margin-left', this.snapshotFilesView.$el.width() + 30);
+            this.editorView.$el.css('margin-left', this.snapshotBrowserView.$el.width() + 30);
             this.editorView.didResize();
 
-            this.snapshotFilesView.$el.show();
+            this.snapshotBrowserView.$el.show();
 
             return;
         }
 
-        // Disable files
-        this.snapshotFilesView.$el.hide();
+        // Disable browser
+        this.snapshotBrowserView.$el.hide();
 
         // Move editor view
         this.editorView.$el.css('margin-left', 0);
@@ -2820,7 +2855,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     diff: function () {
 
         this.editorView.toggleDiff();
-        this.snapshotFilesView.update(this.model, this.file, this.courseRoute);
+        this.snapshotBrowserView.update(this.model, this.file, this.courseRoute);
     },
 
     /* Actions - Navigation */
