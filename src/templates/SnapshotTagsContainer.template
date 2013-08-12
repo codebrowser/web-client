@@ -2,29 +2,29 @@
 
     <h1><i class='icon-tags icon-gray'></i> Tags</h1>
 
-    {{#if tags}}
-
-        <ul>
-
-            {{#tags}}
-
-                <li>{{text}} <button type='button' data-id='{{id}}' class='delete'>×</button></li>
-
-            {{/tags}}
-
-        </ul>
-
-    {{/if}}
-
-    <div class='input-append'>
-
-        <form>
-
-            <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>
-            <button type='submit' data-id='create' class='btn'>+</button>
-
-        </form>
-
-    </div>
-
 </header>
+
+{{#if tags}}
+
+    <ul>
+
+        {{#tags}}
+
+            <li>{{text}} <button type='button' data-id='{{id}}' class='delete'>×</button></li>
+
+        {{/tags}}
+
+    </ul>
+
+{{/if}}
+
+<div class='input-append'>
+
+    <form>
+
+        <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>
+        <button type='submit' data-id='create' class='btn'>+</button>
+
+    </form>
+
+</div>

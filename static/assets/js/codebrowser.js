@@ -527,19 +527,19 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1, options;
-  buffer += "\n\n        <ul>\n\n            ";
+  buffer += "\n\n    <ul>\n\n        ";
   options = {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data};
   if (stack1 = helpers.tags) { stack1 = stack1.call(depth0, options); }
   else { stack1 = depth0.tags; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   if (!helpers.tags) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n        </ul>\n\n    ";
+  buffer += "\n\n    </ul>\n\n";
   return buffer;
   }
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n\n                <li>";
+  buffer += "\n\n            <li>";
   if (stack1 = helpers.text) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.text; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -547,14 +547,14 @@ function program2(depth0,data) {
   if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + "' class='delete'>×</button></li>\n\n            ";
+    + "' class='delete'>×</button></li>\n\n        ";
   return buffer;
   }
 
-  buffer += "<header>\n\n    <h1><i class='icon-tags icon-gray'></i> Tags</h1>\n\n    ";
+  buffer += "<header>\n\n    <h1><i class='icon-tags icon-gray'></i> Tags</h1>\n\n</header>\n\n";
   stack1 = helpers['if'].call(depth0, depth0.tags, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n    <div class='input-append'>\n\n        <form>\n\n            <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>\n            <button type='submit' data-id='create' class='btn'>+</button>\n\n        </form>\n\n    </div>\n\n</header>\n";
+  buffer += "\n\n<div class='input-append'>\n\n    <form>\n\n        <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>\n        <button type='submit' data-id='create' class='btn'>+</button>\n\n    </form>\n\n</div>\n";
   return buffer;
   });
 
