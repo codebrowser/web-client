@@ -10,7 +10,7 @@
 
         {{#tags}}
 
-            <li>{{text}} <button type='button' data-id='{{id}}' class='delete'>×</button></li>
+            <li>{{text}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
 
         {{/tags}}
 
@@ -23,7 +23,7 @@
     <form>
 
         <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>
-        <button type='submit' data-id='create' class='btn'>+</button>
+        <button type='submit' data-action='create' class='btn'>+</button>
 
     </form>
 

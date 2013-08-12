@@ -5,8 +5,8 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
     events: {
 
-        'click [data-id="create"]': 'create',
-        'click button.delete':      'delete'
+        'click [data-action="create"]': 'create',
+        'click [data-action="delete"]': 'delete'
 
     },
 

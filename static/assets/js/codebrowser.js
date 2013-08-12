@@ -543,7 +543,7 @@ function program2(depth0,data) {
   if (stack1 = helpers.text) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.text; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
-    + " <button type='button' data-id='";
+    + " <button type='button' data-action='delete' data-id='";
   if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
@@ -554,7 +554,7 @@ function program2(depth0,data) {
   buffer += "<header>\n\n    <h1><i class='icon-tags icon-gray'></i> Tags</h1>\n\n</header>\n\n";
   stack1 = helpers['if'].call(depth0, depth0.tags, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n<div class='input-append'>\n\n    <form>\n\n        <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>\n        <button type='submit' data-id='create' class='btn'>+</button>\n\n    </form>\n\n</div>\n";
+  buffer += "\n\n<div class='input-append'>\n\n    <form>\n\n        <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>\n        <button type='submit' data-action='create' class='btn'>+</button>\n\n    </form>\n\n</div>\n";
   return buffer;
   });
 
@@ -2717,8 +2717,8 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
     events: {
 
-        'click [data-id="create"]': 'create',
-        'click button.delete':      'delete'
+        'click [data-action="create"]': 'create',
+        'click [data-action="delete"]': 'delete'
 
     },
 
