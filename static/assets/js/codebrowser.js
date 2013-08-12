@@ -2736,7 +2736,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var output = $(this.template(this.model.toJSON()));
+        var output = $(this.template({ tags: this.model.toJSON() }));
 
         this.$el.html(output);
     },
@@ -2814,6 +2814,11 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
         var id = $(event.target).data('id');
         var tag = this.model.get(id);
+
+        // Set IDs
+        tag.studentId = this.snapshot.get('studentId');
+        tag.courseId = this.snapshot.get('courseId');
+        tag.exerciseId = this.snapshot.get('exerciseId');
 
         var self = this;
 
