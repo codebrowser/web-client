@@ -1,6 +1,6 @@
 <header>
 
-    <i class='icon-folder-close icon-gray'></i> <h1>{{exercise.name}}</h1>
+    <h1><i class='icon-folder-close icon-gray'></i> {{exercise.name}}</h1>
 
 </header>
 

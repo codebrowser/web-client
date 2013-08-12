@@ -425,6 +425,12 @@ ul.selection a:hover {
 
 /* Snapshot files */
 
+#snapshot-files-container {
+
+    margin-bottom: 20px;
+
+}
+
 #snapshot-files-container header {
 
     margin: 5px 0;
@@ -522,6 +528,67 @@ ul.selection a:hover {
     padding: 0 0 0 10px;
     color: rgba(0, 0, 0, 0.7);
     text-decoration: none;
+
+}
+
+/* Snapshot tags */
+
+#snapshot-tags-container header {
+
+    margin: 5px 0;
+}
+
+#snapshot-tags-container header h1 {
+
+    display: inline;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 32px;
+
+}
+
+#snapshot-tags-container ul {
+
+    margin: 0 0 0 5px;
+    list-style: none;
+
+}
+
+#snapshot-tags-container ul li {
+
+    margin: 5px 0;
+
+}
+
+#snapshot-tags-container ul li button.delete {
+
+    float: right;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 15px;
+    color: rgba(0, 0, 0, 0.4);
+
+}
+
+#snapshot-tags-container form {
+
+    margin-top: 10px;
+
+}
+
+#snapshot-tags-container input {
+
+    border: 1px solid #ccc;
+    box-shadow: none;
+
+}
+
+#snapshot-tags-container [data-id='tag'] {
+
+    width: 160px;
 
 }
 

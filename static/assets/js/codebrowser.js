@@ -492,7 +492,7 @@ function program7(depth0,data,depth3) {
   return buffer;
   }
 
-  buffer += "<header>\n\n    <i class='icon-folder-close icon-gray'></i> <h1>"
+  buffer += "<header>\n\n    <h1><i class='icon-folder-close icon-gray'></i> "
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h1>\n\n</header>\n\n<ul>\n\n        ";
   stack2 = helpers.each.call(depth0, depth0.files, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
@@ -516,6 +516,45 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   else { stack1 = depth0.total; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "</div>\n\n            <div class='span3'>\n\n                <div class='btn-group pull-right'>\n                    <button type='button' id='first' class='btn'>First</button>\n                    <button type='button' id='previous' class='btn'>Previous</button>\n                    <button type='button' id='next' class='btn'>Next</button>\n                    <button type='button' id='last' class='btn'>Last</button>\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n</div>\n";
+  return buffer;
+  });
+
+this["Handlebars"]["templates"]["SnapshotTagsContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1, options;
+  buffer += "\n\n        <ul>\n\n            ";
+  options = {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data};
+  if (stack1 = helpers.tags) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.tags; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.tags) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        </ul>\n\n    ";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n\n                <li>";
+  if (stack1 = helpers.text) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.text; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + " <button type='button' data-id='";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "' class='delete'>×</button></li>\n\n            ";
+  return buffer;
+  }
+
+  buffer += "<header>\n\n    <h1><i class='icon-tags icon-gray'></i> Tags</h1>\n\n    ";
+  stack1 = helpers['if'].call(depth0, depth0.tags, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n    <div class='input-append'>\n\n        <form>\n\n            <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>\n            <button type='submit' data-id='create' class='btn'>+</button>\n\n        </form>\n\n    </div>\n\n</header>\n";
   return buffer;
   });
 
@@ -1354,6 +1393,45 @@ codebrowser.model.Student = Backbone.RelationalModel.extend({
 ;
 
 /*
+ * Fetch a tag by passing a studentId, courseId and exerciseId as options for the model:
+ *
+ * var tag = codebrowser.model.Tag.findOrCreate({ id: 4 }, { studentId: 1, courseId: 2, exerciseId: 3 });
+ *
+ * Create a new tag the same way:
+ *
+ * var tag = new codebrowser.model.Tag({ text: 'Tag' }, { studentId: 1, courseId: 2, exerciseId: 3 });
+ */
+
+codebrowser.model.Tag = Backbone.RelationalModel.extend({
+
+    urlRoot: function () {
+
+        if (!this.studentId || !this.courseId || !this.exerciseId) {
+            throw new Error('Attributes studentId, courseId and exerciseId are required to fetch a tag.');
+        }
+
+        return config.api.main.root +
+               'students/' +
+               this.studentId +
+               '/courses/' +
+               this.courseId +
+               '/exercises/' +
+               this.exerciseId +
+               '/tags';
+    },
+
+    initialize: function (attributes, options) {
+
+        if (options) {
+            this.studentId = options.studentId;
+            this.courseId = options.courseId;
+            this.exerciseId = options.exerciseId;
+        }
+    }
+});
+;
+
+/*
  * Fetch all courses:
  *
  * var courses = new codebrowser.collection.CourseCollection();
@@ -1715,6 +1793,43 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
         }
     }
 
+});
+;
+
+/*
+ * Fetch tags by passing a studentId, courseId and exerciseId as options for the collection:
+ *
+ * var tags = new codebrowser.collection.TagCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
+ */
+
+codebrowser.collection.TagCollection = Backbone.Collection.extend({
+
+    model: codebrowser.model.Tag,
+
+    url: function () {
+
+        if (!this.studentId || !this.courseId || !this.exerciseId) {
+            throw new Error('Options studentId, courseId and exerciseId are required to fetch tags.');
+        }
+
+        return config.api.main.root +
+               'students/' +
+               this.studentId +
+               '/courses/' +
+               this.courseId +
+               '/exercises/' +
+               this.exerciseId +
+               '/tags';
+    },
+
+    initialize: function (models, options) {
+
+        if (options) {
+            this.studentId = options.studentId;
+            this.courseId = options.courseId;
+            this.exerciseId = options.exerciseId;
+        }
+    }
 });
 ;
 
@@ -2476,6 +2591,10 @@ codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
         // Files
         this.snapshotFilesView = new codebrowser.view.SnapshotFilesView({ parentView: this });
         this.$el.append(this.snapshotFilesView.el);
+
+        // Tags
+        this.snapshotTagsView = new codebrowser.view.SnapshotTagsView();
+        this.$el.append(this.snapshotTagsView.el);
     },
 
     /* Remove */
@@ -2484,6 +2603,9 @@ codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
 
         // Remove files view
         this.snapshotFilesView.remove();
+
+        // Remove tags view
+        this.snapshotTagsView.remove();
 
         Backbone.View.prototype.remove.call(this);
     },
@@ -2494,6 +2616,9 @@ codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
 
         // Update files view
         this.snapshotFilesView.update(snapshot, file, courseRoute);
+
+        // Update tags view
+        this.snapshotTagsView.update(snapshot);
     }
 });
 ;
@@ -2581,6 +2706,131 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
         this.file = file;
 
         this.render();
+    }
+});
+;
+
+codebrowser.view.SnapshotTagsView = Backbone.View.extend({
+
+    id: 'snapshot-tags-container',
+    template: Handlebars.templates.SnapshotTagsContainer,
+
+    events: {
+
+        'click [data-id="create"]': 'create',
+        'click button.delete':      'delete'
+
+    },
+
+    model: new codebrowser.collection.TagCollection(),
+
+    /* Initialise */
+
+    initialize: function () {
+
+        this.render();
+    },
+
+    /* Render */
+
+    render: function () {
+
+        // Template
+        var output = $(this.template(this.model.toJSON()));
+
+        this.$el.html(output);
+    },
+
+    /* Update */
+
+    update: function (snapshot) {
+
+        this.snapshot = snapshot;
+
+        // Fetch tags
+        this.model = new codebrowser.collection.TagCollection(null, { studentId: this.snapshot.get('studentId'),
+                                                                      courseId: this.snapshot.get('courseId'),
+                                                                      exerciseId: this.snapshot.get('exerciseId') });
+
+        // Render on add and remove
+        this.model.on('add', $.proxy(this.render, this));
+        this.model.on('remove', $.proxy(this.render, this));
+
+        var self = this;
+
+        this.model.fetch({
+
+            cache: true,
+            expires: config.cache.expires,
+
+            success: function () {
+
+                self.render();
+            },
+
+            error: function () {
+
+                throw new Error('Failed tags fetch.');
+            }
+        });
+    },
+
+    /* Actions */
+
+    create: function (event) {
+
+        event.preventDefault();
+
+        var text = $('[data-id="tag"]', this.$el).val().trim();
+
+        if (!text) {
+            return;
+        }
+
+        // New tag
+        var tag = new codebrowser.model.Tag({ text: text }, { studentId: this.snapshot.get('studentId'),
+                                                              courseId: this.snapshot.get('courseId'),
+                                                              exerciseId: this.snapshot.get('exerciseId') });
+
+        var self = this;
+
+        // Save tag
+        tag.save({}, {
+
+            success: function () {
+
+                // Add to collection
+                self.model.push(tag);
+            },
+
+            error: function () {
+
+                throw new Error('Failed tag save.');
+            }
+        });
+    },
+
+    'delete': function (event) {
+
+        var id = $(event.target).data('id');
+        var tag = this.model.get(id);
+
+        var self = this;
+
+        // Destroy tag
+        tag.destroy({
+
+            success: function () {
+
+                // Remove from collection
+                self.model.remove(tag);
+            },
+
+            error: function () {
+
+                throw new Error('Failed tag destroy.')
+            }
+        });
     }
 });
 ;

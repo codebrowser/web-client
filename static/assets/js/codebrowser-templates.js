@@ -492,7 +492,7 @@ function program7(depth0,data,depth3) {
   return buffer;
   }
 
-  buffer += "<header>\n\n    <i class='icon-folder-close icon-gray'></i> <h1>"
+  buffer += "<header>\n\n    <h1><i class='icon-folder-close icon-gray'></i> "
     + escapeExpression(((stack1 = ((stack1 = depth0.exercise),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h1>\n\n</header>\n\n<ul>\n\n        ";
   stack2 = helpers.each.call(depth0, depth0.files, {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
@@ -516,6 +516,45 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   else { stack1 = depth0.total; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1)
     + "</div>\n\n            <div class='span3'>\n\n                <div class='btn-group pull-right'>\n                    <button type='button' id='first' class='btn'>First</button>\n                    <button type='button' id='previous' class='btn'>Previous</button>\n                    <button type='button' id='next' class='btn'>Next</button>\n                    <button type='button' id='last' class='btn'>Last</button>\n                </div>\n\n            </div>\n\n        </div>\n\n    </div>\n\n</div>\n";
+  return buffer;
+  });
+
+this["Handlebars"]["templates"]["SnapshotTagsContainer"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1, options;
+  buffer += "\n\n        <ul>\n\n            ";
+  options = {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data};
+  if (stack1 = helpers.tags) { stack1 = stack1.call(depth0, options); }
+  else { stack1 = depth0.tags; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  if (!helpers.tags) { stack1 = blockHelperMissing.call(depth0, stack1, options); }
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n        </ul>\n\n    ";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n\n                <li>";
+  if (stack1 = helpers.text) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.text; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + " <button type='button' data-id='";
+  if (stack1 = helpers.id) { stack1 = stack1.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1)
+    + "' class='delete'>×</button></li>\n\n            ";
+  return buffer;
+  }
+
+  buffer += "<header>\n\n    <h1><i class='icon-tags icon-gray'></i> Tags</h1>\n\n    ";
+  stack1 = helpers['if'].call(depth0, depth0.tags, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n\n    <div class='input-append'>\n\n        <form>\n\n            <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>\n            <button type='submit' data-id='create' class='btn'>+</button>\n\n        </form>\n\n    </div>\n\n</header>\n";
   return buffer;
   });
 
