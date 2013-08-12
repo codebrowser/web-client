@@ -549,7 +549,7 @@ ul.selection a:hover {
 
 #snapshot-tags-container ul {
 
-    margin: 0 0 0 5px;
+    margin-left: 5px;
     list-style: none;
 
 }
