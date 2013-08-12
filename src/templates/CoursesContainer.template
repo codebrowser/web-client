@@ -13,7 +13,7 @@
 
     </ul>
 
-    <h2>Courses ({{courses.length}})</h2>
+    <h2>{{#if studentId}} {{student.name}} — {{/if}} Courses ({{courses.length}})</h2>
 
     <table class='table table-hover'>
 

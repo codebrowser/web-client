@@ -15,7 +15,7 @@
 
     </ul>
 
-    <h2>Exercises ({{exercises.length}})</h2>
+    <h2>{{#if studentId}} {{student.name}} — {{/if}} {{course.name}} — Exercises ({{exercises.length}})</h2>
 
     <table class='table table-hover'>
 
