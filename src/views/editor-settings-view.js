@@ -5,7 +5,7 @@ codebrowser.view.EditorSettingsView = Backbone.View.extend({
 
     events: {
 
-        'click [data-id="save"]': 'save'
+        'click [data-action="save"]': 'save'
 
     },
 
