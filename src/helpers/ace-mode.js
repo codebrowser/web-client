@@ -2,7 +2,16 @@ codebrowser.helper.AceMode = {
 
     mode: {
 
-        'java': 'java'
+        'c':    'c_cpp',
+        'css':  'css',
+        'h':    'c_cpp',
+        'html': 'html',
+        'java': 'java',
+        'js':   'javascript',
+        'json': 'json',
+        'ruby': 'ruby',
+        'xml':  'xml',
+        'yml':  'yaml'
 
     },
 
