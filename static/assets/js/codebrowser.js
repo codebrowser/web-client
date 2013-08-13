@@ -2805,8 +2805,8 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
             success: function () {
 
-                // Push to collection
-                self.collection.push(tag);
+                // Add to collection
+                self.collection.add(tag, { at: 0 });
             },
 
             error: function () {
