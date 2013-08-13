@@ -7,7 +7,8 @@ codebrowser.view.CoursesView = Backbone.View.extend({
 
     render: function () {
 
-        var model = {
+        // View attributes
+        var attributes = {
 
             studentId: this.collection.studentId,
             student: this.student.toJSON(),
@@ -16,7 +17,7 @@ codebrowser.view.CoursesView = Backbone.View.extend({
         }
 
         // Template
-        var output = this.template(model);
+        var output = this.template(attributes);
 
         this.$el.html(output);
     }

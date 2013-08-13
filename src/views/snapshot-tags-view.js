@@ -10,7 +10,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
     },
 
-    model: new codebrowser.collection.TagCollection(),
+    collection: new codebrowser.collection.TagCollection(),
 
     /* Initialise */
 
@@ -24,7 +24,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var output = $(this.template({ tags: this.model.toJSON() }));
+        var output = $(this.template({ tags: this.collection.toJSON() }));
 
         this.$el.html(output);
     },
@@ -35,18 +35,18 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
         this.snapshot = snapshot;
 
-        this.model = new codebrowser.collection.TagCollection(null, { studentId: this.snapshot.get('studentId'),
-                                                                      courseId: this.snapshot.get('courseId'),
-                                                                      exerciseId: this.snapshot.get('exerciseId') });
+        this.collection = new codebrowser.collection.TagCollection(null, { studentId: this.snapshot.get('studentId'),
+                                                                           courseId: this.snapshot.get('courseId'),
+                                                                           exerciseId: this.snapshot.get('exerciseId') });
 
         // Render on add and remove
-        this.model.on('add', $.proxy(this.render, this));
-        this.model.on('remove', $.proxy(this.render, this));
+        this.collection.on('add', $.proxy(this.render, this));
+        this.collection.on('remove', $.proxy(this.render, this));
 
         var self = this;
 
         // Fetch tags
-        this.model.fetch({
+        this.collection.fetch({
 
             cache: true,
             expires: 120,
@@ -88,7 +88,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
             success: function () {
 
                 // Push to collection
-                self.model.push(tag);
+                self.collection.push(tag);
             },
 
             error: function () {
@@ -101,7 +101,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
     'delete': function (event) {
 
         var id = $(event.target).data('id');
-        var tag = this.model.get(id);
+        var tag = this.collection.get(id);
 
         var self = this;
 
@@ -111,7 +111,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
             success: function () {
 
                 // Remove from collection
-                self.model.remove(tag);
+                self.collection.remove(tag);
             },
 
             error: function () {

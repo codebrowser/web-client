@@ -7,18 +7,19 @@ codebrowser.view.StudentsView = Backbone.View.extend({
 
     render: function () {
 
-        var model = {
+        // View attributes
+        var attributes = {
 
             students: this.collection.toJSON()
 
         }
 
         if (this.course && this.exercise) {
-            model = _.extend(model, { course: this.course.toJSON(), exercise: this.exercise.toJSON() });
+            attributes = _.extend(attributes, { course: this.course.toJSON(), exercise: this.exercise.toJSON() });
         }
 
         // Template
-        var output = this.template(model);
+        var output = this.template(attributes);
 
         this.$el.html(output);
     }

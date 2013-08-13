@@ -1849,7 +1849,8 @@ codebrowser.view.CoursesView = Backbone.View.extend({
 
     render: function () {
 
-        var model = {
+        // View attributes
+        var attributes = {
 
             studentId: this.collection.studentId,
             student: this.student.toJSON(),
@@ -1858,7 +1859,7 @@ codebrowser.view.CoursesView = Backbone.View.extend({
         }
 
         // Template
-        var output = this.template(model);
+        var output = this.template(attributes);
 
         this.$el.html(output);
     }
@@ -2536,7 +2537,8 @@ codebrowser.view.ExercisesView = Backbone.View.extend({
 
     render: function () {
 
-        var model = {
+        // View attributes
+        var attributes = {
 
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
@@ -2546,11 +2548,11 @@ codebrowser.view.ExercisesView = Backbone.View.extend({
         }
 
         if (this.student) {
-            model = _.extend(model, { student: this.student.toJSON() });
+            attributes = _.extend(attributes, { student: this.student.toJSON() });
         }
 
         // Template
-        var output = this.template(model);
+        var output = this.template(attributes);
 
         this.$el.html(output);
     }
@@ -2706,11 +2708,9 @@ codebrowser.view.SnapshotFilesView = Backbone.View.extend({
 
     update: function (snapshot, file, courseRoute) {
 
-        this.courseRoute = courseRoute;
-
         this.model = snapshot;
-
         this.file = file;
+        this.courseRoute = courseRoute;
 
         this.render();
     }
@@ -2729,7 +2729,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
     },
 
-    model: new codebrowser.collection.TagCollection(),
+    collection: new codebrowser.collection.TagCollection(),
 
     /* Initialise */
 
@@ -2743,7 +2743,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
     render: function () {
 
         // Template
-        var output = $(this.template({ tags: this.model.toJSON() }));
+        var output = $(this.template({ tags: this.collection.toJSON() }));
 
         this.$el.html(output);
     },
@@ -2754,18 +2754,18 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
         this.snapshot = snapshot;
 
-        this.model = new codebrowser.collection.TagCollection(null, { studentId: this.snapshot.get('studentId'),
-                                                                      courseId: this.snapshot.get('courseId'),
-                                                                      exerciseId: this.snapshot.get('exerciseId') });
+        this.collection = new codebrowser.collection.TagCollection(null, { studentId: this.snapshot.get('studentId'),
+                                                                           courseId: this.snapshot.get('courseId'),
+                                                                           exerciseId: this.snapshot.get('exerciseId') });
 
         // Render on add and remove
-        this.model.on('add', $.proxy(this.render, this));
-        this.model.on('remove', $.proxy(this.render, this));
+        this.collection.on('add', $.proxy(this.render, this));
+        this.collection.on('remove', $.proxy(this.render, this));
 
         var self = this;
 
         // Fetch tags
-        this.model.fetch({
+        this.collection.fetch({
 
             cache: true,
             expires: 120,
@@ -2807,7 +2807,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
             success: function () {
 
                 // Push to collection
-                self.model.push(tag);
+                self.collection.push(tag);
             },
 
             error: function () {
@@ -2820,7 +2820,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
     'delete': function (event) {
 
         var id = $(event.target).data('id');
-        var tag = this.model.get(id);
+        var tag = this.collection.get(id);
 
         var self = this;
 
@@ -2830,7 +2830,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
             success: function () {
 
                 // Remove from collection
-                self.model.remove(tag);
+                self.collection.remove(tag);
             },
 
             error: function () {
@@ -3685,9 +3685,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     update: function (collection, currentSnapshotIndex, filename, courseRoute) {
 
-        this.courseRoute = courseRoute;
-
         this.collection = collection;
+        this.courseRoute = courseRoute;
 
         // No need to show timeline
         if (this.collection.length === 1) {
@@ -3866,18 +3865,19 @@ codebrowser.view.StudentsView = Backbone.View.extend({
 
     render: function () {
 
-        var model = {
+        // View attributes
+        var attributes = {
 
             students: this.collection.toJSON()
 
         }
 
         if (this.course && this.exercise) {
-            model = _.extend(model, { course: this.course.toJSON(), exercise: this.exercise.toJSON() });
+            attributes = _.extend(attributes, { course: this.course.toJSON(), exercise: this.exercise.toJSON() });
         }
 
         // Template
-        var output = this.template(model);
+        var output = this.template(attributes);
 
         this.$el.html(output);
     }

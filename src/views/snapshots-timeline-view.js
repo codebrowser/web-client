@@ -487,9 +487,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     update: function (collection, currentSnapshotIndex, filename, courseRoute) {
 
-        this.courseRoute = courseRoute;
-
         this.collection = collection;
+        this.courseRoute = courseRoute;
 
         // No need to show timeline
         if (this.collection.length === 1) {
