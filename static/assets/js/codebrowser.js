@@ -1799,7 +1799,6 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
             this.exerciseId = options.exerciseId;
         }
     }
-
 });
 ;
 
