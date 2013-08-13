@@ -33,5 +33,12 @@ codebrowser.model.Tag = Backbone.RelationalModel.extend({
             this.courseId = options.courseId;
             this.exerciseId = options.exerciseId;
         }
+
+        // If fetched through a collection, get IDs from the collection
+        if (this.collection) {
+            this.studentId = this.collection.studentId;
+            this.courseId = this.collection.courseId;
+            this.exerciseId = this.collection.exerciseId;
+        }
     }
 });

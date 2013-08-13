@@ -1427,6 +1427,13 @@ codebrowser.model.Tag = Backbone.RelationalModel.extend({
             this.courseId = options.courseId;
             this.exerciseId = options.exerciseId;
         }
+
+        // If fetched through a collection, get IDs from the collection
+        if (this.collection) {
+            this.studentId = this.collection.studentId;
+            this.courseId = this.collection.courseId;
+            this.exerciseId = this.collection.exerciseId;
+        }
     }
 });
 ;
@@ -2761,7 +2768,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
         this.model.fetch({
 
             cache: true,
-            expires: config.cache.expires,
+            expires: 120,
 
             success: function () {
 
@@ -2815,11 +2822,6 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
         var id = $(event.target).data('id');
         var tag = this.model.get(id);
 
-        // Set IDs
-        tag.studentId = this.snapshot.get('studentId');
-        tag.courseId = this.snapshot.get('courseId');
-        tag.exerciseId = this.snapshot.get('exerciseId');
-
         var self = this;
 
         // Destroy tag
@@ -2833,7 +2835,7 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
             error: function () {
 
-                throw new Error('Failed tag destroy.')
+                throw new Error('Failed tag delete.')
             }
         });
     }
