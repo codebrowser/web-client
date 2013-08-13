@@ -809,9 +809,10 @@ var codebrowser = {
     initialize: function () {
 
         // Oops! Catch all global unhandled errors
-        window.onerror = function (error) {
+        window.onerror = function () {
 
-            window.alert('Oops! ' + error);
+            var errorView = new codebrowser.view.ErrorView({ model: { class: 'alert-error', message: 'Oops!' } });
+            codebrowser.controller.ViewController.push(errorView, true);
         }
 
         // Initialise routers
