@@ -56,6 +56,65 @@ describe('File', function () {
         expect(file.url()).toBe(config.api.main.root + 'students/1/courses/2/exercises/3/snapshots/4/files/5');
     });
 
+    it('get content should standardise line endings', function () {
+
+        file = codebrowser.model.File.findOrCreate({ id: 1 });
+        file.content = 'First line.\nSecond line.\r\nThird line.\rLast line.';
+
+        expect(file.getContent()).not.toMatch(/\r/);
+    });
+
+    it('get content should convert tabs to four spaces', function () {
+
+        file = codebrowser.model.File.findOrCreate({ id: 1 });
+        file.content = '\tFirst line.';
+
+        expect(file.getContent()).not.toMatch(/\t/);
+        expect(file.getContent()).toMatch(/ {4}/);
+    });
+
+    it('get content should not trim empty lines if setting is not set', function () {
+
+        localStorage.setItem(config.storage.setting.editor.ignoreEmptyLines, false);
+
+        file = codebrowser.model.File.findOrCreate({ id: 1 });
+        file.content = 'First line.\n   ';
+
+        expect(file.getContent()).toMatch(/^ +$/gm);
+    });
+
+    it('get content should trim empty lines if setting is set', function () {
+
+        localStorage.setItem(config.storage.setting.editor.ignoreEmptyLines, true);
+
+        file = codebrowser.model.File.findOrCreate({ id: 1 });
+        file.content = 'First line.\n   ';
+
+        expect(file.getContent()).not.toMatch(/^ +$/gm);
+    });
+
+    it('should return correct line count', function () {
+
+        file = codebrowser.model.File.findOrCreate({ id: 1 });
+        file.content = 'First line.\nSecond line.\nThird line.';
+
+        expect(file.lines()).toBe(3);
+    });
+
+    it('should return correct folder', function () {
+
+        file = codebrowser.model.File.findOrCreate({ id: 1, name: 'path/to/File.java' });
+
+        expect(file.getFolder()).toBe('path/to');
+    });
+
+    it('should return correct name', function () {
+
+        file = codebrowser.model.File.findOrCreate({ id: 1, name: 'path/to/File.java' });
+
+        expect(file.getName()).toBe('File.java');
+    });
+
     it('should fetch content for an existing file', function () {
 
         var _content = null;
