@@ -24,6 +24,7 @@
         "describe": true,
         "document": true,
         "expect": true,
+        "Handlebars": true,
         "it": true,
         "localStorage": true,
         "runs": true,

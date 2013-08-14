@@ -2,7 +2,7 @@
 
     <section>
 
-        <h1>{{fileName name}}</h1>
+        <h1>{{filename name}}</h1>
 
         <span class='pull-right'>
 

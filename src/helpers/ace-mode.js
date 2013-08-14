@@ -5,11 +5,12 @@ codebrowser.helper.AceMode = {
         'c':    'c_cpp',
         'css':  'css',
         'h':    'c_cpp',
+        'htm':  'html',
         'html': 'html',
         'java': 'java',
         'js':   'javascript',
         'json': 'json',
-        'ruby': 'ruby',
+        'rb':   'ruby',
         'xml':  'xml',
         'yml':  'yaml'
 

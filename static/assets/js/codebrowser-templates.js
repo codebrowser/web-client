@@ -114,7 +114,7 @@ function program1(depth0,data) {
 
   buffer += "<header>\n\n    <section>\n\n        <h1>";
   options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.fileName || depth0.fileName),stack1 ? stack1.call(depth0, depth0.name, options) : helperMissing.call(depth0, "fileName", depth0.name, options)))
+  buffer += escapeExpression(((stack1 = helpers.filename || depth0.filename),stack1 ? stack1.call(depth0, depth0.name, options) : helperMissing.call(depth0, "filename", depth0.name, options)))
     + "</h1>\n\n        <span class='pull-right'>\n\n            + ";
   options = {hash:{},data:data};
   buffer += escapeExpression(((stack1 = helpers.duration || depth0.duration),stack1 ? stack1.call(depth0, ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options) : helperMissing.call(depth0, "duration", ((stack1 = depth0.snapshot),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), ((stack1 = ((stack1 = depth0.previous),stack1 == null || stack1 === false ? stack1 : stack1.snapshot)),stack1 == null || stack1 === false ? stack1 : stack1.snapshotTime), options)))
@@ -461,7 +461,7 @@ function program5(depth0,data,depth3) {
   buffer += escapeExpression(stack2)
     + "'><i class='icon-file icon-gray'></i> ";
   options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.fileName || depth0.fileName),stack1 ? stack1.call(depth0, depth0.name, options) : helperMissing.call(depth0, "fileName", depth0.name, options)))
+  buffer += escapeExpression(((stack1 = helpers.filename || depth0.filename),stack1 ? stack1.call(depth0, depth0.name, options) : helperMissing.call(depth0, "filename", depth0.name, options)))
     + "</a></li>\n\n                ";
   return buffer;
   }
@@ -487,7 +487,7 @@ function program7(depth0,data,depth3) {
   buffer += escapeExpression(stack2)
     + "'><i class='icon-file icon-gray'></i> ";
   options = {hash:{},data:data};
-  buffer += escapeExpression(((stack1 = helpers.fileName || depth0.fileName),stack1 ? stack1.call(depth0, depth0.name, options) : helperMissing.call(depth0, "fileName", depth0.name, options)))
+  buffer += escapeExpression(((stack1 = helpers.filename || depth0.filename),stack1 ? stack1.call(depth0, depth0.name, options) : helperMissing.call(depth0, "filename", depth0.name, options)))
     + "</a></li>\n\n                ";
   return buffer;
   }
