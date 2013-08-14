@@ -11,7 +11,7 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
         return config.api.main.root + 'students';
     },
 
-    initialize: function (options) {
+    initialize: function (models, options) {
 
         if (options) {
             this.courseId = options.courseId;

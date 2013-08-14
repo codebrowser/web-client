@@ -104,7 +104,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
             fetchSynced();
         }
 
-        var studentCollection = new codebrowser.collection.StudentCollection(options);
+        var studentCollection = new codebrowser.collection.StudentCollection(null, options);
 
         this.studentView.collection = studentCollection;
 

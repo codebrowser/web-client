@@ -1647,6 +1647,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             return null;
         }
 
+        if (!difference[filename]) {
+            return null;
+        }
+
         return difference[filename];
     },
 
@@ -1801,7 +1805,7 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
         return config.api.main.root + 'students';
     },
 
-    initialize: function (options) {
+    initialize: function (models, options) {
 
         if (options) {
             this.courseId = options.courseId;
@@ -4448,7 +4452,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
             fetchSynced();
         }
 
-        var studentCollection = new codebrowser.collection.StudentCollection(options);
+        var studentCollection = new codebrowser.collection.StudentCollection(null, options);
 
         this.studentView.collection = studentCollection;
 

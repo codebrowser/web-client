@@ -99,6 +99,10 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             return null;
         }
 
+        if (!difference[filename]) {
+            return null;
+        }
+
         return difference[filename];
     },
 
