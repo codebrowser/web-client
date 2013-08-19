@@ -28,4 +28,16 @@ describe('Exercise router', function () {
 
         expect(codebrowser.router.ExerciseRouter.prototype.navigation).toHaveBeenCalled();
     });
+
+    it('navigates to course exercises with correct URL', function () {
+
+        spyOn(codebrowser.router.ExerciseRouter.prototype, 'navigateToCourseExercises');
+
+        var router = new codebrowser.router.ExerciseRouter();
+
+        Backbone.history.start();
+        router.navigate('#/courses/1', true);
+
+        expect(codebrowser.router.ExerciseRouter.prototype.navigateToCourseExercises).toHaveBeenCalled();
+    });
 });
