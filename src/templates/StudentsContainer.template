@@ -1,13 +1,13 @@
 <section>
 
     <ul class='breadcrumb'>
-        <li><a href='/'>Home</a> <span class='divider'>/</span></li>
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
 
         {{#if course}}
-            <li><a href='/#/courses'>Courses</a> <span class='divider'>/</span></li>
-            <li><a href='/#/courses/{{course.id}}'>{{course.name}}</a> <span class='divider'>/</span></li>
-            <li><a href='/#/courses/{{course.id}}/exercises'>Exercises</a> <span class='divider'>/</span></li>
-            <li><a href='/#/courses/{{course.id}}/exercises/{{exercise.id}}'>{{exercise.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses'>Courses</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses/{{course.id}}'>{{course.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses/{{course.id}}/exercises'>Exercises</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses/{{course.id}}/exercises/{{exercise.id}}'>{{exercise.name}}</a> <span class='divider'>/</span></li>
         {{/if}}
 
         <li class='active'>Students</li>
@@ -40,11 +40,11 @@
 
                     {{#if ../course}}
 
-                        <td class='link'><a href='#/courses/{{../../course.id}}/exercises/{{../../exercise.id}}/students/{{id}}/snapshots'>{{name}}</a></td>
+                        <td class='link'><a href='./#/courses/{{../../course.id}}/exercises/{{../../exercise.id}}/students/{{id}}/snapshots'>{{name}}</a></td>
 
                     {{else}}
 
-                        <td class='link'><a href='#/students/{{id}}/courses'>{{name}}</a></td>
+                        <td class='link'><a href='./#/students/{{id}}/courses'>{{name}}</a></td>
 
                     {{/if}}
 
