@@ -2,25 +2,25 @@
 
     <ul class='breadcrumb'>
 
-        <li><a href='/'>Home</a> <span class='divider'>/</span></li>
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
 
         {{#if courseRoute}}
 
-            <li><a href='/#/courses'>Courses</a> <span class='divider'>/</span></li>
-            <li><a href='/#/courses/{{courseId}}'>{{course.name}}</a> <span class='divider'>/</span></li>
-            <li><a href='/#/courses/{{courseId}}/exercises'>Exercises</a> <span class='divider'>/</span></li>
-            <li><a href='/#/courses/{{courseId}}/exercises/{{exerciseId}}'>{{exercise.name}}</a> <span class='divider'>/</span></li>
-            <li><a href='/#/courses/{{courseId}}/exercises/{{exerciseId}}/students'>Students</a> <span class='divider'>/</span></li>
-            <li><a href='/#/courses/{{courseId}}/exercises/{{exerciseId}}/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses'>Courses</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses/{{courseId}}'>{{course.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses/{{courseId}}/exercises'>Exercises</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses/{{courseId}}/exercises/{{exerciseId}}'>{{exercise.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses/{{courseId}}/exercises/{{exerciseId}}/students'>Students</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses/{{courseId}}/exercises/{{exerciseId}}/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
 
         {{else}}
 
-            <li><a href='/#/students'>Students</a> <span class='divider'>/</span></li>
-            <li><a href='/#/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
-            <li><a href='/#/students/{{studentId}}/courses'>Courses</a> <span class='divider'>/</span></li>
-            <li><a href='/#/students/{{studentId}}/courses/{{courseId}}'>{{course.name}}</a> <span class='divider'>/</span></li>
-            <li><a href='/#/students/{{studentId}}/courses/{{courseId}}/exercises'>Exercises</a> <span class='divider'>/</span></li>
-            <li><a href='/#/students/{{studentId}}/courses/{{courseId}}/exercises/{{exerciseId}}'>{{exercise.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='./#/students'>Students</a> <span class='divider'>/</span></li>
+            <li><a href='./#/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='./#/students/{{studentId}}/courses'>Courses</a> <span class='divider'>/</span></li>
+            <li><a href='./#/students/{{studentId}}/courses/{{courseId}}'>{{course.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='./#/students/{{studentId}}/courses/{{courseId}}/exercises'>Exercises</a> <span class='divider'>/</span></li>
+            <li><a href='./#/students/{{studentId}}/courses/{{courseId}}/exercises/{{exerciseId}}'>{{exercise.name}}</a> <span class='divider'>/</span></li>
 
         {{/if}}
 

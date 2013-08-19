@@ -2,11 +2,11 @@
 
     <ul class='breadcrumb'>
 
-        <li><a href='/'>Home</a> <span class='divider'>/</span></li>
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
 
         {{#if studentId}}
-            <li><a href='/#/students'>Students</a> <span class='divider'>/</span></li>
-            <li><a href='/#/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
+            <li><a href='./#/students'>Students</a> <span class='divider'>/</span></li>
+            <li><a href='./#/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
         {{/if}}
 
         <li class='active'>Courses</li>
@@ -35,11 +35,11 @@
 
                     {{#if ../studentId}}
 
-                        <td class='link'><a href='#/students/{{../../studentId}}/courses/{{id}}/exercises'>{{name}}</a></td>
+                        <td class='link'><a href='./#/students/{{../../studentId}}/courses/{{id}}/exercises'>{{name}}</a></td>
 
                     {{else}}
 
-                        <td class='link'><a href='#/courses/{{id}}/exercises'>{{name}}</a></td>
+                        <td class='link'><a href='./#/courses/{{id}}/exercises'>{{name}}</a></td>
 
                     {{/if}}
 
