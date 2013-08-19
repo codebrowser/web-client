@@ -29,6 +29,7 @@
         "localStorage": true,
         "runs": true,
         "spyOn": true,
+        "waits": true,
         "waitsFor": true
 
     }

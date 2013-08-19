@@ -28,4 +28,20 @@ describe('Snapshot router', function () {
 
         expect(codebrowser.router.SnapshotRouter.prototype.navigation).toHaveBeenCalled();
     });
+
+    it('catches an non-existent URL', function () {
+
+        spyOn(codebrowser.router.SnapshotRouter.prototype, 'notFound');
+
+        var router = new codebrowser.router.SnapshotRouter();
+
+        Backbone.history.start();
+        router.navigate('#/students/-9999/courses/3/exercises/1/snapshots');
+
+        waits(200);
+
+        runs(function () {
+            expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();
+        });
+    });
 });

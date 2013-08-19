@@ -28,4 +28,20 @@ describe('Course router', function () {
 
         expect(codebrowser.router.CourseRouter.prototype.navigation).toHaveBeenCalled();
     });
+
+    it('catches an non-existent student id', function () {
+
+        spyOn(codebrowser.router.CourseRouter.prototype, 'notFound');
+
+        var router = new codebrowser.router.CourseRouter();
+
+        Backbone.history.start();
+        router.navigate('#/students/-9999/courses');
+
+        waits(200);
+
+        runs(function () {
+            expect(codebrowser.router.CourseRouter.prototype.notFound).toHaveBeenCalled();
+        });
+    });
 });

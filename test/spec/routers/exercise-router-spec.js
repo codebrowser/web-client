@@ -40,4 +40,20 @@ describe('Exercise router', function () {
 
         expect(codebrowser.router.ExerciseRouter.prototype.navigateToCourseExercises).toHaveBeenCalled();
     });
+
+    it('catches an non-existent URL', function () {
+
+        spyOn(codebrowser.router.ExerciseRouter.prototype, 'notFound');
+
+        var router = new codebrowser.router.ExerciseRouter();
+
+        Backbone.history.start();
+        router.navigate('#/students/-9999/courses/-6666/exercises');
+
+        waits(200);
+
+        runs(function () {
+            expect(codebrowser.router.ExerciseRouter.prototype.notFound).toHaveBeenCalled();
+        });
+    });
 });

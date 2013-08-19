@@ -40,4 +40,20 @@ describe('Student router', function () {
 
         expect(codebrowser.router.StudentRouter.prototype.navigation).toHaveBeenCalled();
     });
+
+    it('catches an non-existent URL', function () {
+
+        spyOn(codebrowser.router.StudentRouter.prototype, 'notFound');
+
+        var router = new codebrowser.router.StudentRouter();
+
+        Backbone.history.start();
+        router.navigate('#/courses/3/exercises/-6666/students');
+
+        waits(200);
+
+        runs(function () {
+            expect(codebrowser.router.StudentRouter.prototype.notFound).toHaveBeenCalled();
+        });
+    });
 });
