@@ -71,6 +71,33 @@ describe('Diff', function () {
         expect(differences.getDifferences()['delete'][0].rowEnd).toBe(1);
     });
 
+    it('replaced something to nothing, contains new delete', function () {
+
+        var differences = new codebrowser.model.Diff('    }\n    \n    ', '    }\n');
+
+        expect(differences.getDifferences()['delete'].length).toBe(2);
+        expect(differences.getCount()['delete']).toBe(2);
+
+        expect(differences.getDifferences()['delete'][0].type).toBe('delete');
+        expect(differences.getDifferences()['delete'][0].overwrite).toBeTruthy();
+        expect(differences.getDifferences()['delete'][0].rowStart).toBe(1);
+        expect(differences.getDifferences()['delete'][0].rowEnd).toBe(1);
+    });
+
+    it('replaced nothing to something, contains new delete', function () {
+
+        var differences = new codebrowser.model.Diff(' \n    public int getKorkeus() {\n',
+                                                     '\n    public void setOmena(Omena omena) {\n\n    public int getKorkeus() {\n');
+
+        expect(differences.getDifferences()['delete'].length).toBe(1);
+        expect(differences.getCount()['delete']).toBe(1);
+
+        expect(differences.getDifferences()['delete'][0].type).toBe('delete');
+        expect(differences.getDifferences()['delete'][0].overwrite).toBeTruthy();
+        expect(differences.getDifferences()['delete'][0].rowStart).toBe(0);
+        expect(differences.getDifferences()['delete'][0].rowEnd).toBe(0);
+    });
+
     it('replaced nothing to something', function () {
 
         var differences = new codebrowser.model.Diff('\n', '\nHello.');
