@@ -57,4 +57,24 @@ describe('Diff', function () {
         expect(differences.getDifferences().replace[0].rowStart).toBe(0);
         expect(differences.getDifferences().replace[0].rowEnd).toBe(0);
     });
+
+    it('replace contains deleted lines', function () {
+
+        var differences = new codebrowser.model.Diff('Some.\nHello there.\nHow are you?', 'Some.\nHello ');
+
+        expect(differences.getDifferences().replace.length).toBe(1);
+        expect(differences.getCount().replace).toBe(1);
+
+        expect(differences.getDifferences()['delete'].length).toBe(1);
+        expect(differences.getCount()['delete']).toBe(1);
+
+        expect(differences.getDifferences().replace[0].type).toBe('replace');
+        expect(differences.getDifferences().replace[0].overwrite).toBeFalsy();
+        expect(differences.getDifferences().replace[0].rowStart).toBe(1);
+        expect(differences.getDifferences().replace[0].rowEnd).toBe(1);
+
+        expect(differences.getDifferences()['delete'][0].type).toBe('delete');
+        expect(differences.getDifferences()['delete'][0].rowStart).toBe(2);
+        expect(differences.getDifferences()['delete'][0].rowEnd).toBe(2);
+    })
 });
