@@ -53,7 +53,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
             var courseFetched = _.after(1, function () {
 
-                var exercise = codebrowser.model.Exercise.findOrCreate({id: options.exerciseId});
+                var exercise = codebrowser.model.Exercise.findOrCreate({ id: options.exerciseId });
 
                 // Fetch exercise
                 exercise.fetch({

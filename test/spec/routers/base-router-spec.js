@@ -17,7 +17,6 @@ describe('Base router', function () {
         expect(codebrowser.router.BaseRouter.prototype.notFound).toHaveBeenCalled();
     });
 
-
     it('pushes error view to ViewController', function () {
 
         spyOn(codebrowser.controller.ViewController, 'push');
