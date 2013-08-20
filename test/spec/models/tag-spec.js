@@ -33,4 +33,14 @@ describe('Tag', function () {
 
         expect(function () { tag.fetch() }).toThrow(missingAttributesError);
     });
+
+    it('should have correct IDs through collection', function () {
+
+        var tags = new codebrowser.collection.TagCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
+        tag = codebrowser.model.Tag.findOrCreate({ id: 8 }, { collection: tags });
+
+        expect(tag.studentId).toBe(1);
+        expect(tag.courseId).toBe(2);
+        expect(tag.exerciseId).toBe(3);
+    });
 });
