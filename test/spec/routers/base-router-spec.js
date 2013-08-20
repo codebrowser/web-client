@@ -16,4 +16,17 @@ describe('Base router', function () {
 
         expect(codebrowser.router.BaseRouter.prototype.notFound).toHaveBeenCalled();
     });
+
+
+    it('pushes error view to ViewController', function () {
+
+        spyOn(codebrowser.controller.ViewController, 'push');
+
+        var router = new codebrowser.router.BaseRouter();
+
+        Backbone.history.start();
+        router.navigate('#/this/url/is/not/valid', true);
+
+        expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();
+    });
 });
