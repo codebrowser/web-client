@@ -1,11 +1,6 @@
 describe('Editor view', function () {
 
-    var editorView;
-
-    beforeEach(function () {
-
-        editorView = new codebrowser.view.EditorView();
-    });
+    var editorView = new codebrowser.view.EditorView();
 
     it('should have correct id', function () {
 
