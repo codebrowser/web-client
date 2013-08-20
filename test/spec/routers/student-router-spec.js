@@ -82,11 +82,10 @@ describe('Student router', function () {
         Backbone.history.start();
         router.navigate('#/courses/662/exercises/815/students', true);
 
-        waits(4000);
+        waits(3000);
 
         runs(function () {
             expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();
-            expect(codebrowser.controller.ViewController.view.el.id).toEqual('students-container');
         });
     });
 });

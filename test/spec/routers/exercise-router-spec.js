@@ -29,6 +29,18 @@ describe('Exercise router', function () {
         expect(codebrowser.router.ExerciseRouter.prototype.navigation).toHaveBeenCalled();
     });
 
+    it('calls courseExercises function with correct URL', function () {
+
+        spyOn(codebrowser.router.ExerciseRouter.prototype, 'courseExercises');
+
+        var router = new codebrowser.router.ExerciseRouter();
+
+        Backbone.history.start();
+        router.navigate('#/courses/123/exercises', true);
+
+        expect(codebrowser.router.ExerciseRouter.prototype.courseExercises).toHaveBeenCalled();
+    });
+
     it('navigates to course exercises with correct URL', function () {
 
         spyOn(codebrowser.router.ExerciseRouter.prototype, 'navigateToCourseExercises');
@@ -54,6 +66,22 @@ describe('Exercise router', function () {
 
         runs(function () {
             expect(codebrowser.router.ExerciseRouter.prototype.notFound).toHaveBeenCalled();
+        });
+    });
+
+    it('pushes exercise view to ViewController', function () {
+
+        spyOn(codebrowser.controller.ViewController, 'push');
+
+        var router = new codebrowser.router.StudentRouter();
+
+        Backbone.history.start();
+        router.navigate('#/courses/662/exercises', true);
+
+        waits(3000);
+
+        runs(function () {
+            expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();
         });
     });
 });
