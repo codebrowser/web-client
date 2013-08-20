@@ -123,4 +123,51 @@ describe('Snapshot', function () {
 
         expect(snapshot.getRelation('exercise').options.relatedModel).toBe('codebrowser.model.Exercise');
     });
+
+    it('should return correct files without packages', function () {
+
+        var fileA = codebrowser.model.File.findOrCreate({ id: 1, name: 'FileA.java' });
+        var fileB = codebrowser.model.File.findOrCreate({ id: 2, name: 'FileB.java' });
+        var fileC = codebrowser.model.File.findOrCreate({ id: 3, name: 'FileC.java' });
+        var fileD = codebrowser.model.File.findOrCreate({ id: 4, name: 'FileD.java' });
+
+        var files = new codebrowser.collection.FileCollection([ fileA, fileB, fileC, fileD ]);
+
+        snapshot.set('files', files);
+
+        expect(snapshot.getFiles()['']).not.toBeNull();
+        expect(snapshot.getFiles()[''].length).toBe(4);
+        expect(snapshot.getFiles()[''][0].name).toBe('FileA.java');
+        expect(snapshot.getFiles()[''][1].name).toBe('FileB.java');
+        expect(snapshot.getFiles()[''][2].name).toBe('FileC.java');
+        expect(snapshot.getFiles()[''][3].name).toBe('FileD.java');
+    });
+
+    it('should return correct files with packages', function () {
+
+        var fileA = codebrowser.model.File.findOrCreate({ id: 1, name: 'package/a/FileA.java' });
+        var fileB = codebrowser.model.File.findOrCreate({ id: 2, name: 'package/a/FileB.java' });
+        var fileC = codebrowser.model.File.findOrCreate({ id: 3, name: 'package/b/FileC.java' });
+        var fileD = codebrowser.model.File.findOrCreate({ id: 4, name: 'package/c/FileD.java' });
+
+        var files = new codebrowser.collection.FileCollection([ fileA, fileB, fileC, fileD ]);
+
+        snapshot.set('files', files);
+
+        // Package a
+        expect(snapshot.getFiles()['package/a']).not.toBeNull();
+        expect(snapshot.getFiles()['package/a'].length).toBe(2);
+        expect(snapshot.getFiles()['package/a'][0].name).toBe('package/a/FileA.java');
+        expect(snapshot.getFiles()['package/a'][1].name).toBe('package/a/FileB.java');
+
+        // Package b
+        expect(snapshot.getFiles()['package/b']).not.toBeNull();
+        expect(snapshot.getFiles()['package/b'].length).toBe(1);
+        expect(snapshot.getFiles()['package/b'][0].name).toBe('package/b/FileC.java');
+
+        // Package c
+        expect(snapshot.getFiles()['package/c']).not.toBeNull();
+        expect(snapshot.getFiles()['package/c'].length).toBe(1);
+        expect(snapshot.getFiles()['package/c'][0].name).toBe('package/c/FileD.java');
+    });
 });
