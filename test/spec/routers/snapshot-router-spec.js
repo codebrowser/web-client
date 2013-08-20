@@ -44,4 +44,36 @@ describe('Snapshot router', function () {
             expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();
         });
     });
+
+    it('catches an non-existent snapshot id', function () {
+
+        spyOn(codebrowser.router.SnapshotRouter.prototype, 'notFound');
+
+        var router = new codebrowser.router.StudentRouter();
+
+        Backbone.history.start();
+        router.navigate('#/students/2/courses/1/exercises/3/snapshots/-9999', true);
+
+        waits(3000);
+
+        runs(function () {
+            expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();
+        });
+    });
+
+    it('catches an non-existent file id', function () {
+
+        spyOn(codebrowser.router.SnapshotRouter.prototype, 'notFound');
+
+        var router = new codebrowser.router.StudentRouter();
+
+        Backbone.history.start();
+        router.navigate('#/students/2/courses/1/exercises/3/snapshots/5/files/-9999', true);
+
+        waits(3000);
+
+        runs(function () {
+            expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();
+        });
+    });
 });
