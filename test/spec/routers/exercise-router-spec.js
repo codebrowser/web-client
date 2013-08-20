@@ -73,12 +73,12 @@ describe('Exercise router', function () {
 
         spyOn(codebrowser.controller.ViewController, 'push');
 
-        var router = new codebrowser.router.StudentRouter();
+        var router = new codebrowser.router.ExerciseRouter();
 
         Backbone.history.start();
         router.navigate('#/courses/662/exercises', true);
 
-        waits(3000);
+        waits(2000);
 
         runs(function () {
             expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();

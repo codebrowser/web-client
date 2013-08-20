@@ -82,7 +82,7 @@ describe('Student router', function () {
         Backbone.history.start();
         router.navigate('#/courses/662/exercises/815/students', true);
 
-        waits(3000);
+        waits(2000);
 
         runs(function () {
             expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();

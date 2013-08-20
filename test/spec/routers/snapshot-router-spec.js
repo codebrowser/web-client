@@ -49,12 +49,12 @@ describe('Snapshot router', function () {
 
         spyOn(codebrowser.router.SnapshotRouter.prototype, 'notFound');
 
-        var router = new codebrowser.router.StudentRouter();
+        var router = new codebrowser.router.SnapshotRouter();
 
         Backbone.history.start();
         router.navigate('#/students/2/courses/1/exercises/3/snapshots/-9999', true);
 
-        waits(3000);
+        waits(2000);
 
         runs(function () {
             expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();
@@ -65,12 +65,12 @@ describe('Snapshot router', function () {
 
         spyOn(codebrowser.router.SnapshotRouter.prototype, 'notFound');
 
-        var router = new codebrowser.router.StudentRouter();
+        var router = new codebrowser.router.SnapshotRouter();
 
         Backbone.history.start();
         router.navigate('#/students/2/courses/1/exercises/3/snapshots/5/files/-9999', true);
 
-        waits(3000);
+        waits(2000);
 
         runs(function () {
             expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();
