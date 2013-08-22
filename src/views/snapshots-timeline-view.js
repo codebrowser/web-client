@@ -309,6 +309,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             var snapshot = this.data('snapshot');
             var file = this.data('file');
 
+            // Destroy tooltip
+            $(snapshotClickArea.node).tooltip('destroy');
+
             // Navigate to snapshot and file
             self.parentView.navigate(snapshot, file, { course: this.courseRoute });
         });
