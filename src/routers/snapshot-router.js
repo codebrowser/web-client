@@ -55,7 +55,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
         var snapshotCollection;
 
-        if (!this.snapshotView.collection || (this.studentId !== studentId && this.exerciseId !== exerciseId)) {
+        if (!this.snapshotView.collection || (this.studentId !== studentId || this.exerciseId !== exerciseId)) {
 
             snapshotCollection = new codebrowser.collection.SnapshotCollection(null, { studentId: studentId,
                                                                                        courseId: courseId,
