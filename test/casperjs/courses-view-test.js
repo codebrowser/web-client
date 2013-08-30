@@ -1,4 +1,4 @@
-casper.test.begin('Courses view', 7, function suite(test) {
+casper.test.begin('Courses view', 9, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
@@ -13,14 +13,17 @@ casper.test.begin('Courses view', 7, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Courses', 'has "Courses" label active in the navbar');
-            test.assertElementCount('tbody tr', 2, 'has exactly two courses listed');
+            test.assertElementCount('tbody tr', 3, 'has exactly three courses listed');
 
             test.assertTextExists('ohpe', 'has a course named "ohpe"');
             test.assertTextExists('mooc-ohja', 'has a course named "mooc-ohja"');
+            test.assertTextExists('k2013-ohpe', 'has a course named "k2013-ohpe"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises">ohpe') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises">k2013-ohpe') !== -1,
+                                                     'has "k2013-ohpe" with a correct link to exercise list');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/48561/exercises">ohpe') !== -1,
                                                      'has "ohpe" with a correct link to exercise list');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises">mooc-ohja') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises">mooc-ohja') !== -1,
                                                      'has "mooc-ohja" with a correct link to exercise list');
         });
     });

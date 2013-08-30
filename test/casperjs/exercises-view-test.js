@@ -10,25 +10,25 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
     casper.then(function() {
 
-        this.clickLabel('ohpe', 'a');
+        this.clickLabel('k2013-ohpe', 'a');
 
-        this.echo('\nohpe\'s exercise list\n--------------------');
+        this.echo('\nk2013-ohpe\'s exercise list\n--------------------------');
 
         this.waitForSelector('#exercises-container', function () {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/1/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
-            test.assertElementCount('tbody tr', 3, 'has exactly three exercises listed');
+            test.assertElementCount('tbody tr', 8, 'has exactly eight exercises listed');
 
             test.assertTextExists('Viikko4_077.Lyyrakortti', 'has an exercise named "Lyyrakortti"');
             test.assertTextExists('Viikko5_086.LyyrakorttiJaKassapaate', 'has an exercise named "LyyrakorttiJaKassapaate"');
             test.assertTextExists('Viikko6_103.Tietokanta', 'has an exercise named "Tietokanta"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/3/students">Viikko4_077.Lyyrakortti') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/71/students">Viikko4_077.Lyyrakortti') !== -1,
                                                      'has LyyraKortti with a correct link to student list');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/100/students">Viikko5_086.LyyrakorttiJaKassapaate') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/114/students">Viikko5_086.LyyrakorttiJaKassapaate') !== -1,
                                                      'has LyyraKorttiJaKassapaate with a correct link to student list');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/206/students">Viikko6_103.Tietokanta') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/368/students">Viikko6_103.Tietokanta') !== -1,
                                                      'has Tietokanta with a correct link to student list');
 
             // Go one step back in browser's history
@@ -44,7 +44,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.waitForSelector('#exercises-container', function () {
 
-            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/662/exercises') !== -1, 'has correct URL');
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/49219/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
             test.assertElementCount('tbody tr', 5, 'has exactly five exercises listed');
 
@@ -54,15 +54,15 @@ casper.test.begin('Exercises view', 78, function suite(test) {
             test.assertTextExists('Viikko9_131.UseanKaannoksenSanakirja', 'has an exercise named "UseanKaannoksenSanakirja"');
             test.assertTextExists('Viikko9_133.Numerotiedustelu', 'has an exercise named "Numerotiedustelu"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/664/students">Viikko11_142.MuistavaSanakirja') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/49221/students">Viikko11_142.MuistavaSanakirja') !== -1,
                                                      'has "MuistavaSanakirja" with a correct link to student list');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/815/students">Viikko12_156.Matopeli') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/49372/students">Viikko12_156.Matopeli') !== -1,
                                                      'has "Matopeli" with a correct link to student list');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/1565/students">Viikko7_114.Sanakirja') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/50122/students">Viikko7_114.Sanakirja') !== -1,
                                                      'has "Sanakirja" with a correct link to student list');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/1662/students">Viikko9_131.UseanKaannoksenSanakirja') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/50219/students">Viikko9_131.UseanKaannoksenSanakirja') !== -1,
                                                      'has "UseanKaannoksenSanakirja" with a correct link to student list');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/1687/students">Viikko9_133.Numerotiedustelu') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/50244/students">Viikko9_133.Numerotiedustelu') !== -1,
                                                      'has "Numerotiedustelu" with a correct link to student list');
         });
     });
@@ -75,16 +75,16 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.waitForSelector('#students-container', function () {
 
-            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/662/exercises/664/students') !== -1, 'has correct URL');
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/49219/exercises/49221/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
             test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/664/students/663/snapshots">student_13') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/49221/students/49220/snapshots">student_13') !== -1,
                                                      'has "student_13" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/664/students/1932/snapshots">student_1312') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/49221/students/50489/snapshots">student_1312') !== -1,
                                                      'has "student_1312" with a correct link to snapshots');
 
             casper.back();
@@ -99,16 +99,16 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.waitForSelector('#students-container', function () {
 
-            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/662/exercises/815/students') !== -1, 'has correct URL');
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/49219/exercises/49372/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
             test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/815/students/663/snapshots">student_13') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/49372/students/49220/snapshots">student_13') !== -1,
                                                      'has "student_13" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/815/students/1932/snapshots">student_1312') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/49372/students/50489/snapshots">student_1312') !== -1,
                                                      'has "student_1312" with a correct link to snapshots');
 
             casper.back();
@@ -123,16 +123,16 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.waitForSelector('#students-container', function () {
 
-            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/662/exercises/1565/students') !== -1, 'has correct URL');
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/49219/exercises/50122/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
             test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/1565/students/663/snapshots">student_13') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/50122/students/49220/snapshots">student_13') !== -1,
                                                      'has "student_13" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/1565/students/1932/snapshots">student_1312') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/50122/students/50489/snapshots">student_1312') !== -1,
                                                      'has "student_1312" with a correct link to snapshots');
 
             casper.back();
@@ -147,16 +147,16 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.waitForSelector('#students-container', function () {
 
-            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/662/exercises/1662/students') !== -1, 'has correct URL');
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/49219/exercises/50219/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
             test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/1662/students/663/snapshots">student_13') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/50219/students/49220/snapshots">student_13') !== -1,
                                                      'has "student_13" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/1662/students/1932/snapshots">student_1312') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/50219/students/50489/snapshots">student_1312') !== -1,
                                                      'has "student_1312" with a correct link to snapshots');
 
             casper.back();
@@ -171,16 +171,16 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.waitForSelector('#students-container', function () {
 
-            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/662/exercises/1687/students') !== -1, 'has correct URL');
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/49219/exercises/50244/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
             test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
 
             test.assertTextExists('student_13', 'has a student named "student_13"');
             test.assertTextExists('student_1312', 'has a student named "student_1312"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/1687/students/663/snapshots">student_13') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/50244/students/49220/snapshots">student_13') !== -1,
                                                      'has "student_13" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/662/exercises/1687/students/1932/snapshots">student_1312') !== -1,
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises/50244/students/50489/snapshots">student_1312') !== -1,
                                                      'has "student_1312" with a correct link to snapshots');
 
             casper.back();
@@ -190,7 +190,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
     casper.then(function () {
 
-        this.clickLabel('ohpe', 'a');
+        this.clickLabel('k2013-ohpe', 'a');
 
         this.waitForSelector('#exercises-container');
     });
@@ -203,17 +203,17 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.waitForSelector('#students-container', function () {
 
-            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/1/exercises/3/students') !== -1, 'has correct URL');
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/1/exercises/71/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 96, 'has exactly 96 students listed');
 
-            test.assertTextExists('student_423', 'has a student named "student_13"');
-            test.assertTextExists('student_480', 'has a student named "student_1312"');
+            test.assertTextExists('student_1004', 'has a student named "student_1004"');
+            test.assertTextExists('student_1005', 'has a student named "student_1005"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/3/students/2/snapshots">student_423') !== -1,
-                                                     'has "student_423" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/3/students/320/snapshots">student_480') !== -1,
-                                                     'has "student_480" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/71/students/2/snapshots">student_1004') !== -1,
+                                                     'has "student_1004" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/71/students/372/snapshots">student_1005') !== -1,
+                                                     'has "student_1005" with a correct link to snapshots');
 
             casper.back();
         });
@@ -227,17 +227,17 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.waitForSelector('#students-container', function () {
 
-            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/1/exercises/100/students') !== -1, 'has correct URL');
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/1/exercises/114/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 97, 'has exactly 91 students listed');
 
-            test.assertTextExists('student_423', 'has a student named "student_13"');
-            test.assertTextExists('student_480', 'has a student named "student_1312"');
+            test.assertTextExists('student_1004', 'has a student named "student_1004"');
+            test.assertTextExists('student_1005', 'has a student named "student_1005"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/100/students/2/snapshots">student_423') !== -1,
-                                                     'has "student_423" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/100/students/320/snapshots">student_480') !== -1,
-                                                     'has "student_480" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/114/students/2/snapshots">student_1004') !== -1,
+                                                     'has "student_1004" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/114/students/372/snapshots">student_1005') !== -1,
+                                                     'has "student_1005" with a correct link to snapshots');
 
             casper.back();
         });
@@ -251,17 +251,17 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.waitForSelector('#students-container', function () {
 
-            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/1/exercises/206/students') !== -1, 'has correct URL');
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses/1/exercises/368/students') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Students', 'has "Students" label active in the navbar');
-            test.assertElementCount('tbody tr', 2, 'has exactly two students listed');
+            test.assertElementCount('tbody tr', 91, 'has exactly 91 students listed');
 
-            test.assertTextExists('student_423', 'has a student named "student_13"');
-            test.assertTextExists('student_480', 'has a student named "student_1312"');
+            test.assertTextExists('student_1004', 'has a student named "student_1004"');
+            test.assertTextExists('student_1005', 'has a student named "student_1005"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/206/students/2/snapshots">student_423') !== -1,
-                                                     'has "student_423" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/206/students/320/snapshots">student_480') !== -1,
-                                                     'has "student_480" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/368/students/2/snapshots">student_1004') !== -1,
+                                                     'has "student_1004" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/368/students/372/snapshots">student_1005') !== -1,
+                                                     'has "student_1005" with a correct link to snapshots');
         });
     });
 
