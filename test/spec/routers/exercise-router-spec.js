@@ -62,7 +62,7 @@ describe('Exercise router', function () {
         Backbone.history.start();
         router.navigate('#/students/-9999/courses/-6666/exercises');
 
-        waits(200);
+        waits(2000);
 
         runs(function () {
             expect(codebrowser.router.ExerciseRouter.prototype.notFound).toHaveBeenCalled();

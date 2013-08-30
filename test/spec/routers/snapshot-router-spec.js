@@ -38,7 +38,7 @@ describe('Snapshot router', function () {
         Backbone.history.start();
         router.navigate('#/students/-9999/courses/3/exercises/1/snapshots');
 
-        waits(200);
+        waits(2000);
 
         runs(function () {
             expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();

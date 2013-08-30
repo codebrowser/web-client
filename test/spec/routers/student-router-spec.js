@@ -50,7 +50,7 @@ describe('Student router', function () {
         Backbone.history.start();
         router.navigate('#/courses/3/exercises/-6666/students');
 
-        waits(200);
+        waits(2000);
 
         runs(function () {
             expect(codebrowser.router.StudentRouter.prototype.notFound).toHaveBeenCalled();
@@ -66,7 +66,7 @@ describe('Student router', function () {
         Backbone.history.start();
         router.navigate('#/courses/3/exercises/-6666/students', true);
 
-        waits(200);
+        waits(2000);
 
         runs(function () {
             expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();

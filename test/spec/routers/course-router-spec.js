@@ -38,7 +38,7 @@ describe('Course router', function () {
         Backbone.history.start();
         router.navigate('#/students/-9999/courses');
 
-        waits(200);
+        waits(2000);
 
         runs(function () {
             expect(codebrowser.router.CourseRouter.prototype.notFound).toHaveBeenCalled();
