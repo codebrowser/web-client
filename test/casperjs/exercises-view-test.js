@@ -199,7 +199,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.clickLabel('011.SuurempiLuku', 'a');
 
-        this.echo('\SuurempiLuku\'s student list\n--------------------------');
+        this.echo('\nSuurempiLuku\'s student list\n--------------------------');
 
         this.waitForSelector('#students-container', function () {
 
@@ -223,7 +223,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.clickLabel('021.Karkausvuosi', 'a');
 
-        this.echo('\Karkausvuosi\'s student list\n--------------------------------------');
+        this.echo('\nKarkausvuosi\'s student list\n--------------------------------------');
 
         this.waitForSelector('#students-container', function () {
 
@@ -247,7 +247,7 @@ casper.test.begin('Exercises view', 78, function suite(test) {
 
         this.clickLabel('Viikko5_090.JoukkueetJaPelaajat', 'a');
 
-        this.echo('\JoukkueetJaPelaajat\'s student list\n-------------------------');
+        this.echo('\nJoukkueetJaPelaajat\'s student list\n-------------------------');
 
         this.waitForSelector('#students-container', function () {
 
