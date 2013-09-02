@@ -52,18 +52,18 @@ casper.test.begin('Students view', 67, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('/#/students/2/courses/1/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
-            test.assertElementCount('tbody tr', 8, 'has exactly eight exercises listed');
+            test.assertElementCount('tbody tr', 5, 'has exactly five exercises listed');
 
-            test.assertTextExists('Viikko4_077.Lyyrakortti', 'has an exercise named "Lyyrakortti"');
-            test.assertTextExists('Viikko5_086.LyyrakorttiJaKassapaate', 'has an exercise named "LyyrakorttiJaKassapaate"');
-            test.assertTextExists('Viikko6_103.Tietokanta', 'has an exercise named "Tietokanta"');
+            test.assertTextExists('011.SuurempiLuku', 'has an exercise named "SuurempiLuku"');
+            test.assertTextExists('021.Karkausvuosi', 'has an exercise named "Karkausvuosi"');
+            test.assertTextExists('Viikko5_090.JoukkueetJaPelaajat', 'has an exercise named "JoukkueetJaPelaajat"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/2/courses/1/exercises/71/snapshots">Viikko4_077.Lyyrakortti') !== -1,
-                                                     'has "Lyyrakortti" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/2/courses/1/exercises/114/snapshots">Viikko5_086.LyyrakorttiJaKassapaate') !== -1,
-                                                     'has "LyyrakorttiJaKassapaate" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/2/courses/1/exercises/368/snapshots">Viikko6_103.Tietokanta') !== -1,
-                                                     'has "Tietokanta" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/2/courses/1/exercises/3/snapshots">011.SuurempiLuku') !== -1,
+                                                     'has "SuurempiLuku" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/2/courses/1/exercises/15/snapshots">021.Karkausvuosi') !== -1,
+                                                     'has "Karkausvuosi" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/2/courses/1/exercises/180/snapshots">Viikko5_090.JoukkueetJaPelaajat') !== -1,
+                                                     'has "JoukkueetJaPelaajat" with a correct link to snapshots');
 
             casper.back();
             casper.back();
@@ -96,18 +96,18 @@ casper.test.begin('Students view', 67, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('/#/students/372/courses/1/exercises') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Exercises', 'has "Exercises" label active in the navbar');
-            test.assertElementCount('tbody tr', 8, 'has exactly eight exercises listed');
+            test.assertElementCount('tbody tr', 5, 'has exactly five exercises listed');
 
-            test.assertTextExists('Viikko4_077.Lyyrakortti', 'has an exercise named "Lyyrakortti"');
-            test.assertTextExists('Viikko5_086.LyyrakorttiJaKassapaate', 'has an exercise named "LyyrakorttiJaKassapaate"');
-            test.assertTextExists('Viikko6_103.Tietokanta', 'has an exercise named "Tietokanta"');
+            test.assertTextExists('011.SuurempiLuku', 'has an exercise named "SuurempiLuku"');
+            test.assertTextExists('021.Karkausvuosi', 'has an exercise named "Karkausvuosi"');
+            test.assertTextExists('Viikko5_090.JoukkueetJaPelaajat', 'has an exercise named "JoukkueetJaPelaajat"');
 
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/372/courses/1/exercises/71/snapshots">Viikko4_077.Lyyrakortti') !== -1,
-                                                     'has "Lyyrakortti" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/372/courses/1/exercises/114/snapshots">Viikko5_086.LyyrakorttiJaKassapaate') !== -1,
-                                                     'has "LyyrakorttiJaKassapaate" with a correct link to snapshots');
-            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/372/courses/1/exercises/368/snapshots">Viikko6_103.Tietokanta') !== -1,
-                                                     'has "Tietokanta" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/372/courses/1/exercises/3/snapshots">011.SuurempiLuku') !== -1,
+                                                     'has "SuurempiLuku" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/372/courses/1/exercises/15/snapshots">021.Karkausvuosi') !== -1,
+                                                     'has "Karkausvuosi" with a correct link to snapshots');
+            test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/372/courses/1/exercises/180/snapshots">Viikko5_090.JoukkueetJaPelaajat') !== -1,
+                                                     'has "JoukkueetJaPelaajat" with a correct link to snapshots');
 
             casper.back();
             casper.back();
