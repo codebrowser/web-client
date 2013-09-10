@@ -13,6 +13,7 @@
     "devDependencies": {
 
         "grunt": "0.4.1",
+		"grunt-cli": "0.1.9", 
         "grunt-contrib-watch": "0.4.4",
         "grunt-contrib-handlebars": "0.5.9",
         "grunt-contrib-concat": "0.3.0",
