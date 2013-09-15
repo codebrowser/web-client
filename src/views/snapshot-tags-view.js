@@ -76,9 +76,9 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
         }
 
         // New tag
-        var tag = new codebrowser.model.Tag(null, { studentId: this.snapshot.get('studentId'),
-                                                    courseId: this.snapshot.get('courseId'),
-                                                    exerciseId: this.snapshot.get('exerciseId') });
+        var tag = new codebrowser.model.Tag({ student: {id: this.snapshot.get('studentId')},
+                                              course: {id: this.snapshot.get('courseId')},
+                                              exercise: {id: this.snapshot.get('exerciseId')}});
 
         var self = this;
 

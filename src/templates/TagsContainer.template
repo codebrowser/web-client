@@ -1,0 +1,43 @@
+<section>
+
+    <ul class='breadcrumb'>
+
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+
+        <li class='active'>Tags</li>
+
+    </ul>
+
+    <h2>Tags ({{tags.length}})</h2>
+
+    <table class='table table-hover'>
+
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tag</th>
+				<th>Course / Exercise / Student</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {{#tags}}
+
+                <tr>
+
+                    <td class='index'>{{index @index}}</td>
+
+                    <td class='link'><a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}'>{{text}}</a></td>
+
+                    <td ><a class='inline' href="./#/courses/{{course.id}}">{{course.name}}</a>/<a class='inline' href="./#/courses/{{course.id}}/exercises/{{exercise.id}}">{{exercise.name}}</a>/<a class='inline' href="./#/students/{{student.id}}">{{student.name}}</a></td>  
+
+                </tr>
+
+            {{/tags}}
+
+        </tbody>
+
+    </table>
+
+</section>

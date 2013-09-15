@@ -10,6 +10,12 @@ codebrowser.collection.TagCollection = Backbone.Collection.extend({
 
     url: function () {
 
+        /* Fetch all tags */
+        if (!this.studentId && !this.courseId && !this.exerciseId) {
+            return config.api.main.root + 'tags';
+        }
+
+        /* Fetch tags for given course, student and exercise */
         if (!this.studentId || !this.courseId || !this.exerciseId) {
             throw new Error('Options studentId, courseId and exerciseId are required to fetch tags.');
         }

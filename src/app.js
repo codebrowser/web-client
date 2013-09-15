@@ -34,6 +34,7 @@ var codebrowser = {
         codebrowser.app.course = new codebrowser.router.CourseRouter();
         codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
         codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
+        codebrowser.app.tag = new codebrowser.router.TagRouter();
 
         // History
         Backbone.history.start();
