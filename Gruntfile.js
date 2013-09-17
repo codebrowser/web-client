@@ -105,43 +105,20 @@ module.exports = function (grunt) {
         jshint: {
 
             src: {
-
-                src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js'],
+                src: [
+                    'Gruntfile.js',
+                    'web.js',
+                    'config/*.js',
+                    'src/**/*.js',
+                    'test/config/config.js',
+                    'test/spec/**/*.js',
+                    'test/casperjs/*.js'
+                ],
                 options: {
-
-                    jshintrc: 'jshint.json'
-
+                    jshintrc: 'jshint.json',
+                    reporter: 'jslint',
+                    reporterOutput: 'test/jslint-report.xml'
                 }
-            },
-
-            test: {
-
-                src: 'test/config/config.js',
-                options: {
-
-                    jshintrc: 'jshint.json'
-
-                }
-            },
-
-            spec: {
-
-                src: 'test/spec/**/*.js',
-                options: {
-
-                    jshintrc: 'test/spec/jshint.json'
-
-                }
-            },
-
-            casperjs: {
-
-                src: 'test/casperjs/*.js',
-                options: {
-
-                    jshintrc: 'test/casperjs/jshint.json'
-                }
-
             }
         },
 
