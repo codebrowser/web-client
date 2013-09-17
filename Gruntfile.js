@@ -115,6 +115,7 @@ module.exports = function (grunt) {
                     'test/casperjs/*.js'
                 ],
                 options: {
+                    force: true,
                     jshintrc: 'jshint.json',
                     reporter: 'jslint',
                     reporterOutput: 'test/jslint-report.xml'
