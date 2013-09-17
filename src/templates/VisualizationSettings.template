@@ -1,0 +1,11 @@
+<div class='row'>
+    <div class="well">
+        <h6 class="text-center">Toggle visualizations</h6>
+        <div id="buttonWrapper">
+            <button id="toggleTimeline" class="btn pull-left">Timeline</button>
+            <button id="toggleButton2" class="btn pull-left">Visualization2</button>
+            <button id="toggleButton3" class="btn pull-left">Visualization3</button>
+            <span class="clearfix"></span>
+        </div>
+    </div>
+</div>

@@ -199,5 +199,5 @@ module.exports = function (grunt) {
     grunt.registerTask('test', ['jshint', 'jasmine']);
     grunt.registerTask('integration-test', ['connect', 'casperjs']);
     grunt.registerTask('build', ['jshint','handlebars', 'concat', 'uglify']);
-    grunt.registerTask('default', ['test', 'integration-test', 'build']);
+    grunt.registerTask('default', ['test', 'build']);
 }

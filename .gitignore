@@ -12,6 +12,7 @@
 _SpecRunner.html
 test/coverage/
 test/cobertura/
+test/jslint-report.xml
 nbproject/
 node_modules/
 .idea/

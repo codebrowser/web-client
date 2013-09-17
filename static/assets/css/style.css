@@ -287,11 +287,52 @@ ul.selection a:hover {
 
 }
 
+/* Snapshots visualization settings */
+#visualization-settings-container {
+
+    margin: 0;
+}
+
+#visualization-settings-container .well {
+
+    width: 380px;
+    padding: 0 0 10px 0 !important;
+    margin: 0 auto 10px auto !important;
+
+}
+#visualization-settings-container .well h6 {
+
+    margin-top: 3px;
+    margin-bottom: 3px;
+
+}
+#visualization-settings-container .well #buttonWrapper {
+
+    margin: auto;
+    width: 335px;
+
+}
+#visualization-settings-container .well button {
+
+    margin-right: 10px;
+
+}
+#visualization-settings-container .well button:nth-child(3) {
+
+    margin-right: 0;
+
+}
+#visualization-settings-container #toggleVisualizations {
+
+    margin-left: 20px;
+
+}
+
 /* Snapshots timeline */
 
 #snapshots-timeline-container {
 
-    margin: 25px auto;
+    margin: 0 auto 0 auto;
     padding: 15px;
     height: 108px;
     border: 1px solid #c5d6de;
@@ -402,6 +443,7 @@ ul.selection a:hover {
 
 #snapshot-navigation-container {
 
+    margin-top: 25px;
     height: 30px;
 
 }
