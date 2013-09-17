@@ -11,5 +11,7 @@
 .grunt/
 _SpecRunner.html
 test/coverage/
+test/cobertura/
 nbproject/
 node_modules/
+.idea/
