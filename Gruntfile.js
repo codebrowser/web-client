@@ -159,23 +159,28 @@ module.exports = function (grunt) {
             options: {
 
                 vendor: ['static/assets/js/jquery-2.0.0.min.js',
-                         'static/assets/js/moment.min.js',
-                         'static/assets/js/underscore-min.js',
-                         'static/assets/js/backbone-min.js',
-                         'static/assets/js/backbone-relational-min.js',
-                         'static/assets/js/backbone.fetch-cache.min.js',
-                         'static/assets/js/handlebars.runtime-min.js',
-                         'static/assets/js/spin.min.js',
-                         'static/assets/js/ace/ace.js',
-                         'static/assets/js/difflib-min.js',
-                         'static/assets/js/raphael-min.js',
-                         'static/assets/js/codebrowser-templates-min.js'],
+                    'static/assets/js/moment.min.js',
+                    'static/assets/js/underscore-min.js',
+                    'static/assets/js/backbone-min.js',
+                    'static/assets/js/backbone-relational-min.js',
+                    'static/assets/js/backbone.fetch-cache.min.js',
+                    'static/assets/js/handlebars.runtime-min.js',
+                    'static/assets/js/spin.min.js',
+                    'static/assets/js/ace/ace.js',
+                    'static/assets/js/difflib-min.js',
+                    'static/assets/js/raphael-min.js',
+                    'static/assets/js/codebrowser-templates-min.js'],
                 specs: 'test/spec/**/*-spec.js',
                 template: require('grunt-template-jasmine-istanbul'),
                 templateOptions: {
 
                     coverage: 'test/coverage/coverage.json',
-                    report: 'test/coverage/'
+                    report: {
+                        type: 'cobertura',
+                        options: {
+                            dir: 'test/cobertura/'
+                        }
+                    }
 
                 }
             }
