@@ -2,6 +2,8 @@
  * Fetch tags by passing either tagNameId or studentId, courseId and exerciseId as options for the collection:
  *
  * var tags = new codebrowser.collection.TagCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
+ * var tags = new codebrowser.collection.TagCollection(null, { tagNameId: 4 });
+ *
  */
 
 codebrowser.collection.TagCollection = Backbone.Collection.extend({

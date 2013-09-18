@@ -53,7 +53,7 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
 
     navigation: function (tagNameId) {
 
-        codebrowser.app.exercise.navigate('#/tagnames/' + tagNameId + '/tags/', { replace: true });
+        codebrowser.app.tag.navigate('#/tagnames/' + tagNameId + '/tags', { replace: true });
     },
 
     tags: function (tagNameId) {
