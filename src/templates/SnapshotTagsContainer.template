@@ -10,7 +10,7 @@
 
         {{#tags}}
 
-            <li>{{text}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+            <li>{{tagName.name}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
 
         {{/tags}}
 

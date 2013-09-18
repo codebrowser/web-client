@@ -1,0 +1,43 @@
+<section>
+
+    <ul class='breadcrumb'>
+
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+
+        <li class='active'>Tags</li>
+
+    </ul>
+
+    <h2>Tags ({{tagNames.length}})</h2>
+
+    <table class='table table-hover'>
+
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tag</th>
+				<th>Count</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {{#tagNames}}
+
+                <tr>
+
+                    <td class='index'>{{index @index}}</td>
+
+                    <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+
+                    <td>({{tags.length}})</td>
+
+                </tr>
+
+            {{/tagNames}}
+
+        </tbody>
+
+    </table>
+
+</section>

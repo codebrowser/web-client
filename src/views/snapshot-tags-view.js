@@ -48,8 +48,8 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
         // Fetch tags
         this.collection.fetch({
 
-            cache: true,
-            expires: 120,
+            cache: false,
+            expires: 0,
 
             success: function () {
 
@@ -75,15 +75,19 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
             return;
         }
 
-        // New tag
-        var tag = new codebrowser.model.Tag(null, { studentId: this.snapshot.get('studentId'),
-                                                    courseId: this.snapshot.get('courseId'),
-                                                    exerciseId: this.snapshot.get('exerciseId') });
-
         var self = this;
 
+        // Create new tag name if necessary.
+        var tagName = codebrowser.model.TagName.findOrCreate({ name : text });
+
+        // New tag
+        var tag = new codebrowser.model.Tag({ tagName: tagName,
+                                              student: {id: self.snapshot.get('studentId')},
+                                              course: {id: self.snapshot.get('courseId')},
+                                              exercise: {id: self.snapshot.get('exerciseId')}});
+
         // Save tag
-        tag.save({ text: text }, {
+        tag.save({ tagName: tagName }, {
 
             success: function () {
 

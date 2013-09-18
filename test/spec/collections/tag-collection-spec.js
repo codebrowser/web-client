@@ -34,8 +34,14 @@ describe('TagCollection', function () {
         expect(function () { tags.url() }).toThrow(missingOptionsError);
     });
 
-    it('should have correct URL', function () {
+    it('should have correct URL when given studentId, modelId and exerciseId', function () {
 
         expect(tags.url()).toBe(config.api.main.root + 'students/1/courses/2/exercises/3/tags');
+    });
+
+    it('should have correct URL when given tagNameId', function () {
+
+        tags = new codebrowser.collection.TagCollection(null, { tagNameId: 4 });
+        expect(tags.url()).toBe(config.api.main.root + 'tagnames/4/tags');
     });
 });
