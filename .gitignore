@@ -16,3 +16,4 @@ test/jslint-report.xml
 nbproject/
 node_modules/
 .idea/
+static/assets/js/codebrowser*.js
