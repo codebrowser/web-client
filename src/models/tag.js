@@ -12,33 +12,21 @@ codebrowser.model.Tag = Backbone.RelationalModel.extend({
 
     urlRoot: function () {
 
-        if (!this.studentId || !this.courseId || !this.exerciseId) {
-            throw new Error('Attributes studentId, courseId and exerciseId are required to fetch a tag.');
+        if (!this.attributes.student || !this.attributes.course || !this.attributes.exercise ||
+                !this.attributes.student.id || !this.attributes.course.id || !this.attributes.exercise.id) {
+            throw new Error('Attributes student.id, course.id and exercise.id are required to fetch a tag.');
         }
 
         return config.api.main.root +
                'students/' +
-               this.studentId +
+               this.attributes.student.id +
                '/courses/' +
-               this.courseId +
+               this.attributes.course.id +
                '/exercises/' +
-               this.exerciseId +
+               this.attributes.exercise.id +
                '/tags';
     },
 
-    initialize: function (attributes, options) {
-
-        if (options) {
-            this.studentId = options.studentId;
-            this.courseId = options.courseId;
-            this.exerciseId = options.exerciseId;
-        }
-
-        // If fetched through a collection, get IDs from the collection
-        if (this.collection) {
-            this.studentId = this.collection.studentId;
-            this.courseId = this.collection.courseId;
-            this.exerciseId = this.collection.exerciseId;
-        }
-    }
+    //initialize: function (attributes, options) {
+    //}
 });
