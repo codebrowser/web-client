@@ -55,13 +55,13 @@ module.exports = function (grunt) {
             dist: {
 
                 src: ['config/*.js',
-                      'src/app.js',
-                      'src/helpers/*.js',
-                      'src/models/*.js',
-                      'src/collections/*.js',
-                      'src/views/*.js',
-                      'src/controllers/*.js',
-                      'src/routers/*.js'],
+                    'src/app.js',
+                    'src/helpers/*.js',
+                    'src/models/*.js',
+                    'src/collections/*.js',
+                    'src/views/*.js',
+                    'src/controllers/*.js',
+                    'src/routers/*.js'],
                 dest: 'static/assets/js/codebrowser.js',
                 options: {
 
@@ -73,7 +73,7 @@ module.exports = function (grunt) {
             handlebars: {
 
                 src: ['static/assets/js/codebrowser-templates.js',
-                      'static/assets/js/codebrowser.js'],
+                    'static/assets/js/codebrowser.js'],
                 dest: 'static/assets/js/codebrowser.js',
                 options: {
 
@@ -105,35 +105,63 @@ module.exports = function (grunt) {
         jshint: {
 
             src: {
-                src: [
-                    'Gruntfile.js',
-                    'web.js',
-                    'config/*.js',
-                    'src/**/*.js',
-                    'test/config/config.js',
-                    'test/spec/**/*.js',
-                    'test/casperjs/*.js'
-                ],
+
+                src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js'],
                 options: {
-                    force: true,
-                    jshintrc: 'jshint.json',
-                    reporter: 'jslint',
-                    reporterOutput: 'test/jslint-report.xml'
+
+                    jshintrc: 'jshint.json'
+
                 }
+            },
+
+            test: {
+
+                src: 'test/config/config.js',
+                options: {
+
+                    jshintrc: 'jshint.json'
+
+                }
+            },
+
+            spec: {
+
+                src: 'test/spec/**/*.js',
+                options: {
+
+                    jshintrc: 'test/spec/jshint.json'
+
+                }
+            },
+
+            casperjs: {
+
+                src: 'test/casperjs/*.js',
+                options: {
+
+                    jshintrc: 'test/casperjs/jshint.json'
+                }
+
+            },
+            options: {
+                force: true,
+                jshintrc: 'jshint.json',
+                reporter: 'jslint',
+                reporterOutput: 'test/jslint-report.xml'
             }
         },
 
         jasmine: {
 
             src: ['config/*.js',
-                  'test/config/*.js',
-                  'src/app.js',
-                  'src/helpers/*.js',
-                  'src/models/*.js',
-                  'src/collections/*.js',
-                  'src/views/*.js',
-                  'src/controllers/*.js',
-                  'src/routers/*.js'],
+                'test/config/*.js',
+                'src/app.js',
+                'src/helpers/*.js',
+                'src/models/*.js',
+                'src/collections/*.js',
+                'src/views/*.js',
+                'src/controllers/*.js',
+                'src/routers/*.js'],
             options: {
 
                 vendor: ['static/assets/js/jquery-2.0.0.min.js',
