@@ -1,5 +1,5 @@
 /*
- * Fetch tags by passing a studentId, courseId and exerciseId as options for the collection:
+ * Fetch tags by passing either tagNameId or studentId, courseId and exerciseId as options for the collection:
  *
  * var tags = new codebrowser.collection.TagCollection(null, { studentId: 1, courseId: 2, exerciseId: 3 });
  */
@@ -10,9 +10,9 @@ codebrowser.collection.TagCollection = Backbone.Collection.extend({
 
     url: function () {
 
-        /* Fetch all tags */
-        if (!this.studentId && !this.courseId && !this.exerciseId) {
-            return config.api.main.root + 'tags';
+        /* Fetch tags with given name */
+        if (this.tagNameId) {
+            return config.api.main.root + 'tagnames/' + this.tagNameId + '/tags';
         }
 
         /* Fetch tags for given course, student and exercise */
@@ -33,6 +33,7 @@ codebrowser.collection.TagCollection = Backbone.Collection.extend({
     initialize: function (models, options) {
 
         if (options) {
+            this.tagNameId = options.tagNameId;
             this.studentId = options.studentId;
             this.courseId = options.courseId;
             this.exerciseId = options.exerciseId;

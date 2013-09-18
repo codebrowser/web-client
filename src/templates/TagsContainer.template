@@ -8,7 +8,7 @@
 
     </ul>
 
-    <h2>Tags ({{tags.length}})</h2>
+    <h2>Tags — {{tagNameText}} ({{tags.length}})</h2>
 
     <table class='table table-hover'>
 
@@ -28,7 +28,7 @@
 
                     <td class='index'>{{index @index}}</td>
 
-                    <td class='link'><a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}'>{{text}}</a></td>
+                    <td class='link'><a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}'>{{tagName.name}}</a></td>
 
                     <td ><a class='inline' href="./#/courses/{{course.id}}">{{course.name}}</a>/<a class='inline' href="./#/courses/{{course.id}}/exercises/{{exercise.id}}">{{exercise.name}}</a>/<a class='inline' href="./#/students/{{student.id}}">{{student.name}}</a></td>  
 

@@ -1,7 +1,7 @@
-codebrowser.view.TagsView = Backbone.View.extend({
+codebrowser.view.TagNamesView = Backbone.View.extend({
 
-    id: 'tags-container',
-    template: Handlebars.templates.TagsContainer,
+    id: 'tagnames-container',
+    template: Handlebars.templates.TagNamesContainer,
 
     /* Render */
 
@@ -10,9 +10,7 @@ codebrowser.view.TagsView = Backbone.View.extend({
         // View attributes
         var attributes = {
 
-            tagNameText: this.tagName.get('name'),
-            tags: this.collection.toJSON()
-
+            tagNames: this.collection.toJSON()
         }
 
         // Template
