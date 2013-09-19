@@ -144,10 +144,12 @@ module.exports = function (grunt) {
 
             },
             options: {
+
                 force: true,
                 jshintrc: 'jshint.json',
                 reporter: 'jslint',
                 reporterOutput: 'test/jslint-report.xml'
+
             }
         },
 
