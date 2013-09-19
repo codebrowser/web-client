@@ -164,7 +164,6 @@ module.exports = function (grunt) {
                 'src/views/*.js',
                 'src/controllers/*.js',
                 'src/routers/*.js'],
-
             options: {
 
                 vendor: ['static/assets/js/jquery-2.0.0.min.js',
