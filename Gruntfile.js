@@ -45,6 +45,7 @@ module.exports = function (grunt) {
                         var filename = file.split('.')[0];
 
                         return filename;
+
                     }
                 }
             }
