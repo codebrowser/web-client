@@ -215,7 +215,6 @@ module.exports = function (grunt) {
     });
 
     /* Load tasks */
-
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-contrib-concat');
@@ -226,7 +225,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-casperjs');
 
     /* Register tasks */
-
     grunt.registerTask('test', ['jshint', 'jasmine']);
     grunt.registerTask('integration-test', ['connect', 'casperjs']);
     grunt.registerTask('build', ['jshint','handlebars', 'concat', 'uglify']);
