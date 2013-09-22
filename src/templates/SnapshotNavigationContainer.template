@@ -8,6 +8,14 @@
 
     </div>
 
+    <div id="visualization-settings" class="span6">
+
+        <button id="toggleTimeline" class="btn pull-left">
+            <i class="icon-time"></i>
+        </button>
+
+    </div>
+
     <div class='span4 pull-right'>
 
         <div class='row'>

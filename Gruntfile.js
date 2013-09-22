@@ -149,7 +149,7 @@ module.exports = function (grunt) {
                 force: true,
                 jshintrc: 'jshint.json',
                 reporter: 'jslint',
-                reporterOutput: 'test/jslint-report.xml'
+                reporterOutput: 'test_out/jslint-report.xml'
 
             }
         },
@@ -187,10 +187,14 @@ module.exports = function (grunt) {
                     report: {
                         type: 'cobertura',
                         options: {
-                            dir: 'test/cobertura/'
+                            dir: 'test_out/cobertura/'
                         }
                     }
 
+                },
+
+                junit: {
+                    path: 'test_out/junit/'
                 }
             }
         },

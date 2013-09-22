@@ -296,46 +296,6 @@ ul.selection a:hover {
 
 }
 
-/* Snapshots visualization settings */
-#visualization-settings-container {
-
-    margin: 0;
-}
-
-#visualization-settings-container .well {
-
-    width: 380px;
-    padding: 0 0 10px 0 !important;
-    margin: 0 auto 10px auto !important;
-
-}
-#visualization-settings-container .well h6 {
-
-    margin-top: 3px;
-    margin-bottom: 3px;
-
-}
-#visualization-settings-container .well #buttonWrapper {
-
-    margin: auto;
-    width: 335px;
-
-}
-#visualization-settings-container .well button {
-
-    margin-right: 10px;
-
-}
-#visualization-settings-container .well button:nth-child(3) {
-
-    margin-right: 0;
-
-}
-#visualization-settings-container #toggleVisualizations {
-
-    margin-left: 20px;
-
-}
 
 /* Snapshots timeline */
 
@@ -460,6 +420,13 @@ ul.selection a:hover {
 #snapshot-navigation-container .text-center {
 
     line-height: 30px;
+
+}
+
+
+#snapshot-navigation-container #visualization-settings button {
+
+    margin: 0 5px;
 
 }
 

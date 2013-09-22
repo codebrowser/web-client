@@ -6,11 +6,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         navigationbarContainer: Handlebars.templates.NavigationBarContainer,
         navigationContainer:    Handlebars.templates.SnapshotNavigationContainer,
-        visualizationSettings:  Handlebars.templates.VisualizationSettings
 
     },
 
     events: {
+
         'click #toggleTimeline': 'toggleTimeline',
         'click #toggleBrowser': 'toggleBrowser',
         'click #split':         'split',
@@ -41,10 +41,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Navigation bar
         this.navigationbarContainer = $('<div>', { id: 'navigation-bar-container' });
         this.$el.append(this.navigationbarContainer);
-
-        // Visualization settings
-        this.visualizationSettingsContainer = $('<div>', { id: 'visualization-settings-container'});
-        this.$el.append(this.visualizationSettingsContainer);
 
         // Timeline
         this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
@@ -99,20 +95,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     /* Render */
 
     render: function () {
+
         // Index of the current model
         var index = this.collection.indexOf(this.model);
 
         this.renderNavigationBar(index);
         this.renderNavigation(index);
-        this.renderVisualizationSettings();
+
     },
-    renderVisualizationSettings: function() {
-        var templateOutput = $(this.template.visualizationSettings());
-        if (this.showTimeline) {
-            $('#toggleTimeline', templateOutput).addClass('active');
-        }
-        this.visualizationSettingsContainer.html(templateOutput);
-    },
+
     renderNavigation: function(index) {
 
         // View attributes
@@ -156,10 +147,17 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#last', navigationContainerOutput).attr('disabled', true);
         }
 
+        // Visualization toggle buttons
+        if (this.showTimeline) {
+            $('#toggleTimeline', navigationContainerOutput).addClass('active');
+        }
+
         // Update navigation container
         this.navigationContainer.html(navigationContainerOutput);
     },
+
     renderNavigationBar: function(index) {
+
         // Template for navigation bar container
         var navigationbarContainerOutput = $(this.template.navigationbarContainer(_.extend(
             this.model.toJSON(),
@@ -172,6 +170,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Update navigation bar container
         this.navigationbarContainer.html(navigationbarContainerOutput);
+
     },
 
     /* Update */
@@ -284,9 +283,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     },
 
     toggleTimeline: function (event) {
+
         this.showTimeline = !this.showTimeline;
         $('#toggleTimeline').toggleClass('active');
         $('#snapshots-timeline-container').slideToggle();
+
     },
 
     split: function () {
