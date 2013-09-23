@@ -282,7 +282,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.editorView.didResize();
     },
 
-    toggleTimeline: function (event) {
+    toggleTimeline: function () {
 
         this.showTimeline = !this.showTimeline;
         $('#toggleTimeline').toggleClass('active');
