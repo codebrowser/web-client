@@ -10,9 +10,7 @@
 
 .grunt/
 _SpecRunner.html
-test/coverage/
-test/cobertura/
-test/jslint-report.xml
+test_out/
 nbproject/
 node_modules/
 .idea/

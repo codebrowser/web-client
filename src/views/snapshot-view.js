@@ -5,7 +5,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     template: {
 
         navigationbarContainer: Handlebars.templates.NavigationBarContainer,
-        navigationContainer:    Handlebars.templates.SnapshotNavigationContainer,
+        navigationContainer:    Handlebars.templates.SnapshotNavigationContainer
 
     },
 
@@ -34,6 +34,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     /* Initialise */
 
     initialize: function () {
+
+        if (localStorage.getItem('showTimeline') === null) {
+            localStorage.setItem('showTimeline', true);
+        }
+        this.showTimeline = localStorage.getItem('showTimeline') === 'true';
 
         // Hide view until needed
         this.$el.hide();
@@ -148,8 +153,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Visualization toggle buttons
-        if (this.showTimeline) {
+        if (this.showTimeline === true) {
             $('#toggleTimeline', navigationContainerOutput).addClass('active');
+        }
+        else {
+            $('#snapshots-timeline-container').hide();
         }
 
         // Update navigation container
@@ -286,6 +294,20 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.showTimeline = !this.showTimeline;
         $('#toggleTimeline').toggleClass('active');
+
+        // Store state
+        localStorage.setItem('showTimeline', this.showTimeline);
+
+        // Update Timeline
+        if (this.showTimeline) {
+            this.snapshotsTimelineView.update(
+                this.collection,
+                this.collection.indexOf(this.model),
+                this.file.get('name'),
+                this.courseRoute
+            );
+        }
+
         $('#snapshots-timeline-container').slideToggle();
 
     },
@@ -293,12 +315,14 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     split: function () {
 
         this.editorView.toggleSplit();
+
     },
 
     diff: function () {
 
         this.editorView.toggleDiff();
         this.snapshotBrowserView.update(this.model, this.file, this.courseRoute);
+
     },
 
     /* Actions - Navigation */
@@ -312,27 +336,27 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         if (this.courseRoute) {
             codebrowser.app.snapshot.navigate('#/courses/' +
-                                              this.collection.courseId +
-                                              '/exercises/' +
-                                              this.collection.exerciseId +
-                                              '/students/' +
-                                              this.collection.studentId +
-                                              '/snapshots/' +
-                                              snapshot.id +
-                                              '/files/' +
-                                              file.id, { replace: !options ? options : options.replace });
+                this.collection.courseId +
+                '/exercises/' +
+                this.collection.exerciseId +
+                '/students/' +
+                this.collection.studentId +
+                '/snapshots/' +
+                snapshot.id +
+                '/files/' +
+                file.id, { replace: !options ? options : options.replace });
         } else {
 
             codebrowser.app.snapshot.navigate('#/students/' +
-                                              this.collection.studentId +
-                                              '/courses/' +
-                                              this.collection.courseId +
-                                              '/exercises/' +
-                                              this.collection.exerciseId +
-                                              '/snapshots/' +
-                                              snapshot.id +
-                                              '/files/' +
-                                              file.id, { replace: !options ? options : options.replace });
+                this.collection.studentId +
+                '/courses/' +
+                this.collection.courseId +
+                '/exercises/' +
+                this.collection.exerciseId +
+                '/snapshots/' +
+                snapshot.id +
+                '/files/' +
+                file.id, { replace: !options ? options : options.replace });
         }
     },
 
