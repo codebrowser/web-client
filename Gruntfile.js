@@ -141,9 +141,10 @@ module.exports = function (grunt) {
                 options: {
 
                     jshintrc: 'test/casperjs/jshint.json'
-                }
 
+                }
             },
+
             options: {
 
                 force: true,
@@ -213,7 +214,10 @@ module.exports = function (grunt) {
 
         casperjs: {
 
-            files: ['test/casperjs/*.js']
+            files: ['test/casperjs/*.js'],
+            options: {
+                xunit: 'test_out/casperjs_report.xml'
+            }
 
         }
     });
