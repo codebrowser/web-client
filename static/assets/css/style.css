@@ -410,6 +410,10 @@ ul.selection a:hover {
 
 }
 
+#snapshots-timeline-container .not-compiles {
+    fill: lightgray;
+}
+
 #snapshots-timeline-container .area.pointer {
 
     cursor: move;

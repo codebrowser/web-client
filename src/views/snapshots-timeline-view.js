@@ -275,7 +275,13 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         // Snapshot element
         var snapshotElement = this.paper.circle(x, y, radius);
-        $(snapshotElement.node).attr('class', 'snapshot');
+
+        if(snapshot.attributes.compiles) {
+            $(snapshotElement.node).attr('class', 'snapshot');    
+        } 
+        else {
+            $(snapshotElement.node).attr('class', 'snapshot not-compiles');
+        }
 
         // Render weight for the snapshot
         this.renderSnapshotWeight(index, x, y);
@@ -475,7 +481,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var attributes = {
 
             first: this.collection.first().toJSON(),
-            last: this.collection.last().toJSON()
+            last: this.collection.last().toJSON(),
 
         }
 

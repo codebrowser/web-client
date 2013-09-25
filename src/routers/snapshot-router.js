@@ -133,7 +133,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 return;
             }
-
             self.snapshotView.update(snapshot, fileId);
         });
 
@@ -166,7 +165,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             expires: config.cache.expires,
 
             success: function () {
-
                 fetchSynced();
             },
 
