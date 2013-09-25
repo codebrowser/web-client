@@ -110,7 +110,7 @@ module.exports = function (grunt) {
                 src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js'],
                 options: {
 
-                    jshintrc: 'jshint.json'
+                    reporterOutput: 'test_out/jshint/jslint_src-report.xml'
 
                 }
             },
@@ -120,7 +120,7 @@ module.exports = function (grunt) {
                 src: 'test/config/config.js',
                 options: {
 
-                    jshintrc: 'jshint.json'
+                    reporterOutput: 'test_out/jshint/jslint_test-report.xml'
 
                 }
             },
@@ -130,8 +130,8 @@ module.exports = function (grunt) {
                 src: 'test/spec/**/*.js',
                 options: {
 
-                    jshintrc: 'test/spec/jshint.json'
-
+                    jshintrc: 'test/spec/jshint.json',
+                    reporterOutput: 'test_out/jshint/jslint_spec-report.xml'
                 }
             },
 
@@ -140,19 +140,22 @@ module.exports = function (grunt) {
                 src: 'test/casperjs/*.js',
                 options: {
 
-                    jshintrc: 'test/casperjs/jshint.json'
+                    jshintrc: 'test/casperjs/jshint.json',
+                    reporterOutput: 'test_out/jshint/jslint_casperjs-report.xml'
 
                 }
             },
 
+
             options: {
 
                 force: true,
-                jshintrc: 'jshint.json',
                 reporter: 'jslint',
-                reporterOutput: 'test_out/jslint-report.xml'
+                jshintrc: 'jshint.json'
 
             }
+
+
         },
 
         jasmine: {
