@@ -12,7 +12,7 @@
 
                data-original-title='
 
-                    <time>{{date previous.snapshot.snapshotTime}} –</time>
+                    <time>{{date previous.snapshot.snapshotTime}}</time>
                     <time>{{date snapshot.snapshotTime}}</time>
 
                '

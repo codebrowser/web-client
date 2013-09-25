@@ -20,7 +20,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
                '/files';
     },
 
-    getContent: function () {
+    getContent: function () {
 
         var ignoreEmptyLines = localStorage.getItem(config.storage.setting.editor.ignoreEmptyLines);
         var content = this.content;
@@ -59,7 +59,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
     fetchContent: function (callback) {
 
         // Return content
-        if (this.content.length !== 0) {
+        if (this.content.length !== 0) {
 
             callback(this.getContent(), null);
 

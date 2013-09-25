@@ -170,7 +170,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var viewWidth = $(this.paper.canvas).width();
 
         // Can't move dx to left
-        if ((viewX + dx) < 0 && dx < 0) {
+        if ((viewX + dx) < 0 && dx < 0) {
 
             // Move by remainder, but don't go under 0
             this.setViewBox(Math.max(0, 0 - viewX));
@@ -589,7 +589,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.stopScroll();
     },
 
-    dragOver: function (element) {
+    dragOver: function (element) {
 
         // Snapshot element
         if (element.data('snapshot')) {

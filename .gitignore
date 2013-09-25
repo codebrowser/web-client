@@ -15,3 +15,4 @@ nbproject/
 node_modules/
 .idea/
 static/assets/js/codebrowser*.js
+test/coverage/coverage.json

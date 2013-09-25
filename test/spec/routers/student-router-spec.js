@@ -17,6 +17,19 @@ describe('Student router', function () {
         expect(codebrowser.router.StudentRouter.prototype.exerciseStudents).toHaveBeenCalled();
     });
 
+    it('calls courseStudents function with correct URL', function () {
+
+        spyOn(codebrowser.router.StudentRouter.prototype, 'courseStudents');
+
+        var router = new codebrowser.router.StudentRouter();
+
+        Backbone.history.start();
+        router.navigate('#/courses/1/students/', true);
+
+        expect(codebrowser.router.StudentRouter.prototype.courseStudents).toHaveBeenCalled();
+    });
+
+
     it('calls student function with correct URL', function () {
 
         spyOn(codebrowser.router.StudentRouter.prototype, 'students');

@@ -1,4 +1,4 @@
-casper.test.begin('Students view', 67, function suite(test) {
+casper.test.begin('Students view', 73, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
@@ -208,6 +208,27 @@ casper.test.begin('Students view', 67, function suite(test) {
                                                      'has "UseanKaannoksenSanakirja" with a correct link to snapshots');
             test.assertTruthy(this.getHTML().indexOf('<a href="./#/students/50489/courses/49219/exercises/50244/snapshots">Viikko9_133.Numerotiedustelu') !== -1,
                                                      'has "Numerotiedustelu" with a correct link to snapshots');
+                                                     
+            casper.back();
+            casper.back();
+        });
+    });
+
+    casper.then(function() {
+		
+        this.echo('\nsearching students with string "1004"\n------------');
+
+        this.waitForSelector('#students-container', function () {
+
+            test.assertTruthy(this.getCurrentUrl().indexOf('/#/students') !== -1, 'has correct URL');
+            test.assertElementCount('tbody tr', 101, 'has exactly 101 students listed');
+            test.assertSelectorHasText('tbody tr td a', 'student_1004', 'has name in seconde cell of first row in students table');
+            
+            this.sendKeys('#students-container input', '1004');
+            
+            test.assertVisible('tbody tr:first-child', 'has first row visible');
+            test.assertNotVisible('tbody tr:nth-child(2)', 'has second row in-visible');
+            test.assertNotVisible('tbody tr:last-child', 'has last row in-visible');
         });
     });
 

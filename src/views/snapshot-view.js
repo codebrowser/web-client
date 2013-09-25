@@ -271,7 +271,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Enable browser
-        if (this.browser) {
+        if (this.browser) {
 
             // Move editor view
             this.editorView.$el.css('margin-left', this.snapshotBrowserView.$el.width() + 30);

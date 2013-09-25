@@ -41,17 +41,30 @@ describe('Exercise router', function () {
         expect(codebrowser.router.ExerciseRouter.prototype.courseExercises).toHaveBeenCalled();
     });
 
-    it('navigates to course exercises with correct URL', function () {
+    it('navigates to student exercises with correct IDs', function () {
 
-        spyOn(codebrowser.router.ExerciseRouter.prototype, 'navigateToCourseExercises');
+        spyOn(codebrowser.router.ExerciseRouter.prototype, 'navigateToStudentExercises');
 
         var router = new codebrowser.router.ExerciseRouter();
 
         Backbone.history.start();
-        router.navigate('#/courses/1', true);
+        router.navigate('#/courses/1/students/372', true);
 
-        expect(codebrowser.router.ExerciseRouter.prototype.navigateToCourseExercises).toHaveBeenCalled();
+        expect(codebrowser.router.ExerciseRouter.prototype.navigateToStudentExercises).toHaveBeenCalled();
     });
+
+    it('calls studentExercises function with correct URL', function () {
+
+        spyOn(codebrowser.router.ExerciseRouter.prototype, 'studentExercises');
+
+        var router = new codebrowser.router.ExerciseRouter();
+
+        Backbone.history.start();
+        router.navigate('#/courses/1/students/372/exercises/', true);
+
+        expect(codebrowser.router.ExerciseRouter.prototype.studentExercises).toHaveBeenCalled();
+    });
+
 
     it('catches an non-existent URL', function () {
 

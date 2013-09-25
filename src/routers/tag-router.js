@@ -4,7 +4,7 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
 
         'tagnames(/)':                     'tagnames',
         'tagnames/:tagNameId(/)':          'navigation',
-        'tagnames/:tagNameId/tags(/)':     'tags',
+        'tagnames/:tagNameId/tags(/)':     'tags'
 
     },
 

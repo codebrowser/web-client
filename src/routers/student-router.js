@@ -4,7 +4,8 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
         'students(/)':                                                    'students',
         'courses/:courseId/exercises/:exerciseId(/)':                     'navigation',
-        'courses/:courseId/exercises/:exerciseId/students(/)':            'exerciseStudents'
+        'courses/:courseId/exercises/:exerciseId/students(/)':            'exerciseStudents',
+        'courses/:courseId/students(/)':                                  'courseStudents'
 
     },
 
@@ -39,6 +40,11 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     },
 
+    courseStudents: function (courseId) {
+
+        this.students({ courseId: courseId });
+    },
+
     students: function (options) {
 
         var self = this;
@@ -53,26 +59,33 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
             var courseFetched = _.after(1, function () {
 
-                var exercise = codebrowser.model.Exercise.findOrCreate({ id: options.exerciseId });
+                if(options.exerciseId) {
 
-                // Fetch exercise
-                exercise.fetch({
+                    var exercise = codebrowser.model.Exercise.findOrCreate({ id: options.exerciseId });
 
-                    cache: true,
-                    expires: config.cache.expires,
+                    // Fetch exercise
+                    exercise.fetch({
 
-                    success: function() {
+                        cache: true,
+                        expires: config.cache.expires,
 
-                        self.studentView.exercise = exercise;
-                        fetchSynced();
-                    },
-                    // Exercise fetch failed
-                    error: function() {
+                        success: function() {
 
-                        self.notFound();
-                    }
+                            self.studentView.exercise = exercise;
+                            fetchSynced();
+                        },
+                        // Exercise fetch failed
+                        error: function() {
 
-                });
+                            self.notFound();
+                        }
+
+                    });
+
+                } else {
+                    
+                    fetchSynced();
+                }
             });
 
             var course = codebrowser.model.Course.findOrCreate({ id: options.courseId });

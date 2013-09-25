@@ -882,3 +882,12 @@ ul.selection a:hover {
     margin: 4px 0;
 
 }
+
+
+/* Table Search */
+
+.search-highlight {
+
+    background-color: yellow;
+	
+}

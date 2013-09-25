@@ -2,8 +2,9 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     routes: {
 
-        'courses/:courseId(/)':                               'navigateToCourseExercises',
         'courses/:courseId/exercises(/)':                     'courseExercises',
+        'courses/:courseId/students/:studentId(/)':           'navigateToStudentExercises',
+        'courses/:courseId/students/:studentId/exercises(/)': 'studentExercises',
         'students/:studentId/courses/:courseId(/)':           'navigation',
         'students/:studentId/courses/:courseId/exercises(/)': 'exercises'
 
@@ -23,7 +24,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
         var errorView = new codebrowser.view.NotFoundErrorView();
         codebrowser.controller.ViewController.push(errorView, true);
     },
-
+    /**
     navigateToCourseExercises: function (courseId) {
 
         codebrowser.app.exercise.navigate('#/courses/' +
@@ -31,7 +32,7 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
                                           '/exercises', { replace: true });
 
     },
-
+    **/
     navigation: function (studentId, courseId) {
 
         codebrowser.app.exercise.navigate('#/students/' +
@@ -43,10 +44,26 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
     courseExercises: function (courseId) {
 
-        this.exercises(null, courseId);
+        this.exercises(null, courseId, null);
     },
 
-    exercises: function (studentId, courseId) {
+    navigateToStudentExercises: function (courseId, studentId) {
+
+        codebrowser.app.exercise.navigate('#/courses/' +
+                                          courseId +
+                                          '/students/' +
+                                          studentId +
+                                          '/exercises', { replace: true });
+    },
+
+    studentExercises: function (courseId, studentId) {
+
+        //this.exercises({ studentId: studentId, courseId: courseId, viewPath: 'studentExercises' });
+        this.exercises(studentId, courseId, 'studentExercises');
+
+    },
+
+    exercises: function (studentId, courseId, viewPath) {
 
         var self = this;
 
@@ -55,6 +72,10 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
             self.exerciseView.render();
             codebrowser.controller.ViewController.push(self.exerciseView);
         });
+
+        if (viewPath) {
+            self.exerciseView.viewPath = viewPath;
+        }
 
         if (studentId) {
 

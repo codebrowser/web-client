@@ -1,4 +1,4 @@
-casper.test.begin('Courses view', 9, function suite(test) {
+casper.test.begin('Courses view', 13, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
@@ -26,6 +26,20 @@ casper.test.begin('Courses view', 9, function suite(test) {
             test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/49219/exercises">mooc-ohja') !== -1,
                                                      'has "mooc-ohja" with a correct link to exercise list');
         });
+    });
+    
+    casper.then(function() {
+
+        this.echo('\nsearching courses with string "-oh"\n------------');
+
+        test.assertSelectorHasText('tbody tr td a', 'k2013-ohpe', 'has course name in second cell of first row in courses table');
+
+        this.sendKeys('#courses-container input', '-oh');
+
+        test.assertVisible('tbody tr:first-child', 'has "k2013-ohpe" row visible');
+        test.assertNotVisible('tbody tr:nth-child(2)', 'has "ohpe" row in-visible');
+        test.assertVisible('tbody tr:last-child', 'has "mooc-ohja" row visible');
+
     });
 
     casper.run(function() {

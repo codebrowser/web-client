@@ -13,8 +13,8 @@ codebrowser.view.ExercisesView = Backbone.View.extend({
             studentId: this.collection.studentId,
             courseId: this.collection.courseId,
             course: this.course.toJSON(),
-            exercises: this.collection.toJSON()
-
+            exercises: this.collection.toJSON(),
+            viewPath: this.viewPath
         }
 
         if (this.student) {

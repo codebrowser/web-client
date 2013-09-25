@@ -12,7 +12,7 @@
 
             {{#unless snapshot}}
 
-                <li>{{tagName.name}} {{snapshot.id}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+                <li>{{tagName.name}} {{snapshot.id}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>-</button></li>
 
             {{/unless}}
 
