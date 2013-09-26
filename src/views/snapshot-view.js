@@ -156,9 +156,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         if (this.showTimeline === true) {
             $('#toggleTimeline', navigationContainerOutput).addClass('active');
         }
-        else {
-            $('#snapshots-timeline-container').hide();
-        }
 
         // Update navigation container
         this.navigationContainer.html(navigationContainerOutput);
@@ -298,6 +295,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Store state
         localStorage.setItem('showTimeline', this.showTimeline);
 
+        $('#snapshots-timeline-container').slideToggle();
+
         // Update Timeline
         if (this.showTimeline) {
             this.snapshotsTimelineView.update(
@@ -307,8 +306,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                 this.courseRoute
             );
         }
-
-        $('#snapshots-timeline-container').slideToggle();
 
     },
 
