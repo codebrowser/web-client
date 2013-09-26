@@ -10,7 +10,39 @@
 
         {{#tags}}
 
-            <li>{{tagName.name}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+            {{#unless snapshot}}
+
+                <li>{{tagName.name}} {{snapshot.id}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+
+            {{/unless}}
+
+        {{/tags}}
+
+    </ul>
+
+{{/if}}
+
+{{#if showSnapshotTags}}
+
+    <header>
+
+        <h1><i class='icon-tags icon-gray'></i> Tags (Snapshot)</h1>
+
+    </header>
+
+    <ul>
+
+        {{#tags}}
+
+            {{#if snapshot}}
+
+                {{#if visible}}
+
+                    <li>{{tagName.name}}<button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+
+                {{/if}}
+
+            {{/if}}
 
         {{/tags}}
 
@@ -23,7 +55,10 @@
     <form>
 
         <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>
-        <button type='submit' data-action='create' class='btn'>+</button>
+
+        <button title='Add new tag to this answer' type='submit' data-action='create-tag' class='btn'><i class='icon-smallmargin icon-answer icon-gray'></i></button>
+
+        <button title='Add new tag to this snapshot' type='submit' data-action='create-snapshot-tag' class='btn'><i class='icon-smallmargin icon-snapshot icon-gray'></i></button>
 
     </form>
 

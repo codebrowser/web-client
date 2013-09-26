@@ -17,14 +17,19 @@ codebrowser.model.Tag = Backbone.RelationalModel.extend({
             throw new Error('Attributes student.id, course.id and exercise.id are required to fetch a tag.');
         }
 
-        return config.api.main.root +
+        var path = config.api.main.root +
                'students/' +
                this.attributes.student.id +
                '/courses/' +
                this.attributes.course.id +
                '/exercises/' +
-               this.attributes.exercise.id +
-               '/tags';
+               this.attributes.exercise.id;
+
+        if (this.attributes.snapshot && this.attributes.snapshot.id) {
+            path += '/snapshots/' + this.attributes.snapshot.id;
+        }
+
+        return path + '/tags';
     },
 
     //initialize: function (attributes, options) {

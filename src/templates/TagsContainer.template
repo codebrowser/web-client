@@ -15,8 +15,8 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Tag</th>
-				<th>Course / Exercise / Student</th>
+				<th>Tagged answer or snapshot</th>
+                <th>Student</th>
             </tr>
         </thead>
 
@@ -28,9 +28,17 @@
 
                     <td class='index'>{{index @index}}</td>
 
-                    <td class='link'><a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}'>{{tagName.name}}</a></td>
+                    {{#if snapshot}}
 
-                    <td ><a class='inline' href="./#/courses/{{course.id}}">{{course.name}}</a>/<a class='inline' href="./#/courses/{{course.id}}/exercises/{{exercise.id}}">{{exercise.name}}</a>/<a class='inline' href="./#/students/{{student.id}}">{{student.name}}</a></td>  
+                        <td class='link'><a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}/snapshots/{{snapshot.id}}'><i class='icon-snapshot icon-gray icon-intext'/> {{course.name}} / {{exercise.name}} (Snapshot)</a></td>
+
+                    {{else}}
+
+                        <td class='link'><a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}'><i class='icon-answer icon-gray icon-intext'/> {{course.name}} / {{exercise.name}}</a></td>
+
+                    {{/if}}
+
+                    <td class='link'><a href="./#/students/{{student.id}}">{{student.name}}</a></td>
 
                 </tr>
 

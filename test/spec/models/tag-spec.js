@@ -8,9 +8,16 @@ describe('Tag', function () {
         tag = codebrowser.model.Tag.findOrCreate({ id: 4, student: {id:1}, course: {id:2}, exercise: {id:3} });
     });
 
-    it('should have correct URL root', function () {
+    it('should have correct URL root when only student, course and exercise ids are given', function () {
 
         expect(tag.urlRoot()).toBe(config.api.main.root + 'students/1/courses/2/exercises/3/tags');
+    });
+
+    it('should have correct URL root when also snapshot id is given', function () {
+        var attribs = { id: 4, student: {id:1}, course: {id:2}, exercise: {id:3}, snapshot: {id:4} };
+        tag = codebrowser.model.Tag.findOrCreate(attribs);
+
+        expect(tag.urlRoot()).toBe(config.api.main.root + 'students/1/courses/2/exercises/3/snapshots/4/tags');
     });
 
     it('fetch should throw error if no studentId is passed', function () {
