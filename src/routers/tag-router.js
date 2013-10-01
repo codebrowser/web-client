@@ -28,27 +28,25 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
 
         var self = this;
 
-        var tagNameCollection = new codebrowser.collection.TagNameCollection();
+        var snapshotTagNames = new codebrowser.collection.TagNameCollection(null, { onlySnapshotTags : true });
 
-        this.tagNamesView.collection = tagNameCollection;
+        var exerciseAnswerTagNames = new codebrowser.collection.TagNameCollection(null, { onlyExerciseAnswerTags : true });
 
-        // Fetch tag name collection
-        tagNameCollection.fetch({
+        // Render after both tag name and tags have been fetched
+        var fetchSynced = _.after(2, function () {
 
-            cache: false,
-            expires: 0,
+            self.tagNamesView.snapshotTagNames = snapshotTagNames;
+            self.tagNamesView.exerciseAnswerTagNames = exerciseAnswerTagNames;
 
-            success: function () {
-                self.tagNamesView.render();
-                codebrowser.controller.ViewController.push(self.tagNamesView);
-            },
-
-            // Tag names fetch failed
-            error: function () {
-
-                self.notFound();
-            }
+            self.tagNamesView.render();
+            codebrowser.controller.ViewController.push(self.tagNamesView);
         });
+
+        // Fetch snapshot tag names
+        this._fetchModel(snapshotTagNames, fetchSynced);
+
+        // Fetch tag names for normal tags
+        this._fetchModel(exerciseAnswerTagNames, fetchSynced);
     },
 
     navigation: function (tagNameId) {
@@ -74,29 +72,24 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
             codebrowser.controller.ViewController.push(self.tagsView);
         });
 
-         // Fetch tag name
-        tagName.fetch({
+        // Fetch tag name
+        this._fetchModel(tagName, fetchSynced);
+
+        // Fetch tags
+        this._fetchModel(tagCollection, fetchSynced);
+    },
+
+    _fetchModel: function (model, onSuccess) {
+
+        var self = this;
+
+        model.fetch({
 
             cache: false,
             expires: 0,
 
             success: function () {
-                fetchSynced();
-            },
-
-            error: function () {
-                self.notFound();
-            }
-        });
-
-         // Fetch tags
-        tagCollection.fetch({
-
-            cache: false,
-            expires: 0,
-
-            success: function () {
-                fetchSynced();
+                onSuccess();
             },
 
             error: function () {

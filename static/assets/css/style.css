@@ -896,3 +896,25 @@ ul.selection a:hover {
     background-color: yellow;
 	
 }
+
+table.double-list {
+
+    width: 100%;
+
+}
+
+.double-list-left {
+
+    width: 50%;
+    vertical-align: top;
+    padding-right: 25px;
+
+}
+
+.double-list-right {
+
+    width: 50%;
+    vertical-align: top;
+    padding-left: 25px;
+
+}

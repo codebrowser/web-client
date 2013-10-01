@@ -10,7 +10,9 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         // View attributes
         var attributes = {
 
-            tagNames: this.collection.toJSON()
+            snapshotTagNames: this.snapshotTagNames.toJSON(),
+            exerciseAnswerTagNames: this.exerciseAnswerTagNames.toJSON()
+
         }
 
         // Template

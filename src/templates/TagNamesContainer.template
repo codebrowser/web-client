@@ -8,35 +8,83 @@
 
     </ul>
 
-    <h2>Tags ({{tagNames.length}})</h2>
+    <table class='double-list'>
 
-    <table class='table table-hover'>
+        <tr>
 
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Tag</th>
-				<th>Count</th>
-            </tr>
-        </thead>
+            <td class='double-list-left'>
 
-        <tbody>
+                <h2>Tags ({{exerciseAnswerTagNames.length}})</h2>
 
-            {{#tagNames}}
+                <table class='table table-hover'>
 
-                <tr>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tag</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
 
-                    <td class='index'>{{index @index}}</td>
+                    <tbody>
 
-                    <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                        {{#exerciseAnswerTagNames}}
 
-                    <td>({{tags.length}})</td>
+                            <tr>
 
-                </tr>
+                                <td class='index'>{{index @index}}</td>
 
-            {{/tagNames}}
+                                <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
 
-        </tbody>
+                                <td>{{tags.length}}</td>
+
+                            </tr>
+
+                        {{/exerciseAnswerTagNames}}
+
+                    </tbody>
+
+                </table>
+
+            </td>
+
+            <td class='double-list-right'>
+
+                <h2>Snapshot tags ({{snapshotTagNames.length}})</h2>
+
+                <table class='table table-hover'>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tag</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {{#snapshotTagNames}}
+
+                            <tr>
+
+                                <td class='index'>{{index @index}}</td>
+
+                                <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+
+                                <td>{{tags.length}}</td>
+
+                            </tr>
+
+                        {{/snapshotTagNames}}
+
+                    </tbody>
+
+                </table>
+
+            </td>
+
+        </tr>
 
     </table>
 
