@@ -15,7 +15,15 @@
         this.clickLabel('mooc-en', 'a');
         this.clickLabel('View exercises of the course', 'a');
 
-        this.echo('\nmooc-en\'s exercise list\n--------------------------');
+        // Wait for the new page to load given selector
+        this.waitForSelector('#select-container', function() {});
+    });
+
+    casper.then(function() {
+
+        this.clickLabel('View exercises of the course', 'a');
+
+        this.echo('\nk2013-ohpe\'s exercise list\n--------------------------');
 
         this.waitForSelector('#exercises-container', function () {
 
@@ -34,14 +42,23 @@
             test.assertTruthy(this.getHTML().indexOf('<a href="./#/courses/1/exercises/180/students">Viikko5_090.JoukkueetJaPelaajat') !== -1,
                                                      'has JoukkueetJaPelaajat with a correct link to student list');
 
-            // Go one step back in browser's history
+            // Go two steps back in browser's history
+            casper.back();
             casper.back();
         });
     });
 
-    casper.then(function () {
+    casper.then(function() {
 
         this.clickLabel('mooc-ohja', 'a');
+ 
+        // Wait for the new page to load given selector
+        this.waitForSelector('#select-container', function() {});
+    });
+
+    casper.then(function () {
+
+        this.clickLabel('View exercises of the course', 'a');
 
         this.echo('\nmooc-ohja\'s exercise list\n-------------------------');
 
@@ -188,12 +205,19 @@
 
             casper.back();
             casper.back();
+            casper.back();
         });
     });
 
-    casper.then(function () {
+    casper.then(function() {
 
         this.clickLabel('k2013-ohpe', 'a');
+
+        this.waitForSelector('#select-container');
+    });
+    casper.then(function () {
+
+        this.clickLabel('View exercises of the course', 'a');
 
         this.waitForSelector('#exercises-container');
     });

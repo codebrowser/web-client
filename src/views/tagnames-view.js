@@ -3,6 +3,12 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
     id: 'tagnames-container',
     template: Handlebars.templates.TagNamesContainer,
 
+    events: {
+        'click [data-action="search"]': 'filterTagListByName',
+        'keyup [data-id="query-string"]': 'filterTagListByName',
+        'keypress [data-id="query-string"]': 'filterTagListByName'
+    },
+
     /* Render */
 
     render: function () {
@@ -19,5 +25,13 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         var output = this.template(attributes);
 
         this.$el.html(output);
+    },
+
+    filterTagListByName: function () {
+
+        this.filterHelper = codebrowser.helper.ListViewFilter;
+        this.filterHelper.$el = this.$el;
+
+        this.filterHelper.filterList();
     }
 });
