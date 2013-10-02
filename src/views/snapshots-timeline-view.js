@@ -277,9 +277,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var snapshotElement = this.paper.circle(x, y, radius);
 
         if(snapshot.attributes.compiles) {
-            $(snapshotElement.node).attr('class', 'snapshot');    
-        } 
-        else {
+            $(snapshotElement.node).attr('class', 'snapshot');
+        } else {
             $(snapshotElement.node).attr('class', 'snapshot not-compiles');
         }
 

@@ -86,7 +86,12 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
         event.preventDefault();
 
-        var text = $('[data-id="tag"]', this.$el).val().trim();
+        var text;
+        if (snapshotTag) {
+            text = $('[data-id="snapshot-tag"]', this.$el).val().trim();
+        } else {
+            text = $('[data-id="tag"]', this.$el).val().trim();
+        }
 
         if (!text) {
             return;

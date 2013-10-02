@@ -1,65 +1,82 @@
-<header>
+<section>
 
-    <h1><i class='icon-tags icon-gray'></i> Tags</h1>
+    <header>
 
-</header>
+        <h1><i class='icon-tags icon-gray'></i> Tags</h1>
 
-{{#if tags}}
+    </header>
 
-    <ul>
+    {{#if tags}}
 
-        {{#tags}}
+        <ul>
 
-            {{#unless snapshot}}
+            {{#tags}}
 
-                <li>{{tagName.name}} {{snapshot.id}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>-</button></li>
+                {{#unless snapshot}}
 
-            {{/unless}}
+                    <li>{{tagName.name}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
 
-        {{/tags}}
+                {{/unless}}
 
-    </ul>
+            {{/tags}}
 
-{{/if}}
+        </ul>
 
-{{#if showSnapshotTags}}
+    {{/if}}
 
+    <div class='input-append'>
+
+        <form>
+
+            <input type='text' data-id='tag' placeholder='New tag…'>
+
+            <button title='Add new tag to this answer' type='submit' data-action='create-tag' class='btn'>+</button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<section>
     <header>
 
         <h1><i class='icon-tags icon-gray'></i> Tags (Snapshot)</h1>
 
     </header>
 
-    <ul>
+    {{#if tags}}
 
-        {{#tags}}
+        <ul>
 
-            {{#if snapshot}}
+            {{#tags}}
 
-                {{#if visible}}
+                {{#if snapshot}}
 
-                    <li>{{tagName.name}}<button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+                    {{#if visible}}
+
+                        <li>{{tagName.name}}<button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+
+                    {{/if}}
 
                 {{/if}}
 
-            {{/if}}
+            {{/tags}}
 
-        {{/tags}}
+        </ul>
 
-    </ul>
+    {{/if}}
 
-{{/if}}
+    <div class='input-append'>
 
-<div class='input-append'>
+        <form>
 
-    <form>
+            <input type='text' data-id='snapshot-tag' placeholder='New snapshot tag…'>
 
-        <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>
+            <button title='Add new tag to this snapshot' type='submit' data-action='create-snapshot-tag' class='btn'>+</button>
 
-        <button title='Add new tag to this answer' type='submit' data-action='create-tag' class='btn'><i class='icon-smallmargin icon-answer icon-gray'></i></button>
+        </form>
 
-        <button title='Add new tag to this snapshot' type='submit' data-action='create-snapshot-tag' class='btn'><i class='icon-smallmargin icon-snapshot icon-gray'></i></button>
+    </div>
 
-    </form>
-
-</div>
+</section>

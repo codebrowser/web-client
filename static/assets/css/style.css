@@ -76,11 +76,6 @@ a .icon-gray:hover {
     margin-left: 5px;
 }
 
-.icon-smallmargin {
-
-    margin: 0px -5px 0px -5px;
-}
-
 .icon-answer {
 
     background-image: url('../img/answer.png');
@@ -634,7 +629,13 @@ ul.selection a:hover {
 
 #snapshot-tags-container [data-id='tag'] {
 
-    width: 130px;
+    width: 160px;
+
+}
+
+#snapshot-tags-container [data-id='snapshot-tag'] {
+
+    width: 160px;
 
 }
 
