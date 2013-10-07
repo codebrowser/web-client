@@ -420,6 +420,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var self = this;
 
+        this.snapshotElements = [];
+
         this.collection.each(function (snapshot, index) {
 
             var distanceWeight = self.distanceWeight(index, min, max);
