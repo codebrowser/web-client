@@ -240,5 +240,24 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
             });
         });
+    },
+
+    getFiles: function()
+    {
+        var files = [];
+
+        this.each(function (snapshot) {
+
+            var snapshotFiles = snapshot.get('files');
+
+            snapshotFiles.each(function (file) {
+
+                if (files.indexOf(file.getName()) < 0) {
+                    files.push(file.getName());
+                }
+            });
+        });
+
+        return files;
     }
 });

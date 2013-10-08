@@ -10,8 +10,11 @@
 
     <div id="visualization-settings" class="span6">
 
-        <button id="toggleTimeline" class="btn pull-left">
-            <i class="icon-time"></i>
+        <button id="toggleTimeline" class="btn">
+            <i class="icon-time icon-gray"></i>
+        </button>
+        <button id="toggleTree" class="btn">
+            <i class="icon-tree icon-gray"></i>
         </button>
 
     </div>

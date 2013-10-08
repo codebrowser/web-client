@@ -88,6 +88,12 @@ a .icon-gray:hover {
     background-position: center;
 }
 
+.icon-tree {
+
+    background-image: url('../img/tree.png');
+    background-position: center;
+}
+
 /* Responsiveness - Width */
 
 @media screen and (min-width: 1200px) {
@@ -316,11 +322,10 @@ ul.selection a:hover {
 
 /* Snapshots timeline */
 
-#snapshots-timeline-container {
+.visualization-container {
 
     margin: 0 auto 0 auto;
     padding: 15px;
-    height: 108px;
     border: 1px solid #c5d6de;
     border-radius: 4px;
     font-size: 12px;
@@ -329,13 +334,13 @@ ul.selection a:hover {
 
 }
 
-#snapshots-timeline-container .row {
+.visualization-container .row {
 
     margin-top: 10px;
 
 }
 
-#snapshots-timeline-container .center {
+.visualization-container .center {
 
     position: absolute;
     left: 50%;
@@ -345,7 +350,7 @@ ul.selection a:hover {
 
 }
 
-#snapshots-timeline-container text {
+.visualization-container text {
 
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     fill: #6d8089;
@@ -357,7 +362,7 @@ ul.selection a:hover {
 
 }
 
-#snapshots-timeline-container .area {
+.visualization-container .area {
 
     stroke-width: 0;
     fill: #fff;
@@ -365,64 +370,72 @@ ul.selection a:hover {
 
 }
 
-#snapshots-timeline-container .timeline {
+.visualization-container .timeline {
 
     stroke-width: 3px;
     stroke: #c5d6de;
 
 }
 
-#snapshots-timeline-container .duration {
+.visualization-container .timeline-dashed {
+
+    stroke-width: 1px;
+    stroke: #c5d6de;
+    stroke-dasharray: 2,5;
+
+}
+
+.visualization-container .duration {
 
     font-size: 12px !important;
 
 }
 
-#snapshots-timeline-container .snapshot-weight {
+.visualization-container .snapshot-weight {
 
     fill: #536f7c;
     font-weight: 300 !important;
 
 }
 
-#snapshots-timeline-container .snapshot-index {
+.visualization-container .snapshot-index {
 
     fill: #97b2c0;
     font-size: 11px !important;
 
 }
 
-#snapshots-timeline-container .area.snapshot {
+.visualization-container .area.snapshot {
 
     cursor: pointer;
 
 }
 
-#snapshots-timeline-container .snapshot {
+.visualization-container .snapshot {
 
     stroke: #53666f;
     fill: #fff;
 
 }
 
-#snapshots-timeline-container .not-compiles {
+.visualization-container .not-compiles {
     fill: lightgray;
 }
 
-#snapshots-timeline-container .area.pointer {
+.visualization-container .area.pointer {
 
     cursor: move;
 
 }
 
-#snapshots-timeline-container .pointer {
+.visualization-container .pointer {
 
     stroke: #4e585e;
     fill: #4e585e;
 
 }
 
-#snapshots-timeline-container .pointer-line {
+.visualization-container .pointer-line {
 
     stroke-width: 1px;
     stroke: #c5d6de;
@@ -441,13 +454,6 @@ ul.selection a:hover {
 #snapshot-navigation-container .text-center {
 
     line-height: 30px;
-
-}
-
-
-#snapshot-navigation-container #visualization-settings button {
-
-    margin: 0 5px;
 
 }
 
