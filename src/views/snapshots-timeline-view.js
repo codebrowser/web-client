@@ -274,8 +274,16 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         $(snapshotArea.node).attr('class', 'area');
 
         // Snapshot element
-        var snapshotElement = this.paper.circle(x, y, radius);
-
+        // When test data is available, a pie chart is drawn. Otherwise we draw a circle.
+        var snapshotElement;
+        if (snapshot.attributes.percentageOfTestsPassing == null) {
+            snapshotElement = this.paper.circle(x, y, radius);
+        }
+        else {
+            snapshotElement = this.paper.pieChart(x, y, radius, snapshot.attributes.percentageOfTestsPassing);
+        }
+        
+        //If snapshot does not compile, css class is added
         if(snapshot.attributes.compiles) {
             $(snapshotElement.node).attr('class', 'snapshot');
         }

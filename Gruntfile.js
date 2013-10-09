@@ -62,7 +62,8 @@ module.exports = function (grunt) {
                     'src/collections/*.js',
                     'src/views/*.js',
                     'src/controllers/*.js',
-                    'src/routers/*.js'],
+                    'src/routers/*.js',
+                    'src/raphael/*.js'],
                 dest: 'static/assets/js/codebrowser.js',
                 options: {
 
@@ -204,7 +205,8 @@ module.exports = function (grunt) {
                 'src/collections/*.js',
                 'src/views/*.js',
                 'src/controllers/*.js',
-                'src/routers/*.js'],
+                'src/routers/*.js',
+                'src/raphael/*.js'],
             options: {
 
                 vendor: ['static/assets/js/jquery-2.0.0.min.js',

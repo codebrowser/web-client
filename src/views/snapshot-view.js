@@ -12,13 +12,14 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     events: {
 
         'click #toggleTimeline': 'toggleTimeline',
-        'click #toggleBrowser': 'toggleBrowser',
-        'click #split':         'split',
-        'click #diff':          'diff',
-        'click #first':         'first',
-        'click #previous':      'previous',
-        'click #next':          'next',
-        'click #last':          'last'
+        'click #toggleBrowser':  'toggleBrowser',
+        'click #toggleData':     'toggleData',
+        'click #split':          'split',
+        'click #diff':           'diff',
+        'click #first':          'first',
+        'click #previous':       'previous',
+        'click #next':           'next',
+        'click #last':           'last'
 
     },
 
@@ -27,6 +28,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     /* Visualization toggle */
     showTimeline: true,
+
+    /* Data view toggle */
+    showData: false,
 
     /* Browser */
     browser: true,
@@ -40,6 +44,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
         this.showTimeline = localStorage.getItem('showTimeline') === 'true';
 
+        if (localStorage.getItem('showData') === null) {
+            localStorage.setItem('showData', true);
+        }
+        this.showData = localStorage.getItem('showData') === 'true';
+
         // Hide view until needed
         this.$el.hide();
 
@@ -50,6 +59,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Timeline
         this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
         this.$el.append(this.snapshotsTimelineView.el);
+
+        // Snapshot data view
+        this.snapshotsDataView = new codebrowser.view.SnapshotsDataView({ parentView: this });
+        this.$el.append(this.snapshotsDataView.el);
 
         // Navigation
         this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
@@ -157,6 +170,14 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#toggleTimeline', navigationContainerOutput).addClass('active');
         }
 
+        // Data view toggle buttons
+        if (this.showData === true) {
+            $('#toggleData', navigationContainerOutput).addClass('active');
+        }
+        else {
+            $('#snapshots-data-container').hide();
+        }
+
         // Update navigation container
         this.navigationContainer.html(navigationContainerOutput);
     },
@@ -214,6 +235,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         if (this.showTimeline) {
             this.snapshotsTimelineView.update(this.collection, index, filename, this.courseRoute);
         }
+
+        // Update dataview
+        this.snapshotsDataView.update(this.collection, index);
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
@@ -306,6 +330,26 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                 this.courseRoute
             );
         }
+
+    },
+
+    toggleData: function () {
+
+        this.showData = !this.showData;
+        $('#toggleData').toggleClass('active');
+
+        // Store state
+        localStorage.setItem('showData', this.showData);
+
+        // Update Data view
+        if (this.showData) {
+            this.snapshotsDataView.update(
+                this.collection,
+                this.collection.indexOf(this.model)
+            );
+        }
+
+        $('#snapshots-data-container').slideToggle();
 
     },
 

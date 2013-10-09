@@ -58,7 +58,7 @@
 
                     <td>{{exercises.length}}</td>
 
-                    <td>{{amountOfStudents}}</td>
+                    <td>{{#unless ../studentId}}{{amountOfStudents}}{{/unless}}</td>
 
                 </tr>
 

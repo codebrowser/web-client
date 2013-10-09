@@ -1,0 +1,11 @@
+{{#if tests}}
+    {{#each tests}}
+        <div class="tests {{passed}}">
+            <p class="test-name">{{name}}</p>
+            <p class="test-message">{{message}}</p>
+        </div>
+    {{/each}}
+<p>Complete: {{percentageOfTestsPassing}}%</p>
+{{else}}
+    <div><p>No test data.</p></div>
+{{/if}}
