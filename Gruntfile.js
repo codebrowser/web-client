@@ -217,7 +217,7 @@ module.exports = function (grunt) {
 
         casperjs: {
 
-            files: ['test/casperjs/*.js'],
+            files: ['test/casperjs/e2e-tests.js'],
             options: {
                 xunit: 'test_out/casperjs_report.xml'
             }
