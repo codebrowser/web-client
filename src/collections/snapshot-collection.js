@@ -119,6 +119,14 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
 
         var self = this;
 
+        // Called after all snapshots have been analyzed
+        var snapshotsSynced = _.after(this.length, function () {
+
+            self.differencesDone = true;
+
+            callback(self.differences);
+        });
+
         this.each(function (snapshot, index) {
 
             var previousSnapshot = self.at(index - 1);
@@ -135,6 +143,12 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             }
 
             var files = snapshot.get('files');
+
+            // Called after all files in snapshot have been analyzed
+            var filesSynced = _.after(files.length, function () {
+
+                snapshotsSynced();
+            });
 
             // Calculate differences for every file of each snapshot
             files.each(function (file, i) {
@@ -178,7 +192,6 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                     fileSynced: _.after(2, function () {
 
                         var snapshotIndex = context.snapshotIndex;
-                        var fileIndex = context.fileIndex;
 
                         var filename = context.currentFile.get('name');
                         var previousContent = context.previousFile.getContent();
@@ -198,12 +211,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                         self.differences[snapshotIndex][filename] = difference;
 
                         // Diffed last file of last snapshot, return diffs
-                        if (snapshotIndex === self.length - 1 && fileIndex === self.at(snapshotIndex).get('files').length - 1) {
-
-                            self.differencesDone = true;
-
-                            callback(self.differences);
-                        }
+                        filesSynced();
                     })
                 }
 
