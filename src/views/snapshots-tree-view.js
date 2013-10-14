@@ -69,47 +69,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         return (x >= viewX && x <= viewX + viewWidth);
     },
 
-    snapshotWeight: function (index) {
-
-        var difference = this.differences[index];
-
-        var weight = 0.8;
-        var percentage = Math.round((difference.total / difference.lines) * 100);
-
-        if (percentage === 0) {
-            return weight;
-        }
-
-        // Scale between 1 and 2
-        weight = 2 * percentage / 100 + 1;
-
-        // Round to nearest .5
-        weight = Math.round(weight * 2) / 2;
-
-        return Math.min(2, weight);
-    },
-
-    distanceWeight: function (index, min, max) {
-
-        var weight = 0;
-
-        // First snapshot has a static weight
-        if (index === 0) {
-            return 1;
-        }
-
-        // Duration between snapshots
-        var duration = this.collection.getDuration(index, index - 1);
-
-        // Scale between 1 and 6
-        weight = 5 * (duration - min) / (max - min) + 1;
-
-        // Round up to 2 decimals
-        weight = Math.round(weight * 100) / 100;
-
-        return Math.min(6, weight);
-    },
-
     setViewBox: function (x) {
 
         var viewWidth = $(this.paper.canvas).width();
@@ -200,21 +159,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
     /* Render */
 
-    renderDuration: function (previousSnapshot, snapshot, x, y, radius, distance) {
-
-        if (!previousSnapshot) {
-            return;
-        }
-
-        // Duration label
-        var duration = codebrowser.helper.Duration.calculate(snapshot.get('snapshotTime'),
-                                                             previousSnapshot.get('snapshotTime'), true);
-
-        // Duration element
-        var durationElement = this.paper.text(x - radius - distance / 2, y + 30, duration);
-        $(durationElement.node).attr('class', 'duration');
-    },
-
     renderTimeline: function (leftOffset, y, x, dashed) {
 
         // Timeline element
@@ -231,38 +175,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         var snapshotIndex = this.paper.text(x, 5, index + 1);
 
         $(snapshotIndex.node).attr('class', 'snapshot-index');
-    },
-
-    renderSnapshotWeight: function (index, x, y) {
-
-        var difference = this.differences[index];
-        var percentage = (difference.total / difference.lines).toFixed(2);
-
-        // Snapshot has no changes
-        if (percentage === '0.00') {
-            return;
-        }
-
-        if (percentage !== '1.00') {
-            percentage = percentage.slice(1);
-        } else {
-            percentage = percentage.slice(0,1);
-        }
-
-        // Snapshot weight element
-        var snapshotWeightElement = this.paper.text(x, y, percentage);
-
-        // Adjust font size by weight
-        var snapshotWeight = this.snapshotWeight(index);
-        var fontSize = 11;
-
-        if (snapshotWeight > 1) {
-            fontSize *= snapshotWeight;
-        }
-
-        snapshotWeightElement.attr({ 'font-size': fontSize });
-
-        $(snapshotWeightElement.node).attr('class', 'snapshot-weight');
     },
 
     renderBottomContainer: function () {
@@ -294,7 +206,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         snapshotArea.data('file', file);
     },
 
-    renderSnapshotFile: function (snapshot, index, x, y, radius) {
+    renderSnapshotFile: function (snapshot, index, x, y, radius, modified) {
 
         // Render index of the snapshot
         this.renderSnapshotIndex(index, x);
@@ -302,10 +214,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         // Snapshot element
         var snapshotElement = this.paper.circle(x, y, radius);
 
-        $(snapshotElement.node).attr('class', 'snapshot');
-
-        // Render weight for the snapshot
-        this.renderSnapshotWeight(index, x, y);
+        $(snapshotElement.node).attr('class', modified ? 'snapshot-modified' : 'snapshot');
 
         // Snapshot click area
         var snapshotClickArea = this.paper.circle(x, y, radius);
@@ -429,19 +338,13 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
         this.paper.setSize('100%', height)
 
-        var min = this.collection.getMinDuration();
-
-        // 10 minute max
-        var max = Math.min(300000, this.collection.getMaxDuration());
-
         // Clear paper
         this.paper.clear();
 
         // Center point
         var firstLineY = baseHeight / 2 + 3;
-        var lastLineY = firstLineY + lineSpacing * (files.length - 1);
 
-        var leftOffset = 0;
+        var leftOffset = 100;
         var rightOffset = 0;
         var x = 0;
 
@@ -453,15 +356,9 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
         this.collection.each(function (snapshot, index) {
 
-            var distanceWeight = self.distanceWeight(index, min, max);
-            var snapshotWeight = self.snapshotWeight(index);
+            var radius = 15;
 
-            // Weight by duration between snapshots
-            var distance = 45 * distanceWeight;
-
-            // Weight by amount of differences between snapshots
-            var radius = 12 * snapshotWeight;
-
+            var distance = 100;
             x += radius * 2;
 
             if (index === 0) {
@@ -493,10 +390,14 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
                 var fileIdx = files.indexOf(file.getName());
 
-                currentFiles[fileIdx] = true;
+                currentFiles[fileIdx] = file.getName();
 
                 // Render snapshot
-                self.renderSnapshotFile(snapshot, index, x, firstLineY + fileIdx * lineSpacing, radius);
+                var diffs = self.differences[index][file.getName()];
+
+                self.renderSnapshotFile(snapshot, index, x, firstLineY + fileIdx * lineSpacing, radius, diffs.getCount().total() !== 0);
+                self.renderChanges(index, diffs, x-distance-radius, firstLineY +fileIdx * lineSpacing, file);
+
             });
 
             // Current snapshot
@@ -508,9 +409,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
             self.renderFileLines(fileLineStarts, currentFiles, index, files.length, firstLineY, lineSpacing);
 
-            // Render duration between snapshots
-            var previousSnapshot = self.collection.at(index - 1);
-            self.renderDuration(previousSnapshot, snapshot, x, lastLineY, radius, distance);
         });
 
         // Render file lines that have not ended yet
@@ -546,6 +444,43 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
                 fileLineStarts[i] = undefined;
             }
         }
+    },
+
+    renderChanges: function (index, diffs, x, y, file) {
+
+        var total = file.lines();
+        
+        var inserted = Math.round((diffs.getCount().insert / total) * 100);
+        var deleted = Math.round((diffs.getCount()['delete'] / total) * 100);
+        var modified = Math.round((diffs.getCount().replace / total) * 100);
+
+        var totalLength = inserted + deleted + modified;
+        if (totalLength > 100) {
+            inserted = inserted * (100 / totalLength);
+            deleted = deleted * (100 / totalLength);
+            modified = modified * (100 / totalLength);
+        }
+
+        if(inserted && inserted !== 0) {
+            var ins = this.paper.path('M ' + x + ' ' + y + ' L ' + (x+inserted) + ' ' + y);
+            $(ins.node).attr('class', 'timeline-insert');
+            x += inserted;
+            ins.toBack();
+        }
+
+        if (deleted && deleted !== 0) {
+            var del = this.paper.path('M ' + x + ' ' + y + ' L ' + (x+deleted) + ' ' + y);
+            $(del.node).attr('class', 'timeline-delete');
+            x += deleted;
+            del.toBack();
+        }
+
+        if (modified && modified !== 0) {
+            var mod = this.paper.path('M ' + x + ' ' + y + ' L ' + (x+modified) + ' ' + y);
+            $(mod.node).attr('class', 'timeline-modify');
+            mod.toBack();
+        }
+
     },
 
     /* Update */

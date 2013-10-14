@@ -385,6 +385,33 @@ ul.selection a:hover {
 
 }
 
+.visualization-container .timeline-insert {
+
+    stroke-width: 10px;
+    stroke: #65C98B;
+
+}
+
+.visualization-container .timeline-delete {
+
+    stroke-width: 10px;
+    stroke: #F54254;
+
+}
+
+.visualization-container .timeline-modify {
+
+    stroke-width: 10px;
+    stroke: #228BE0;
+
+}
+
+.visualization-container .timeline-insert:hover,
+.visualization-container .timeline-delete:hover,
+.visualization-container .timeline-modify:hover {
+    stroke-width: 15px;
+}
+
 .visualization-container .duration {
 
     font-size: 12px !important;
@@ -420,6 +447,10 @@ ul.selection a:hover {
 
 .visualization-container .not-compiles {
     fill: lightgray;
+}
+
+.visualization-container .snapshot-modified {
+    fill: #D4F4FF;
 }
 
 .visualization-container .area.pointer {
