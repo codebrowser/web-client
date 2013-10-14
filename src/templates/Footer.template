@@ -1,0 +1,22 @@
+<div id='settings-modal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+
+    <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>
+        <h3 id='myModalLabel'>Settings</h3>
+    </div>
+
+    <div class='modal-body inline'>
+        <label for='apiUrl'>Server URL</label>
+        <input id='apiUrl' type='text' value='{{apiUrl}}' />
+    </div>
+
+    <div class='modal-footer'>
+        <button class='btn' data-dismiss='modal' aria-hidden='true'>Close</button>
+        <button class='btn btn-primary' data-action="save">Save</button>
+    </div>
+
+</div>
+
+<i class='icon-wrench icon-gray pull-left' data-toggle='modal' data-target='#settings-modal'></i>
+
+<p>Open source project by the Department of Computer Science, University of Helsinki - <a href='http://github.com/codebrowser/web-client' target='_blank'>View source on GitHub</a></p>

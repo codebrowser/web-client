@@ -28,7 +28,11 @@ var codebrowser = {
             codebrowser.controller.ViewController.push(errorView, true);
         }
 
+        // Initialise index
+        var indexView = new codebrowser.view.IndexView().render();
+
         // Initialise routers
+        codebrowser.app.index = new codebrowser.router.IndexRouter({layout: indexView});
         codebrowser.app.base = new codebrowser.router.BaseRouter();
         codebrowser.app.student = new codebrowser.router.StudentRouter();
         codebrowser.app.course = new codebrowser.router.CourseRouter();
