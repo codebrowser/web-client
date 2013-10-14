@@ -29,7 +29,9 @@
         "Handlebars": true,
         "moment": true,
         "Raphael": true,
-        "Spinner": true
+        "Spinner": true,
+        "Utils": true,
+        "d3": true
 
     }
 }

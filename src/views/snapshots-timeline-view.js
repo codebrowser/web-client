@@ -9,29 +9,26 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     },
 
-    /* Absolute width */
+    isActive: Utils._getLocalStorageValue('showTimeline', true) === 'true',
 
+    /* Absolute width */
     width: 0,
 
     /* X coordinates of snapshot elements */
-
     snapshotPositions: [],
 
     /* Pointer */
-
     pointerSetOffsetX: 0,
 
-    /* Scroll */
-
     scroll: null,
-
-    /* Dragging */
 
     dragging: false,
 
     /* Initialise */
 
     initialize: function (options) {
+
+
 
         this.parentView = options.parentView;
 
@@ -47,6 +44,17 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Bottom container
         this.bottomContainer = $('<div>');
         this.$el.append(this.bottomContainer);
+    },
+
+    toggle: function() {
+
+        this.isActive = !this.isActive;
+
+        // Store state
+        localStorage.setItem('showTimeline', this.isActive);
+
+        this.$el.slideToggle();
+
     },
 
     getViewX: function () {
@@ -281,7 +289,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             snapshotElement = this.paper.circle(x, y, radius);
         }
         else {
-            snapshotElement = this.paper.pieChart(x, y, radius, snapshot.attributes.percentageOfTestsPassing);
+            snapshotElement = this.paper.pieChart(x, y, radius, [snapshot.attributes.percentageOfTestsPassing, 100 - snapshot.attributes.percentageOfTestsPassing]);
         }
 
         //If snapshot does not compile, css class is added
@@ -491,7 +499,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var attributes = {
 
             first: this.collection.first().toJSON(),
-            last: this.collection.last().toJSON(),
+            last: this.collection.last().toJSON()
 
         }
 

@@ -4,6 +4,7 @@
 
 codebrowser.model.File = Backbone.RelationalModel.extend({
 
+    totalLines : null,
     content: '',
 
     urlRoot: function () {
@@ -39,7 +40,15 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
         return content;
     },
 
-    lines: function () {
+    lines: function (amount) {
+
+        if (amount) {
+            this.totalLines = amount;
+        }
+
+        if (this.totalLines) {
+            return this.totalLines;
+        }
 
         return this.getContent().split('\n').length;
     },

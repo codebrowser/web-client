@@ -17,7 +17,12 @@
 
     "globals": {
 
-        "casper": true
+        "casper": true,
+        "config": true,
+        "createFakeServer": true,
+        "Backbone": true,
+        "RegExp": true,
+        "$": true
 
     }
 }

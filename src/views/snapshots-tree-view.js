@@ -10,23 +10,18 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
     },
 
-    /* Absolute width */
+    isActive: Utils._getLocalStorageValue('showTree', false) === 'true',
 
+    /* Absolute width */
     width: 0,
 
     /* X-coordinates of all snapshots */
-
     snapshotPositions: [],
 
     /* Pointer */
-
     pointerSetOffsetX: 0,
 
-    /* Scroll */
-
     scroll: null,
-
-    /* Dragging */
 
     dragging: false,
 
@@ -35,7 +30,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
     filenameContainer: null,
 
     /* Initialise */
-
     initialize: function (options) {
 
         this.parentView = options.parentView;
@@ -65,6 +59,17 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         // Bottom container
         this.bottomContainer = $('<div>');
         this.$el.append(this.bottomContainer);
+    },
+
+    toggle: function() {
+
+        this.isActive = !this.isActive;
+
+        // Store state
+        localStorage.setItem('showTree', this.isActive);
+
+        this.$el.slideToggle();
+
     },
 
     getViewX: function () {
@@ -391,8 +396,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
         this.snapshotPositions = [];
 
-        var fileRadiuses = [];
-
         this.collection.each(function (snapshot, index) {
 
             var snapshotArearadius = 15;
@@ -432,7 +435,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
             }
 
 
-            fileRadiuses[index] = [];
             snapshot.get('files').each(function (file) {
 
                 var fileIdx = files.indexOf(file.getName());
@@ -445,9 +447,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
                 var y = firstLineY + fileIdx * lineSpacing;
                 self.renderSnapshotFile(snapshot, index, file, x, y, radius, diffs.getCount().total() !== 0);
 
-                fileRadiuses[index][fileIdx] = radius;
-                var maxBarLength = index > 0 ? x - self.snapshotPositions[index - 1] - radius - fileRadiuses[index - 1][fileIdx] : 0;
-                self.renderChanges(index, diffs, x - radius - maxBarLength, y, file, maxBarLength);
+                self.renderChanges(index, diffs, x, y, file, radius);
             });
 
             self.renderFileLines(fileLineStarts, currentFiles, index, files.length, firstLineY, lineSpacing);
@@ -489,38 +489,23 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         }
     },
 
-    renderChanges: function (index, diffs, x, y, file, maxBarLength) {
+    renderChanges: function (index, diffs, x, y, file, radius) {
 
         var total = file.lines();
-        var inserted = Math.round((diffs.getCount().insert / total) * maxBarLength);
-        var deleted = Math.round((diffs.getCount()['delete'] / total) * maxBarLength);
-        var modified = Math.round((diffs.getCount().replace / total) * maxBarLength);
+        var inserted = Math.round((diffs.getCount().insert / total) * 100);
+        var deleted = Math.round((diffs.getCount()['delete'] / total) * 100);
+        var modified = Math.round((diffs.getCount().replace / total) * 100);
 
         var totalLength = inserted + deleted + modified;
-        if (totalLength > maxBarLength) {
-            inserted = inserted * (maxBarLength / totalLength);
-            deleted = deleted * (maxBarLength / totalLength);
-            modified = modified * (maxBarLength / totalLength);
+        if (totalLength > 100) {
+            inserted = inserted * (100 / totalLength);
+            deleted = deleted * (100 / totalLength);
+            modified = modified * (100 / totalLength);
         }
 
-        if(inserted && inserted !== 0) {
-            var ins = this.paper.path('M ' + x + ' ' + y + ' L ' + (x+inserted) + ' ' + y);
-            $(ins.node).attr('class', 'timeline-insert');
-            x += inserted;
-            ins.toBack();
-        }
-
-        if (deleted && deleted !== 0) {
-            var del = this.paper.path('M ' + x + ' ' + y + ' L ' + (x+deleted) + ' ' + y);
-            $(del.node).attr('class', 'timeline-delete');
-            x += deleted;
-            del.toBack();
-        }
-
-        if (modified && modified !== 0) {
-            var mod = this.paper.path('M ' + x + ' ' + y + ' L ' + (x+modified) + ' ' + y);
-            $(mod.node).attr('class', 'timeline-modify');
-            mod.toBack();
+        var values = [inserted, deleted, modified, 100 - totalLength];
+        if (totalLength > 0) {
+            this.paper.pieChart(x, y, radius+7, values, false);
         }
 
     },

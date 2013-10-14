@@ -76,7 +76,7 @@
 
                         {{else}}
 
-                            <td class='link'><a href='./#/courses/{{../../../course.id}}/students/{{id}}/'>{{name}}</a></td>
+                            <td class='link'><a href='./#/courses/{{../../../course.id}}/students/{{id}}'>{{name}}</a></td>
 
                         {{/if}}
 

@@ -272,7 +272,7 @@ codebrowser.view.EditorView = Backbone.View.extend({
         editor.getSession().setMode(mode);
     },
 
-    update: function (previousFile, file) {
+    update: function (previousFile, file, backendFile) {
 
         var self = this;
 
@@ -286,8 +286,8 @@ codebrowser.view.EditorView = Backbone.View.extend({
             var content = self.mainEditor.getValue();
 
             // Create difference
-            self.differences = new codebrowser.model.Diff(previousContent, content);
-
+            self.differences = new codebrowser.model.Diff(previousContent, content, backendFile);
+            
             // Re-render diff
             self.toggleDiff(self.diff);
 

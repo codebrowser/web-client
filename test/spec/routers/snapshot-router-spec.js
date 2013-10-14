@@ -2,6 +2,33 @@ describe('Snapshot router', function () {
 
     beforeEach(function () {
 
+        createFakeServer({
+            'students/336': 404,
+            'students/336/courses/1/exercises/3/snapshots': 404,
+            'students/1': 404,
+            'students/1/courses/1/exercises/3/snapshots': 404,
+            'students/-9999': 404,
+            'students/-9999/courses/3/exercises/1/snapshots': 404,
+
+            'students/2':
+                { id: 2, name: 'student 1', courses: [{}]},
+
+            'students/2/courses/1/exercises/3/snapshots': [
+                {
+                    id: 5,
+                    name: 'ss1',
+                    type: 'EVENT',
+                    snapshotTime: 1371210876758,
+                    files: [{id: 51, name: 'file1.java', filesize: 99}],
+                    exercise: { id: 31, name: 'exc 1'},
+                    course: {id: 11, name: 'course 1'},
+                    tests: [],
+                    compiles: true,
+                    percentageOfTestsPassing: 66
+                }
+            ]
+        });
+
         Backbone.history.stop();
     });
 
@@ -38,7 +65,7 @@ describe('Snapshot router', function () {
         Backbone.history.start();
         router.navigate('#/students/-9999/courses/3/exercises/1/snapshots');
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();
@@ -54,7 +81,7 @@ describe('Snapshot router', function () {
         Backbone.history.start();
         router.navigate('#/students/2/courses/1/exercises/3/snapshots/-9999', true);
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();
@@ -70,7 +97,7 @@ describe('Snapshot router', function () {
         Backbone.history.start();
         router.navigate('#/students/2/courses/1/exercises/3/snapshots/5/files/-9999', true);
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.router.SnapshotRouter.prototype.notFound).toHaveBeenCalled();

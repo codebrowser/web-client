@@ -419,6 +419,10 @@ ul.selection a:hover {
 
 }
 
+.visualization-container .change {
+    z-index: -1;
+}
+
 .visualization-container .timeline-insert:hover,
 .visualization-container .timeline-delete:hover,
 .visualization-container .timeline-modify:hover {
@@ -469,7 +473,9 @@ ul.selection a:hover {
 }
 
 .visualization-container .snapshot-modified {
-    fill: #D4F4FF;
+    fill: #fff;
+    fill-opacity: 1;
+    stroke-width: 1px;
 }
 
 .visualization-container .area.pointer {
@@ -1006,7 +1012,7 @@ ul.selection a:hover {
 .search-highlight {
 
     background-color: yellow;
-	
+
 }
 
 table.double-list {
@@ -1028,5 +1034,58 @@ table.double-list {
     width: 50%;
     vertical-align: top;
     padding-left: 25px;
+
+}
+
+
+/* Concept Visualization */
+
+#snapshots-concepts-container {
+
+    margin: 25px auto 0 auto;
+    padding: 15px;
+    border: 1px solid #c5d6de;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: normal;
+    color: #6d8089;
+    text-align: center;
+
+}
+
+#snapshots-concepts-container .bubble {
+
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#snapshots-concepts-container .concept-bar {
+
+    stroke-width: 1px;
+    fill: rgb(197, 214, 222);
+    stroke: rgb(170, 170, 170);
+
+}
+
+#snapshots-concepts-container .concept-bar-text {
+
+   font-size: 14px !important;
+
+}
+
+
+/* Snapshot Slider */
+
+#snapshot-slider-container {
+
+    padding-left: 20px;
+    height: 20px;
+
+}
+
+#snapshot-slider-container input {
+
+    display: none;
 
 }

@@ -9,9 +9,9 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
         }
 
         if (this.courseId) {
-            return config.api.main.root + 'courses/' + this.courseId + '/students/';
+            return config.api.main.root + 'courses/' + this.courseId + '/students';
         }
-        
+
         return config.api.main.root + 'students';
     },
 
@@ -22,8 +22,8 @@ codebrowser.collection.StudentCollection = Backbone.Collection.extend({
             this.exerciseId = options.exerciseId;
         }
     },
-            
-	
+
+
     byPartialName: function(queryString) {
 
         var filtered = this.filter(function(student) {

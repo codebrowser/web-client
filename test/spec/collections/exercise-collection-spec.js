@@ -1,26 +1,13 @@
 describe('ExerciseCollection', function () {
 
-    var missingOptionsError = 'Options studentId and courseId are required to fetch exercises.';
+    var missingOptionsError = 'Option courseId is required to fetch exercises.';
     var exercises;
-
-    beforeEach(function () {
-
-        var course = codebrowser.model.Course.findOrCreate({ id: 1 });
-        exercises = new codebrowser.collection.ExerciseCollection();
-
-        exercises.course = course;
-    });
 
     it('should have correct model', function () {
 
+        exercises = new codebrowser.collection.ExerciseCollection();
+
         expect(exercises.model).toBe(codebrowser.model.Exercise);
-    });
-
-    it('url should throw error if no studentId is passed', function () {
-
-        exercises = new codebrowser.collection.ExerciseCollection(null, { courseId: 2 });
-
-        expect(function () { exercises.url() }).toThrow(missingOptionsError);
     });
 
     it('url should throw error if no courseId is passed', function () {
@@ -32,7 +19,9 @@ describe('ExerciseCollection', function () {
 
     it('should have correct URL when fetching all exercises related to a course', function () {
 
-        expect(exercises.url()).toBe(config.api.main.root + 'courses/1/exercises');
+        exercises = new codebrowser.collection.ExerciseCollection(null, { courseId: 2 });
+
+        expect(exercises.url()).toBe(config.api.main.root + 'courses/2/exercises');
     });
 
     it('should have correct URL when fetching all exercises related to a student and course', function () {
