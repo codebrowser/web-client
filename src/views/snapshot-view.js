@@ -249,8 +249,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     didResize: function () {
 
-        this.snapshotsTimelineView.didResize();
-        this.snapshotsTreeView.didResize();
+        if (this.showTimeline) {
+            this.snapshotsTimelineView.didResize();
+        }
+        if (this.showTreeView) {
+            this.snapshotsTreeView.didResize();
+        }
         this.editorView.didResize();
     },
 
