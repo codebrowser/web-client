@@ -105,24 +105,66 @@ module.exports = function (grunt) {
 
         jshint: {
 
-            src: {
+            srcXml: {
 
                 src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js'],
                 options: {
 
+                    force: true,
+                    reporter: 'jslint',
                     reporterOutput: 'test_out/jshint/jslint_src-report.xml'
 
                 }
             },
 
-            test: {
+            testXml: {
 
                 src: 'test/config/config.js',
                 options: {
 
+                    force: true,
+                    reporter: 'jslint',
                     reporterOutput: 'test_out/jshint/jslint_test-report.xml'
 
                 }
+            },
+
+            specXml: {
+
+                src: 'test/spec/**/*.js',
+                options: {
+
+                    jshintrc: 'test/spec/jshint.json',
+                    force: true,
+                    reporter: 'jslint',
+                    reporterOutput: 'test_out/jshint/jslint_spec-report.xml'
+
+                }
+            },
+
+            casperjsXml: {
+
+                src: 'test/casperjs/*.js',
+                options: {
+
+                    jshintrc: 'test/casperjs/jshint.json',
+                    force: true,
+                    reporter: 'jslint',
+                    reporterOutput: 'test_out/jshint/jslint_casperjs-report.xml'
+
+                }
+            },
+
+            src: {
+
+                src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js'],
+
+            },
+
+            test: {
+
+                src: 'test/config/config.js',
+
             },
 
             spec: {
@@ -131,7 +173,7 @@ module.exports = function (grunt) {
                 options: {
 
                     jshintrc: 'test/spec/jshint.json',
-                    reporterOutput: 'test_out/jshint/jslint_spec-report.xml'
+
                 }
             },
 
@@ -141,21 +183,15 @@ module.exports = function (grunt) {
                 options: {
 
                     jshintrc: 'test/casperjs/jshint.json',
-                    reporterOutput: 'test_out/jshint/jslint_casperjs-report.xml'
 
                 }
             },
 
-
             options: {
 
-                force: true,
-                reporter: 'jslint',
                 jshintrc: 'jshint.json'
 
             }
-
-
         },
 
         jasmine: {
