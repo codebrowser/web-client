@@ -376,6 +376,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Store state
         localStorage.setItem('showData', this.showData);
 
+        $('#snapshots-data-container').slideToggle();
+
         // Update Data view
         if (this.showData) {
             this.snapshotsDataView.update(
@@ -383,9 +385,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                 this.collection.indexOf(this.model)
             );
         }
-
-        $('#snapshots-data-container').slideToggle();
-
     },
 
     split: function () {

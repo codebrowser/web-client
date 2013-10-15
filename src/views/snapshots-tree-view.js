@@ -5,6 +5,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
     template: {
 
+        filenameContainer: Handlebars.templates.TreeFilenameContainer,
         bottomContainer: Handlebars.templates.SnapshotsTimelineBottomContainer
 
     },
@@ -13,7 +14,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
     width: 0,
 
-    /* Snapshot elements */
+    /* X-coordinates of all snapshots */
 
     snapshotPositions: [],
 
@@ -29,6 +30,10 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
     dragging: false,
 
+    bottomContainer: null,
+
+    filenameContainer: null,
+
     /* Initialise */
 
     initialize: function (options) {
@@ -38,9 +43,22 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         // Hide view until needed
         this.$el.hide();
 
+        var topContainer = $('<tr>');
+        topContainer.attr('class','top-container');
+        this.$el.append(topContainer);
+
+        // File name container
+        this.filenameContainer = $('<td>');
+        this.filenameContainer.attr('class','filename-container');
+        topContainer.append(this.filenameContainer);
+
+        var toprightContainer = $('<td>');
+        toprightContainer.attr('class', 'raphael-container')
+        topContainer.append(toprightContainer);
+
         /* jshint newcap: false */
 
-        this.paper = Raphael(this.el, '100%', 81);
+        this.paper = Raphael(toprightContainer.get(0), '100%', 81);
 
         /* jshint newcap: true */
 
@@ -177,6 +195,24 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         $(snapshotIndex.node).attr('class', 'snapshot-index');
     },
 
+    renderFilenameContainer: function (files) {
+
+        var filenames = [];
+
+        for (var i = 0; i < files.length; ++i) {
+
+            filenames.push(files[i]);
+        }
+
+        var attributes = {
+
+            filenames: filenames
+
+        };
+
+        this.filenameContainer.html(this.template.filenameContainer(attributes));
+    },
+
     renderBottomContainer: function () {
 
         // View attributes
@@ -191,7 +227,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         var bottomContainerOutput = this.template.bottomContainer(attributes);
 
         // Update bottom container
-        this.bottomContainer.html(bottomContainerOutput, bottomContainerOutput);
+        this.bottomContainer.html(bottomContainerOutput);
     },
 
     renderSnapshotArea: function (snapshot, x, radius) {
@@ -332,6 +368,9 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
     render: function () {
         var files = this.collection.getFiles();
 
+        // File list affects the canvas size so it should be rendered first
+        this.renderFilenameContainer(files);
+
         var baseHeight = 81;
         var lineSpacing = 60;
         var height = baseHeight + lineSpacing * (files.length - 1);
@@ -341,7 +380,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         // Clear paper
         this.paper.clear();
 
-        // Center point
+        // Y-coordinate of the first line
         var firstLineY = baseHeight / 2 + 3;
 
         var leftOffset = 100;
@@ -392,7 +431,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
                 currentFiles[fileIdx] = file.getName();
 
-                // Render snapshot
                 var diffs = self.differences[index][file.getName()];
 
                 self.renderSnapshotFile(snapshot, index, x, firstLineY + fileIdx * lineSpacing, radius, diffs.getCount().total() !== 0);
@@ -449,7 +487,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
     renderChanges: function (index, diffs, x, y, file) {
 
         var total = file.lines();
-        
         var inserted = Math.round((diffs.getCount().insert / total) * 100);
         var deleted = Math.round((diffs.getCount()['delete'] / total) * 100);
         var modified = Math.round((diffs.getCount().replace / total) * 100);
