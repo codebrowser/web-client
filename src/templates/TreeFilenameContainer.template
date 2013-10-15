@@ -1,0 +1,5 @@
+{{#filenames}}
+
+    <div class='visualization-filename'>{{this}}</div>
+
+{{/filenames}}

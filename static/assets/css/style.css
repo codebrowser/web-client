@@ -473,6 +473,38 @@ ul.selection a:hover {
 
 }
 
+.visualization-container .top-container {
+
+    width: 100%;
+    display: table;
+    table-layout: auto;
+
+}
+
+.visualization-container .filename-container {
+
+    width: 1px;
+    display: table-cell;
+    vertical-align: top;
+    padding-right: 10px;
+
+}
+
+.visualization-container .topright-container {
+
+    width: 100%;
+    display: table-cell;
+
+}
+
+.visualization-container .visualization-filename {
+
+    height: 25px;
+    margin-top: 35px;
+    white-space: nowrap;
+
+}
+
 /* Snapshot */
 
 #snapshot-navigation-container {
