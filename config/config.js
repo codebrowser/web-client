@@ -42,7 +42,7 @@ var config = {
 
         main: {
 
-            root: 'http://t-jamikarv.users.cs.helsinki.fi/codebrowser/app/'
+            root: localStorage.getItem('config.apiUrl') ? localStorage.getItem('config.apiUrl') : 'http://t-jamikarv.users.cs.helsinki.fi/codebrowser/app/'
 
         }
     },
