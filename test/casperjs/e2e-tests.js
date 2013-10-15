@@ -32,7 +32,7 @@ casper.test.begin('Courses view', 8, function suite(test) {
 
             test.assertTruthy(this.getCurrentUrl().indexOf('/#/courses') !== -1, 'has correct URL');
             test.assertSelectorHasText('li.active', 'Courses', 'has "Courses" label active in the navbar');
-            test.assertElementCount('tbody tr', 1, 'has exactly one course listed');
+            test.assertElementCount('tbody tr', 2, 'has exactly two courses listed');
 
             test.assertTextExists('mooc-en', 'has a course named "mooc-en"');
 
