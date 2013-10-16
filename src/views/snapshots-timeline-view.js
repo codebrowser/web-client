@@ -13,9 +13,9 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     width: 0,
 
-    /* Snapshot elements */
+    /* X coordinates of snapshot elements */
 
-    snapshotElements: [],
+    snapshotPositions: [],
 
     /* Pointer */
 
@@ -145,21 +145,21 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     focus: function () {
 
-        // Cx of the current snapshot element
-        var cx = this.snapshotElements[this.currentSnapshotIndex].attr('cx');
+        // Center of the current snapshot element
+        var cx = this.snapshotPositions[this.currentSnapshotIndex];
 
         // Make previous snapshot element visible
         if (this.currentSnapshotIndex !== 0) {
 
-            if (!this.isVisible(this.snapshotElements[this.currentSnapshotIndex - 1].attr('cx'))) {
+            if (!this.isVisible(this.snapshotPositions[this.currentSnapshotIndex - 1])) {
                 this.centerOn(cx);
             }
         }
 
         // Make next snapshot element visible
-        if (this.currentSnapshotIndex !== this.snapshotElements.length - 1) {
+        if (this.currentSnapshotIndex !== this.snapshotPositions.length - 1) {
 
-            if (!this.isVisible(this.snapshotElements[this.currentSnapshotIndex + 1].attr('cx'))) {
+            if (!this.isVisible(this.snapshotPositions[this.currentSnapshotIndex + 1])) {
                 this.centerOn(cx);
             }
         }
@@ -283,7 +283,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         else {
             snapshotElement = this.paper.pieChart(x, y, radius, snapshot.attributes.percentageOfTestsPassing);
         }
-        
+
         //If snapshot does not compile, css class is added
         if(snapshot.attributes.compiles) {
             $(snapshotElement.node).attr('class', 'snapshot');
@@ -430,7 +430,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
         var self = this;
 
-        this.snapshotElements = [];
+        this.snapshotPositions = [];
 
         this.collection.each(function (snapshot, index) {
 
@@ -468,8 +468,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             self.renderDuration(previousSnapshot, snapshot, x, y, radius, distance);
 
             // Render snapshot
-            var snapshotElement = self.renderSnapshot(snapshot, index, x, y, radius);
-            self.snapshotElements.push(snapshotElement);
+            self.renderSnapshot(snapshot, index, x, y, radius);
+            self.snapshotPositions.push(x);
 
             // Current snapshot
             if (index === self.currentSnapshotIndex) {
@@ -552,10 +552,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         }
 
         // Rendering finished
-        if (this.snapshotElements.length === this.collection.length) {
+        if (this.snapshotPositions.length === this.collection.length) {
 
-            // Cx of the current snapshot element
-            var cx = this.snapshotElements[this.currentSnapshotIndex].attr('cx');
+            // Center of the current snapshot element
+            var cx = this.snapshotPositions[this.currentSnapshotIndex];
 
             this.render();
             this.centerOn(cx);
