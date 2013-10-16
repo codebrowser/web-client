@@ -18,6 +18,7 @@
     "globals": {
 
         "ace": true,
+        "afterEach": true,
         "Backbone": true,
         "beforeEach": true,
         "codebrowser": true,

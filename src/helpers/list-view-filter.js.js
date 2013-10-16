@@ -1,64 +1,73 @@
-codebrowser.helper.ListViewFilter = {
-    
-    // selector for elements to filter
-    'rowSelector': 'tbody tr',
-    
-    // selector inside single element
-    'rowSearchTargetCellSelector': 'td:eq(1) a',
+codebrowser.helper.ListViewFilter = function(options) {
 
-    // where to find search input string
-    'searchInputSelector': 'input[data-id="query-string"]',
+    // default selector for elements to filter
+    this.rowSelector = 'tbody tr';
 
-    // container element (usually backbone view $el)
-    '$el': null,
-    
-    
-    filterList: function () {
-        var rowSelector = this.rowSelector;
-        var rowSearchTargetCellSelector = this.rowSearchTargetCellSelector;
+    // default selector inside single element
+    this.targetCellSelector = 'td:eq(1) a';
 
-        var query  = this._getQueryString();
+    // default where to find search input string
+    this.searchInputSelector = 'input[data-id="query-string"]';
 
-        var $tableRows = this.$el.find(rowSelector);
+    // default container element selector
+    this.containerSelector = 'body';
+
+    if (options) {
+
+        this.rowSelector = options.rowSelector || this.rowSelector;
+        this.targetCellSelector = options.targetCellSelector || this.targetCellSelector;
+        this.searchInputSelector = options.searchInputSelector || this.searchInputSelector;
+        this.containerSelector = options.containerSelector || this.containerSelector;
+    }
+
+    this.filterList = function () {
+
+        var query = this._getQueryString();
+
+        var $tableRows = $(this.containerSelector).find(this.rowSelector);
+
+        var that = this;
 
         // first show all and clean highlights
         $tableRows.each(function() {
-            $(this).show();
-            $(this).find(rowSearchTargetCellSelector).html( $(this).find(rowSearchTargetCellSelector).text() );
-        });
 
+            $(this).show();
+
+            var cell =  $(this).find(that.targetCellSelector);
+            var cellText = cell.text();
+
+            cell.html( cellText );
+        });
 
         if (query !== '') {
 
-            var that = this;
-
             $tableRows.each(function() {
 
-                var $nameCell = $(this).find(rowSearchTargetCellSelector);
+                var $nameCell = $(this).find(that.targetCellSelector);
 
                 if ( that._nodeTextContains($nameCell, query) ) {
+
                     that._highlightMatch($nameCell, query);
                 } else {
+
                     $nameCell.text( $nameCell.text() );
                     $(this).hide();
                 }
-
             });
-
         }
-    },
+    };
 
-    _getQueryString: function () {
+    this._getQueryString = function () {
 
-        return this.$el.find(this.searchInputSelector).val().trim();
-    },
+        return $(this.containerSelector).find(this.searchInputSelector).val().trim();
+    };
 
-    _nodeTextContains: function ($node, query) {
+    this._nodeTextContains = function ($node, query) {
 
         return $node.text().indexOf(query) !== -1;
-    },
+    };
 
-    _highlightMatch: function ($node, query) {
+    this._highlightMatch = function ($node, query) {
         // wrap matched part of nodes text in span
 
         var text = $node.text();
@@ -68,5 +77,5 @@ codebrowser.helper.ListViewFilter = {
         var highlighted = text.substring(0, i) + '<span class="search-highlight">' + query + '</span>' + text.substring(i+l);
 
         $node.html( highlighted );
-    }
+    };
 };

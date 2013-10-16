@@ -8,7 +8,7 @@ codebrowser.view.CoursesView = Backbone.View.extend({
         'keyup [data-id="query-string"]': 'filterCourseListByName',
         'keypress [data-id="query-string"]': 'filterCourseListByName'
     },
-    
+
     /* Render */
 
     render: function () {
@@ -28,12 +28,19 @@ codebrowser.view.CoursesView = Backbone.View.extend({
 
         this.$el.html(output);
     },
-    
+
     filterCourseListByName: function() {
-        
-        this.filterHelper = codebrowser.helper.ListViewFilter;
-        this.filterHelper.$el = this.$el;
-        
+
+        if (!this.filterHelper) {
+
+            var filterOptions = {
+
+                'containerSelector' : '#' + this.id
+            };
+
+            this.filterHelper = new codebrowser.helper.ListViewFilter(filterOptions);
+        }
+
         this.filterHelper.filterList();
     }
 });
