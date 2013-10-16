@@ -242,10 +242,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         snapshotArea.data('file', file);
     },
 
-    renderSnapshotFile: function (snapshot, index, x, y, radius, modified) {
-
-        // Render index of the snapshot
-        this.renderSnapshotIndex(index, x);
+    renderSnapshotFile: function (snapshot, index, file, x, y, radius, modified) {
 
         // Snapshot element
         var snapshotElement = this.paper.circle(x, y, radius);
@@ -254,7 +251,8 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
         // Snapshot click area
         var snapshotClickArea = this.paper.circle(x, y, radius);
-        $(snapshotClickArea.node).attr('class', 'area snapshot');
+        var isSelected = index === this.currentSnapshotIndex && file.getName() === this.filename;
+        $(snapshotClickArea.node).attr('class', isSelected ? 'area snapshot selected' : 'area snapshot');
 
         // Tooltip
         $(snapshotClickArea.node).attr({
@@ -264,9 +262,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
             'data-container': 'body'
 
         });
-
-        // Set models for snapshot and snapshot area elements
-        var file = snapshot.get('files').findWhere({ name: this.filename });
 
         snapshotClickArea.data('snapshot', snapshot);
         snapshotClickArea.data('file', file);
@@ -366,6 +361,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
     },
 
     render: function () {
+
         var files = this.collection.getFiles();
 
         // File list affects the canvas size so it should be rendered first
@@ -417,26 +413,12 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
                 rightOffset = radius;
             }
 
-            var snapshotFiles = snapshot.get('files');
-
             var currentFiles = [];
 
             self.snapshotPositions.push(x);
 
             self.renderSnapshotArea(snapshot, x, radius);
-
-            snapshotFiles.each(function (file) {
-
-                var fileIdx = files.indexOf(file.getName());
-
-                currentFiles[fileIdx] = file.getName();
-
-                var diffs = self.differences[index][file.getName()];
-
-                self.renderSnapshotFile(snapshot, index, x, firstLineY + fileIdx * lineSpacing, radius, diffs.getCount().total() !== 0);
-                self.renderChanges(index, diffs, x-distance-radius, firstLineY +fileIdx * lineSpacing, file);
-
-            });
+            self.renderSnapshotIndex(index, x);
 
             // Current snapshot
             if (index === self.currentSnapshotIndex) {
@@ -444,6 +426,18 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
                 // Render pointer on current snapshot
                 self.renderPointer(x, radius);
             }
+
+            snapshot.get('files').each(function (file) {
+
+                var fileIdx = files.indexOf(file.getName());
+                currentFiles[fileIdx] = file.getName();
+
+                var diffs = self.differences[index][file.getName()];
+
+                var y = firstLineY + fileIdx * lineSpacing;
+                self.renderSnapshotFile(snapshot, index, file, x, y, radius, diffs.getCount().total() !== 0);
+                self.renderChanges(index, diffs, x-distance-radius, y, file);
+            });
 
             self.renderFileLines(fileLineStarts, currentFiles, index, files.length, firstLineY, lineSpacing);
 

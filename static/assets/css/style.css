@@ -458,6 +458,12 @@ ul.selection a:hover {
 
 }
 
+.visualization-container .area.snapshot.selected {
+
+    stroke-width: 2;
+
+}
+
 .visualization-container .not-compiles {
     fill: lightgray;
 }

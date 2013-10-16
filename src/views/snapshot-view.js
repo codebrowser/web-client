@@ -42,11 +42,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.showTimeline = this._getLocalStorageValue('showTimeline', true) === 'true';
         this.showTree = this._getLocalStorageValue('showTree', false) === 'true';
-
-        if (localStorage.getItem('showData') === null) {
-            localStorage.setItem('showData', true);
-        }
-        this.showData = localStorage.getItem('showData') === 'true';
+        this.showData = this._getLocalStorageValue('showData', true) === 'true';
 
         // Hide view until needed
         this.$el.hide();
@@ -59,14 +55,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
         this.$el.append(this.snapshotsTimelineView.el);
 
+        // Snapshot tree
+        this.snapshotsTreeView = new codebrowser.view.SnapshotsTreeView({ parentView: this });
+        this.$el.append(this.snapshotsTreeView.el);
 
         // Snapshot data view
         this.snapshotsDataView = new codebrowser.view.SnapshotsDataView({ parentView: this });
         this.$el.append(this.snapshotsDataView.el);
-
-        // Snapshot tree
-        this.snapshotsTreeView = new codebrowser.view.SnapshotsTreeView({ parentView: this });
-        this.$el.append(this.snapshotsTreeView.el);
 
         // Navigation
         this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
@@ -107,6 +102,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Remove tree view
         this.snapshotsTreeView.remove();
+
+        // Remove data view
+        this.snapshotsDataView.remove();
 
         // Remove browser view
         this.snapshotBrowserView.remove();
@@ -183,7 +181,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         } else {
             $('#snapshots-data-container').hide();
         }
-        
+
         if (this.showTree === true) {
             $('#toggleTree', navigationContainerOutput).addClass('active');
         }
@@ -250,7 +248,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         if (this.showData) {
             this.snapshotsDataView.update(this.collection, index);
         }
-        
+
         // Update tree view if active
         if (this.showTree) {
             this.snapshotsTreeView.update(this.collection, index, filename, this.courseRoute);
@@ -340,7 +338,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Store state
         localStorage.setItem('showTimeline', this.showTimeline);
-        localStorage.setItem('showTree', this.showTree);
 
         $('#snapshots-timeline-container').slideToggle();
 
