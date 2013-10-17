@@ -11,6 +11,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
+        'click #toggleConcepts': 'toggleConcepts',
         'click #toggleTimeline': 'toggleTimeline',
         'click #toggleBrowser':  'toggleBrowser',
         'click #toggleTree':     'toggleTree',
@@ -21,6 +22,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         'click #previous':       'previous',
         'click #next':           'next',
         'click #last':           'last'
+
     },
 
     /* Routing */
@@ -43,6 +45,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.showTimeline = this._getLocalStorageValue('showTimeline', true) === 'true';
         this.showTree = this._getLocalStorageValue('showTree', false) === 'true';
         this.showData = this._getLocalStorageValue('showData', true) === 'true';
+
+        if (localStorage.getItem('showConcepts') === null) {
+            localStorage.setItem('showConcepts', true);
+        }
+        this.showConcepts = localStorage.getItem('showConcepts') === 'true';
 
         // Hide view until needed
         this.$el.hide();
@@ -80,6 +87,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.$el.append(contentContainer);
 
+        // Concepts
+        this.snapshotsConceptsView = new codebrowser.view.SnapshotsConceptsView();
+        this.$el.append(this.snapshotsConceptsView.$el);
+
         // Bind resize
         $(window).resize($.proxy(this.resize, this));
 
@@ -111,6 +122,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Remove editor
         this.editorView.remove();
+
+        // Remove concepts view
+        this.snapshotsConceptsView.remove();
 
         Backbone.View.prototype.remove.call(this);
     },
@@ -184,6 +198,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         if (this.showTree === true) {
             $('#toggleTree', navigationContainerOutput).addClass('active');
+        }
+        
+        if (this.showConcepts === true) {
+            $('#toggleConcepts', navigationContainerOutput).addClass('active');
+        } else {
+            $('#snapshots-concepts-container').hide();
         }
 
         // Update navigation container
@@ -259,6 +279,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Update browser
         this.snapshotBrowserView.update(this.model, this.file, this.courseRoute);
+
+        // Update concepts if it's activated
+        if (this.showConcepts) {
+            this.snapshotsConceptsView.update(this.model);
+        }
 
         this.render();
     },
@@ -381,6 +406,23 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                 this.collection,
                 this.collection.indexOf(this.model)
             );
+        }
+    },
+
+    toggleConcepts: function () {
+
+        this.showConcepts = !this.showConcepts;
+        $('#toggleConcepts').toggleClass('active');
+
+        // Store state
+        localStorage.setItem('showConcepts', this.showConcepts);
+
+        $('#snapshots-concepts-container').slideToggle();
+
+        // Update Concepts view
+        if (this.showConcepts) {
+
+            this.snapshotsConceptsView.update(this.model);
         }
     },
 

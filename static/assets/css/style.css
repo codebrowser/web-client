@@ -1006,7 +1006,7 @@ ul.selection a:hover {
 .search-highlight {
 
     background-color: yellow;
-	
+
 }
 
 table.double-list {
@@ -1028,5 +1028,34 @@ table.double-list {
     width: 50%;
     vertical-align: top;
     padding-left: 25px;
+
+}
+
+
+/* Concept Visualization */
+
+#snapshots-concepts-container {
+
+    margin: 0 auto 0 auto;
+    padding: 15px;
+    border: 1px solid #c5d6de;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: normal;
+    color: #6d8089;
+
+}
+
+#snapshots-concepts-container .concept-bar {
+
+    stroke-width: 1px;
+    fill: rgb(197, 214, 222);
+    stroke: rgb(170, 170, 170);
+
+}
+
+#snapshots-concepts-container .concept-bar-text {
+
+   font-size: 14px !important;
 
 }
