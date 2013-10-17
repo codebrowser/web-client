@@ -413,9 +413,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     render: function () {
 
-        var min = this.collection.getMinDuration();
-
-        // 10 minute max
+        // Limit minimum to 1 minute and maximum to 5 minutes
+        var min = Math.min(60000, this.collection.getMinDuration());
         var max = Math.min(300000, this.collection.getMaxDuration());
 
         // Clear paper
