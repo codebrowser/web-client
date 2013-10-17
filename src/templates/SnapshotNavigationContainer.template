@@ -16,6 +16,9 @@
         <button id="toggleTree" class="btn">
             <i class="icon-tree icon-gray"></i>
         </button>
+        <button id="toggleData" class="btn">
+            <i class="icon-ok icon-gray"></i>
+        </button>
 
     </div>
 
