@@ -2,7 +2,7 @@ codebrowser.view.StudentsView = Backbone.View.extend({
 
     id: 'students-container',
     template: Handlebars.templates.StudentsContainer,
-    
+
     events: {
         'click [data-action="search"]': 'filterStudentListByName',
         'keyup [data-id="query-string"]': 'filterStudentListByName',
@@ -37,13 +37,18 @@ codebrowser.view.StudentsView = Backbone.View.extend({
         this.delegateEvents();
     },
 
-
     filterStudentListByName: function() {
 
-        this.filterHelper = codebrowser.helper.ListViewFilter;
-        this.filterHelper.$el = this.$el;
+        if (!this.filterHelper) {
+
+            var filterOptions = {
+
+                'containerSelector' : '#' + this.id
+            };
+
+            this.filterHelper = new codebrowser.helper.ListViewFilter(filterOptions);
+        }
 
         this.filterHelper.filterList();
     }
-
 });

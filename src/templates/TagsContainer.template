@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th>#</th>
-				<th>Tagged answer or snapshot</th>
+                    <th>Tagged answer or snapshot</th>
                 <th>Student</th>
             </tr>
         </thead>
