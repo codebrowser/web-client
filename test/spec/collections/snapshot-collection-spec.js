@@ -66,6 +66,34 @@ describe('SnapshotCollection', function () {
         expect(snapshots.getMaxDuration()).toBe(500);
     });
 
+    it('should return correct min file size', function () {
+
+        var snapshot1 = codebrowser.model.Snapshot.findOrCreate({ id: 1, snapshotTime: 500 });
+        snapshot1.get('files').push(codebrowser.model.File.findOrCreate({ id : 1, filesize: 111 }));
+        snapshot1.get('files').push(codebrowser.model.File.findOrCreate({ id : 2, filesize: 222 }));
+        snapshots.push(snapshot1);
+        var snapshot2 = codebrowser.model.Snapshot.findOrCreate({ id: 2, snapshotTime: 500 });
+        snapshot2.get('files').push(codebrowser.model.File.findOrCreate({ id : 4, filesize: 444 }));
+        snapshot2.get('files').push(codebrowser.model.File.findOrCreate({ id : 3, filesize: 333 }));
+        snapshots.push(snapshot2);
+
+        expect(snapshots.getMinAndMaxFileSize().min).toBe(111);
+    });
+
+    it('should return correct max file size', function () {
+
+        var snapshot1 = codebrowser.model.Snapshot.findOrCreate({ id: 1, snapshotTime: 500 });
+        snapshot1.get('files').push(codebrowser.model.File.findOrCreate({ id : 1, filesize: 111 }));
+        snapshot1.get('files').push(codebrowser.model.File.findOrCreate({ id : 2, filesize: 222 }));
+        snapshots.push(snapshot1);
+        var snapshot2 = codebrowser.model.Snapshot.findOrCreate({ id: 2, snapshotTime: 500 });
+        snapshot2.get('files').push(codebrowser.model.File.findOrCreate({ id : 4, filesize: 444 }));
+        snapshot2.get('files').push(codebrowser.model.File.findOrCreate({ id : 3, filesize: 333 }));
+        snapshots.push(snapshot2);
+
+        expect(snapshots.getMinAndMaxFileSize().max).toBe(444);
+    });
+
     it('should return null if no difference is found for a snapshot', function () {
 
         expect(snapshots.getDifference(0, 'Test.java')).toBeNull();

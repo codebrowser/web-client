@@ -91,6 +91,23 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         return max;
     },
 
+    getMinAndMaxFileSize: function () {
+
+        var range = { min: Number.MAX_VALUE, max : Number.MIN_VALUE};
+
+        this.each(function (snapshot) {
+
+            snapshot.get('files').each(function (file) {
+
+                var size = file.get('filesize');
+                range.min = Math.min(range.min, size);
+                range.max = Math.max(range.max, size);
+            });
+        });
+
+        return range;
+    },
+
     getDifference: function (index, filename) {
 
         var difference = this.differences[index];

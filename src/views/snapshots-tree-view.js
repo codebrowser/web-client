@@ -383,18 +383,22 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         var rightOffset = 0;
         var x = 0;
 
+        var sizeRange = this.collection.getMinAndMaxFileSize();
+
         var self = this;
 
         var fileLineStarts = [];
 
         this.snapshotPositions = [];
 
+        var fileRadiuses = [];
+
         this.collection.each(function (snapshot, index) {
 
-            var radius = 15;
+            var snapshotArearadius = 15;
 
             var distance = 100;
-            x += radius * 2;
+            x += snapshotArearadius * 2;
 
             if (index === 0) {
 
@@ -410,33 +414,40 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
             if (index === self.collection.length - 1) {
 
                 // Right offset
-                rightOffset = radius;
+                rightOffset = snapshotArearadius;
             }
 
             var currentFiles = [];
 
             self.snapshotPositions.push(x);
 
-            self.renderSnapshotArea(snapshot, x, radius);
+            self.renderSnapshotArea(snapshot, x, snapshotArearadius);
             self.renderSnapshotIndex(index, x);
 
             // Current snapshot
             if (index === self.currentSnapshotIndex) {
 
                 // Render pointer on current snapshot
-                self.renderPointer(x, radius);
+                self.renderPointer(x, snapshotArearadius);
             }
 
+
+            fileRadiuses[index] = [];
             snapshot.get('files').each(function (file) {
 
                 var fileIdx = files.indexOf(file.getName());
                 currentFiles[fileIdx] = file.getName();
 
+                var radius = 12 * self._getFileWeight(file.get('filesize'), sizeRange.min, sizeRange.max);
+
                 var diffs = self.differences[index][file.getName()];
 
                 var y = firstLineY + fileIdx * lineSpacing;
                 self.renderSnapshotFile(snapshot, index, file, x, y, radius, diffs.getCount().total() !== 0);
-                self.renderChanges(index, diffs, x-distance-radius, y, file);
+
+                fileRadiuses[index][fileIdx] = radius;
+                var maxBarLength = index > 0 ? x - self.snapshotPositions[index - 1] - radius - fileRadiuses[index - 1][fileIdx] : 0;
+                self.renderChanges(index, diffs, x - radius - maxBarLength, y, file, maxBarLength);
             });
 
             self.renderFileLines(fileLineStarts, currentFiles, index, files.length, firstLineY, lineSpacing);
@@ -478,18 +489,18 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         }
     },
 
-    renderChanges: function (index, diffs, x, y, file) {
+    renderChanges: function (index, diffs, x, y, file, maxBarLength) {
 
         var total = file.lines();
-        var inserted = Math.round((diffs.getCount().insert / total) * 100);
-        var deleted = Math.round((diffs.getCount()['delete'] / total) * 100);
-        var modified = Math.round((diffs.getCount().replace / total) * 100);
+        var inserted = Math.round((diffs.getCount().insert / total) * maxBarLength);
+        var deleted = Math.round((diffs.getCount()['delete'] / total) * maxBarLength);
+        var modified = Math.round((diffs.getCount().replace / total) * maxBarLength);
 
         var totalLength = inserted + deleted + modified;
-        if (totalLength > 100) {
-            inserted = inserted * (100 / totalLength);
-            deleted = deleted * (100 / totalLength);
-            modified = modified * (100 / totalLength);
+        if (totalLength > maxBarLength) {
+            inserted = inserted * (maxBarLength / totalLength);
+            deleted = deleted * (maxBarLength / totalLength);
+            modified = modified * (maxBarLength / totalLength);
         }
 
         if(inserted && inserted !== 0) {
@@ -512,6 +523,21 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
             mod.toBack();
         }
 
+    },
+
+    _getFileWeight: function (size, minSize, maxSize) {
+
+        if (minSize === maxSize) {
+            return 1.5;
+        }
+
+        // Linear interpolation between 0.8 and 2.0
+        var weight = 1.2 * (size - minSize) / (maxSize - minSize) + 0.8;
+
+        // Round up to 2 decimals
+        weight = Math.round(weight * 100) / 100;
+
+        return Math.min(2, weight);
     },
 
     /* Update */
