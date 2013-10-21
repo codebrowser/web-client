@@ -16,16 +16,16 @@ codebrowser.collection.ExerciseCollection = Backbone.Collection.extend({
 
     url: function () {
 
+        if (!this.courseId) {
+            throw new Error('Option courseId is required to fetch exercises.');
+        }
+
         /* Fetch exercises related to a course */
-        if (this.course) {
-            return this.course.url() + '/exercises';
+        if (!this.studentId) {
+            return config.api.main.root + 'courses/' + this.courseId + '/exercises';
         }
 
         /* Fetch exercises related to a student and course */
-        if (!this.studentId || !this.courseId) {
-            throw new Error('Options studentId and courseId are required to fetch exercises.');
-        }
-
         return config.api.main.root + 'students/' + this.studentId + '/courses/' + this.courseId + '/exercises';
     },
 
