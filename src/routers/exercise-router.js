@@ -110,7 +110,6 @@ codebrowser.router.ExerciseRouter = Backbone.Router.extend({
 
         var exerciseCollection = new codebrowser.collection.ExerciseCollection(null, { studentId: studentId,
                                                                                        courseId: courseId });
-        exerciseCollection.course = course;
 
         // Fetch course
         course.fetch({
