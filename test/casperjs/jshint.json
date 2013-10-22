@@ -17,7 +17,13 @@
 
     "globals": {
 
-        "casper": true
+        "casper": true,
+        "config": true,
+        "localStorage": true,
+        "Backbone": true,
+        "RegExp": true,
+        "sinon": true,
+        "$": true
 
     }
 }

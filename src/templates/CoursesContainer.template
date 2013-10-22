@@ -14,7 +14,7 @@
     </ul>
 
     <h2>
-        {{#if studentId}} {{student.name}} {{/if}} Courses ({{courses.length}})
+        {{#if studentId}} {{student.name}} — {{/if}} Courses ({{courses.length}})
 
         <span class="pull-right">
             <div class="input-append">

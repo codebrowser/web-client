@@ -255,8 +255,9 @@ module.exports = function (grunt) {
 
         casperjs: {
 
-            files: ['test/casperjs/e2e-tests.js'],
+            files: ['test/casperjs/*-test.js'],
             options: {
+                includes: ['test/casperjs/fakeserver.js'],
                 xunit: 'test_out/casperjs_report.xml'
             }
 

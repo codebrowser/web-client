@@ -19,8 +19,8 @@
         <tbody>
 
             <ul class="nav nav-tabs nav-stacked selection">
-                <li class='link'><a href='./#/courses/{{course.id}}/students/'>View students of the course</a></td>
-                <li class='link'><a href='./#/courses/{{course.id}}/exercises/'>View exercises of the course</a></td>
+                <li class='link'><a href='./#/courses/{{course.id}}/students'>View students of the course</a></td>
+                <li class='link'><a href='./#/courses/{{course.id}}/exercises'>View exercises of the course</a></td>
             </ul>
 
         </tbody>
