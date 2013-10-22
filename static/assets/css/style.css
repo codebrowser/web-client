@@ -419,6 +419,10 @@ ul.selection a:hover {
 
 }
 
+.visualization-container .change {
+    z-index: -1;
+}
+
 .visualization-container .timeline-insert:hover,
 .visualization-container .timeline-delete:hover,
 .visualization-container .timeline-modify:hover {
@@ -469,7 +473,9 @@ ul.selection a:hover {
 }
 
 .visualization-container .snapshot-modified {
-    fill: #D4F4FF;
+    fill: #fff;
+    fill-opacity: 1;
+    stroke-width: 1px;
 }
 
 .visualization-container .area.pointer {

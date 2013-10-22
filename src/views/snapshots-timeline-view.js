@@ -281,7 +281,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             snapshotElement = this.paper.circle(x, y, radius);
         }
         else {
-            snapshotElement = this.paper.pieChart(x, y, radius, snapshot.attributes.percentageOfTestsPassing);
+            snapshotElement = this.paper.pieChart(x, y, radius, [snapshot.attributes.percentageOfTestsPassing, 100 - snapshot.attributes.percentageOfTestsPassing]);
         }
 
         //If snapshot does not compile, css class is added
