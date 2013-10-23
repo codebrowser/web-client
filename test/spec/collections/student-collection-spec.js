@@ -16,7 +16,7 @@ describe('StudentCollection', function () {
 
         students = new codebrowser.collection.StudentCollection(null, { courseId: 1});
 
-        expect(students.url()).toBe(config.api.main.root + 'courses/1/students/');
+        expect(students.url()).toBe(config.api.main.root + 'courses/1/students');
     });
 
 

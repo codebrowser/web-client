@@ -27,11 +27,10 @@ codebrowser.router.SelectRouter = Backbone.Router.extend({
                                           courseId +
                                           '/select', { replace: true });
     },
-    
+
     select: function (courseId) {
         var self = this;
         var course = codebrowser.model.Course.findOrCreate({ id: courseId });
-        console.log(course);
         course.fetch({
 
             cache: true,
