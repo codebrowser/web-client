@@ -46,6 +46,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         this.visualizations = this._initializeVisualizations();
 
+        // Snapshot slider
+        this.snapshotSliderContainer = $('<div>', { id: 'snapshot-slider-container' });
+        this.$el.append(this.snapshotSliderContainer);
+
         // Navigation
         this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
         this.$el.append(this.navigationContainer);
@@ -84,7 +88,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         return visualizations;
-
     },
 
     _initializeContentContainer: function() {
@@ -101,7 +104,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         contentContainer.append(this.editorView.el);
 
         this.$el.append(contentContainer);
-
     },
 
     /* Remove */
@@ -137,6 +139,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.renderNavigationBar(index);
         this.renderNavigation(index);
 
+        this.renderSnapshotSlider(index);
     },
 
     renderNavigation: function(index) {
@@ -197,7 +200,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                 $(visualization.buttonSelector, navigationContainerOutput).addClass('active');
             }
         }
-
     },
 
     renderNavigationBar: function(index) {
@@ -214,7 +216,19 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Update navigation bar container
         this.navigationbarContainer.html(navigationbarContainerOutput);
+    },
 
+    renderSnapshotSlider: function(index) {
+
+        var that = this;
+
+        this.snapshotSlider = new codebrowser.helper.SnapshotSlider(index, this.collection.size(), function(i) {
+            that.navigateToIndex(i);
+        });
+
+        this.snapshotSliderContainer.html( this.snapshotSlider.$html );
+
+        this.snapshotSlider.rendered();
     },
 
     /* Update */
@@ -274,7 +288,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         if (visualizations.concepts.isActive) {
             visualizations.concepts.update(this.model);
         }
-
     },
 
     /* Events */
@@ -358,7 +371,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         if (this.visualizations.timeline.isActive) {
             this.visualizations.timeline.update(this.collection, this.collection.indexOf(this.model), this.file.get('name'), this.courseRoute);
         }
-
     },
 
     toggleTree: function () {
@@ -374,7 +386,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         if (this.visualizations.tree.isActive) {
             this.visualizations.tree.update(this.collection, this.collection.indexOf(this.model), this.file.get('name'), this.courseRoute);
         }
-
     },
 
     toggleData: function () {
@@ -407,14 +418,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     split: function () {
 
         this.editorView.toggleSplit();
-
     },
 
     diff: function () {
 
         this.editorView.toggleDiff();
         this.snapshotBrowserView.update(this.model, this.file, this.courseRoute);
-
     },
 
     /* Actions - Navigation */
@@ -454,46 +463,40 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     first: function () {
 
-        var first = this.collection.first();
-        var file = first.get('files').findWhere({ name: this.file.get('name') });
-
-        this.navigate(first, file);
+        this.navigateToIndex(0);
     },
 
     previous: function () {
 
         var index = this.collection.indexOf(this.model);
-        var previous = this.collection.at(index - 1);
 
-        if (!previous) {
-            return;
-        }
-
-        var file = previous.get('files').findWhere({ name: this.file.get('name') });
-
-        this.navigate(previous, file);
+        this.navigateToIndex(index - 1);
     },
 
     next: function () {
 
         var index = this.collection.indexOf(this.model);
-        var next = this.collection.at(index + 1);
 
-        if (!next) {
-            return;
-        }
-
-        var file = next.get('files').findWhere({ name: this.file.get('name') });
-
-        this.navigate(next, file);
+        this.navigateToIndex(index + 1);
     },
 
     last: function () {
 
-        var last = this.collection.last();
-        var file = last.get('files').findWhere({ name: this.file.get('name') });
+        var last = this.collection.size() - 1;
 
-        this.navigate(last, file);
-    }
+        this.navigateToIndex(last);
+    },
 
+    navigateToIndex: function(index) {
+
+        var snapshot = this.collection.at(index);
+
+        if (!snapshot) {
+            return;
+        }
+
+        var file = snapshot.get('files').findWhere({ name: this.file.get('name') });
+
+        this.navigate(snapshot, file);
+    },
 });

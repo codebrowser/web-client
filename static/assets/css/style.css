@@ -1065,3 +1065,19 @@ table.double-list {
    font-size: 14px !important;
 
 }
+
+
+/* Snapshot Slider */
+
+#snapshot-slider-container {
+
+    padding-left: 20px;
+    height: 20px;
+
+}
+
+#snapshot-slider-container input {
+
+    display: none;
+
+}
