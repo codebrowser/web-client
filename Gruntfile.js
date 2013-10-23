@@ -83,6 +83,13 @@ module.exports = function (grunt) {
                     separator: ';\n\n'
 
                 }
+            },
+
+            tests: {
+
+                src: ['test/casperjs/*js', '!test/casperjs/tests-concat.js'],
+                dest: 'test/casperjs/tests-concat.js'
+
             }
         },
 
@@ -256,7 +263,7 @@ module.exports = function (grunt) {
 
         casperjs: {
 
-            files: ['test/casperjs/*-test.js'],
+            files: ['test/casperjs/tests-concat.js'],
             options: {
                 includes: ['test/casperjs/fakeserver.js'],
                 xunit: 'test_out/casperjs_report.xml'
@@ -277,7 +284,7 @@ module.exports = function (grunt) {
 
     /* Register tasks */
     grunt.registerTask('test', ['jshint', 'jasmine']);
-    grunt.registerTask('integration-test', ['connect', 'casperjs']);
-    grunt.registerTask('build', ['jshint','handlebars', 'concat', 'uglify']);
+    grunt.registerTask('integration-test', ['concat:tests', 'connect', 'casperjs']);
+    grunt.registerTask('build', ['jshint','handlebars', 'concat:dist', 'concat:handlebars', 'uglify']);
     grunt.registerTask('default', ['test', 'build']);
 }
