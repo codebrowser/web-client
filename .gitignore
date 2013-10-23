@@ -16,3 +16,4 @@ node_modules/
 .idea/
 static/assets/js/codebrowser*.js
 test/coverage/coverage.json
+test/casperjs/tests-concat.js

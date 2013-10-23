@@ -31,6 +31,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     /* Browser */
     browser: true,
 
+    visualizations: null,
+
     /* Initialise */
 
     initialize: function () {
@@ -42,7 +44,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationbarContainer = $('<div>', { id: 'navigation-bar-container' });
         this.$el.append(this.navigationbarContainer);
 
-        this._initializeVisualizations();
+        this.visualizations = this._initializeVisualizations();
 
         // Navigation
         this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
@@ -59,21 +61,29 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     _initializeVisualizations: function() {
 
-        // Timeline
-        this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
-        this.$el.append(this.snapshotsTimelineView.el);
+        var visualizations = {};
 
-        // Snapshot tree
-        this.snapshotsTreeView = new codebrowser.view.SnapshotsTreeView({ parentView: this });
-        this.$el.append(this.snapshotsTreeView.el);
+        visualizations.timeline = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
+        visualizations.tree = new codebrowser.view.SnapshotsTreeView({ parentView: this });
+        visualizations.data = new codebrowser.view.SnapshotsDataView({ parentView: this });
+        visualizations.concepts = new codebrowser.view.SnapshotsConceptsView();
 
-        // Snapshot data view
-        this.snapshotsDataView = new codebrowser.view.SnapshotsDataView({ parentView: this });
-        this.$el.append(this.snapshotsDataView.el);
+        visualizations.timeline.buttonSelector = '#toggleTimeline';
+        visualizations.tree.buttonSelector = '#toggleTree';
+        visualizations.data.buttonSelector = '#toggleData';
+        visualizations.concepts.buttonSelector = '#toggleConcepts';
 
-        // Concepts
-        this.snapshotsConceptsView = new codebrowser.view.SnapshotsConceptsView();
-        this.$el.append(this.snapshotsConceptsView.$el);
+        for (var key in visualizations) {
+            if (visualizations.hasOwnProperty(key)) {
+                var visualization = visualizations[key];
+                if (!visualization.isActive) {
+                    visualization.$el.hide();
+                }
+                this.$el.append(visualization.el);
+            }
+        }
+
+        return visualizations;
 
     },
 
@@ -104,23 +114,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Unbind keydown
         $(document).off('keydown', this.keydown);
 
-        // Remove timeline
-        this.snapshotsTimelineView.remove();
-
-        // Remove tree view
-        this.snapshotsTreeView.remove();
-
-        // Remove data view
-        this.snapshotsDataView.remove();
-
-        // Remove browser view
-        this.snapshotBrowserView.remove();
+        // Visualizations teardown
+        for (var visualization in this.visualizations) {
+            if (this.visualizations.hasOwnProperty(visualization)) {
+                this.visualizations[visualization].remove();
+            }
+        }
 
         // Remove editor
         this.editorView.remove();
-
-        // Remove concepts view
-        this.snapshotsConceptsView.remove();
 
         Backbone.View.prototype.remove.call(this);
     },
@@ -189,26 +191,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Visualization toggle buttons
-        if (this.snapshotsTimelineView.isActive === true) {
-            $('#toggleTimeline', navigationContainerOutput).addClass('active');
+        for (var key in this.visualizations) {
+            var visualization = this.visualizations[key];
+            if (this.visualizations.hasOwnProperty(key) && visualization.isActive) {
+                $(visualization.buttonSelector, navigationContainerOutput).addClass('active');
+            }
         }
 
-        // Data view toggle buttons
-        if (this.snapshotsDataView.isActive === true) {
-            $('#toggleData', navigationContainerOutput).addClass('active');
-        } else {
-            $('#snapshots-data-container').hide();
-        }
-
-        if (this.snapshotsTreeView.isActive === true) {
-            $('#toggleTree', navigationContainerOutput).addClass('active');
-        }
-
-        if (this.snapshotsConceptsView.isActive === true) {
-            $('#toggleConcepts', navigationContainerOutput).addClass('active');
-        } else {
-            $('#snapshots-concepts-container').hide();
-        }
     },
 
     renderNavigationBar: function(index) {
@@ -253,7 +242,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Show view if necessary
         this.$el.show();
+
         this.updateVisualizations(index, filename);
+
 
         // Update editor
         this.editorView.update(previousFile || this.file, this.file);
@@ -266,24 +257,22 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     updateVisualizations: function (index, filename) {
 
-        // Update timeline if it's activated
-        if (this.snapshotsTimelineView.isActive) {
-            this.snapshotsTimelineView.update(this.collection, index, filename, this.courseRoute);
+        var visualizations = this.visualizations;
+
+        if (visualizations.timeline.isActive) {
+            visualizations.timeline.update(this.collection, index, filename, this.courseRoute);
         }
 
-        // Update tree view if active
-        if (this.snapshotsTreeView.isActive) {
-            this.snapshotsTreeView.update(this.collection, index, filename, this.courseRoute);
+        if (visualizations.tree.isActive) {
+            visualizations.tree.update(this.collection, index, filename, this.courseRoute);
         }
 
-        // Update dataview
-        if (this.snapshotsDataView.isActive) {
-            this.snapshotsDataView.update(this.collection, index);
+        if (visualizations.data.isActive) {
+            visualizations.data.update(this.collection, index);
         }
 
-        // Update concepts if it's activated
-        if (this.snapshotsConceptsView.isActive) {
-            this.snapshotsConceptsView.update(this.model);
+        if (visualizations.concepts.isActive) {
+            visualizations.concepts.update(this.model);
         }
 
     },
@@ -297,11 +286,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     didResize: function () {
 
-        if (this.snapshotsTimelineView.isActive) {
-            this.snapshotsTimelineView.didResize();
+        if (this.visualizations.timeline.isActive) {
+            this.visualizations.timeline.didResize();
         }
-        if (this.snapshotsTreeView.isActive) {
-            this.snapshotsTreeView.didResize();
+        if (this.visualizations.tree.isActive) {
+            this.visualizations.tree.didResize();
         }
         this.editorView.didResize();
     },
@@ -358,39 +347,45 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     toggleTimeline: function () {
 
-        $('#toggleTimeline').toggleClass('active');
+        $(this.visualizations.timeline.buttonSelector).toggleClass('active');
 
-        this.snapshotsTimelineView.toggle();
+        this.visualizations.timeline.toggle();
 
-        if (this.snapshotsTreeView.isActive && this.snapshotsTimelineView.isActive) {
+        if (this.visualizations.tree.isActive && this.visualizations.timeline.isActive) {
             this.toggleTree();
-        } else {
-            this.updateVisualizations(this.collection.indexOf(this.model), this.file.get('name'));
         }
+
+        if (this.visualizations.timeline.isActive) {
+            this.visualizations.timeline.update(this.collection, this.collection.indexOf(this.model), this.file.get('name'), this.courseRoute);
+        }
+
     },
 
     toggleTree: function () {
 
-        $('#toggleTree').toggleClass('active');
+        $(this.visualizations.tree.buttonSelector).toggleClass('active');
 
-        this.snapshotsTreeView.toggle();
+        this.visualizations.tree.toggle();
 
-        if (this.snapshotsTreeView.isActive && this.snapshotsTimelineView.isActive) {
+        if (this.visualizations.tree.isActive && this.visualizations.timeline.isActive) {
             this.toggleTimeline();
-        } else {
-            this.updateVisualizations(this.collection.indexOf(this.model), this.file.get('name'));
         }
+
+        if (this.visualizations.tree.isActive) {
+            this.visualizations.tree.update(this.collection, this.collection.indexOf(this.model), this.file.get('name'), this.courseRoute);
+        }
+
     },
 
     toggleData: function () {
 
-        $('#toggleData').toggleClass('active');
+        $(this.visualizations.data.buttonSelector).toggleClass('active');
 
-        this.snapshotsDataView.toggle();
+        this.visualizations.data.toggle();
 
         // Update Data view
-        if (this.snapshotsDataView.isActive) {
-            this.snapshotsDataView.update(
+        if (this.visualizations.data.isActive) {
+            this.visualizations.data.update(
                 this.collection,
                 this.collection.indexOf(this.model)
             );
@@ -399,13 +394,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     toggleConcepts: function () {
 
-        $('#toggleConcepts').toggleClass('active');
+        $(this.visualizations.data.buttonSelector).toggleClass('active');
 
-        this.snapshotsConceptsView.toggle();
+        this.visualizations.concepts.toggle();
 
         // Update Concepts view
-        if (this.snapshotsConceptsView.isActive) {
-            this.snapshotsConceptsView.update(this.model);
+        if (this.visualizations.concepts.isActive) {
+            this.visualizations.concepts.update(this.model);
         }
     },
 

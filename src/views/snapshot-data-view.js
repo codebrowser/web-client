@@ -3,11 +3,10 @@ codebrowser.view.SnapshotsDataView = Backbone.View.extend({
     id: 'snapshots-data-container',
     template: Handlebars.templates.SnapshotDataContainer,
 
-    isActive: false,
+    isActive: Utils._getLocalStorageValue('showData', true) === 'true',
  
     initialize: function (options) {
 
-        this.isActive = Utils._getLocalStorageValue('showData', true) === 'true';
         this.parentView = options.parentView;
 
     },

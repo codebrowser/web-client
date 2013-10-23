@@ -10,7 +10,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
     },
 
-    isActive: false,
+    isActive: Utils._getLocalStorageValue('showTree', false) === 'true',
 
     /* Absolute width */
     width: 0,
@@ -31,8 +31,6 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
     /* Initialise */
     initialize: function (options) {
-
-        this.isActive = Utils._getLocalStorageValue('showTree', false) === 'true';
 
         this.parentView = options.parentView;
 

@@ -2,11 +2,9 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
     id: 'snapshots-concepts-container',
 
-    isActive: false,
+    isActive: Utils._getLocalStorageValue('showConcepts', false) === 'true',
 
     initialize: function() {
-
-        this.isActive = localStorage.getItem('showConcepts') === 'true';
 
         _.bindAll(this, 'render');
 
@@ -53,6 +51,7 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
         this.collection.fetch({
 
             success: this.render
+
         });
     },
 
