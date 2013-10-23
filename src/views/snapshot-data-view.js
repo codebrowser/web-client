@@ -2,9 +2,25 @@ codebrowser.view.SnapshotsDataView = Backbone.View.extend({
  
     id: 'snapshots-data-container',
     template: Handlebars.templates.SnapshotDataContainer,
+
+    isActive: false,
  
     initialize: function (options) {
+
+        this.isActive = Utils._getLocalStorageValue('showData', true) === 'true';
         this.parentView = options.parentView;
+
+    },
+
+    toggle: function() {
+
+        this.isActive = !this.isActive;
+
+        // Store state
+        localStorage.setItem('showData', this.isActive);
+
+        this.$el.slideToggle();
+
     },
  
     render: function () {
@@ -24,6 +40,7 @@ codebrowser.view.SnapshotsDataView = Backbone.View.extend({
         this.collection = collection;
         this.index = index;
         this.render();
-    },
+    }
+
 });
 

@@ -2,7 +2,11 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
     id: 'snapshots-concepts-container',
 
+    isActive: false,
+
     initialize: function() {
+
+        this.isActive = localStorage.getItem('showConcepts') === 'true';
 
         _.bindAll(this, 'render');
 
@@ -20,6 +24,17 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
             this.paper.clear();
             this._renderBarChart();
         }
+    },
+
+    toggle: function() {
+
+        this.isActive = !this.isActive;
+
+        // Store state
+        localStorage.setItem('showTimeline', this.isActive);
+
+        this.$el.slideToggle();
+
     },
 
     update: function (snapshot) {

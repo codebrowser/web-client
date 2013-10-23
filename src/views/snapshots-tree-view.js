@@ -10,23 +10,18 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
     },
 
-    /* Absolute width */
+    isActive: false,
 
+    /* Absolute width */
     width: 0,
 
     /* X-coordinates of all snapshots */
-
     snapshotPositions: [],
 
     /* Pointer */
-
     pointerSetOffsetX: 0,
 
-    /* Scroll */
-
     scroll: null,
-
-    /* Dragging */
 
     dragging: false,
 
@@ -35,8 +30,9 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
     filenameContainer: null,
 
     /* Initialise */
-
     initialize: function (options) {
+
+        this.isActive = Utils._getLocalStorageValue('showTree', false) === 'true';
 
         this.parentView = options.parentView;
 
@@ -65,6 +61,17 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
         // Bottom container
         this.bottomContainer = $('<div>');
         this.$el.append(this.bottomContainer);
+    },
+
+    toggle: function() {
+
+        this.isActive = !this.isActive;
+
+        // Store state
+        localStorage.setItem('showTree', this.isActive);
+
+        this.$el.slideToggle();
+
     },
 
     getViewX: function () {

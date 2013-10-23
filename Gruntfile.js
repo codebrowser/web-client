@@ -65,6 +65,7 @@ module.exports = function (grunt) {
                     'src/routers/*.js',
                     'src/raphael/*.js'],
                 dest: 'static/assets/js/codebrowser.js',
+
                 options: {
 
                     separator: ';\n\n'
