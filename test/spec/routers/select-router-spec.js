@@ -2,22 +2,26 @@ describe('Select router', function () {
 
 	beforeEach(function () {
 
+        createFakeServer({
+            'courses/-9999': 404
+        });
+
         Backbone.history.stop();
     });
 
     it('catches an non-existent URL', function () {
 
-        spyOn(codebrowser.router.ExerciseRouter.prototype, 'notFound');
+        spyOn(codebrowser.router.SelectRouter.prototype, 'notFound');
 
-        var router = new codebrowser.router.ExerciseRouter();
+        var router = new codebrowser.router.SelectRouter();
 
         Backbone.history.start();
         router.navigate('#/courses/-9999/');
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
-            expect(codebrowser.router.ExerciseRouter.prototype.notFound).toHaveBeenCalled();
+            expect(codebrowser.router.SelectRouter.prototype.notFound).toHaveBeenCalled();
         });
     });
 

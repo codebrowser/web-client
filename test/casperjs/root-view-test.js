@@ -2,7 +2,7 @@ casper.test.begin('Root view', 4, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
-        casper.evaluate(casper.fakeServer, {});
+        casper.evaluate(createFakeServer, {});
     });
 
     casper.then(function() {

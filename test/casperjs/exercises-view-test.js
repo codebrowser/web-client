@@ -2,7 +2,7 @@ casper.test.begin('Exercises view (course exercises)', 13, function suite(test) 
 
     casper.start('http://localhost:8000', function() {
 
-        casper.evaluate(casper.fakeServer, {
+        casper.evaluate(createFakeServer, {
             'courses': [
                 {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
                 {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
@@ -112,7 +112,7 @@ casper.test.begin('Exercises view (student-course exercises)', 6, function suite
 
     casper.start('http://localhost:8000', function() {
 
-        casper.evaluate(casper.fakeServer, {
+        casper.evaluate(createFakeServer, {
             'courses/11':
                 {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
 
@@ -182,7 +182,7 @@ casper.test.begin('Exercises view (course-student exercises)', 6, function suite
 
     casper.start('http://localhost:8000', function() {
 
-        casper.evaluate(casper.fakeServer, {
+        casper.evaluate(createFakeServer, {
             'courses': [
                 {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
                 {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}

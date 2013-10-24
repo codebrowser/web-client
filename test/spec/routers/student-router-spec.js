@@ -2,6 +2,16 @@ describe('Student router', function () {
 
     beforeEach(function () {
 
+        createFakeServer({
+            'courses/1': 404,
+            'courses/1/exercises/3/students': 404,
+            'courses/3': 404,
+            'students': [],
+            'courses/662': 404,
+            'courses/3/exercises/-6666/students': 404,
+            'courses/662/exercises/815/students': 404,
+        });
+
         Backbone.history.stop();
     });
 
@@ -63,7 +73,7 @@ describe('Student router', function () {
         Backbone.history.start();
         router.navigate('#/courses/3/exercises/-6666/students');
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.router.StudentRouter.prototype.notFound).toHaveBeenCalled();
@@ -79,7 +89,7 @@ describe('Student router', function () {
         Backbone.history.start();
         router.navigate('#/courses/3/exercises/-6666/students', true);
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();
@@ -95,7 +105,7 @@ describe('Student router', function () {
         Backbone.history.start();
         router.navigate('#/courses/662/exercises/815/students', true);
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();

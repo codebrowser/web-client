@@ -2,7 +2,7 @@ casper.test.begin('Tags view', 16, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
-        casper.evaluate(casper.fakeServer, {
+        casper.evaluate(createFakeServer, {
             'tagnames': [
                 {id: 61, name: 't1', tags: [{}]},
                 {id: 62, name: 't2', tags: [{}, {}, {}]},

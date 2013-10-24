@@ -2,6 +2,18 @@ describe('TagRouter router', function () {
 
     beforeEach(function () {
 
+        createFakeServer({
+
+            'tagnames/snapshots': [],
+            'tagnames/exerciseanswers': [],
+            'tagnames/5': 404,
+            'tagnames/5/tags': 404,
+            'tagnames/-55': 404,
+            'tagnames/-55/tags': 404,
+            'tagnames/4': 404,
+            'tagnames/4/tags': 404,
+        });
+
         Backbone.history.stop();
     });
 
@@ -50,7 +62,7 @@ describe('TagRouter router', function () {
         Backbone.history.start();
         router.navigate('#/tagnames/-55/tags');
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.router.TagRouter.prototype.notFound).toHaveBeenCalled();
@@ -66,7 +78,7 @@ describe('TagRouter router', function () {
         Backbone.history.start();
         router.navigate('#/tagnames/4/tags', true);
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();

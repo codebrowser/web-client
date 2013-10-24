@@ -1,6 +1,7 @@
 {
     "asi": true,
     "boss": true,
+    "browser": true,
     "camelcase": true,
     "curly": true,
     "eqeqeq": true,
@@ -10,6 +11,7 @@
     "indent": 4,
     "jquery": true,
     "newcap": true,
+    "node": true,
     "quotmark": "single",
     "trailing": true,
     "undef": true,
@@ -17,25 +19,13 @@
 
     "globals": {
 
-        "ace": true,
         "afterEach": true,
         "Backbone": true,
         "beforeEach": true,
-        "codebrowser": true,
         "config": true,
-        "createFakeServer": true,
-        "describe": true,
-        "document": true,
-        "expect": true,
-        "Handlebars": true,
-        "it": true,
         "jasmine": true,
-        "localStorage": true,
-        "runs": true,
         "sinon": true,
-        "spyOn": true,
-        "waits": true,
-        "waitsFor": true
+        "casper": true
 
     }
 }

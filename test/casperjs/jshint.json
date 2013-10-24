@@ -19,10 +19,9 @@
 
         "casper": true,
         "config": true,
-        "localStorage": true,
+        "createFakeServer": true,
         "Backbone": true,
         "RegExp": true,
-        "sinon": true,
         "$": true
 
     }
