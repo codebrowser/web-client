@@ -1049,6 +1049,14 @@ table.double-list {
     font-size: 12px;
     line-height: normal;
     color: #6d8089;
+    text-align: center;
+
+}
+
+#snapshots-concepts-container .bubble {
+
+    margin-left: auto;
+    margin-right: auto;
 
 }
 

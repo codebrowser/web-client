@@ -4,24 +4,17 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
     isActive: Utils._getLocalStorageValue('showConcepts', false) === 'true',
 
+    diameter: null,
+    format: null,
+    color: null,
+    node: null,
+
     initialize: function() {
 
-        _.bindAll(this, 'render');
+        this.diameter = 400;
+        this.format = d3.format(',d');
+        this.color = d3.scale.category20c();
 
-        this.paper = new Raphael(this.el, '100%', 200);
-    },
-
-    /* Render */
-
-    render: function () {
-
-        if (this.collection) {
-
-            this.collection.sort();
-
-            this.paper.clear();
-            this._renderBarChart();
-        }
     },
 
     toggle: function() {
@@ -29,14 +22,14 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
         this.isActive = !this.isActive;
 
         // Store state
-        localStorage.setItem('showTimeline', this.isActive);
+        localStorage.setItem('showConcepts', this.isActive);
 
         this.$el.slideToggle();
 
     },
 
     update: function (snapshot) {
-
+        var self = this;
         var options = {
 
             studentId : snapshot.get('studentId'),
@@ -50,71 +43,149 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
         this.collection.fetch({
 
-            success: this.render
+            success: function() {
+
+                if (self.node === null) {
+                    self.render(parseData(self.collection.toJSON()));
+
+                }
+                else {
+                    console.log('refreshing');
+                    self.refresh(parseData(self.collection.toJSON()));
+                }
+            }
 
         });
     },
 
-    _renderBarChart: function () {
+    render: function(concepts) {
 
-        var canvasHeight = this.paper.canvas.offsetHeight;
+        var diameter = this.diameter;
+        var color = this.color;
+        var format = this.format;
 
-        var rowHeight = Math.min( Math.floor(canvasHeight / (this.collection.size() * 1.5)), 120);
+        this.pack = d3.layout.pack()
+            .sort(null)
+            .size([diameter, diameter])
+            .padding(1.5);
 
-        for (var i = 0; i < this.collection.size(); i++) {
+        this.svg = d3.select('#' + this.id).append('svg')
+            .attr('width', diameter)
+            .attr('height', diameter)
+            .attr('class', 'bubble');
 
-            var concept = this.collection.at(i);
 
-            var x = 0;
-            var y = i * 1.5 * rowHeight;
-            var w = this._scaleToCanvasWidth( concept.get('size') );
-            var h = rowHeight;
+        this.node = this.svg.selectAll('.node')
+            .data(this.pack.nodes(concepts))
+            .enter().append('g')
+            .attr('class', 'node')
+            .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
 
-            this._drawBar(concept, x, y, w, h);
-        }
+        this.node.append('title')
+            .text(function(d) {
+                if (d.name === undefined) {
+                    return 'Concepts'
+                }
+                return d.name + ': ' + format(d.value);
+            });
+
+        this.node.append('circle')
+            .style('opacity', function(d) {
+                if (d.name === undefined) {
+                    return 0;
+                }
+                return 1;
+            })
+            .attr('r', 0)
+            .transition()
+            .duration(2000)
+            .attr('r', function(d) { return d.r; })
+            .style('fill', function(d) { return color(d.name); });
+
+        this.node.append('text')
+            .attr('dy', '.3em')
+            .style('text-anchor', 'middle')
+            .text(function(d) { return d.name });
+
     },
 
-    _drawBar: function (concept, x, y, w, h) {
+    refresh: function(concepts) {
 
-        var bar = this.paper.rect(x, y, 0, h);
-        $(bar.node).attr('class', 'concept-bar');
+        var format = this.format;
+        var color = this.color;
 
-        bar.animate({
+        this.node = this.svg.selectAll('.node')
+            .data(this.pack.nodes(concepts));
 
-            width: w
-        }, 250);
+        var g = this.node.enter().append('g')
+            .attr('class', 'node')
+            .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
 
-        var textCssClass = 'concept-bar-text';
+        g.append('title')
+            .text(function(d) {
+                if (d.name === undefined) {
+                    return 'Concepts'
+                }
+                return d.name + ': ' + format(d.value);
+            });
 
-        var labelText = concept.get('name');
-        var label = this.paper.text(x + (this._getTextWidth(labelText, textCssClass) / 2), y + ( h / 2), labelText);
-        $(label.node).attr('class', textCssClass);
+        g.append('circle')
+            .style('fill', function(d) { return color(d.name); })
+            .attr('r', 0)
+            .transition()
+            .duration(2000)
+            .transition()
+            .duration(2000)
+            .attr('r', function(d) { return d.r; });
 
-        var sizeText = concept.get('size');
-        var size = this.paper.text(x + w + (this._getTextWidth(sizeText, textCssClass) / 2), y + (h / 2), sizeText);
-        $(size.node).attr('class', textCssClass);
-    },
+        g.append('text')
+            .attr('dy', '.3em')
+            .style('text-anchor', 'middle')
+            .text(function(d) { return d.name })
+            .style('opacity', 0)
+            .transition()
+            .duration(2000)
+            .style('opacity', 1);
 
-    _getTextWidth: function(text, cssClass) {
+        this.node.transition()
+            .duration(2000)
+            .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
 
-        var textTemp = this.paper.text(0, 0, text);
-        $(textTemp.node).attr('class', cssClass);
+        this.node.select('circle')
+            .transition()
+            .duration(2000)
+            .attr('r', function(d) { return d.r; });
 
-        var textWidth = textTemp.getBBox().width;
+        this.node.exit().selectAll('circle')
+            .transition()
+            .duration(2000)
+            .attr('r', 0)
+            .remove();
 
-        textTemp.remove();
+        this.node.exit().selectAll('text')
+            .transition()
+            .duration(1000)
+            .style('opacity', 0);
 
-        return textWidth;
-    },
+        this.node.exit().transition().delay(2000).remove();
 
-    _scaleToCanvasWidth : function(x) {
 
-        var widthMax = this.paper.canvas.offsetWidth - 25;
-        var widthMin = 100;
-
-        var sizeMax = this.collection.getMaxSize();
-        var sizeMin = 0;
-
-        return ( ((widthMax - widthMin) * (x - sizeMin)) / (sizeMax - sizeMin) ) + widthMin;
     }
+
 });
+
+function parseData(data) {
+
+    data.forEach(function(element) {
+
+        element.value = parseInt(element.size, 10);
+
+    });
+
+    return { children: data };
+}
+
+
+
+
+

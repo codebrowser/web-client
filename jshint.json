@@ -30,7 +30,8 @@
         "moment": true,
         "Raphael": true,
         "Spinner": true,
-        "Utils": true
+        "Utils": true,
+        "d3": true
 
     }
 }

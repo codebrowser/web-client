@@ -224,6 +224,7 @@ module.exports = function (grunt) {
             options: {
 
                 vendor: ['static/assets/js/jquery-2.0.0.min.js',
+                    'static/assets/js/d3.v3.min.js',
                     'static/assets/js/moment.min.js',
                     'static/assets/js/underscore-min.js',
                     'static/assets/js/backbone-min.js',
