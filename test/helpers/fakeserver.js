@@ -8,15 +8,11 @@ var createFakeServer = function(mockData) {
     var server = sinon.fakeServer.create();
     server.autoRespond = true;
 
-    // Make sure each test run starts from clean state.
-    localStorage.clear();
-
-    // Ugly hack for clearing backbone cache.
-    Backbone.fetchCache._cache = {};
-
     for (var path in mockData) {
+
         // Match URLs that have same root and path and optional query string in the end.
-        var urlRegEx = new RegExp(config.api.main.root + path + '(\\?.*)?$');
+        var prefix = path.indexOf('http://') !== -1 ? '' : config.api.main.root;
+        var urlRegEx = new RegExp(prefix + path + '(\\?.*)?$');
         var contentType = typeof mockData[path] === 'string' ? 'text/plain' : 'application/json';
         var code = typeof mockData[path] === 'number' ? mockData[path] : 200;
         server.respondWith(urlRegEx, [code, { 'Content-Type': contentType }, JSON.stringify(mockData[path])]);
@@ -24,6 +20,7 @@ var createFakeServer = function(mockData) {
 
     // Prints a warning if request doesn't match any registered paths.
     server.respondWith(function(req) {
+
         console.error('No mock data for request: ' + JSON.stringify(req));
         req.respond(404, {}, '');
     });
@@ -35,10 +32,13 @@ if (typeof casper !== 'undefined') {
     /* Redirects casperjs's browser console to main console. */
     casper.on('remote.message', console.log.bind(console));
 
-    /* Injects sinon's code into casperjs's browser. */
     casper.on('page.initialized', function() {
 
+        /* Injects sinon's code into casperjs's browser. */
         casper.page.injectJs('./node_modules/sinon/pkg/sinon-1.7.3.js');
+
+        // Make sure each test run starts from clean state (no backbone cache etc).
+        casper.evaluate(function() { localStorage.clear(); });
     });
 }
 
