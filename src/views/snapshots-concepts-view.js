@@ -50,7 +50,6 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
                 }
                 else {
-                    console.log('refreshing');
                     self.refresh(parseData(self.collection.toJSON()));
                 }
             }
@@ -113,16 +112,14 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
     refresh: function(concepts) {
 
-        console.table(concepts.children);
-
         var format = this.format;
         var color = this.color;
 
-        this.node = this.svg.selectAll('.node')
+        var node = this.svg.selectAll('.node')
             .data(this.pack.nodes(concepts), function(d) { return d.name });
 
         // new concepts
-        var g = this.node.enter().append('g')
+        var g = node.enter().append('g')
             .attr('class', 'node')
             .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
 
@@ -153,11 +150,11 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
             .style('opacity', 1);
 
         // updates
-        this.node.transition()
+        node.transition()
             .duration(1000)
             .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
 
-        this.node.select('title')
+        node.select('title')
             .text(function(d) {
                 if (d.name === undefined) {
                     return 'Concepts'
@@ -165,29 +162,30 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
                 return d.name + ': ' + format(d.value);
             });
 
-        this.node.select('circle')
+        node.select('circle')
             .transition()
             .duration(1000)
             .attr('r', function(d) { return d.r; });
 
-        this.node.select('text')
+        node.select('text')
             .text(function(d) { return d.name });
 
 
         // removals
-        this.node.exit().selectAll('circle')
+        node.exit().selectAll('circle')
             .transition()
             .duration(1000)
             .attr('r', 0)
             .remove();
 
-        this.node.exit().selectAll('text')
+        node.exit().selectAll('text')
             .transition()
             .duration(500)
             .style('opacity', 0);
 
-        this.node.exit().transition().delay(1000).remove();
+        node.exit().transition().delay(1000).remove();
 
+        this.node = node;
 
     }
 
