@@ -76,12 +76,14 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
 
         this.node = this.svg.selectAll('.node')
-            .data(this.pack.nodes(concepts))
+            .data(this.pack.nodes(concepts));
+
+        var g = this.node
             .enter().append('g')
             .attr('class', 'node')
             .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
 
-        this.node.append('title')
+        g.append('title')
             .text(function(d) {
                 if (d.name === undefined) {
                     return 'Concepts'
@@ -89,7 +91,7 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
                 return d.name + ': ' + format(d.value);
             });
 
-        this.node.append('circle')
+        g.append('circle')
             .style('opacity', function(d) {
                 if (d.name === undefined) {
                     return 0;
@@ -102,7 +104,7 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
             .attr('r', function(d) { return d.r; })
             .style('fill', function(d) { return color(d.name); });
 
-        this.node.append('text')
+        g.append('text')
             .attr('dy', '.3em')
             .style('text-anchor', 'middle')
             .text(function(d) { return d.name });
@@ -111,12 +113,15 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
     refresh: function(concepts) {
 
+        console.table(concepts.children);
+
         var format = this.format;
         var color = this.color;
 
         this.node = this.svg.selectAll('.node')
-            .data(this.pack.nodes(concepts));
+            .data(this.pack.nodes(concepts), function(d) { return d.name });
 
+        // new concepts
         var g = this.node.enter().append('g')
             .attr('class', 'node')
             .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
@@ -144,30 +149,44 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
             .text(function(d) { return d.name })
             .style('opacity', 0)
             .transition()
-            .duration(2000)
+            .duration(1000)
             .style('opacity', 1);
 
+        // updates
         this.node.transition()
-            .duration(2000)
+            .duration(1000)
             .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+
+        this.node.select('title')
+            .text(function(d) {
+                if (d.name === undefined) {
+                    return 'Concepts'
+                }
+                return d.name + ': ' + format(d.value);
+            });
 
         this.node.select('circle')
             .transition()
-            .duration(2000)
+            .duration(1000)
             .attr('r', function(d) { return d.r; });
 
+        this.node.select('text')
+            .text(function(d) { return d.name });
+
+
+        // removals
         this.node.exit().selectAll('circle')
             .transition()
-            .duration(2000)
+            .duration(1000)
             .attr('r', 0)
             .remove();
 
         this.node.exit().selectAll('text')
             .transition()
-            .duration(1000)
+            .duration(500)
             .style('opacity', 0);
 
-        this.node.exit().transition().delay(2000).remove();
+        this.node.exit().transition().delay(1000).remove();
 
 
     }
@@ -180,6 +199,18 @@ function parseData(data) {
 
         element.value = parseInt(element.size, 10);
 
+    });
+
+    data.sort(function(a, b) {
+        if (a.name > b.name) {
+            return 1;
+        }
+        else if (a.name < b.name) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
     });
 
     return { children: data };
