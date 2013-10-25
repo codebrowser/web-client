@@ -132,6 +132,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             return;
         }
 
+
         this.differences = [];
 
         var self = this;
@@ -144,7 +145,23 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
             callback(self.differences);
         });
 
-        this.each(function (snapshot, index) {
+        if(this.at(0).get('files').models[0].attributes.diffs) {
+            
+            this.getDifferencesFromBackend(this);
+            callback(self.differences);
+            
+        }
+
+        else {
+
+            this.getDifferencesFromFrontend(this, snapshotsSynced);
+        
+        }
+    },
+
+    getDifferencesFromFrontend: function (self, snapshotsSynced) {
+
+        self.each(function (snapshot, index) {
 
             var previousSnapshot = self.at(index - 1);
 
@@ -219,7 +236,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                         }
 
                         // Create difference
-                        var difference = new codebrowser.model.Diff(previousContent, context.currentFile.getContent());
+                        var difference = new codebrowser.model.Diff(previousContent, context.currentFile.getContent(), null);
 
                         // Count how many lines were in snapshot's files overall and how many lines of them changed
                         self.differences[snapshotIndex].total += difference.getCount().total();
@@ -267,8 +284,54 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         });
     },
 
-    getFiles: function()
-    {
+    getDifferencesFromBackend: function (self) {
+            
+        this.each(function (snapshot, index) {
+
+            // Divide diffs by snapshot indexes
+            if (!self.differences[index]) {
+
+                self.differences[index] = {
+
+                    total: 0,
+                    lines: 0
+
+                }
+            }
+
+            var files = snapshot.get('files');
+
+
+            // Calculate differences for every file of each snapshot
+            files.each(function (file, i) {
+
+                var filename = file.get('name');
+
+                // Create namespace for every file name
+                if (!self.differences[index].filename) {
+                    self.differences[index][filename] = null;
+                }
+
+                var backendFile = self.at(index).get('files').models[i].attributes.diffs;
+
+                // Count how many lines were in snapshot's files overall and how many lines of them changed
+                self.differences[index].total += backendFile.total;
+                self.differences[index].lines += file.lines(backendFile.lines);
+
+                var difference = new codebrowser.model.Diff(null, null, backendFile);
+
+                self.differences[index][filename] = difference;
+                    
+            });
+        });
+
+        // Diffed last file of last snapshot, return diffs
+        self.differencesDone = true;
+        
+    },
+
+    getFiles: function() {
+
         var files = [];
 
         this.each(function (snapshot) {

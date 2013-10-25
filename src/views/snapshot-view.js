@@ -261,7 +261,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
 
         // Update editor
-        this.editorView.update(previousFile || this.file, this.file);
+        var backendFile = this.collection.at(index).get('files').findWhere({ name: filename }).attributes.diffs;
+        this.editorView.update(previousFile || this.file, this.file, backendFile);
 
         // Update browser
         this.snapshotBrowserView.update(this.model, this.file, this.courseRoute);
