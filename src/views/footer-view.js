@@ -22,10 +22,8 @@ codebrowser.view.FooterView = Backbone.View.extend({
 
         var apiUrl = $('#apiUrl').val();
         localStorage.removeItem('backboneCache');
-        config.api.main.root = apiUrl;
         localStorage.setItem('config.apiUrl', apiUrl);
-        $('#settings-modal').modal('toggle');
-        Backbone.history.navigate('#/');
+        location.href = '.';
 
     }
 });

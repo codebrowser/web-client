@@ -8,13 +8,7 @@ casper.test.begin('API URL setting', 17, function suite(test) {
                 {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
             ],
 
-            'students': [],
-
-            'http://new.api.url/path/to/courses': [
-                {id: 12, name: 'course 2b', exercises: [{}, {}], amountOfStudents: 6},
-                {id: 13, name: 'course 3', exercises: [{}, {}], amountOfStudents: 7},
-                {id: 14, name: 'course 4', exercises: [{}], amountOfStudents: 8}
-            ],
+            'students': []
         });
     });
 
@@ -66,17 +60,31 @@ casper.test.begin('API URL setting', 17, function suite(test) {
     casper.then(function() {
 
         this.echo('Saving');
+        config.test.casperjs.clearLocalStorage = false;
         this.clickLabel('Save', 'button');
         this.waitForSelector('#root-container');
-        //this.waitWhileVisible('#settings-modal');
     });
 
     casper.then(function() {
 
+        // Create fake server again because save causes page reload.
+        casper.evaluate(createFakeServer, {
+            'http://new.api.url/path/to/courses': [
+                {id: 12, name: 'course 2b', exercises: [{}, {}], amountOfStudents: 6},
+                {id: 13, name: 'course 3', exercises: [{}, {}], amountOfStudents: 7},
+                {id: 14, name: 'course 4', exercises: [{}], amountOfStudents: 8}
+            ],
+
+            'students': []
+        });
+    });
+
+    casper.then(function() {
+
+        config.test.casperjs.clearLocalStorage = true;
         function getRoot() { return config.api.main.root; }
         test.assertEquals(casper.evaluate(getRoot), 'http://new.api.url/path/to/', 'config has new API URL');
-        //test.assertNotVisible('#settings-modal', 'settings dialog is not visible');
-        test.assertUrlMatch(new RegExp('/#/$'), 'client has root view URL');
+        test.assertUrlMatch(new RegExp('http://localhost:8000/$'), 'client has root view URL');
     });
 
     casper.then(function() {

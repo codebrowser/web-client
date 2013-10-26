@@ -274,7 +274,7 @@ module.exports = function (grunt) {
 
             files: ['test/casperjs/tests-concat.js'],
             options: {
-                includes: ['test/helpers/fakeserver.js'],
+                includes: ['test/config/config.js', 'test/helpers/fakeserver.js'],
                 xunit: 'test_out/casperjs_report.xml'
             }
 

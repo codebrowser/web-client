@@ -21,8 +21,7 @@ var createFakeServer = function(mockData) {
     // Prints a warning if request doesn't match any registered paths.
     server.respondWith(function(req) {
 
-        console.error('No mock data for request: ' + JSON.stringify(req));
-        req.respond(404, {}, '');
+        throw new Error('No mock data for request: '  + JSON.stringify(req.url));
     });
 };
 
@@ -32,13 +31,44 @@ if (typeof casper !== 'undefined') {
     /* Redirects casperjs's browser console to main console. */
     casper.on('remote.message', console.log.bind(console));
 
+    casper.options.waitTimeout = config.test.async.timeout;
+    casper.options.verbose = true;
+
+    var hasErrors;
+
+    casper.on('page.error', function (msg) {
+
+        hasErrors = true;
+        casper.warn(msg);
+    });
+
     casper.on('page.initialized', function() {
 
         /* Injects sinon's code into casperjs's browser. */
         casper.page.injectJs('./node_modules/sinon/pkg/sinon-1.7.3.js');
 
         // Make sure each test run starts from clean state (no backbone cache etc).
-        casper.evaluate(function() { localStorage.clear(); });
+        if (config.test.casperjs.clearLocalStorage) {
+
+            casper.evaluate(function() { localStorage.clear(); });
+        }
+    });
+
+    casper.on('run.start', function() {
+
+        hasErrors = false;
+    });
+
+    casper.on('run.complete', function() {
+
+        if (hasErrors) {
+            casper.test.fail('Page has no script errors.');
+        }
+    });
+
+    casper.on('load.finished', function() {
+
+        casper.evaluate(createFakeServer, {});
     });
 }
 
