@@ -70,7 +70,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         visualizations.timeline = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
         visualizations.tree = new codebrowser.view.SnapshotsTreeView({ parentView: this });
         visualizations.data = new codebrowser.view.SnapshotsDataView({ parentView: this });
-        visualizations.concepts = new codebrowser.view.SnapshotsConceptsView();
+        visualizations.concepts = new codebrowser.view.SnapshotsConceptsView({ parentView: this });
 
         visualizations.timeline.buttonSelector = '#toggleTimeline';
         visualizations.tree.buttonSelector = '#toggleTree';

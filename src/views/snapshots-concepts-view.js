@@ -32,8 +32,6 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
     },
 
     update: function (snapshot) {
-        console.time('update')
-
         var self = this;
         var options = {
 
@@ -49,7 +47,6 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
         this.collection.fetch({
 
             success: function() {
-                console.timeEnd('update');
 
                 self.concepts = Utils.parseConceptData(self.collection.toJSON());
 

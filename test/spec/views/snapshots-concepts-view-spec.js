@@ -1,10 +1,10 @@
-describe('Snapshots concepts view', function () {
+describe('Snapshots timeline view', function () {
 
-    var snapshotConceptsView = new codebrowser.view.SnapshotsConceptsView();
+    var snapshotsConceptsView = new codebrowser.view.SnapshotsConceptsView({ parentView: 'test' });
 
     it('should have correct id', function () {
 
-        expect(snapshotConceptsView.id).toEqual('snapshots-concepts-container');
+        expect(snapshotsConceptsView.id).toEqual('snapshots-concepts-container');
     });
 
 });
