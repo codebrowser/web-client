@@ -4,6 +4,11 @@
 
         <li><a href='./'>Home</a> <span class='divider'>/</span></li>
 
+        {{#if tagCategory}}
+            <li><a href='/#/tagcategories'>Tag categories</a><span class='divider'>/</span></li>
+            <li><a href='/#/tagcategories/{{tagCategory.id}}/tagnames'>{{tagCategory.name}}</a><span class='divider'>/</span></li>
+        {{/if}}
+
         <li class='active'>Tags</li>
 
     </ul>

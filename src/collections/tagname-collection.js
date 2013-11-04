@@ -4,6 +4,26 @@ codebrowser.collection.TagNameCollection = Backbone.Collection.extend({
 
     url: function () {
 
+        /* Fetch tags by tag category */
+        if (this.tagCategoryId) {
+
+            if (this.onlySnapshotTags) {
+
+                return config.api.main.root + 'tagcategories/' + this.tagCategoryId + '/tagnames/snapshots';
+            }
+
+            if (this.onlyExerciseAnswerTags) {
+
+                return config.api.main.root + 'tagcategories/' + this.tagCategoryId + '/tagnames/exercises';
+            }
+
+            if (this.unusedTags) {
+
+                return config.api.main.root + 'tagcategories/' + this.tagCategoryId + '/tagnames/unused';
+            }
+
+        }
+
         /* Only tag names used by snapshot tags */
         if (this.onlySnapshotTags) {
 
@@ -26,6 +46,8 @@ codebrowser.collection.TagNameCollection = Backbone.Collection.extend({
 
             this.onlySnapshotTags = options.onlySnapshotTags;
             this.onlyExerciseAnswerTags = options.onlyExerciseAnswerTags;
+            this.tagCategoryId = options.tagCategoryId;
+            this.unusedTags = options.unusedTags;
         }
     }
 });

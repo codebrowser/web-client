@@ -15,6 +15,10 @@ codebrowser.view.TagsView = Backbone.View.extend({
 
         }
 
+        if (this.tagCategory) {
+            attributes = _.extend(attributes, { tagCategory: this.tagCategory.toJSON() });
+        }
+
         // Template
         var output = this.template(attributes);
 

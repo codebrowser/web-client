@@ -25,7 +25,7 @@ codebrowser.model.Diff = function (previousContent, content, differencesFromBack
 
     }
 
-    
+
 
     this.createOperation = function (type, fromRowStart, fromRowEnd, toRowStart, toRowEnd) {
 
@@ -38,9 +38,6 @@ codebrowser.model.Diff = function (previousContent, content, differencesFromBack
 
         return newOperation;
     }
-
-
-
 
     this.createBackendDifference = function (differencesFromBackend, differences, count) {
 
@@ -65,7 +62,7 @@ codebrowser.model.Diff = function (previousContent, content, differencesFromBack
             else if (diff.type === 'delete') {
                 differences['delete'].push(diff);
             }
-            
+
         }
     }
 
@@ -246,7 +243,7 @@ codebrowser.model.Diff = function (previousContent, content, differencesFromBack
         }
     }
 
-    
+
     if (differencesFromBackend) {
         this.createBackendDifference(differencesFromBackend, differences, count);
     }

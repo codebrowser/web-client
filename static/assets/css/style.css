@@ -1122,7 +1122,6 @@ table.double-list {
 
 }
 
-
 /* Comments view */
 
 #comments-container article {
@@ -1213,4 +1212,49 @@ table.double-list {
 #comments-container article a {
 
     margin: 12px 0 0 12px;
+
+}
+
+/* Tag categories */
+
+#unused-tags-container {
+    margin-left: 30px;
+    width: 200px;
+    display: block;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    position: absolute;
+    background-color: white;
+    z-index: 10;
+    display: inline;
+    padding: 2px 5px;
+}
+
+#unused-tags-container .toggle-add {
+    width: 45px;
+    height: 10px;
+    float: left;
+    padding: 5px;
+    font-size: 10px;
+    line-height: 10px;
+}
+
+#unused-tags-container .toggle-add.open:before {
+    content: "CLOSE";
+}
+
+#unused-tags-container .toggle-add.close:before {
+    content: "OPEN";
+}
+
+#unused-tags-container .tags {
+    display: none;
+    overflow-y: scroll;
+    clear: both;
+    max-height: 350px;
+}
+
+#unused-tags-container .btn {
+    display: block;
+    margin: 5px 0;
+
 }

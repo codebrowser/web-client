@@ -1,0 +1,51 @@
+
+<ul class='breadcrumb'>
+
+    <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+    <li>Tag categories</li>
+
+</ul>
+
+<h2>Tag categories ({{tagCategories.length}})</h2>
+
+<div class='input-append'>
+
+    <form>
+
+        <input type='text' data-id='category' placeholder='New tag category…'>
+
+        <button title='Add new tag category' type='submit' data-action='create-category' class='btn'>+</button>
+
+    </form>
+
+</div>
+
+<table class='table table-hover'>
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Tag category</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {{#tagCategories}}
+
+            <tr>
+
+                <td class='index'>{{index @index}}</td>
+
+                <td class='link'><a href='./#/tagcategories/{{id}}/tagnames'>{{name}}</a></td>
+
+                <td>{{tagnames.length}}</a></td>
+
+            </tr>
+
+        {{/tagCategories}}
+
+    </tbody>
+
+</table>

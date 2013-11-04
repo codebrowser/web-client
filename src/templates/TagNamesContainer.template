@@ -4,7 +4,16 @@
 
         <li><a href='./'>Home</a> <span class='divider'>/</span></li>
 
-        <li class='active'>Tags</li>
+        {{#if tagCategory}}
+
+            <li><a href='/#/tagcategories'>Tag categories</a><span class='divider'>/</span></li>
+            <li class='active'>{{tagCategory.name}}</li>
+
+        {{else}}
+            <li class='active'>Tags</li>
+        {{/if}}
+
+        
 
     </ul>
 
@@ -18,6 +27,20 @@
             </button>
         </div>
     </span>
+
+    {{#if unusedTagNames}}
+        <h2 class="category-header">Click to add tags to category
+            <div id="unused-tags-container">
+                <p class="btn toggle-add close"></p>
+                <div class="tags">
+                    {{#unusedTagNames}}
+                    <span class="btn" data-action="add-to-category" id="{{id}}">{{name}}</i></span>
+                    {{/unusedTagNames}}
+                </div>
+            </div>
+        </h2>
+        
+    {{/if}}
 
     <table class='double-list'>
 
@@ -45,8 +68,11 @@
 
                                 <td class='index'>{{index @index}}</td>
 
-                                <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
-
+                                {{#if ../tagCategory}}
+                                    <td class='link'><a href='./#/tagcategories/{{../../tagCategory.id}}/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                {{else}}
+                                    <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                {{/if}}
                                 <td>{{tags.length}}</td>
 
                             </tr>
@@ -81,7 +107,11 @@
 
                                 <td class='index'>{{index @index}}</td>
 
-                                <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                {{#if ../tagCategory}}
+                                    <td class='link'><a href='./#/tagcategories/{{../../tagCategory.id}}/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                {{else}}
+                                    <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                {{/if}}
 
                                 <td>{{tags.length}}</td>
 

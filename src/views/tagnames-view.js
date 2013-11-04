@@ -4,10 +4,13 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
     template: Handlebars.templates.TagNamesContainer,
 
     events: {
-        'click [data-action="search"]':       'filterTagListsByName',
-        'keyup [data-id="query-string"]':     'filterTagListsByName',
-        'keypress [data-id="query-string"]':  'filterTagListsByName',
-        'click #downloadTagListJson':         'download',
+
+        'click [data-action="search"]':             'filterTagListsByName',
+        'keyup [data-id="query-string"]':           'filterTagListsByName',
+        'keypress [data-id="query-string"]':        'filterTagListsByName',
+        'click #downloadTagListJson':               'download',
+        'click [data-action="add-to-category"]':    'addTagToCategory',
+        'click .toggle-add':                        'toggleAdd'
     },
 
     /* Render */
@@ -18,9 +21,19 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         var attributes = {
 
             snapshotTagNames: this.snapshotTagNames.toJSON(),
-            exerciseAnswerTagNames: this.exerciseAnswerTagNames.toJSON()
-
+            exerciseAnswerTagNames: this.exerciseAnswerTagNames.toJSON(),
+            
+            
         }
+
+        if (this.unusedTagNames) {
+            attributes = _.extend(attributes, { unusedTagNames : this.unusedTagNames.toJSON() });
+        }
+
+        if (this.tagCategory) {
+            attributes = _.extend(attributes, { tagCategory: this.tagCategory.toJSON() });
+        }
+        
 
         // Template
         var output = this.template(attributes);
@@ -89,5 +102,51 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         });
 
         return JSON.stringify(output);
+    },
+
+    addTagToCategory: function (event) {
+
+        event.preventDefault();
+
+        var id = event.target.id;
+
+        if (!id) {
+            return;
+        }
+
+        // Find tag that is being added.
+        var tagName = codebrowser.model.TagName.findOrCreate({ id : id });
+
+        var tagNames = this.tagCategory.get('tagnames');
+        
+        tagNames.push(tagName);
+
+        this.tagCategory.set('tagnames', tagNames);
+
+        var self = this;
+
+        this.tagCategory.save({}, {
+
+            success: function () {
+
+                self.unusedTagNames.remove(tagName);
+                self.snapshotTagNames.fetch({ success : function() { self.render(); } });
+                self.exerciseAnswerTagNames.fetch({ success : function() { self.render(); } });
+            },
+
+            error: function () {
+
+                throw new Error('Adding tag to category failed.');
+            }
+        });
+
+    },
+
+    toggleAdd: function () {
+
+        $('.toggle-add').toggleClass('open');
+        $('.toggle-add').toggleClass('close');
+        $('.tags').slideToggle();
     }
+
 });

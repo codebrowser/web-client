@@ -31,4 +31,25 @@ describe('TagNameCollection', function () {
         expect(tagNames.url()).toBe(config.api.main.root + 'tagnames/exerciseanswers');
     });
 
+    it('should have correct URL when fetching tag categories unused tags', function () {
+
+        tagNames = new codebrowser.collection.TagNameCollection(null, { tagCategoryId : 1, unusedTags: true });
+
+        expect(tagNames.url()).toBe(config.api.main.root + 'tagcategories/1/tagnames/unused');
+    });
+
+    it('should have correct URL when fetching tag categories exercise tags', function () {
+
+        tagNames = new codebrowser.collection.TagNameCollection(null, { tagCategoryId : 1, onlyExerciseAnswerTags: true });
+
+        expect(tagNames.url()).toBe(config.api.main.root + 'tagcategories/1/tagnames/exercises');
+    });
+
+    it('should have correct URL when fetching tag categories snapshot tags', function () {
+
+        tagNames = new codebrowser.collection.TagNameCollection(null, { tagCategoryId : 1, onlySnapshotTags: true });
+
+        expect(tagNames.url()).toBe(config.api.main.root + 'tagcategories/1/tagnames/snapshots');
+    });
+
 });

@@ -146,16 +146,16 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
         });
 
         if(this.at(0).get('files').models[0].attributes.diffs) {
-            
+
             this.getDifferencesFromBackend(this);
             callback(self.differences);
-            
+
         }
 
         else {
 
             this.getDifferencesFromFrontend(this, snapshotsSynced);
-        
+
         }
     },
 
@@ -285,7 +285,7 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
     },
 
     getDifferencesFromBackend: function (self) {
-            
+
         this.each(function (snapshot, index) {
 
             // Divide diffs by snapshot indexes
@@ -321,13 +321,13 @@ codebrowser.collection.SnapshotCollection = Backbone.Collection.extend({
                 var difference = new codebrowser.model.Diff(null, null, backendFile);
 
                 self.differences[index][filename] = difference;
-                    
+
             });
         });
 
         // Diffed last file of last snapshot, return diffs
         self.differencesDone = true;
-        
+
     },
 
     getFiles: function() {
