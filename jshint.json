@@ -31,7 +31,8 @@
         "Raphael": true,
         "Spinner": true,
         "Utils": true,
-        "d3": true
+        "d3": true,
+        "saveAs": true
 
     }
 }

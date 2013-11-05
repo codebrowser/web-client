@@ -4,9 +4,10 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
     template: Handlebars.templates.TagNamesContainer,
 
     events: {
-        'click [data-action="search"]': 'filterTagListsByName',
-        'keyup [data-id="query-string"]': 'filterTagListsByName',
-        'keypress [data-id="query-string"]': 'filterTagListsByName'
+        'click [data-action="search"]':       'filterTagListsByName',
+        'keyup [data-id="query-string"]':     'filterTagListsByName',
+        'keypress [data-id="query-string"]':  'filterTagListsByName',
+        'click #downloadTagListJson':         'download',
     },
 
     /* Render */
@@ -43,5 +44,50 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         }
 
         this.filterHelper.filterList();
+    },
+
+    download: function () {
+
+        var self = this;
+
+        var tagNames = new codebrowser.collection.TagNameCollection();
+
+        tagNames.fetch({
+
+            cache: false,
+            expires: 0,
+
+            success: function () {
+
+                var blob = new Blob([self._generateJson(tagNames)], {type: 'application/json'});
+                saveAs(blob, 'tags.json');
+            }
+        });
+
+        return false;
+    },
+
+    _generateJson: function (tagNames) {
+
+        var output = [];
+
+        tagNames.each(function (tagName) {
+            var students = {};
+            var exercises = {};
+
+            tagName.get('tags').forEach(function (tag) {
+
+                students[tag.student.name] = true;
+                exercises[tag.exercise.name] = true;
+            });
+
+            output.push({
+                tag: tagName.get('name'),
+                students: Object.keys(students),
+                exercises: Object.keys(exercises)
+            });
+        });
+
+        return JSON.stringify(output);
     }
 });
