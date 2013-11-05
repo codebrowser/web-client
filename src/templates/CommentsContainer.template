@@ -1,0 +1,49 @@
+<section>
+
+    <ul class='breadcrumb'>
+
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+
+        <li class='active'>Comments</li>
+
+    </ul>
+
+    <h2>Comments ({{comments.length}})</h2>
+
+    {{#comments}}
+
+        {{#if read}}
+            <article>
+        {{else}}
+            <article class='new'>
+        {{/if}}
+
+            <h3>
+                <strong>{{username}}</strong><span class='pull-right'>{{#date createdAt}}{{/date}}</span>
+            </h3>
+
+            <p>
+                {{comment}}
+
+                {{#if snapshot}}
+
+                      <a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}/snapshots/{{snapshot.id}}' class='pull-right'>
+                          <i class='icon-snapshot icon-gray icon-intext'></i> {{course.name}} / {{exercise.name}}
+                      </a>
+
+                  {{else}}
+
+                      <a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}' class='pull-right'>
+                          <i class='icon-answer icon-gray icon-intext'/> {{course.name}} / {{exercise.name}}
+                      </a>
+
+                  {{/if}}
+            </p>
+
+        </article>
+
+    {{/comments}}
+
+
+
+</section>

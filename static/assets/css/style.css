@@ -757,6 +757,38 @@ ul.selection a:hover {
 
 }
 
+
+/* Snapshot comments */
+
+#snapshot-comments-container header {
+
+    margin: 5px 0;
+}
+
+#snapshot-comments-container header h1 {
+
+    display: inline;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 32px;
+
+}
+
+#snapshot-comments-container input {
+
+    border: 1px solid #ccc;
+    box-shadow: none;
+
+}
+
+#snapshot-comments-container textarea {
+
+    width: 77%;
+
+}
+
+
+
 /* Editor */
 
 #side-editor, #main-editor {
@@ -1088,4 +1120,97 @@ table.double-list {
 
     display: none;
 
+}
+
+
+/* Comments view */
+
+#comments-container article {
+
+    position: relative;
+    min-height: 100px;
+    margin-bottom: 12px;
+    padding: 6px 15px;
+    background: #fff;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+
+}
+
+#comments-container article.new {
+
+   border: 1px solid rgb(70, 136, 71);
+
+}
+
+#comments-container article.new:after {
+
+    border-color: transparent rgb(70, 136, 71);
+}
+
+#comments-container article:after {
+
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 20px 16px 20px 0;
+    border-color: transparent #fff;
+    display: block;
+    width: 0;
+    z-index: 1;
+    left: -16px;
+    top: 27px;
+    display: block;
+
+}
+
+#comments-container article:before {
+
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 20px 16px 20px 0;
+    border-color: transparent rgba(0, 0, 0, 0.1);
+    display: block;
+    width: 0;
+    z-index: 0;
+    left: -17px;
+    top: 27px;
+
+}
+
+#comments-container article h3 {
+
+    margin: 0;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.8);
+
+}
+
+#comments-container article p {
+
+    margin: 0;
+    padding: 6px;
+    font-style: italic;
+}
+
+#comments-container article p:before {
+
+    content: '\201C';
+
+}
+
+#comments-container article p:after {
+
+    content: '\201D';
+
+}
+
+#comments-container article a {
+
+    margin: 12px 0 0 12px;
 }

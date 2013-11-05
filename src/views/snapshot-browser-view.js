@@ -15,6 +15,10 @@ codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
         // Tags
         this.snapshotTagsView = new codebrowser.view.SnapshotTagsView();
         this.$el.append(this.snapshotTagsView.el);
+
+        // Comments
+        this.snapshotCommentsView = new codebrowser.view.SnapshotCommentsView();
+        this.$el.append(this.snapshotCommentsView.el);
     },
 
     /* Remove */
@@ -26,6 +30,9 @@ codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
 
         // Remove tags view
         this.snapshotTagsView.remove();
+
+        // Remove comments view
+        this.snapshotCommentsView.remove();
 
         Backbone.View.prototype.remove.call(this);
     },
@@ -39,5 +46,8 @@ codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
 
         // Update tags view
         this.snapshotTagsView.update(snapshot);
+
+        // Update comments view
+        this.snapshotCommentsView.update(snapshot);
     }
 });

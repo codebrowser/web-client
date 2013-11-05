@@ -40,6 +40,7 @@ var codebrowser = {
         codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
         codebrowser.app.tag = new codebrowser.router.TagRouter();
         codebrowser.app.select = new codebrowser.router.SelectRouter();
+        codebrowser.app.comment = new codebrowser.router.CommentRouter();
 
         // History
         Backbone.history.start();
