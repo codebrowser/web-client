@@ -10,7 +10,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
     },
 
-    isActive: Utils._getLocalStorageValue('showTree', false) === 'true',
+    isActive: Utils.getLocalStorageValue('showTree', false) === 'true',
 
     /* Absolute width */
     width: 0,

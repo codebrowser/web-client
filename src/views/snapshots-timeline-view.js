@@ -9,7 +9,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     },
 
-    isActive: Utils._getLocalStorageValue('showTimeline', true) === 'true',
+    isActive: Utils.getLocalStorageValue('showTimeline', true) === 'true',
 
     /* Absolute width */
     width: 0,

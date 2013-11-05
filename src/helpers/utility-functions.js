@@ -1,7 +1,7 @@
 /*jshint unused: false */
 
 var Utils = {
-    _getLocalStorageValue: function(name, defaultValue) {
+    getLocalStorageValue: function(name, defaultValue) {
 
         if (localStorage.getItem(name) === null) {
             localStorage.setItem(name, defaultValue);
@@ -9,7 +9,24 @@ var Utils = {
 
         return localStorage.getItem(name);
 
+    },
+
+
+    parseConceptData: function(data) {
+
+        data.forEach(function(element) {
+
+            element.value = parseInt(element.size, 10);
+
+        });
+
+        data.sort(function(a, b) {
+            return a.value < b.value;
+        });
+
+        return { children: data };
     }
+
 };
 
 
