@@ -442,7 +442,7 @@ codebrowser.view.SnapshotsTreeView = Backbone.View.extend({
 
                 var radius = 12 * self._getFileWeight(file.get('filesize'), sizeRange.min, sizeRange.max);
 
-                var diffs = self.differences[index][file.getName()];
+                var diffs = self.differences[index][file.get('name')];
 
                 var y = firstLineY + fileIdx * lineSpacing;
                 self.renderSnapshotFile(snapshot, index, file, x, y, radius, diffs.getCount().total() !== 0);
