@@ -5,7 +5,7 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
     isActive: Utils.getLocalStorageValue('showConcepts', false) === 'true',
 
     // concept container (bubble) diameter
-    diameter: null,
+    diameter: 400,
 
     format: null,
 
@@ -14,7 +14,6 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
     initialize: function() {
 
-        this.diameter = 400;
         this.format = d3.format(',d');
         this.color = d3.scale.category20c();
 
@@ -78,8 +77,13 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
 
     },
 
+    _getListTextPosition: function(d) {
+        return '50,' + ((this.concepts.children.indexOf(d) + 3) * 20);
+    },
+
     _drawConceptList: function() {
 
+        var self = this;
         var concepts = this.concepts.children;
 
         // add container for concept list
@@ -96,15 +100,17 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
             .append('g')
             .attr('class', 'list-element')
             .attr('transform', function(d) {
-                    return 'translate(10,' + ((concepts.indexOf(d) + 5) * 20) +')';
+                    return 'translate(' + self._getListTextPosition(d) + ')';
                 })
             .append('text')
+            .style('font-size', '16px')
             .text(function(d) { return d.name + ': ' + d.value ; } );
 
     },
 
     _updateConceptList: function() {
 
+        var self = this;
         var concepts = this.concepts.children;
 
         var listElements = this.listSvg.selectAll('.list-element')
@@ -114,25 +120,34 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
         var g = listElements.enter().append('g')
             .attr('class', 'list-element')
             .attr('transform', function(d) {
-                return 'translate(10,' + ((concepts.indexOf(d) + 5) * 20) +')';
+                return 'translate(' + self._getListTextPosition(d) + ')';
             });
+
 
         // add text for new concepts
         g.append('text')
             .style('opacity', 0)
-            .transition().duration(1000)
-            .style('opacity', 1)
-            .text(function(d) { return d.name + ': ' + d.value ; } );
+            .style('font-size', '16px')
+            .text(function(d) { return d.name + ': ' + d.value ; });
 
 
-        // update text for existing concepts
-        listElements.select('text')
-            .text(function(d) { return d.name + ': ' + d.value ; } );
+        // update text for existing concepts, interpolate value change by whole numbers
+        // and animate transformation to full opacity
+        listElements.select('text').transition().duration(1000)
+            .tween('text', function(d) {
+                var i = d3.interpolate(this.textContent.substr(this.textContent.indexOf(':') + 2), d.value)
+                return function(t) {
+                    var value = i(t) % 1 === 0 ? i(t) : Math.round(i(t));
+                    this.textContent = d.name + ': ' + value;
+                };
+            })
+            .style('opacity', 1);
+
 
         // move concepts to correct places in list and animate transition
         listElements.transition().duration(1000)
             .attr('transform', function(d) {
-                return 'translate(10,' + ((concepts.indexOf(d) + 5) * 20) +')';
+                return 'translate(' + self._getListTextPosition(d) + ')';
             });
 
         // remove exiting concepts
@@ -166,7 +181,7 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
         this._addText(newNodes);
 
         data.select('text')
-            .text(function(d) { return d.name.substring(0, d.r / 3); })
+            .text(function(d) { return d.name.substring(0, ((d.r / 3) - 1)); })
             .transition().delay(1000)
             .duration(1000)
             .style('opacity', 1);
@@ -200,7 +215,6 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
             .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
             .style('opacity', 1);
 
-
         // update circle size for old concepts and animate the transition
         data.select('circle').transition().delay(1000).duration(1000)
             .attr('r', function(d) { return d.r; });
@@ -213,7 +227,7 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
         data.select('text')
             .transition().delay(1000).duration(1000)
             .style('opacity', 1)
-            .text(function(d) { return d.name.substring(0, d.r / 3); });
+            .text(function(d) { return d.name.substring(0, ((d.r / 3) - 1)); });
 
 
         /*** Node removal ***/
