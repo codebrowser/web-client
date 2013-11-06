@@ -10,7 +10,16 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         'keypress [data-id="query-string"]':        'filterTagListsByName',
         'click #downloadTagListJson':               'download',
         'click [data-action="add-to-category"]':    'addTagToCategory',
-        'click .toggle-add':                        'toggleAdd'
+        'click .toggle-add':                        'toggleAdd',
+        'mouseenter .up-scroll':                    'scrollTimer',
+        'mouseenter .down-scroll':                  'scrollTimer',
+        'mouseout .up-scroll':                      'clearScrollTimer',
+        'mouseout .down-scroll':                    'clearScrollTimer',
+        'dragstart td.link':                        'drag',
+        'dragend *:not("p.tag-category")':          'endDrag',
+        'drop p.tag-category':                      'dropAndAddToCategory',
+        'dragover p.tag-category':                  'allowDropping'
+
     },
 
     /* Render */
@@ -34,6 +43,9 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
             attributes = _.extend(attributes, { tagCategory: this.tagCategory.toJSON() });
         }
         
+        if (this.tagCategories) {
+            attributes = _.extend(attributes, { tagCategories: this.tagCategories.toJSON() });
+        }
 
         // Template
         var output = this.template(attributes);
@@ -147,6 +159,98 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         $('.toggle-add').toggleClass('open');
         $('.toggle-add').toggleClass('close');
         $('.tags').slideToggle();
+    },
+
+    allowDropping: function (event) {
+
+        event.preventDefault();
+    },
+
+    drag: function (event) {
+
+        this.draggedTagnameId = event.currentTarget.id;
+
+        var left = ((document.width-$('.add-to-categories').width())/2)-150;
+        var top = (document.height-$('.add-to-categories').height())/2
+        $('.add-to-categories').css({ 'display': 'block', 'left': left +'px', 'top': top + 'px' });
+
+    },
+
+    endDrag: function (event) {
+
+        event.preventDefault();
+        $('.add-to-categories').css({ 'display': 'none' });
+
+    },
+
+    dropAndAddToCategory: function (event) {
+
+        event.preventDefault();
+
+        $('.add-to-categories').css({ 'display': 'none' });
+
+        var tagName = codebrowser.model.TagName.findOrCreate({ id : this.draggedTagnameId });
+        console.log(tagName);
+
+        var targetCategoryId = event.currentTarget.id;
+        var tagCategory = codebrowser.model.TagCategory.findOrCreate({ id : targetCategoryId }, { create : false });
+
+        console.log(tagCategory);
+
+        var tagNames = tagCategory.get('tagnames');
+        tagNames.push(tagName);
+        tagCategory.set('tagnames', tagNames);
+
+        tagCategory.save({}, {
+
+            success: function () {
+                $('.add-message').css({ display: 'block'});
+                $('.add-message').empty().append('Added tag '+ tagName.id + ' into category '+tagCategory.id);
+                $('.add-message').delay(800).fadeOut();
+
+            },
+
+            error: function () {
+
+                throw new Error('Adding tag to category failed.');
+            }
+        });
+
+    },
+
+    scrollCategoriesDown: function () {
+
+        var categories = $('.category-list');
+        var curTop = categories.scrollTop();
+        categories.scrollTop(curTop+1);
+
+    },
+
+    scrollCategoriesUp: function () {
+
+        var categories = $('.category-list');
+        var curTop = categories.scrollTop();
+        categories.scrollTop(curTop-1);
+
+    },
+
+    scrollTimer: function (event) {
+
+        event.preventDefault();
+
+        if (event.currentTarget.classList[1] === 'down-scroll') {
+
+            this.repeater = setInterval(this.scrollCategoriesDown, 10);
+        }
+        else if (event.currentTarget.classList[1] === 'up-scroll') {
+
+            this.repeater = setInterval(this.scrollCategoriesUp, 10);
+        }
+    },
+
+    clearScrollTimer: function() {
+
+        clearInterval(this.repeater);
     }
 
 });

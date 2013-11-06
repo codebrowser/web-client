@@ -19,6 +19,8 @@
 
     <button id="downloadTagListJson" class="btn">Export tags as JSON</button>
 
+    <span class="pull-left add-message"></span>
+
     <span class="pull-right">
         <div class="input-append">
             <input type="text" class="span2" placeholder="Search" data-id="query-string" />
@@ -40,6 +42,18 @@
             </div>
         </h2>
         
+    {{/if}}
+
+    {{#if tagCategories}}
+        <div class="add-to-categories">
+            <div class="scroll up-scroll"><i class='icon-arrow-up'></i></div>
+            <div class="category-list">
+                {{#tagCategories}}
+                    <p class="tag-category" id='{{id}}'>{{name}}</p>
+                {{/tagCategories}}
+            </div>
+            <div class="scroll down-scroll"><i class='icon-arrow-down'></i></div>
+        </div>
     {{/if}}
 
     <table class='double-list'>
@@ -71,7 +85,7 @@
                                 {{#if ../tagCategory}}
                                     <td class='link'><a href='./#/tagcategories/{{../../tagCategory.id}}/tagnames/{{id}}/tags'>{{name}}</a></td>
                                 {{else}}
-                                    <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td class='link' draggable='true' id='{{id}}'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
                                 {{/if}}
                                 <td>{{tags.length}}</td>
 
@@ -110,7 +124,7 @@
                                 {{#if ../tagCategory}}
                                     <td class='link'><a href='./#/tagcategories/{{../../tagCategory.id}}/tagnames/{{id}}/tags'>{{name}}</a></td>
                                 {{else}}
-                                    <td class='link'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td class='link' draggable='true' id='{{id}}'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
                                 {{/if}}
 
                                 <td>{{tags.length}}</td>

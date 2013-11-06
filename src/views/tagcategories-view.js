@@ -26,7 +26,7 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
         this.delegateEvents();
     },
 
-    createTagCategory: function (event, tagCategory) {
+    createTagCategory: function (event) {
 
         event.preventDefault();
 
@@ -38,23 +38,32 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
 
         var self = this;
 
-        // Create new tag category if necessary.
-        tagCategory = new codebrowser.model.TagCategory({ name: text });
+        var existing = self.collection.where({ name: text })
+        
+        //If no category with same name, add new
+        if (existing.length === 0) {
 
-        tagCategory.save( {}, {
+             // Create new tag category
+            var tagCategory = new codebrowser.model.TagCategory({ name: text });
 
-            success: function () {
+            tagCategory.save( {}, {
 
-                self.collection.add(tagCategory);
-                self.render();
-            },
+                success: function () {
 
-            error: function () {
+                    self.collection.add(tagCategory);
+                    self.render();
+                },
 
-                throw new Error('Failed tag category save.');
-            }
-        });
+                error: function () {
 
+                    throw new Error('Failed tag category save.');
+                }
+            });
 
+        } else {
+
+            self.render();
+
+        }
     }
 });

@@ -46,6 +46,7 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
         var exerciseAnswerTagNames;
         var unusedTagNames;
         var tagCategory;
+        var tagCategories;
 
 
         if (tagCategoryId) {
@@ -66,10 +67,12 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
 
             exerciseAnswerTagNames = new codebrowser.collection.TagNameCollection(null, { onlyExerciseAnswerTags : true });
 
+            tagCategories = new codebrowser.collection.TagCategoryCollection(null, null);
+
         }
 
-        // Render after both tag name and tags have been fetched
-        var fetchSynced = _.after(4, function () {
+        // Render after tag name, tags and when needed tag categories and unused tags have been fetched
+        var fetchSynced = _.after(5, function () {
 
             self.tagNamesView.snapshotTagNames = snapshotTagNames;
             self.tagNamesView.exerciseAnswerTagNames = exerciseAnswerTagNames;
@@ -77,7 +80,10 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
             if (tagCategoryId) {
                 self.tagNamesView.tagCategory = tagCategory;
                 self.tagNamesView.unusedTagNames = unusedTagNames;
-                self.tagNamesView.tagNameCollection = new codebrowser.collection.TagNameCollection(null, null);
+            }
+
+            if (tagCategories) {
+                self.tagNamesView.tagCategories = tagCategories;
             }
 
             self.tagNamesView.render();
@@ -90,6 +96,8 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
         // Fetch tag names for normal tags
         this._fetchModel(exerciseAnswerTagNames, fetchSynced);
 
+        // Fetch tag names that are not yet added to tag category when needed
+        // Needed when showing tags inside a certain category
         if (unusedTagNames) {
             this._fetchModel(unusedTagNames, fetchSynced);
         }
@@ -97,9 +105,20 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
             fetchSynced();
         }
 
+        // Fetch tag category when needed
+        // Needed when tags inside a certaon category are shown
         if (tagCategory) {
             tagCategory.fetch();
             fetchSynced();
+        }
+        else {
+            fetchSynced();
+        }
+
+        // Fetch all tag categories when needed
+        // Needed when all tags are shown
+        if (tagCategories) {
+            this._fetchModel(tagCategories, fetchSynced);
         }
         else {
             fetchSynced();

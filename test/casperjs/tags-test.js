@@ -30,6 +30,13 @@ casper.test.begin('Tags view', 16, function suite(test) {
                 {id: 73, course: {id: 12, name: 'c2'}, student: {id: 21, name: 's1'}, exercise: {id: 32, name: 'e2'}, tagName: {id: 62, name: 't2'}}
             ],
 
+            'tagcategories': [
+                {id: 61, name: 'c1', tagnames: [{}]},
+                {id: 62, name: 'c2', tagnames: [{}, {}, {}]},
+                {id: 63, name: 'c3', tagnames: [{}, {}]},
+                {id: 64, name: 'c4', tagnames: [{}, {}]}
+            ],
+
             'students': []
         });
     });
