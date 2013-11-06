@@ -103,6 +103,7 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
                     return 'translate(' + self._getListTextPosition(d) + ')';
                 })
             .append('text')
+            .attr('fill', function(d) { return self.color(d.name); })
             .style('font-size', '16px')
             .text(function(d) { return d.name + ': ' + d.value ; } );
 
@@ -128,6 +129,7 @@ codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
         g.append('text')
             .style('opacity', 0)
             .style('font-size', '16px')
+            .attr('fill', function(d) { return self.color(d.name); })
             .text(function(d) { return d.name + ': ' + d.value ; });
 
 
