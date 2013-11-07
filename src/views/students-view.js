@@ -22,10 +22,10 @@ codebrowser.view.StudentsView = Backbone.View.extend({
 
         if (this.course && this.exercise) {
             attributes = _.extend(attributes, { course: this.course.toJSON(), exercise: this.exercise.toJSON() });
-        }
-
-        else if (this.course) {
+        } else if (this.course) {
             attributes = _.extend(attributes, { course: this.course.toJSON() });
+        } else if (this.studentGroup) {
+            attributes = _.extend(attributes, { studentGroup: this.studentGroup.toJSON() });
         }
 
         // Template

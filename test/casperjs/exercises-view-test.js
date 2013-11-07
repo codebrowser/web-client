@@ -25,7 +25,9 @@ casper.test.begin('Exercises view (course exercises)', 13, function suite(test) 
                 { id: 32, name: 'exc 2'},
                 { id: 33, name: 'exc 3'},
                 { id: 34, name: 'exc 4'}
-            ]
+            ],
+
+            'groups': []
         });
     });
 
@@ -133,7 +135,9 @@ casper.test.begin('Exercises view (student-course exercises)', 6, function suite
             'students/21/courses/11/exercises': [
                 {id: 31, name: 'exc 1'},
                 {id: 32, name: 'exc 2'}
-            ]
+            ],
+
+            'groups': []
         });
     });
 
@@ -208,7 +212,9 @@ casper.test.begin('Exercises view (course-student exercises)', 6, function suite
             'students/23/courses/11/exercises': [
                 {id: 31, name: 'exc 1'},
                 {id: 32, name: 'exc 2'}
-            ]
+            ],
+
+            'groups': []
         });
     });
 

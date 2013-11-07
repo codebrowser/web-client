@@ -13,9 +13,9 @@
             <li><a href='./#/courses/{{course.id}}/exercises/{{exercise.id}}'>{{exercise.name}}</a> <span class='divider'>/</span></li>
         {{/if}}
 
-        {{#if student}}
-            <li><a href='./#/courses/{{course.id}}/students'>Exercises</a> <span class='divider'>/</span></li>
-            <li><a href='./#/courses/{{course.id}}/students/{{student.id}}'>{{student.name}}</a> <span class='divider'>/</span></li>
+        {{#if studentGroup}}
+            <li><a href='./#/studentgroups'>Student groups</a> <span class='divider'>/</span></li>
+            <li><a href='./#/studentgroups/{{studentGroup.id}}/students'>{{studentGroup.name}}</a> <span class='divider'>/</span></li>
         {{/if}}
 
         <li class='active'>Students</li>
@@ -23,13 +23,20 @@
 
 
     <h2>
-        {{#if exercise}}
-            
-            {{#if course}} {{course.name}} — {{exercise.name}} — {{/if}} Students ({{students.length}})
-    
-        {{else}}
+        {{#if studentGroup}}
 
-            {{#if course}} {{course.name}} — {{/if}} Students ({{students.length}})
+            {{studentGroup.name}} — Students ({{students.length}})
+
+        {{else}}
+            {{#if exercise}}
+
+                {{#if course}} {{course.name}} — {{exercise.name}} — {{/if}} Students ({{students.length}})
+
+            {{else}}
+
+                {{#if course}} {{course.name}} — {{/if}} Students ({{students.length}})
+
+            {{/if}}
 
         {{/if}}
 

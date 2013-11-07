@@ -1,0 +1,70 @@
+<section>
+
+    <ul class='breadcrumb'>
+
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+
+        {{#if studentId}}
+            <li><a href='./#/students'>Students</a> <span class='divider'>/</span></li>
+            <li><a href='./#/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
+        {{/if}}
+
+        <li class='active'>Student groups</li>
+
+    </ul>
+
+    <h2>
+        Student groups ({{studentGroups.length}})
+
+        <span class="pull-right">
+            <div class="input-append">
+                <input type="text" class="span2" placeholder="Search" data-id="query-string" />
+                <button class="btn" data-action="search">
+                    <i class="icon-search"></i>
+                </button>
+            </div>
+        </span>
+
+    </h2>
+
+    <table class='table table-hover'>
+
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Students</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+
+                <td class='index'>-</td>
+
+                <td class='link'><a href='./#/students'>All students</a></td>
+
+                <td>{{numberOfStudents}}</td>
+
+            </tr>
+
+            {{#studentGroups}}
+
+                <tr>
+
+                    <td class='index'>{{index @index}}</td>
+
+                    <td class='link'><a href='./#/studentgroups/{{id}}/students'>{{name}}</a></td>
+
+                    <td>{{students.length}}</td>
+
+                </tr>
+
+            {{/studentGroups}}
+
+        </tbody>
+
+    </table>
+
+</section>

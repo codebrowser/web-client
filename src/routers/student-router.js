@@ -3,6 +3,8 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
     routes: {
 
         'students(/)':                                                    'students',
+        'studentgroups/:studentGroupId(/)':                               'groupNavigation',
+        'studentgroups/:studentGroupId/students(/)':                      'groupStudents',
         'courses/:courseId/exercises/:exerciseId(/)':                     'navigation',
         'courses/:courseId/exercises/:exerciseId/students(/)':            'exerciseStudents',
         'courses/:courseId/students(/)':                                  'courseStudents'
@@ -34,6 +36,13 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
     },
 
+    groupNavigation: function (studentGroupId) {
+
+        codebrowser.app.student.navigate('#/studentgroups/' +
+                                         studentGroupId +
+                                         '/students', { replace: true });
+    },
+
     exerciseStudents: function (courseId, exerciseId) {
 
         this.students({ courseId: courseId, exerciseId: exerciseId });
@@ -43,6 +52,11 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
     courseStudents: function (courseId) {
 
         this.students({ courseId: courseId });
+    },
+
+    groupStudents: function (studentGroupId) {
+
+        this.students({ studentGroupId: studentGroupId });
     },
 
     students: function (options) {
@@ -55,7 +69,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
             codebrowser.controller.ViewController.push(self.studentView);
         });
 
-        if (options) {
+        if (options && options.courseId) {
 
             var courseFetched = _.after(1, function () {
 
@@ -83,7 +97,7 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                     });
 
                 } else {
-                    
+
                     fetchSynced();
                 }
             });
@@ -104,6 +118,29 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                 },
 
                 // Course fetch failed
+                error: function() {
+
+                    self.notFound();
+                }
+
+            });
+
+        } else if (options && options.studentGroupId) {
+
+            var studentGroup = codebrowser.model.StudentGroup.findOrCreate({ id: options.studentGroupId });
+
+            studentGroup.fetch({
+
+                cache: true,
+                expires: config.cache.expires,
+
+                success: function() {
+
+                    self.studentView.studentGroup = studentGroup;
+                    fetchSynced();
+                    fetchSynced();
+                },
+
                 error: function() {
 
                     self.notFound();

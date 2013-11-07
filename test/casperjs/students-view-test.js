@@ -9,7 +9,7 @@ casper.test.begin('Students view (all students)', 15, function suite(test) {
                 { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
             ],
 
-            '...': undefined // needs second property because of the way casper.evaluate works
+            'groups': []
         });
     });
 
@@ -207,6 +207,8 @@ casper.test.begin('Students view (course-exercise students)', 6, function suite(
                 { id: 22, name: 'student 2', courses: [{}, {}, {}]},
                 { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
             ],
+
+            'groups': []
         });
     });
 
