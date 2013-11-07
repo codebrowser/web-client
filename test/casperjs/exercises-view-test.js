@@ -27,7 +27,7 @@ casper.test.begin('Exercises view (course exercises)', 13, function suite(test) 
                 { id: 34, name: 'exc 4'}
             ],
 
-            'groups': []
+            'studentgroups': []
         });
     });
 
@@ -137,7 +137,7 @@ casper.test.begin('Exercises view (student-course exercises)', 6, function suite
                 {id: 32, name: 'exc 2'}
             ],
 
-            'groups': []
+            'studentgroups': []
         });
     });
 
@@ -214,7 +214,7 @@ casper.test.begin('Exercises view (course-student exercises)', 6, function suite
                 {id: 32, name: 'exc 2'}
             ],
 
-            'groups': []
+            'studentgroups': []
         });
     });
 

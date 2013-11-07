@@ -1,6 +1,6 @@
 codebrowser.model.StudentGroup = Backbone.RelationalModel.extend({
 
-    urlRoot: config.api.main.root + 'groups',
+    urlRoot: config.api.main.root + 'studentgroups',
 
     relations: [
 

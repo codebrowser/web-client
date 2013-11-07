@@ -4,6 +4,6 @@ codebrowser.collection.StudentGroupCollection = Backbone.Collection.extend({
 
     url: function () {
 
-        return config.api.main.root + 'groups';
+        return config.api.main.root + 'studentgroups';
     },
 });

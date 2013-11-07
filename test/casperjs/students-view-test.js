@@ -9,7 +9,7 @@ casper.test.begin('Students view (all students)', 15, function suite(test) {
                 { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
             ],
 
-            'groups': []
+            'studentgroups': []
         });
     });
 
@@ -208,7 +208,7 @@ casper.test.begin('Students view (course-exercise students)', 6, function suite(
                 { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
             ],
 
-            'groups': []
+            'studentgroups': []
         });
     });
 
