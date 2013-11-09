@@ -1,45 +1,46 @@
 casper.test.begin('Tags view', 16, function suite(test) {
 
-    casper.start('http://localhost:8000', function() {
+    mockData = {
+        'tagnames': [
+            {id: 61, name: 't1', tags: [{}]},
+            {id: 62, name: 't2', tags: [{}, {}, {}]},
+            {id: 63, name: 't3', tags: [{}, {}]},
+            {id: 64, name: 't4', tags: [{}, {}]}
+        ],
 
-        casper.evaluate(createFakeServer, {
-            'tagnames': [
-                {id: 61, name: 't1', tags: [{}]},
-                {id: 62, name: 't2', tags: [{}, {}, {}]},
-                {id: 63, name: 't3', tags: [{}, {}]},
-                {id: 64, name: 't4', tags: [{}, {}]}
-            ],
+        'tagnames/exerciseanswers': [
+            {id: 61, name: 't1', tags: [{}]},
+            {id: 62, name: 't2', tags: [{}, {}, {}]},
+        ],
 
-            'tagnames/exerciseanswers': [
-                {id: 61, name: 't1', tags: [{}]},
-                {id: 62, name: 't2', tags: [{}, {}, {}]},
-            ],
+        'tagnames/snapshots': [
+            {id: 62, name: 't2', tags: [{}, {}, {}]},
+            {id: 63, name: 't3', tags: [{}, {}]},
+            {id: 64, name: 't4', tags: [{}, {}]}
+        ],
 
-            'tagnames/snapshots': [
-                {id: 62, name: 't2', tags: [{}, {}, {}]},
-                {id: 63, name: 't3', tags: [{}, {}]},
-                {id: 64, name: 't4', tags: [{}, {}]}
-            ],
+        'tagnames/62':
+            {id: 62, name: 't2', tags: [{}, {}, {}]},
 
-            'tagnames/62':
-                {id: 62, name: 't2', tags: [{}, {}, {}]},
+        'tagnames/62/tags': [
+            {id: 71, course: {id: 11, name: 'c1'}, student: {id: 21, name: 's1'}, exercise: {id: 31, name: 'e1'}, tagName: {id: 62, name: 't2'}},
+            {id: 72, course: {id: 11, name: 'c1'}, student: {id: 21, name: 's1'}, exercise: {id: 31, name: 'e1'}, snapshot: {id: 41, name: 'ss1'}, tagName: {id: 62, name: 't2'}},
+            {id: 73, course: {id: 12, name: 'c2'}, student: {id: 21, name: 's1'}, exercise: {id: 32, name: 'e2'}, tagName: {id: 62, name: 't2'}}
+        ],
 
-            'tagnames/62/tags': [
-                {id: 71, course: {id: 11, name: 'c1'}, student: {id: 21, name: 's1'}, exercise: {id: 31, name: 'e1'}, tagName: {id: 62, name: 't2'}},
-                {id: 72, course: {id: 11, name: 'c1'}, student: {id: 21, name: 's1'}, exercise: {id: 31, name: 'e1'}, snapshot: {id: 41, name: 'ss1'}, tagName: {id: 62, name: 't2'}},
-                {id: 73, course: {id: 12, name: 'c2'}, student: {id: 21, name: 's1'}, exercise: {id: 32, name: 'e2'}, tagName: {id: 62, name: 't2'}}
-            ],
+        'tagcategories': [
+            {id: 61, name: 'c1', tagnames: [{}]},
+            {id: 62, name: 'c2', tagnames: [{}, {}, {}]},
+            {id: 63, name: 'c3', tagnames: [{}, {}]},
+            {id: 64, name: 'c4', tagnames: [{}, {}]}
+        ],
 
-            'tagcategories': [
-                {id: 61, name: 'c1', tagnames: [{}]},
-                {id: 62, name: 'c2', tagnames: [{}, {}, {}]},
-                {id: 63, name: 'c3', tagnames: [{}, {}]},
-                {id: 64, name: 'c4', tagnames: [{}, {}]}
-            ],
+        'students': [],
 
-            'students': []
-        });
-    });
+        'studentgroups': []
+    };
+
+    casper.start('http://localhost:8000');
 
     casper.then(function() {
 

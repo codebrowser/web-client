@@ -1,20 +1,20 @@
 casper.test.begin('Select view', function suite(test) {
 
+    mockData = {
+        'courses': [
+            {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
+            {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
+        ],
 
-    casper.start('http://localhost:8000', function() {
+        'courses/12':
+            {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5},
 
-        casper.evaluate(createFakeServer, {
-            'courses': [
-                {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
-                {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
-            ],
+        'students': [],
 
-            'courses/12':
-                {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5},
+        'studentgroups': []
+    };
 
-            'students': []
-        });
-    });
+    casper.start('http://localhost:8000');
 
     casper.then(function() {
 

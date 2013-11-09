@@ -1,17 +1,16 @@
 casper.test.begin('Students view (all students)', 15, function suite(test) {
 
-    casper.start('http://localhost:8000', function() {
+    mockData = {
+        'students': [
+            { id: 21, name: 'student 1', courses: [{}, {}]},
+            { id: 22, name: 'student 2', courses: [{}, {}, {}]},
+            { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
+        ],
 
-        casper.evaluate(createFakeServer, {
-            'students': [
-                { id: 21, name: 'student 1', courses: [{}, {}]},
-                { id: 22, name: 'student 2', courses: [{}, {}, {}]},
-                { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
-            ],
+        'studentgroups': []
+    };
 
-            'studentgroups': []
-        });
-    });
+    casper.start('http://localhost:8000');
 
     casper.then(function() {
 
@@ -67,37 +66,38 @@ casper.test.begin('Students view (all students)', 15, function suite(test) {
 
 casper.test.begin('Students view (course students)', 12, function suite(test) {
 
-    casper.start('http://localhost:8000', function() {
+    mockData = {
+        'courses': [
+            {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
+            {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
+        ],
 
-        casper.evaluate(createFakeServer, {
-            'courses': [
-                {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
-                {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
-            ],
+        'courses/11':
+            {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
 
-            'courses/11':
-                {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
+        'courses/11/students': [
+            { id: 21, name: 'student 1', courses: [{}, {}]},
+            { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
+        ],
 
-            'courses/11/students': [
-                { id: 21, name: 'student 1', courses: [{}, {}]},
-                { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
-            ],
+        'courses/12':
+            {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5},
 
-            'courses/12':
-                {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5},
+        'courses/12/students': [
+            { id: 22, name: 'student 2', courses: [{}, {}, {}]},
+            { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
+        ],
 
-            'courses/12/students': [
-                { id: 22, name: 'student 2', courses: [{}, {}, {}]},
-                { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
-            ],
+        'students': [
+            { id: 21, name: 'student 1', courses: [{}, {}]},
+            { id: 22, name: 'student 2', courses: [{}, {}, {}]},
+            { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
+        ],
 
-            'students': [
-                { id: 21, name: 'student 1', courses: [{}, {}]},
-                { id: 22, name: 'student 2', courses: [{}, {}, {}]},
-                { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
-            ],
-        });
-    });
+        'studentgroups': []
+    };
+
+    casper.start('http://localhost:8000');
 
     casper.then(function() {
 
@@ -137,6 +137,11 @@ casper.test.begin('Students view (course students)', 12, function suite(test) {
 
         this.echo('Navigating back to course list');
         casper.back();
+        this.waitForSelector('#select-container');
+    });
+
+    casper.then(function () {
+
         casper.back();
         this.waitForSelector('#courses-container');
     });
@@ -178,39 +183,38 @@ casper.test.begin('Students view (course students)', 12, function suite(test) {
 
 casper.test.begin('Students view (course-exercise students)', 6, function suite(test) {
 
-    casper.start('http://localhost:8000', function() {
+    mockData = {
+        'courses': [
+            {id: 11, name: 'course 1', exercises: [{id: 31, name: 'exc 1'}, {id: 32, name: 'exc 2'}], amountOfStudents: 4},
+            {id: 12, name: 'course 2', exercises: [{id: 31, name: 'exc 1'}, {id: 32, name: 'exc 2'}, {id: 33, name: 'exc 3'}], amountOfStudents: 5}
+        ],
 
-        casper.evaluate(createFakeServer, {
-            'courses': [
-                {id: 11, name: 'course 1', exercises: [{id: 31, name: 'exc 1'}, {id: 32, name: 'exc 2'}], amountOfStudents: 4},
-                {id: 12, name: 'course 2', exercises: [{id: 31, name: 'exc 1'}, {id: 32, name: 'exc 2'}, {id: 33, name: 'exc 3'}], amountOfStudents: 5}
-            ],
+        'courses/11':
+            {id: 11, name: 'course 1', exercises: [{id: 31, name: 'exc 1'}, {id: 32, name: 'exc 2'}], amountOfStudents: 4},
 
-            'courses/11':
-                {id: 11, name: 'course 1', exercises: [{id: 31, name: 'exc 1'}, {id: 32, name: 'exc 2'}], amountOfStudents: 4},
+        'courses/11/exercises': [
+            {id: 31, name: 'exc 1'},
+            {id: 32, name: 'exc 2'}
+        ],
 
-            'courses/11/exercises': [
-                {id: 31, name: 'exc 1'},
-                {id: 32, name: 'exc 2'}
-            ],
+        'courses/11/exercises/32':
+            {id: 32, name: 'exc 2'},
 
-            'courses/11/exercises/32':
-                {id: 32, name: 'exc 2'},
+        'courses/11/exercises/32/students': [
+            { id: 21, name: 'student 1', courses: [{}, {}]},
+            { id: 22, name: 'student 2', courses: [{}, {}, {}]},
+        ],
 
-            'courses/11/exercises/32/students': [
-                { id: 21, name: 'student 1', courses: [{}, {}]},
-                { id: 22, name: 'student 2', courses: [{}, {}, {}]},
-            ],
+        'students': [
+            { id: 21, name: 'student 1', courses: [{}, {}]},
+            { id: 22, name: 'student 2', courses: [{}, {}, {}]},
+            { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
+        ],
 
-            'students': [
-                { id: 21, name: 'student 1', courses: [{}, {}]},
-                { id: 22, name: 'student 2', courses: [{}, {}, {}]},
-                { id: 23, name: 'student 3', courses: [{}, {}, {}, {}]}
-            ],
+        'studentgroups': []
+    };
 
-            'studentgroups': []
-        });
-    });
+    casper.start('http://localhost:8000');
 
     casper.then(function() {
 

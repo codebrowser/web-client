@@ -19,10 +19,10 @@
 
         "casper": true,
         "config": true,
-        "createFakeServer": true,
         "Backbone": true,
         "RegExp": true,
-        "$": true
+        "$": true,
+        "mockData": true
 
     }
 }

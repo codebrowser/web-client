@@ -1,16 +1,17 @@
 casper.test.begin('API URL setting', 17, function suite(test) {
 
-    casper.start('http://localhost:8000', function() {
+    mockData = {
+        'courses': [
+            {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
+            {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
+        ],
 
-        casper.evaluate(createFakeServer, {
-            'courses': [
-                {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
-                {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
-            ],
+        'students': [],
 
-            'students': []
-        });
-    });
+        'studentgroups': []
+    };
+
+    casper.start('http://localhost:8000');
 
     casper.then(function() {
 
@@ -60,28 +61,29 @@ casper.test.begin('API URL setting', 17, function suite(test) {
     casper.then(function() {
 
         this.echo('Saving');
+
+        // Fake server will be created again because save causes page reload.
         config.test.casperjs.clearLocalStorage = false;
-        this.clickLabel('Save', 'button');
-        this.waitForSelector('#root-container');
-    });
-
-    casper.then(function() {
-
-        // Create fake server again because save causes page reload.
-        casper.evaluate(createFakeServer, {
+        mockData = {
             'http://new.api.url/path/to/courses': [
                 {id: 12, name: 'course 2b', exercises: [{}, {}], amountOfStudents: 6},
                 {id: 13, name: 'course 3', exercises: [{}, {}], amountOfStudents: 7},
                 {id: 14, name: 'course 4', exercises: [{}], amountOfStudents: 8}
             ],
 
-            'students': []
-        });
+            'http://new.api.url/path/to/students': [],
+
+            'http://new.api.url/path/to/studentgroups': []
+        };
+
+        this.clickLabel('Save', 'button');
+        this.waitForSelector('#root-container');
     });
 
     casper.then(function() {
 
         config.test.casperjs.clearLocalStorage = true;
+
         function getRoot() { return config.api.main.root; }
         test.assertEquals(casper.evaluate(getRoot), 'http://new.api.url/path/to/', 'config has new API URL');
         test.assertUrlMatch(new RegExp('http://localhost:8000/$'), 'client has root view URL');

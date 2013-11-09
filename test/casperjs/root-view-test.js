@@ -1,9 +1,13 @@
 casper.test.begin('Root view', 4, function suite(test) {
 
-    casper.start('http://localhost:8000', function() {
+    mockData = {
 
-        casper.evaluate(createFakeServer, {});
-    });
+        'studentgroups': [],
+
+        'foo': []
+    };
+
+    casper.start('http://localhost:8000');
 
     casper.then(function() {
 

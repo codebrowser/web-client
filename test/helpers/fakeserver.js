@@ -1,4 +1,5 @@
-/* exported createFakeServer */
+
+var mockData = {};
 
 /* Helper function that creates a sinon fake server and registers mock responses for given paths.
  * If mockData value is a number then it is used as http status code. If it is string then
@@ -25,27 +26,50 @@ var createFakeServer = function(mockData) {
     });
 };
 
-/* Running casper tests. */
+/* Setup for casper tests. */
 if (typeof casper !== 'undefined') {
 
-    /* Redirects casperjs's browser console to main console. */
+    // Redirects casperjs's browser console to main console.
     casper.on('remote.message', console.log.bind(console));
 
     casper.options.waitTimeout = config.test.async.timeout;
     casper.options.verbose = true;
 
+    // Skip suite after one test fails.
+    casper.on('step.error', function() {
+        casper.test.skip(0, 'Skipping rest of the test suite.');
+        casper.test.done();
+    });
+
     var hasErrors;
 
+    // Notify about script errors on current page.
     casper.on('page.error', function (msg) {
 
         hasErrors = true;
-        casper.warn(msg);
+        casper.warn('Script error on page: ' + msg);
     });
 
+    // Executed after page load, but before any scripts.
     casper.on('page.initialized', function() {
 
-        /* Injects sinon's code into casperjs's browser. */
+        // Casperjs loads about:blank after failed suites. Creating the fakeserver would fail.
+        if (this.getCurrentUrl() === 'about:blank') {
+            return;
+        }
+
+        // Injects sinon's code into casperjs's browser.
         casper.page.injectJs('./node_modules/sinon/pkg/sinon-1.7.3.js');
+
+        // To catch all requests made by codebrowser, fakeserver must be created before
+        // $(document).ready() is triggered. However, creating sinon server in page.initialized
+        // does not work, so the only way is to register our own handler before anyone else's.
+        casper.evaluate(function(createFakeServer, mockData) {
+
+            document.addEventListener('DOMContentLoaded', function() {
+                createFakeServer(mockData);
+            });
+        }, createFakeServer, mockData);
 
         // Make sure each test run starts from clean state (no backbone cache etc).
         if (config.test.casperjs.clearLocalStorage) {
@@ -54,11 +78,13 @@ if (typeof casper !== 'undefined') {
         }
     });
 
-    casper.on('run.start', function() {
+    // Executed before each test suite.
+    casper.test.setUp(function() {
 
         hasErrors = false;
     });
 
+    // Executed only after successful test suites.
     casper.on('run.complete', function() {
 
         if (hasErrors) {
@@ -66,13 +92,15 @@ if (typeof casper !== 'undefined') {
         }
     });
 
-    casper.on('load.finished', function() {
+    // Executed after each test suite.
+    casper.test.tearDown(function() {
 
-        casper.evaluate(createFakeServer, {});
+        mockData = {};
+        casper.echo('');
     });
 }
 
-/* Running jasmine tests. */
+/* Setup for jasmine tests. */
 if (typeof jasmine !== 'undefined') {
 
     beforeEach(function () {
