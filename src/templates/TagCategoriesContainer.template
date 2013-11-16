@@ -42,6 +42,8 @@
 
                 <td>{{tagnames.length}}</a></td>
 
+                <td><button type='button' data-action='delete-category' data-id='{{id}}' class='delete'>×</button></td>
+
             </tr>
 
         {{/tagCategories}}

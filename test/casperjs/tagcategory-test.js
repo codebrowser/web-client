@@ -1,4 +1,4 @@
-casper.test.begin('Tag category test', 17, function suite(test) {
+casper.test.begin('Tag category test', 14, function suite(test) {
 
     casper.start('http://localhost:8000', function() {
 
@@ -67,6 +67,7 @@ casper.test.begin('Tag category test', 17, function suite(test) {
 
     });
 
+
     casper.then(function() {
 
         this.clickLabel('c2', 'a');
@@ -86,15 +87,6 @@ casper.test.begin('Tag category test', 17, function suite(test) {
                 'has "t2" in exercise tags with a correct link to tag list');
         test.assertTruthy(this.getHTML('.double-list-right').indexOf('<a href="./#/tagcategories/62/tagnames/73/tags">t3') !== -1,
                 'has "t3" in snapshot tags with a correct link to tag list');
-
-        function cntTg1() { return $('tbody tr tr:contains(t1)').find(':nth-child(3)').html(); }
-        test.assertEvalEquals(cntTg1, '1', 'has tag count 1 for "t1"');
-
-        function cntTg2() { return $('tbody tr tr:contains(t2)').find(':nth-child(3)').html(); }
-        test.assertEvalEquals(cntTg2, '3', 'has tag count 3 for "t2"');
-
-        function cntTg3() { return $('tbody tr tr:contains(t3)').find(':nth-child(3)').html(); }
-        test.assertEvalEquals(cntTg3, '2', 'has tag count 2 for "t3"');
 
     });
 

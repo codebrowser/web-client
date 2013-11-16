@@ -4,7 +4,8 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
     template: Handlebars.templates.TagCategoriesContainer,
 
     events: {
-        'click [data-action="create-category"]': 'createTagCategory'
+        'click [data-action="create-category"]': 'createTagCategory',
+        'click [data-action="delete-category"]': 'deleteTagCategory'
     },
 
     /* Render */
@@ -43,7 +44,6 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
         //If no category with same name, add new
         if (existing.length === 0) {
 
-             // Create new tag category
             var tagCategory = new codebrowser.model.TagCategory({ name: text });
 
             tagCategory.save( {}, {
@@ -65,5 +65,27 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
             self.render();
 
         }
+    },
+
+    deleteTagCategory: function (event) {
+        var id = $(event.target).data('id');
+        var category = this.collection.get(id);
+
+        var self = this;
+
+        // Destroy tag Category
+        category.destroy({
+
+            success: function () {
+                // Remove from collection
+                self.collection.remove(category);
+                self.render();
+            },
+
+            error: function () {
+
+                throw new Error('Failed to delete Tag Category')
+            }
+        });
     }
 });

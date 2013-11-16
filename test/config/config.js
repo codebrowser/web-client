@@ -14,8 +14,8 @@ config.test = {
 
     async: {
 
-        timeout: 500,
-        waitDuration: 250
+        timeout: 1000,
+        waitDuration: 500
 
     }
 }

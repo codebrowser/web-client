@@ -5,20 +5,21 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
 
     events: {
 
-        'click [data-action="search"]':             'filterTagListsByName',
-        'keyup [data-id="query-string"]':           'filterTagListsByName',
-        'keypress [data-id="query-string"]':        'filterTagListsByName',
-        'click #downloadTagListJson':               'download',
-        'click [data-action="add-to-category"]':    'addTagToCategory',
-        'click .toggle-add':                        'toggleAdd',
-        'mouseenter .up-scroll':                    'scrollTimer',
-        'mouseenter .down-scroll':                  'scrollTimer',
-        'mouseout .up-scroll':                      'clearScrollTimer',
-        'mouseout .down-scroll':                    'clearScrollTimer',
-        'dragstart td.link':                        'drag',
-        'dragend *:not("p.tag-category")':          'endDrag',
-        'drop p.tag-category':                      'dropAndAddToCategory',
-        'dragover p.tag-category':                  'allowDropping'
+        'click [data-action="search"]':                 'filterTagListsByName',
+        'keyup [data-id="query-string"]':               'filterTagListsByName',
+        'keypress [data-id="query-string"]':            'filterTagListsByName',
+        'click [data-action="delete-from-category"]':   'deleteTagFromCategory',
+        'click #downloadTagListJson':                   'download',
+        'click [data-action="add-to-category"]':        'addTagToCategory',
+        'click .toggle-add':                            'toggleAdd',
+        'mouseenter .up-scroll':                        'scrollTimer',
+        'mouseenter .down-scroll':                      'scrollTimer',
+        'mouseout .up-scroll':                          'clearScrollTimer',
+        'mouseout .down-scroll':                        'clearScrollTimer',
+        'dragstart td.link':                            'drag',
+        'dragend *:not("p.tag-category")':              'endDrag',
+        'drop p.tag-category':                          'dropAndAddToCategory',
+        'dragover p.tag-category':                      'allowDropping'
 
     },
 
@@ -154,6 +155,45 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
 
     },
 
+    deleteTagFromCategory: function (event) {
+        var id = $(event.target).data('id');
+
+        if (!id) {
+            return;
+        }
+
+        var tagName = codebrowser.model.TagName.findOrCreate({ id : id });
+
+        var tagNames = this.tagCategory.get('tagnames');
+        
+        var index = tagNames.indexOf(tagName);
+
+        if ( index > -1 ) {
+            tagNames.splice(index, 1);
+        }
+
+        this.tagCategory.set('tagnames', tagNames);
+
+        var self = this;
+
+        this.tagCategory.save({}, {
+
+            'tagid': id,
+
+            success: function () {
+
+                self.unusedTagNames.fetch({ success : function() { self.render(); } });
+                self.snapshotTagNames.fetch({ success : function() { self.render(); } });
+                self.exerciseAnswerTagNames.fetch({ success : function() { self.render(); } });
+            },
+
+            error: function () {
+
+                throw new Error('Removing tag from category failed.');
+            }
+        });
+    },
+
     toggleAdd: function () {
 
         $('.toggle-add').toggleClass('open');
@@ -190,12 +230,9 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         $('.add-to-categories').css({ 'display': 'none' });
 
         var tagName = codebrowser.model.TagName.findOrCreate({ id : this.draggedTagnameId });
-        console.log(tagName);
 
         var targetCategoryId = event.currentTarget.id;
         var tagCategory = codebrowser.model.TagCategory.findOrCreate({ id : targetCategoryId }, { create : false });
-
-        console.log(tagCategory);
 
         var tagNames = tagCategory.get('tagnames');
         tagNames.push(tagName);

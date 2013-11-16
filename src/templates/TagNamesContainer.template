@@ -70,7 +70,6 @@
                         <tr>
                             <th>#</th>
                             <th>Tag</th>
-                            <th>Count</th>
                         </tr>
                     </thead>
 
@@ -84,10 +83,11 @@
 
                                 {{#if ../tagCategory}}
                                     <td class='link'><a href='./#/tagcategories/{{../../tagCategory.id}}/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td><button type='button' data-action='delete-from-category' data-id='{{id}}' class='delete'>×</button></td>
                                 {{else}}
                                     <td class='link' draggable='true' id='{{id}}'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td>{{tags.length}}</td>
                                 {{/if}}
-                                <td>{{tags.length}}</td>
 
                             </tr>
 
@@ -109,7 +109,6 @@
                         <tr>
                             <th>#</th>
                             <th>Tag</th>
-                            <th>Count</th>
                         </tr>
                     </thead>
 
@@ -123,11 +122,11 @@
 
                                 {{#if ../tagCategory}}
                                     <td class='link'><a href='./#/tagcategories/{{../../tagCategory.id}}/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td><button type='button' data-action='delete-from-category' data-id='{{id}}' class='delete'>×</button></td>
                                 {{else}}
                                     <td class='link' draggable='true' id='{{id}}'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td>{{tags.length}}</td>
                                 {{/if}}
-
-                                <td>{{tags.length}}</td>
 
                             </tr>
 
