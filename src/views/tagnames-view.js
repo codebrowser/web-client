@@ -8,18 +8,20 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         'click [data-action="search"]':                 'filterTagListsByName',
         'keyup [data-id="query-string"]':               'filterTagListsByName',
         'keypress [data-id="query-string"]':            'filterTagListsByName',
-        'click [data-action="delete-from-category"]':   'deleteTagFromCategory',
         'click #downloadTagListJson':                   'download',
         'click [data-action="add-to-category"]':        'addTagToCategory',
+        'click [data-action="delete-from-category"]':   'deleteTagFromCategory',
         'click .toggle-add':                            'toggleAdd',
-        'mouseenter .up-scroll':                        'scrollTimer',
-        'mouseenter .down-scroll':                      'scrollTimer',
-        'mouseout .up-scroll':                          'clearScrollTimer',
-        'mouseout .down-scroll':                        'clearScrollTimer',
+        'dragenter .up-scroll':                         'scrollTimer',
+        'dragenter .down-scroll':                       'scrollTimer',
+        'dragleave .up-scroll':                         'clearScrollTimer',
+        'dragleave .down-scroll':                       'clearScrollTimer',
         'dragstart td.link':                            'drag',
         'dragend *:not("p.tag-category")':              'endDrag',
         'drop p.tag-category':                          'dropAndAddToCategory',
-        'dragover p.tag-category':                      'allowDropping'
+        'dragover p.tag-category':                      'allowDropping',
+        'dragenter p.tag-category':                     'hilight',
+        'dragleave p.tag-category':                     'dehilight'
 
     },
 
@@ -210,22 +212,27 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
 
         this.draggedTagnameId = event.currentTarget.id;
 
-        var left = ((document.width-$('.add-to-categories').width())/2)-150;
-        var top = (document.height-$('.add-to-categories').height())/2
-        $('.add-to-categories').css({ 'display': 'block', 'left': left +'px', 'top': top + 'px' });
+        var left = (($(document).width()-$('.add-to-categories').width())/2)-150;
+        var top = ($(document).height()-$('.add-to-categories').height())/2;
+
+        $('.add-to-categories').css({ 'display': 'block', 'z-index': '50', 'left': left +'px', 'top': top + 'px' });
+        $('.add-to-categories *:not(".scroll")').css({ 'z-index': '50' });
 
     },
 
     endDrag: function (event) {
 
         event.preventDefault();
-        $('.add-to-categories').css({ 'display': 'none' });
+        $('.add-to-categories').css({ 'display': 'none', 'z-index': '-50' });
+        $('.add-to-categories *:not(".scroll")').css({ 'z-index': '-50' });
 
     },
 
     dropAndAddToCategory: function (event) {
 
         event.preventDefault();
+
+        $(event.target).removeClass('hilight');
 
         $('.add-to-categories').css({ 'display': 'none' });
 
@@ -285,9 +292,19 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         }
     },
 
-    clearScrollTimer: function() {
+    clearScrollTimer: function () {
 
         clearInterval(this.repeater);
+    },
+
+    hilight: function (event) {
+
+        $(event.target).addClass('hilight');
+    },
+
+    dehilight: function (event) {
+        
+        $(event.target).removeClass('hilight');
     }
 
 });

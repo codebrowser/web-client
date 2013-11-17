@@ -119,6 +119,13 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
             success: function () {
 
                 self.collection.add(tag, { at: 0 });
+                if (snapshotTag) {
+                    $('[data-id="snapshot-tag"]').focus();
+                }
+                else {
+                    $('[data-id="tag"]').focus();
+                }
+                
             },
 
             error: function () {

@@ -46,13 +46,13 @@
 
     {{#if tagCategories}}
         <div class="add-to-categories">
-            <div class="scroll up-scroll"><i class='icon-arrow-up'></i></div>
             <div class="category-list">
+                <div class="scroll up-scroll"><i class='icon-arrow-up'></i></div>
                 {{#tagCategories}}
                     <p class="tag-category" id='{{id}}'>{{name}}</p>
                 {{/tagCategories}}
+                <div class="scroll down-scroll"><i class='icon-arrow-down'></i></div>
             </div>
-            <div class="scroll down-scroll"><i class='icon-arrow-down'></i></div>
         </div>
     {{/if}}
 

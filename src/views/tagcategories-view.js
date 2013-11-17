@@ -39,8 +39,8 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
 
         var self = this;
 
-        var existing = self.collection.where({ name: text })
-        
+        var existing = self.collection.where({ name: text });
+
         //If no category with same name, add new
         if (existing.length === 0) {
 
@@ -52,6 +52,8 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
 
                     self.collection.add(tagCategory);
                     self.render();
+                    $('[data-id="category"]').focus();
+
                 },
 
                 error: function () {
@@ -63,6 +65,7 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
         } else {
 
             self.render();
+            $('[data-id="category"]').focus();
 
         }
     },
@@ -87,5 +90,6 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
                 throw new Error('Failed to delete Tag Category')
             }
         });
+        
     }
 });
