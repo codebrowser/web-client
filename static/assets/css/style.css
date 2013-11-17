@@ -1053,6 +1053,15 @@ table.double-list {
 
 }
 
+.triple-list {
+    width: 33% !important;
+}
+
+.triple-list ~ .double-list-left,
+.triple-list ~ .double-list-right {
+    width: 33% !important;
+}
+
 .double-list-left {
 
     width: 50%;
@@ -1067,6 +1076,23 @@ table.double-list {
     vertical-align: top;
     padding-left: 25px;
 
+}
+
+.button-add {
+    float: right;
+    padding: 5px 8px;
+    border: 0;
+    cursor: pointer;
+    cursor: hand;
+    border-radius: 12.5px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 15px;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.button-add:hover {
+    background-color: #ADE8A5;
 }
 
 
@@ -1278,28 +1304,28 @@ table.double-list {
     left: 0;
     width: 100%;
     text-align: center;
-    opacity: 0.7;
+    
     z-index: 55;
 }
 
 .add-to-categories .up-scroll {
     top: 0;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #999999), color-stop(1, #FFFFFF));
-    background-image: -o-linear-gradient(bottom, #999999 0%, #FFFFFF 100%);
-    background-image: -moz-linear-gradient(bottom, #999999 0%, #FFFFFF 100%);
-    background-image: -webkit-linear-gradient(bottom, #999999 0%, #FFFFFF 100%);
-    background-image: -ms-linear-gradient(bottom, #999999 0%, #FFFFFF 100%);
-    background-image: linear-gradient(to bottom, #999999 0%, #FFFFFF 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(153,153,153,1)), color-stop(1, rgba(153,153,153,0)));
+    background-image: -o-linear-gradient(bottom, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
+    background-image: -moz-linear-gradient(bottom, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
+    background-image: -ms-linear-gradient(bottom, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
+    background-image: linear-gradient(to bottom, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
 }
 
 .add-to-categories .down-scroll { 
     bottom: 0;
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #999999), color-stop(1, #FFFFFF));
-    background-image: -o-linear-gradient(top, #999999 0%, #FFFFFF 100%);
-    background-image: -moz-linear-gradient(top, #999999 0%, #FFFFFF 100%);
-    background-image: -webkit-linear-gradient(top, #999999 0%, #FFFFFF 100%);
-    background-image: -ms-linear-gradient(top, #999999 0%, #FFFFFF 100%);
-    background-image: linear-gradient(to top, #999999 0%, #FFFFFF 100%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgba(153,153,153,1)), color-stop(1, rgba(153,153,153,0)));
+    background-image: -o-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
+    background-image: -moz-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
+    background-image: -webkit-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
+    background-image: -ms-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
+    background-image: linear-gradient(to top, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
 }
 
 

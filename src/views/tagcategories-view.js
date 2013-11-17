@@ -68,6 +68,7 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
             $('[data-id="category"]').focus();
 
         }
+
     },
 
     deleteTagCategory: function (event) {
@@ -90,6 +91,6 @@ codebrowser.view.TagCategoriesView = Backbone.View.extend({
                 throw new Error('Failed to delete Tag Category')
             }
         });
-        
+
     }
 });
