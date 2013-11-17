@@ -10,8 +10,17 @@ codebrowser.view.FooterView = Backbone.View.extend({
 
     render: function () {
 
+        var attributes = {
+
+            apiUrl: config.api.main.root,
+            showComments: localStorage.getItem('config.comments'),
+            showTags: localStorage.getItem('config.tagnames'),
+            showTagCategories: localStorage.getItem('config.tagcategories'),
+            showStudentGroups: localStorage.getItem('config.studentgroups')
+        }
+
         // Template
-        var output = this.template({ apiUrl: config.api.main.root });
+        var output = this.template(attributes);
 
         this.$el.html(output);
         return this;
@@ -25,5 +34,6 @@ codebrowser.view.FooterView = Backbone.View.extend({
         localStorage.setItem('config.apiUrl', apiUrl);
         location.href = '.';
 
-    }
+    },
+
 });

@@ -28,6 +28,10 @@ codebrowser.router.RootRouter = codebrowser.router.BaseRouter.extend({
             self.rootView.showStudentGroups = studentGroups.size() > 0;
             codebrowser.controller.ViewController.push(self.rootView, true);
         });
+
+        this.rootView.showTags = localStorage.getItem('config.tagnames');
+        this.rootView.showTagCategories = localStorage.getItem('config.tagcategories');
+        this.rootView.showComments = localStorage.getItem('config.comments');
     },
 
     pageNotFound: function () {

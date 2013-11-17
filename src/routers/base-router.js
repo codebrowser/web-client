@@ -29,5 +29,6 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
+
     }
 });

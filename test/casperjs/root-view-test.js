@@ -1,7 +1,9 @@
 casper.test.begin('Root view', 7, function suite(test) {
 
     mockData = {
-
+        'tagnames': [],
+        'tagcategories': [],
+        'comments\\?page=0&size=1': [],
         'studentgroups': [],
     };
 
@@ -28,7 +30,9 @@ casper.test.begin('Root view', 7, function suite(test) {
 casper.test.begin('Root view (with student groups)', 1, function suite(test) {
 
     mockData = {
-
+        'tagnames': [],
+        'tagcategories': [],
+        'comments\\?page=0&size=1': [],
         'studentgroups': [{}],
     };
 

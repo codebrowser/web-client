@@ -1,6 +1,9 @@
 casper.test.begin('List view filter', 3, function suite(test) {
 
     mockData = {
+        'tagnames': [],
+        'tagcategories': [],
+        'comments\\?page=0&size=1': [],
         'courses': [
             {id: 11, name: '<b><i>Course åäö</i></b>', exercises: [{}, {}], amountOfStudents: 4},
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}

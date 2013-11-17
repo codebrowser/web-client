@@ -31,6 +31,10 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
     render: function () {
 
+        if (localStorage.getItem('config.comments') === 'false') {
+            throw new Error('Your backend does not support comments.');
+        }
+    
         if (this.collection) {
             this._markCommentsReadFlags();
         }

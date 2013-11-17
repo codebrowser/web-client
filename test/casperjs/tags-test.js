@@ -1,6 +1,7 @@
 casper.test.begin('Tags view', 16, function suite(test) {
 
     mockData = {
+        'comments\\?page=0&size=1': [],
         'tagnames': [
             {id: 61, name: 't1', tags: [{}]},
             {id: 62, name: 't2', tags: [{}, {}, {}]},

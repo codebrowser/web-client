@@ -15,6 +15,11 @@
         <button class='btn btn-primary' data-action='save' title='Apply new settings and close the dialog'>Save</button>
     </div>
 
+    <div class='modal-body inline'>
+        <label for='apiUrl'>Server URL</label>
+        <input id='apiUrl' type='text' value='{{apiUrl}}' />
+    </div>
+
 </div>
 
 <i class='icon-wrench icon-gray pull-left' data-toggle='modal' data-target='#settings-modal' title='Change Code Browser settings'></i>

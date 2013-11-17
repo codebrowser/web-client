@@ -107,8 +107,11 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         contentContainer.append(this.editorView.el);
 
         // Comments
-        this.snapshotCommentsView = new codebrowser.view.SnapshotCommentsView();
-        contentContainer.append(this.snapshotCommentsView.el);
+        if (localStorage.getItem('config.comments') === 'true') {
+
+            this.snapshotCommentsView = new codebrowser.view.SnapshotCommentsView();
+            contentContainer.append(this.snapshotCommentsView.el);
+        }
 
         this.$el.append(contentContainer);
     },
@@ -134,7 +137,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.editorView.remove();
 
         // Comment view
-        this.snapshotCommentsView.remove();
+        if (localStorage.getItem('config.comments') === 'true') {
+            this.snapshotCommentsView.remove();
+        }
 
         Backbone.View.prototype.remove.call(this);
     },
@@ -278,7 +283,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.snapshotBrowserView.update(this.model, this.file, this.courseRoute);
 
         // Update comments view
-        this.snapshotCommentsView.update(this.model);
+        if (localStorage.getItem('config.comments') === 'true') {
+            this.snapshotCommentsView.update(this.model);
+        }
 
         this.render();
     },
