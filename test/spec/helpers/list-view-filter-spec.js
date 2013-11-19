@@ -54,4 +54,29 @@ describe('ListViewFilter', function () {
         expect($node.html()).toEqual('i got <span class="search-highlight">needle</span> in my haystack');
     });
 
+    it('should have case insensitive search', function() {
+
+        var $node = $('<a href="abba">Abc Åäö</a>');
+
+        expect(subject._nodeTextContains($node, 'c å')).toBe(true);
+    });
+
+    it('should have case insensitive hightlighting', function() {
+
+        var $node = $('<a href="#">ÅÄÖ</a>');
+
+        subject._highlightMatch($node, 'ä');
+
+        expect($node.html()).toEqual('Å<span class="search-highlight">Ä</span>Ö');
+    });
+
+    it('should escape html code when highlighting', function() {
+
+        var $node = $('<a href="#"></a>');
+        $node.text('<><');
+
+        subject._highlightMatch($node, '>');
+
+        expect($node.html()).toEqual('&lt;<span class="search-highlight">&gt;</span>&lt;');
+    });
 });

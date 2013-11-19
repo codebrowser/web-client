@@ -22,7 +22,7 @@ codebrowser.helper.ListViewFilter = function(options) {
 
     this.filterList = function () {
 
-        var query = this._getQueryString();
+        var query = this._getQueryString().toLowerCase();
 
         var $tableRows = $(this.containerSelector).find(this.rowSelector);
 
@@ -36,7 +36,7 @@ codebrowser.helper.ListViewFilter = function(options) {
             var cell =  $(this).find(that.targetCellSelector);
             var cellText = cell.text();
 
-            cell.html( cellText );
+            cell.html(_.escape(cellText));
         });
 
         if (query !== '') {
@@ -64,18 +64,19 @@ codebrowser.helper.ListViewFilter = function(options) {
 
     this._nodeTextContains = function ($node, query) {
 
-        return $node.text().indexOf(query) !== -1;
+        return $node.text().toLowerCase().indexOf(query) !== -1;
     };
 
     this._highlightMatch = function ($node, query) {
         // wrap matched part of nodes text in span
 
         var text = $node.text();
-        var i = text.indexOf(query);
+        var i = text.toLowerCase().indexOf(query);
         var l = query.length;
 
-        var highlighted = text.substring(0, i) + '<span class="search-highlight">' + query + '</span>' + text.substring(i+l);
+        var highlighted = _.escape(text.substring(0, i)) + '<span class="search-highlight">' +
+                _.escape(text.substring(i, i + l)) + '</span>' + _.escape(text.substring(i + l));
 
-        $node.html( highlighted );
+        $node.html(highlighted);
     };
 };
