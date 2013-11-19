@@ -34,8 +34,8 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
 
             snapshotTagNames: this.snapshotTagNames.toJSON(),
             exerciseAnswerTagNames: this.exerciseAnswerTagNames.toJSON(),
-            
-            
+
+
         }
 
         if (this.unusedTagNames) {
@@ -45,7 +45,7 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         if (this.tagCategory) {
             attributes = _.extend(attributes, { tagCategory: this.tagCategory.toJSON() });
         }
-        
+
         if (this.tagCategories) {
             attributes = _.extend(attributes, { tagCategories: this.tagCategories.toJSON() });
         }
@@ -106,7 +106,7 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
             tagName.get('tags').forEach(function (tag) {
 
                 students[tag.student.name] = true;
-                exercises[tag.exercise.name] = true;
+                exercises[tag.exercise.name  + ' (' + tag.course.name + ')'] = true;
             });
 
             output.push({
@@ -133,7 +133,7 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         var tagName = codebrowser.model.TagName.findOrCreate({ id : id });
 
         var tagNames = this.tagCategory.get('tagnames');
-        
+
         tagNames.push(tagName);
 
         this.tagCategory.set('tagnames', tagNames);
@@ -167,7 +167,7 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
         var tagName = codebrowser.model.TagName.findOrCreate({ id : id });
 
         var tagNames = this.tagCategory.get('tagnames');
-        
+
         var index = tagNames.indexOf(tagName);
 
         if ( index > -1 ) {
@@ -303,7 +303,7 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
     },
 
     dehilight: function (event) {
-        
+
         $(event.target).removeClass('hilight');
     }
 
