@@ -47,7 +47,7 @@
         <tr>
 
             {{#if unusedTagNames}}
-                <td class='double-list-left triple-list'>
+                <td class='double-list triple-list'>
 
                     <h2>Unused tags ({{unusedTagNames.length}})</h2>
 

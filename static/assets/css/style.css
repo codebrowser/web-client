@@ -1055,6 +1055,7 @@ table.double-list {
 
 .triple-list {
     width: 33% !important;
+    padding-right: 25px;
 }
 
 .triple-list ~ .double-list-left,
