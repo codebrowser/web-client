@@ -113,6 +113,8 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                 success: function() {
 
                     self.studentView.course = course;
+                    self.studentView.exercise = null;
+                    self.studentView.studentGroup = null;
                     courseFetched();
                     fetchSynced();
                 },
@@ -137,6 +139,8 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
                 success: function() {
 
                     self.studentView.studentGroup = studentGroup;
+                    self.studentView.course = null;
+                    self.studentView.exercise = null;
                     fetchSynced();
                     fetchSynced();
                 },
@@ -150,6 +154,9 @@ codebrowser.router.StudentRouter = Backbone.Router.extend({
 
         } else {
 
+            self.studentView.studentGroup = null;
+            self.studentView.course = null;
+            self.studentView.exercise = null;
             fetchSynced();
             fetchSynced();
         }

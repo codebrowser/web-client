@@ -39,16 +39,6 @@
 
         <tbody>
 
-            <tr>
-
-                <td class='index'>-</td>
-
-                <td class='link'><a href='./#/students'>All students</a></td>
-
-                <td>{{numberOfStudents}}</td>
-
-            </tr>
-
             {{#studentGroups}}
 
                 <tr>

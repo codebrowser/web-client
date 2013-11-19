@@ -11,15 +11,10 @@ codebrowser.view.StudentGroupsView = Backbone.View.extend({
 
     render: function () {
 
-        var attributes = {
-
-            studentGroups: this.collection.toJSON(),
-            numberOfStudents: this.numberOfStudents
-        };
-
-        var output = this.template(attributes);
-
+        var output = this.template({ studentGroups: this.collection.toJSON() });
         this.$el.html(output);
+
+        return this;
     },
 
     filterByName: function() {

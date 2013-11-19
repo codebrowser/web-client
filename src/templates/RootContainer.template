@@ -5,7 +5,10 @@
     </ul>
 
     <ul class='nav nav-tabs nav-stacked selection'>
-        <li><a href='./#/studentgroups'>Students</a></li>
+        <li><a href='./#/students'>Students</a></li>
+        {{#if showStudentGroups}}
+            <li><a href='./#/studentgroups'>Student groups</a></li>
+        {{/if}}
         <li><a href='./#/courses'>Courses</a></li>
         <li><a href='./#/tagnames'>Tags</a></li>
         <li><a href='./#/comments'>Comments</a></li>

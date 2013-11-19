@@ -103,10 +103,17 @@ if (typeof casper !== 'undefined') {
 /* Setup for jasmine tests. */
 if (typeof jasmine !== 'undefined') {
 
+    localStorage.clear();
+
+    // Just ignore all requests during page load.
+    $(document).ready(function() {
+        createFakeServer({'.*': 404});
+    });
+
     beforeEach(function () {
 
-        // Without this Backbone.history.start() may fetch models used in previous specs.
-        Backbone.history.navigate('');
+        // Without changing route Backbone.history.start() may fetch models used in previous specs.
+        Backbone.history.navigate('_'); // use non-existant route
         createFakeServer({});
     });
 

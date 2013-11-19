@@ -20,9 +20,26 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
 
     root: function () {
 
-        this.rootView.render();
-        codebrowser.controller.ViewController.push(this.rootView);
+        var self = this;
 
+        var studentGroups = new codebrowser.collection.StudentGroupCollection();
+
+        studentGroups.fetch({
+
+            cache: true,
+            expires: config.cache.expires,
+
+            success: function () {
+
+                self.rootView.showStudentGroups = studentGroups.size() > 0;
+                codebrowser.controller.ViewController.push(self.rootView, true);
+            },
+
+            error: function () {
+
+                self.notFound();
+            }
+        });
     },
 
     notFound: function () {

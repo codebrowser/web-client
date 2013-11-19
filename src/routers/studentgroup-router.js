@@ -36,34 +36,7 @@ codebrowser.router.StudentGroupRouter = Backbone.Router.extend({
 
             success: function () {
 
-                // Show groups only if at least one exists; otherwise show list of all students.
-                if (studentGroupCollection.size() > 0) {
-
-                    var studentCollection = new codebrowser.collection.StudentCollection();
-
-                    studentCollection.fetch({
-
-                        cache: true,
-                        expires: config.cache.expires,
-
-                        success: function () {
-
-                            self.studentGroupsView.numberOfStudents = studentCollection.size();
-                            self.studentGroupsView.render();
-                            codebrowser.controller.ViewController.push(self.studentGroupsView);
-                        },
-
-                        error: function () {
-
-                            self.notFound();
-                        }
-                    });
-
-
-                } else {
-
-                    codebrowser.app.student.navigate('#/students', { replace: true });
-                }
+                codebrowser.controller.ViewController.push(self.studentGroupsView, true);
             },
 
             error: function () {

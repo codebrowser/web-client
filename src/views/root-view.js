@@ -7,9 +7,9 @@ codebrowser.view.RootView = Backbone.View.extend({
 
     render: function () {
 
-        // Template
-        var output = this.template();
-
+        var output = this.template({ showStudentGroups : this.showStudentGroups });
         this.$el.html(output);
+
+        return this;
     }
 });
