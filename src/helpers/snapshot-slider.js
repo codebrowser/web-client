@@ -19,5 +19,8 @@ codebrowser.helper.SnapshotSlider = function(currentIndex, snapshotCount, onChan
 
             onChangeCallback(e.value - 1);
         });
+
+        // force slider to full width
+        this.$html.find('.slider').css('width', '100%');
     };
 };
