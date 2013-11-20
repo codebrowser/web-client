@@ -19,10 +19,13 @@
         <button id="toggleData" class="btn">
             <i class="icon-ok icon-gray"></i>
         </button>
-
         <button id="toggleConcepts" class="btn">
             <i class="icon-tasks"></i>
         </button>
+        <button id="toggleConceptHeatmap" class="btn">
+            <i class="icon-th"></i>
+        </button>
+
     </div>
 
     <div class='span4 pull-right'>
