@@ -6,7 +6,7 @@
 
         {{#if tagCategory}}
 
-            <li><a href='/#/tagcategories'>Tag categories</a><span class='divider'>/</span></li>
+            <li><a href='./#/tagcategories'>Tag categories</a><span class='divider'>/</span></li>
             <li class='active'>{{tagCategory.name}}</li>
 
         {{else}}
