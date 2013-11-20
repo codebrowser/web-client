@@ -1111,7 +1111,7 @@ table.double-list {
 
 /* Concept Visualization */
 
-#snapshots-concepts-container {
+#snapshots-concepts-container, #snapshots-concept-heatmap-container {
 
     margin: 25px auto 0 auto;
     padding: 15px;
@@ -1121,6 +1121,12 @@ table.double-list {
     line-height: normal;
     color: #6d8089;
     text-align: center;
+
+}
+
+#snapshots-concept-heatmap-container .snapshot-index {
+
+    font-size: 14px;
 
 }
 
