@@ -35,7 +35,6 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
             snapshotTagNames: this.snapshotTagNames.toJSON(),
             exerciseAnswerTagNames: this.exerciseAnswerTagNames.toJSON(),
 
-
         }
 
         if (this.unusedTagNames) {
@@ -76,28 +75,22 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
 
     download: function () {
 
-        var self = this;
+        // map from ids to tagnames so that each tagname is only added once
+        var exportData = {};
 
-        var tagNames = new codebrowser.collection.TagNameCollection();
+        this._addTagNamesToExport(this.snapshotTagNames, exportData);
+        this._addTagNamesToExport(this.exerciseAnswerTagNames, exportData);
 
-        tagNames.fetch({
+        // get values from the map
+        var exportValues = Object.keys(exportData).map(function (id) { return exportData[id]; });
 
-            cache: false,
-            expires: 0,
-
-            success: function () {
-
-                var blob = new Blob([self._generateJson(tagNames)], {type: 'application/json'});
-                saveAs(blob, 'tags.json');
-            }
-        });
+        var blob = new Blob([JSON.stringify(exportValues)], {type: 'application/json'});
+        saveAs(blob, 'tags.json');
 
         return false;
     },
 
-    _generateJson: function (tagNames) {
-
-        var output = [];
+    _addTagNamesToExport: function (tagNames, exportData) {
 
         tagNames.each(function (tagName) {
             var students = {};
@@ -109,14 +102,12 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
                 exercises[tag.exercise.name  + ' (' + tag.course.name + ')'] = true;
             });
 
-            output.push({
+            exportData[tagName.id] = {
                 tag: tagName.get('name'),
                 students: Object.keys(students),
                 exercises: Object.keys(exercises)
-            });
+            };
         });
-
-        return JSON.stringify(output);
     },
 
     addTagToCategory: function (event) {
