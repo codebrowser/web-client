@@ -12,6 +12,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
     events: {
 
         'click #toggleConcepts': 'toggleConcepts',
+        'click #toggleConceptHeatmap': 'toggleConceptHeatmap',
         'click #toggleTimeline': 'toggleTimeline',
         'click #toggleBrowser':  'toggleBrowser',
         'click #toggleTree':     'toggleTree',
@@ -71,11 +72,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         visualizations.tree = new codebrowser.view.SnapshotsTreeView({ parentView: this });
         visualizations.data = new codebrowser.view.SnapshotsDataView({ parentView: this });
         visualizations.concepts = new codebrowser.view.SnapshotsConceptsView({ parentView: this });
+        visualizations.conceptHeatmap = new codebrowser.view.SnapshotsConceptHeatmapView({ parentView: this });
 
         visualizations.timeline.buttonSelector = '#toggleTimeline';
         visualizations.tree.buttonSelector = '#toggleTree';
         visualizations.data.buttonSelector = '#toggleData';
         visualizations.concepts.buttonSelector = '#toggleConcepts';
+        visualizations.conceptHeatmap.buttonSelector = '#toggleConceptHeatmap';
 
         for (var key in visualizations) {
             if (visualizations.hasOwnProperty(key)) {
@@ -256,6 +259,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Determine current file
         this.file = this.model.get('files').get(fileId);
+
         var filename = this.file.get('name');
 
         // Determine previous file if it exists
@@ -265,7 +269,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.show();
 
         this.updateVisualizations(index, filename);
-
 
         // Update editor
         var backendFile = this.collection.at(index).get('files').findWhere({ name: filename }).attributes.diffs;
@@ -298,6 +301,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         if (visualizations.concepts.isActive) {
             visualizations.concepts.update(this.model);
+        }
+
+        if (visualizations.conceptHeatmap.isActive) {
+            visualizations.conceptHeatmap.update(this.model);
         }
     },
 
@@ -416,13 +423,25 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     toggleConcepts: function () {
 
-        $(this.visualizations.data.buttonSelector).toggleClass('active');
+        $(this.visualizations.concepts.buttonSelector).toggleClass('active');
 
         this.visualizations.concepts.toggle();
 
         // Update Concepts view
         if (this.visualizations.concepts.isActive) {
             this.visualizations.concepts.update(this.model);
+        }
+    },
+
+    toggleConceptHeatmap: function () {
+
+        $(this.visualizations.conceptHeatmap.buttonSelector).toggleClass('active');
+
+        this.visualizations.conceptHeatmap.toggle();
+
+        // Update Concepts view
+        if (this.visualizations.conceptHeatmap.isActive) {
+            this.visualizations.conceptHeatmap.update(this.model);
         }
     },
 
@@ -509,5 +528,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var file = snapshot.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(snapshot, file);
-    },
+    }
+
 });
