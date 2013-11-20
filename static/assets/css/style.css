@@ -288,6 +288,12 @@ ul.selection a:hover {
 
 }
 
+/* Navigation */
+
+nav {
+    height: 40px;
+}
+
 /* Structure */
 
 #loading {
@@ -1068,6 +1074,7 @@ table.double-list {
 .triple-list {
     width: 33% !important;
     padding-right: 25px;
+    vertical-align: top;
 }
 
 .triple-list ~ .double-list-left,
