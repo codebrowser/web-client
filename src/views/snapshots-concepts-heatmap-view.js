@@ -129,7 +129,7 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .data(snapshots).enter()
             .append('g')
             .attr('class', 'snapshot-index')
-            .attr('transform', function(d, i ) { return 'translate(' + ((i * rectWidth) + widthOffset + 6) + ',' + (self.height - heightOffset + 5) + ')'; })
+            .attr('transform', function(d, i ) { return 'translate(' + ((i * rectWidth) + ((rectWidth/2) - 5) + widthOffset) + ',' + (self.height - heightOffset + 15) + ')'; }) // lots of magic here
             .append('text')
             .attr('class', function(d, i) { return 'snapshotlabel_' + (i + 1)})
             .attr('fill', 'rgb(0,0,0)')
@@ -169,20 +169,19 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
 
                 // highlight rows on mouseover
                 .on('mouseover', function(thisData) {
-                    console.log('.' + this.className.baseVal.substr(9));
-                    self.svg.selectAll('.concept text').filter(function(d) { return d === thisData })
-                        .style('font-weight', 'bold')
-
-                    self.svg.selectAll('.snapshotlabel_' + this.className.baseVal.substr(9))
-                        .style('font-weight', 'bold');
+                    changeLabelWeight(this, thisData, 'bold')
                 })
                 .on('mouseout', function(thisData) {
-                    self.svg.selectAll('.concept text').filter(function(d) { return d === thisData })
-                        .style('font-weight', 'normal')
-
-                    self.svg.selectAll('.snapshotlabel_' + this.className.baseVal.substr(9))
-                        .style('font-weight', 'normal');
+                    changeLabelWeight(this, thisData, 'normal')
                 });
+
+            var changeLabelWeight = function(element, elementData, weight) {
+                self.svg.selectAll('.concept text').filter(function(d) { return d === elementData })
+                    .style('font-weight', weight)
+
+                self.svg.selectAll('.snapshotlabel_' + element.className.baseVal.substr(9))
+                    .style('font-weight', weight);
+            }
 
 
         }
