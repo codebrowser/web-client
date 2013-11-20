@@ -762,15 +762,27 @@ button.delete {
 
 #snapshot-comments-container header {
 
-    margin: 5px 0;
+    margin: 5px;
 }
 
 #snapshot-comments-container header h1 {
 
-    display: inline;
     font-size: 14px;
     font-weight: 500;
     line-height: 32px;
+
+}
+
+#snapshot-comment-form {
+
+    background-color: #f5f5f5;
+    padding: 5px;
+
+}
+
+#snapshot-comments-container .btn-group {
+
+    display: block;
 
 }
 
@@ -1210,7 +1222,7 @@ table.double-list {
 #comments-container article h3 {
 
     margin: 0;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     font-size: 12px;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.8);
@@ -1224,21 +1236,16 @@ table.double-list {
     font-style: italic;
 }
 
-#comments-container article p:before {
+#comments-container .comment-text {
 
-    content: '\201C';
-
-}
-
-#comments-container article p:after {
-
-    content: '\201D';
+    padding: 22px;
 
 }
 
-#comments-container article a {
 
-    margin: 12px 0 0 12px;
+#comments-container .comment-controls {
+
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 
 }
 

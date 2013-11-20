@@ -1,44 +1,75 @@
 <section>
 
-    <ul class='breadcrumb'>
+    {{#if showBreadcrumb}}
 
-        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+        <ul class='breadcrumb'>
 
-        <li class='active'>Comments</li>
+            <li><a href='./'>Home</a> <span class='divider'>/</span></li>
 
-    </ul>
+            <li class='active'>Comments</li>
+
+        </ul>
+
+    {{/if}}
 
     <h2>Comments ({{comments.length}})</h2>
 
     {{#comments}}
 
-        {{#if read}}
+        {{#if isRead}}
             <article>
         {{else}}
             <article class='new'>
         {{/if}}
 
+
             <h3>
-                <strong>{{username}}</strong><span class='pull-right'>{{#date createdAt}}{{/date}}</span>
+                <strong>{{username}}</strong>
+                <span class='pull-right'>
+                    {{#date createdAt}}{{/date}}
+                </span>
             </h3>
 
-            <p>
+                {{#if snapshot}}
+                    <p class='comment-text''>
+                {{else}}
+                    <p class='comment-text' data-action='toggle-comment-edit' data-id='{{id}}'>
+                {{/if}}
+
                 {{comment}}
+
+            </p>
+
+            <p class='comment-controls'>
 
                 {{#if snapshot}}
 
-                      <a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}/snapshots/{{snapshot.id}}' class='pull-right'>
+                      <a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}/snapshots/{{snapshot.id}}'>
                           <i class='icon-snapshot icon-gray icon-intext'></i> {{course.name}} / {{exercise.name}}
                       </a>
 
                   {{else}}
 
-                      <a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}' class='pull-right'>
+                      <a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}'>
                           <i class='icon-answer icon-gray icon-intext'/> {{course.name}} / {{exercise.name}}
                       </a>
 
-                  {{/if}}
+                {{/if}}
+
+                <span class='pull-right'>
+                    {{#if snapshot}}
+                    {{else}}
+                        <button class='btn btn-mini' data-toggle='tooltip' title='Edit'>
+                            <i class='icon-edit' data-action='toggle-comment-edit' data-id='{{id}}'></i>
+                        </button>
+                    {{/if}}
+                    <button class='btn btn-mini' data-toggle='tooltip' title='Delete'>
+                        <i class='icon-remove' data-action='delete-comment' data-id='{{id}}'></i>
+                    </button>
+                </span>
             </p>
+
+
 
         </article>
 

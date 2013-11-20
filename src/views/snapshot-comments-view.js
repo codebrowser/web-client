@@ -8,10 +8,12 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
     events: {
 
         'click [data-action="create-comment"]': 'createComment',
-        'click [data-action="open-answer-comment"]': 'openAnswerComment',
-        'click [data-action="open-snapshot-comment"]': 'openSnapshotComment',
+        'click [data-action="answer-comment"]': 'answerComment',
+        'click [data-action="snapshot-comment"]': 'snapshotComment'
 
     },
+
+    collection:  new codebrowser.collection.CommentCollection(),
 
     /* Initialise */
 
@@ -25,12 +27,25 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
     render: function () {
 
         var attributes = {
-            username: Utils.getLocalStorageValue('username', 'AnonymousJack')
+            username: Utils.getLocalStorageValue('username', 'AnonymousJack'),
+            comments: this.collection.toJSON()
         };
 
         var output = $(this.template(attributes));
 
         this.$el.html(output);
+
+        this._renderCommentsView();
+    },
+
+    /* Remove */
+
+    remove: function () {
+
+        // Remove Comments view
+        this._removeCommentsView();
+
+        Backbone.View.prototype.remove.call(this);
     },
 
     /* Update */
@@ -38,6 +53,28 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
     update: function (snapshot) {
 
         this.snapshot = snapshot;
+
+        this.collection = new codebrowser.collection.CommentCollection(null, { studentId: this.snapshot.get('studentId'),
+                                                                           courseId: this.snapshot.get('courseId'),
+                                                                           exerciseId: this.snapshot.get('exerciseId') });
+        var self = this;
+
+        // Fetch comments
+        this.collection.fetch({
+
+            cache: false,
+            expires: 0,
+
+            success: function () {
+
+                self.render();
+            },
+
+            error: function () {
+
+                throw new Error('Failed comments fetch.');
+            }
+        });
 
     },
 
@@ -83,39 +120,57 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
 
             success: function () {
 
-                self.$el.find('#success-message').fadeIn(10).delay(3000).fadeOut();
+                self.collection.add(comment);
+                self._renderCommentsView();
             },
 
             error: function () {
 
-                self.$el.find('#error-message').fadeIn(10).delay(3000).fadeOut();
+                throw new Error('Failed comment save.')
             }
         });
 
-        this._resetModal();
+        this._resetForm();
     },
 
-    _resetModal: function () {
-
-        this.$el.find('.modal').modal('hide');
-        this.$el.find('textarea').val('');
-    },
-
-    openAnswerComment: function () {
+    answerComment: function () {
 
         this.newCommentType = 'answer';
-        this._commentTypeChanged();
     },
 
-    openSnapshotComment: function () {
+    snapshotComment: function () {
 
         this.newCommentType = 'snapshot';
-        this._commentTypeChanged();
     },
 
-    _commentTypeChanged: function () {
+    /* Helpers */
 
-        // update modal view
-        this.$el.find('#comment-type').text( this.newCommentType );
+    _resetForm: function () {
+
+        this.$el.find('textarea').val('').focus();
+
+    },
+
+    _renderCommentsView: function () {
+
+        this._removeCommentsView();
+
+        var currentSnapshotId = (this.snapshot) ? this.snapshot.id : 0;
+
+        this.commentsView = new codebrowser.view.CommentsView({
+            showBreadcrumb: false,
+            collection: this.collection.bySnapshotId(currentSnapshotId)
+        });
+        this.$el.append(this.commentsView.el);
+
+        this.commentsView.render();
+    },
+
+    _removeCommentsView: function () {
+
+        if (this.commentsView) {
+
+            this.commentsView.remove();
+        }
     }
 });

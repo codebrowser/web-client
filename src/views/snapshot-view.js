@@ -103,6 +103,10 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.editorView = new codebrowser.view.EditorView();
         contentContainer.append(this.editorView.el);
 
+        // Comments
+        this.snapshotCommentsView = new codebrowser.view.SnapshotCommentsView();
+        contentContainer.append(this.snapshotCommentsView.el);
+
         this.$el.append(contentContainer);
     },
 
@@ -125,6 +129,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Remove editor
         this.editorView.remove();
+
+        // Comment view
+        this.snapshotCommentsView.remove();
 
         Backbone.View.prototype.remove.call(this);
     },
@@ -266,6 +273,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Update browser
         this.snapshotBrowserView.update(this.model, this.file, this.courseRoute);
+
+        // Update comments view
+        this.snapshotCommentsView.update(this.model);
 
         this.render();
     },
