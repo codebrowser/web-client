@@ -105,9 +105,10 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
         var rectHeight = Math.floor((self.height - heightOffset)/concepts.length);
 
         // draw labels for concepts
-        var textElements = this.svg.selectAll('text')
+        var textElements = this.svg.selectAll('.concept')
             .data(concepts).enter()
             .append('g')
+            .attr('class', 'concept')
             .attr('transform', function(d, i ) { return 'translate(5, ' + ((i * rectHeight) + 15) + ')'; })
             .append('text')
             .attr('fill', 'rgb(0,0,0)')
@@ -130,6 +131,7 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .attr('class', 'snapshot-index')
             .attr('transform', function(d, i ) { return 'translate(' + ((i * rectWidth) + widthOffset + 6) + ',' + (self.height - heightOffset + 5) + ')'; })
             .append('text')
+            .attr('class', function(d, i) { return 'snapshotlabel_' + (i + 1)})
             .attr('fill', 'rgb(0,0,0)')
             .text(function(d, i) { return i + 1 });
 
@@ -154,7 +156,6 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
 
             // color rectangles to represent concept size
             this.svg.selectAll('.snapshot_' + (snapshotIndex + 1))
-                //.data(concepts)
                 .style('fill', function(d) {
                     var returnValue = 'rgb(255,255,255)';
                     snapshotData.forEach(function(concept) {
@@ -164,26 +165,24 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
 
                     });
                     return returnValue;
-                });
+                })
 
-            // highlight rows on mouseover
-/*                .on('mouseover', function(thisData) {
-                    self.svg.selectAll('rect').filter(function(d) { return d === thisData })
-                        .style('fill', 'rgb(0,255,0)');
+                // highlight rows on mouseover
+                .on('mouseover', function(thisData) {
+                    console.log('.' + this.className.baseVal.substr(9));
+                    self.svg.selectAll('.concept text').filter(function(d) { return d === thisData })
+                        .style('font-weight', 'bold')
+
+                    self.svg.selectAll('.snapshotlabel_' + this.className.baseVal.substr(9))
+                        .style('font-weight', 'bold');
                 })
                 .on('mouseout', function(thisData) {
-                    self.svg.selectAll('rect').filter(function(d) { return d === thisData })
-                        .style('fill', function(d) {
-                            var returnValue = 'rgb(255,255,255)';
-                            snapshotData.forEach(function(concept) {
-                                if (concept.name === d) {
-                                    returnValue = 'rgba(0,0,0, ' + concept.size/self.concepts.maxConceptSize +')'
-                                }
+                    self.svg.selectAll('.concept text').filter(function(d) { return d === thisData })
+                        .style('font-weight', 'normal')
 
-                            });
-                            return returnValue;
-                        })
-                });*/
+                    self.svg.selectAll('.snapshotlabel_' + this.className.baseVal.substr(9))
+                        .style('font-weight', 'normal');
+                });
 
 
         }
