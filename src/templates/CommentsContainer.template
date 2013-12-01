@@ -59,11 +59,11 @@
                 <span class='pull-right'>
                     {{#if snapshot}}
                     {{else}}
-                        <button class='btn btn-mini' data-toggle='tooltip' title='Edit'>
+                        <button class='btn btn-mini' data-toggle='tooltip' title='Edit this comment'>
                             <i class='icon-edit' data-action='toggle-comment-edit' data-id='{{id}}'></i>
                         </button>
                     {{/if}}
-                    <button class='btn btn-mini' data-toggle='tooltip' title='Delete'>
+                    <button class='btn btn-mini' data-toggle='tooltip' title='Delete this comment'>
                         <i class='icon-remove' data-action='delete-comment' data-id='{{id}}'></i>
                     </button>
                 </span>

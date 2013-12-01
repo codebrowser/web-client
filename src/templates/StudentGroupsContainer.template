@@ -19,7 +19,7 @@
         <span class="pull-right">
             <div class="input-append">
                 <input type="text" class="span2" placeholder="Search" data-id="query-string" />
-                <button class="btn" data-action="search">
+                <button class="btn" data-action="search" title="Search for student groups">
                     <i class="icon-search"></i>
                 </button>
             </div>

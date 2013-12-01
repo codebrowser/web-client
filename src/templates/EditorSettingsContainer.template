@@ -1,6 +1,6 @@
 <footer>
 
-    <a href='#editor-settings' data-toggle='modal' class='pull-right'><i class='icon-wrench icon-gray'></i></a>
+    <a href='#editor-settings' data-toggle='modal' class='pull-right'><i class='icon-wrench icon-gray' title='Change code view settings'></i></a>
 
     <div id='editor-settings' class='modal hide fade' tabindex='-1' data-backdrop='false'>
 
@@ -8,9 +8,9 @@
 
             <header>
 
-                <button type='button' class='close' data-dismiss='modal'>×</button>
+                <button type='button' class='close' data-dismiss='modal' title='Close the settings dialog without saving any changes'>×</button>
 
-                <h1>Settings</h1>
+                <h1>Code viewer settings</h1>
 
             </header>
 
@@ -25,7 +25,7 @@
                     <div class='control-group'>
 
                         <label class='checkbox'>
-                            <input type='checkbox' data-id='ignore-empty-lines' checked> Ignore empty lines (improves diff results)
+                            <input type='checkbox' data-id='ignore-empty-lines' title='Ignore empty lines when calculating differences between two snapshots' checked> Ignore empty lines (improves diff results)
                         </label>
 
                     </div>
@@ -36,7 +36,7 @@
 
                         <div class='controls'>
 
-                            <select data-id='theme'>
+                            <select data-id='theme' title='Choose the color scheme for the code viewer'>
                                 <option value='ace/theme/light'>Light</option>
                                 <option value='ace/theme/dark'>Dark</option>
                             </select>
@@ -51,7 +51,7 @@
 
                         <div class='controls'>
 
-                            <select data-id='font-size'>
+                            <select data-id='font-size' title='Choose the font size for the code viewer'>
                                 <option value='11'>Small</option>
                                 <option value='12' selected>Normal</option>
                                 <option value='13'>Larger</option>
@@ -69,8 +69,8 @@
 
         <div class='modal-footer'>
 
-            <button class='btn' data-dismiss='modal'>Cancel</button>
-            <button data-action='save' class='btn btn-primary' data-dismiss='modal'>Save</button>
+            <button class='btn' data-dismiss='modal' title='Close the settings dialog without saving any changes'>Cancel</button>
+            <button data-action='save' class='btn btn-primary' data-dismiss='modal' title='Apply new settings and close the dialog'>Save</button>
 
         </div>
 

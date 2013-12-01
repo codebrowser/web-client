@@ -2,28 +2,28 @@
 
     <div class='span2'>
 
-        <button id='toggleBrowser' type='button' class='btn' data-toggle='button'><i class='icon-folder icon-gray'></i></button>
-        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray'></i></button>
-        <button id='diff' type='button' class='btn' data-toggle='button'><i class='icon-diff icon-gray'></i></button>
+        <button id='toggleBrowser' type='button' class='btn' data-toggle='button' title='Show file list'><i class='icon-folder icon-gray'></i></button>
+        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray' title='Show side-by-side comparison of file contents'></i></button>
+        <button id='diff' type='button' class='btn' data-toggle='button' title='Highlight changed lines (BLUE: inserted, RED: deleted, GREEN: modified)'><i class='icon-diff icon-gray'></i></button>
 
     </div>
 
-    <div id="visualization-settings" class="span6">
+    <div id='visualization-settings' class='span6'>
 
-        <button id="toggleTimeline" class="btn">
-            <i class="icon-time icon-gray"></i>
+        <button id='toggleTimeline' class='btn' title='Show timeline'>
+            <i class='icon-time icon-gray'></i>
         </button>
-        <button id="toggleTree" class="btn">
-            <i class="icon-tree icon-gray"></i>
+        <button id='toggleTree' class='btn'>
+            <i class='icon-tree icon-gray' title='Show timelines for each file'></i>
         </button>
-        <button id="toggleData" class="btn">
-            <i class="icon-ok icon-gray"></i>
+        <button id='toggleData' class='btn' title='Show test results and output'>
+            <i class='icon-ok icon-gray'></i>
         </button>
-        <button id="toggleConcepts" class="btn">
-            <i class="icon-tasks"></i>
+        <button id='toggleConcepts' class='btn' title='Show concept bubble chart'>
+            <i class='icon-tasks'></i>
         </button>
-        <button id="toggleConceptHeatmap" class="btn">
-            <i class="icon-th"></i>
+        <button id='toggleConceptHeatmap' class='btn' title='Show concept heat map'>
+            <i class='icon-th'></i>
         </button>
 
     </div>
@@ -37,10 +37,10 @@
             <div class='span3'>
 
                 <div class='btn-group pull-right'>
-                    <button type='button' id='first' class='btn'>First</button>
-                    <button type='button' id='previous' class='btn'>Previous</button>
-                    <button type='button' id='next' class='btn'>Next</button>
-                    <button type='button' id='last' class='btn'>Last</button>
+                    <button type='button' id='first' class='btn' title='Go to first snapshot'>First</button>
+                    <button type='button' id='previous' class='btn' title='Go to previous snapshot'>Previous</button>
+                    <button type='button' id='next' class='btn' title='Go to next snapshot'>Next</button>
+                    <button type='button' id='last' class='btn' title='Go to last snapshot'>Last</button>
                 </div>
 
             </div>
