@@ -16,7 +16,7 @@
             <label class='control-label' for='comment-username'>Username</label>
 
             <div class='controls'>
-                <input type='text' data-id='comment-username' placeholder='Username' value='{{username}}'>
+                <input type='text' data-id='comment-username' placeholder='Username' value='{{username}}' title='Name that will be shown to other users'>
             </div>
         </div>
 
@@ -25,12 +25,12 @@
             <label class='control-label' for='comment-type'>Comment on</label>
 
             <div class='controls btn-group' data-toggle='buttons-radio'>
-                <button name='comment-type' type='button' data-action='answer-comment' class='btn active'>
+                <button name='comment-type' type='button' data-action='answer-comment' class='btn active' title='Comment on the entire solution'>
                     <i class='icon-answer icon-gray'></i>
                     answer
                 </button>
 
-                <button name='comment-type' type='button' data-action='snapshot-comment' class='btn'>
+                <button name='comment-type' type='button' data-action='snapshot-comment' class='btn' title='Comment on the current snapshot'>
                     <i class='icon-snapshot icon-gray'></i>
                     snapshot
                 </button>
@@ -49,7 +49,7 @@
         <div class='control-group'>
 
             <div class='controls'>
-                <button type='submit' class='btn btn-primary' data-action='create-comment'>Submit</button>
+                <button type='submit' class='btn btn-primary' data-action='create-comment' class='Submit comment'>Submit</button>
             </div>
         </div>
 

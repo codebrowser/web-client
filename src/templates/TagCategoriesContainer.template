@@ -42,7 +42,7 @@
 
                 <td>{{tagnames.length}}</a></td>
 
-                <td><button type='button' data-action='delete-category' data-id='{{id}}' class='delete'>×</button></td>
+                <td><button type='button' data-action='delete-category' data-id='{{id}}' class='delete' title='Delete this tag category'>×</button></td>
 
             </tr>
 

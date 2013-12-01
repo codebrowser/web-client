@@ -14,7 +14,7 @@
 
                 {{#unless snapshot}}
 
-                    <li>{{tagName.name}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+                    <li>{{tagName.name}} <button type='button' data-action='delete' data-id='{{id}}' class='delete' title='Remove this tag'>×</button></li>
 
                 {{/unless}}
 
@@ -30,7 +30,7 @@
 
             <input type='text' data-id='tag' placeholder='New tag…'>
 
-            <button title='Add new tag to this answer' type='submit' data-action='create-tag' class='btn'>+</button>
+            <button title='Add new tag to this solution' type='submit' data-action='create-tag' class='btn'>+</button>
 
         </form>
 
@@ -55,7 +55,7 @@
 
                     {{#if visible}}
 
-                        <li>{{tagName.name}}<button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+                        <li>{{tagName.name}}<button type='button' data-action='delete' data-id='{{id}}' class='delete' title='Remove this tag'>×</button></li>
 
                     {{/if}}
 
