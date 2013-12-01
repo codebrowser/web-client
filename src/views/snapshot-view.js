@@ -11,7 +11,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
-        'click #toggleConcepts': 'toggleConcepts',
+        'click #toggleConceptBubbles': 'toggleConceptBubbles',
         'click #toggleConceptHeatmap': 'toggleConceptHeatmap',
         'click #toggleTimeline': 'toggleTimeline',
         'click #toggleBrowser':  'toggleBrowser',
@@ -71,13 +71,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         visualizations.timeline = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
         visualizations.tree = new codebrowser.view.SnapshotsTreeView({ parentView: this });
         visualizations.data = new codebrowser.view.SnapshotsDataView({ parentView: this });
-        visualizations.concepts = new codebrowser.view.SnapshotsConceptsView({ parentView: this });
+        visualizations.conceptBubbles = new codebrowser.view.SnapshotsConceptBubbleView({ parentView: this });
         visualizations.conceptHeatmap = new codebrowser.view.SnapshotsConceptHeatmapView({ parentView: this });
 
         visualizations.timeline.buttonSelector = '#toggleTimeline';
         visualizations.tree.buttonSelector = '#toggleTree';
         visualizations.data.buttonSelector = '#toggleData';
-        visualizations.concepts.buttonSelector = '#toggleConcepts';
+        visualizations.conceptBubbles.buttonSelector = '#toggleConceptBubbles';
         visualizations.conceptHeatmap.buttonSelector = '#toggleConceptHeatmap';
 
         for (var key in visualizations) {
@@ -299,12 +299,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             visualizations.data.update(this.collection, index);
         }
 
-        if (visualizations.concepts.isActive) {
-            visualizations.concepts.update(this.model);
+        if (visualizations.conceptBubbles.isActive) {
+            visualizations.conceptBubbles.update(this.model);
         }
 
         if (visualizations.conceptHeatmap.isActive) {
-            visualizations.conceptHeatmap.update(this.model);
+            visualizations.conceptHeatmap.update(this.model, index);
         }
     },
 
@@ -421,15 +421,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
     },
 
-    toggleConcepts: function () {
+    toggleConceptBubbles: function () {
 
-        $(this.visualizations.concepts.buttonSelector).toggleClass('active');
+        $(this.visualizations.conceptBubbles.buttonSelector).toggleClass('active');
 
-        this.visualizations.concepts.toggle();
+        this.visualizations.conceptBubbles.toggle();
 
         // Update Concepts view
-        if (this.visualizations.concepts.isActive) {
-            this.visualizations.concepts.update(this.model);
+        if (this.visualizations.conceptBubbles.isActive) {
+            this.visualizations.conceptBubbles.update(this.model);
         }
     },
 

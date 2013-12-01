@@ -1118,7 +1118,7 @@ table.double-list {
 
 /* Concept Visualization */
 
-#snapshots-concepts-container, #snapshots-concept-heatmap-container {
+#snapshots-concept-bubbles-container, #snapshots-concept-heatmap-container {
 
     margin: 25px auto 0 auto;
     padding: 15px;
@@ -1137,24 +1137,16 @@ table.double-list {
 
 }
 
-#snapshots-concepts-container .bubble {
+#snapshots-concept-heatmap-container rect {
+
+    cursor: pointer;
+
+}
+
+#snapshots-concept-bubbles-container .bubble {
 
     margin-left: auto;
     margin-right: auto;
-
-}
-
-#snapshots-concepts-container .concept-bar {
-
-    stroke-width: 1px;
-    fill: rgb(197, 214, 222);
-    stroke: rgb(170, 170, 170);
-
-}
-
-#snapshots-concepts-container .concept-bar-text {
-
-   font-size: 14px !important;
 
 }
 
@@ -1353,7 +1345,7 @@ table.double-list {
 .add-to-categories .category-list {
     overflow-y: hidden;
     max-height: 240px;
-    padding: 20px 0px;
+    padding: 20px 0;
 }
 
 .add-to-categories .category-list p {

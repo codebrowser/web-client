@@ -1,6 +1,6 @@
-codebrowser.view.SnapshotsConceptsView = Backbone.View.extend({
+codebrowser.view.SnapshotsConceptBubbleView = Backbone.View.extend({
 
-    id: 'snapshots-concepts-container',
+    id: 'snapshots-concept-bubbles-container',
 
     isActive: Utils.getLocalStorageValue('showConcepts', false) === 'true',
 

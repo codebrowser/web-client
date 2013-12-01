@@ -4,18 +4,15 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
 
     isActive: Utils.getLocalStorageValue('showConceptHeatmap', false) === 'true',
 
-    // concept container (bubble) diameter
-    diameter: 400,
+    format: undefined,
 
-    format: null,
+    initialized: undefined,
 
-    color: null,
+    lastIndex: undefined,
 
+    initialize: function(options) {
 
-    initialize: function() {
-
-        this.format = d3.format(',d');
-        this.color = d3.scale.category20c();
+        this.parentView = options.parentView;
 
     },
 
@@ -30,7 +27,7 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
 
     },
 
-    update: function (snapshot) {
+    update: function (snapshot, index) {
         var self = this;
         var options = {
 
@@ -40,45 +37,48 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
 
         };
 
-        this.collection = new codebrowser.collection.ExerciseConceptsCollection([], options);
+        if (self.initialized === undefined) { // if this is the first rendering
 
-        this.collection.fetch({
+            this.collection = new codebrowser.collection.ExerciseConceptsCollection([], options);
 
-            success: function() {
+            this.collection.fetch({
 
-                var concepts = self.collection.toJSON();
-                console.log(concepts);
-                var snapshotArray = [];
-                var conceptArray = [];
-                var maxConceptSize = 0;
-                for (var key in concepts[0]) {
-                    snapshotArray.push(concepts[0][key]);
-                    // jshint -W083
-                    concepts[0][key].forEach(function(concept) {
-                        if (conceptArray.indexOf(concept.name) === -1) {
-                            conceptArray.push(concept.name);
-                        }
-                        if (concept.size > maxConceptSize) {
-                            maxConceptSize = concept.size;
-                        }
-                    })
-                    // jshint +W083
+                success: function() {
+
+                    var concepts = self.collection.toJSON();
+                    var snapshotArray = [];
+                    var conceptArray = [];
+                    var maxConceptSize = 0;
+                    for (var key in concepts[0]) {
+                        snapshotArray.push(concepts[0][key]);
+                        // jshint -W083
+                        concepts[0][key].forEach(function(concept) {
+                            if (conceptArray.indexOf(concept.name) === -1) {
+                                conceptArray.push(concept.name);
+                            }
+                            if (concept.size > maxConceptSize) {
+                                maxConceptSize = concept.size;
+                            }
+                        });
+                        // jshint +W083
+                    }
+                    self.concepts = {maxConceptSize: maxConceptSize, snapshots: snapshotArray, concepts: conceptArray};
+
+                    self.firstRender(index);
                 }
-                self.concepts = {maxConceptSize: maxConceptSize, snapshots: snapshotArray, concepts: conceptArray};
 
-                if (self.initialized === undefined) { // if this is the first rendering
-                    self.firstRender();
-                }
-                else {
-                    self._updateHeatmap();
-                }
-            }
+            });
+        }
 
-        });
+        else {
+
+            self._updateHeatmap(index);
+
+        }
 
     },
 
-    firstRender: function() {
+    firstRender: function(index) {
 
         this.width = $('#snapshots-concept-heatmap-container').width();
         this.height = 400;
@@ -88,28 +88,29 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .attr('height', this.height)
             .attr('class', 'heatmap');
 
-        this._drawHeatmap();
+        this._drawHeatmap(index);
 
         this.initialized = true;
+        this.lastIndex = index;
 
     },
 
-    _drawHeatmap: function() {
-        console.log(this.concepts);
+    _drawHeatmap: function(index) {
+
         var self = this;
         var snapshots = this.concepts.snapshots;
         var concepts = this.concepts.concepts;
         var widthOffset;
         var heightOffset = 30;
         var rectWidth;
-        var rectHeight = Math.floor((self.height - heightOffset)/concepts.length);
+        var rectHeight = Math.floor((self.height - heightOffset)/concepts.length) - 2;
 
         // draw labels for concepts
         var textElements = this.svg.selectAll('.concept')
             .data(concepts).enter()
             .append('g')
             .attr('class', 'concept')
-            .attr('transform', function(d, i ) { return 'translate(5, ' + ((i * rectHeight) + 15) + ')'; })
+            .attr('transform', function(d, i ) { return 'translate(5, ' + ((i * (rectHeight + 2)) + 15) + ')'; })
             .append('text')
             .attr('fill', 'rgb(0,0,0)')
             .text(function(d) { return d });
@@ -133,6 +134,7 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .append('text')
             .attr('class', function(d, i) { return 'snapshotlabel_' + (i + 1)})
             .attr('fill', 'rgb(0,0,0)')
+            .style('font-weight', function(d, i) { return i === index ? 'bold' : 'normal' })
             .text(function(d, i) { return i + 1 });
 
         // jshint -W083
@@ -146,11 +148,13 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
                 .append('svg:rect')
                 .attr('class', 'snapshot_' + (snapshotIndex + 1))
                 .attr('x', (snapshotIndex * rectWidth) + widthOffset)
-                .attr('y', function(d, i) { return i * rectHeight; })
+                .attr('y', function(d, i) { return (i * (rectHeight + 2)) + 1; })
+                .attr('rx', 10)
+                .attr('ry', 10)
                 .attr('width', rectWidth)
                 .attr('height', rectHeight)
                 .style('stroke', function() {
-                    return 'rgba(0,0,0,0.5)';
+                    return snapshotIndex === index ? 'rgba(90,90,90,0.9)' : 'rgba(90,90,90,0.4)';
                 })
                 .style('stroke-width', 2);
 
@@ -167,30 +171,58 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
                     return returnValue;
                 })
 
-                // highlight rows on mouseover
+                // highlight row labels on mouseover
                 .on('mouseover', function(thisData) {
-                    changeLabelWeight(this, thisData, 'bold')
+                    changeConceptLabelWeight(thisData, 'bold');
+                    changeSnapshotLabelDecoration(this, 'underline');
                 })
                 .on('mouseout', function(thisData) {
-                    changeLabelWeight(this, thisData, 'normal')
+                    changeConceptLabelWeight(thisData, 'normal');
+                    changeSnapshotLabelDecoration(this, 'none');
+                })
+                .on('click', function() {
+                    var snapshotIndex = parseInt($(this).attr('class').substr(9), 10) - 1;
+                    self.parentView.navigateToIndex(snapshotIndex);
                 });
 
-            var changeLabelWeight = function(element, elementData, weight) {
-                self.svg.selectAll('.concept text').filter(function(d) { return d === elementData })
-                    .style('font-weight', weight)
-
+            var changeSnapshotLabelDecoration = function(element, decoration) {
                 self.svg.selectAll('.snapshotlabel_' + element.className.baseVal.substr(9))
+                    .style('text-decoration', decoration);
+            };
+
+            var changeConceptLabelWeight = function(elementData, weight) {
+                self.svg.selectAll('.concept text').filter(function(d) { return d === elementData })
                     .style('font-weight', weight);
-            }
+            };
 
 
         }
 
     },
 
-    _updateHeatmap: function() {
+    _updateHeatmap: function(snapshotIndex) {
 
+        // fade out old column hilighting
+        this.svg.selectAll('.snapshot_' + (this.lastIndex + 1))
+            .transition()
+            .duration(1000)
+            .style('stroke', 'rgba(90,90,90,0.4)');
 
+        // fade in new column hilighting
+        this.svg.selectAll('.snapshot_' + (snapshotIndex + 1))
+            .transition()
+            .duration(1000)
+            .style('stroke', 'rgba(90,90,90,0.9)');
+
+        // remove bolding from last snapshot label
+        this.svg.selectAll('.snapshotlabel_' + (this.lastIndex + 1))
+            .style('font-weight', 'normal');
+
+        // add bolding to current snapshot label
+        this.svg.selectAll('.snapshotlabel_' + (snapshotIndex + 1))
+            .style('font-weight', 'bold');
+
+        this.lastIndex = snapshotIndex;
 
     }
 
