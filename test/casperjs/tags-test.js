@@ -35,8 +35,6 @@ casper.test.begin('Tags view', 16, function suite(test) {
             {id: 64, name: 'c4', tagnames: [{}, {}]}
         ],
 
-        'students': [],
-
         'studentgroups': []
     };
 

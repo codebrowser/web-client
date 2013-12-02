@@ -6,8 +6,6 @@ casper.test.begin('List view filter', 3, function suite(test) {
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
         ],
 
-        'students': [],
-
         'studentgroups': [],
     };
 

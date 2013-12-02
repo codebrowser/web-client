@@ -6,8 +6,6 @@ casper.test.begin('Exercises view (course exercises)', 13, function suite(test) 
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
         ],
 
-        'students': [],
-
         'courses/11':
             {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
 
