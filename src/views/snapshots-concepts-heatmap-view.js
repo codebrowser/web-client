@@ -110,7 +110,7 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .data(concepts).enter()
             .append('g')
             .attr('class', 'concept')
-            .attr('transform', function(d, i ) { return 'translate(5, ' + ((i * (rectHeight + 2)) + 15) + ')'; })
+            .attr('transform', function(d, i ) { return 'translate(5, ' + ((i * (rectHeight + 2)) + 13) + ')'; })
             .append('text')
             .attr('fill', 'rgb(0,0,0)')
             .text(function(d) { return d });
@@ -130,7 +130,10 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .data(snapshots).enter()
             .append('g')
             .attr('class', 'snapshot-index')
-            .attr('transform', function(d, i ) { return 'translate(' + ((i * rectWidth) + ((rectWidth/2) - 5) + widthOffset) + ',' + (self.height - heightOffset + 15) + ')'; }) // lots of magic here
+            .attr('transform', function(d, i ) {
+                var xOffset = i < 9 ? 5 : 9;
+                return 'translate(' + ((i * rectWidth) + ((rectWidth/2) - xOffset) + widthOffset) + ',' + (self.height - heightOffset + 15) + ')'; // lots of magic here
+            })
             .append('text')
             .attr('class', function(d, i) { return 'snapshotlabel_' + (i + 1)})
             .attr('fill', 'rgb(0,0,0)')
@@ -174,20 +177,23 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
                 // highlight row labels on mouseover
                 .on('mouseover', function(thisData) {
                     changeConceptLabelWeight(thisData, 'bold');
-                    changeSnapshotLabelDecoration(this, 'underline');
+                    changeSnapshotLabelWeight(this, 'bold');
                 })
                 .on('mouseout', function(thisData) {
                     changeConceptLabelWeight(thisData, 'normal');
-                    changeSnapshotLabelDecoration(this, 'none');
+                    changeSnapshotLabelWeight(this, 'normal');
                 })
                 .on('click', function() {
                     var snapshotIndex = parseInt($(this).attr('class').substr(9), 10) - 1;
                     self.parentView.navigateToIndex(snapshotIndex);
                 });
 
-            var changeSnapshotLabelDecoration = function(element, decoration) {
-                self.svg.selectAll('.snapshotlabel_' + element.className.baseVal.substr(9))
-                    .style('text-decoration', decoration);
+            var changeSnapshotLabelWeight = function(element, weight) {
+                var snapshotIndex = parseInt(element.className.baseVal.substr(9), 10);
+                if (snapshotIndex !== self.lastIndex + 1) {
+                    self.svg.selectAll('.snapshotlabel_' + snapshotIndex)
+                        .style('font-weight', weight);
+                }
             };
 
             var changeConceptLabelWeight = function(elementData, weight) {
