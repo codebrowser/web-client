@@ -1,4 +1,4 @@
-codebrowser.router.SnapshotRouter = Backbone.Router.extend({
+codebrowser.router.SnapshotRouter = codebrowser.router.BaseRouter.extend({
 
     routes: {
 
@@ -38,13 +38,6 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     /* Actions */
 
-    notFound: function () {
-
-        var errorView = new codebrowser.view.NotFoundErrorView();
-
-        codebrowser.controller.ViewController.push(errorView, true);
-    },
-
     navigation: function (courseId, exerciseId, studentId, snapshotId, fileId) {
 
         this.snapshot(studentId, courseId, exerciseId, snapshotId, fileId, { courseRoute: true });
@@ -52,13 +45,13 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     courseNavigation: function (courseId, exerciseId, studentId) {
 
-        codebrowser.app.snapshot.navigate('#/courses/' +
-                                          courseId +
-                                          '/students/' +
-                                          studentId +
-                                          '/exercises/' +
-                                          exerciseId +
-                                          '/snapshots/', { replace: true });
+        codebrowser.app.snapshotRouter.navigate('#/courses/' +
+                                                courseId +
+                                                '/students/' +
+                                                studentId +
+                                                '/exercises/' +
+                                                exerciseId +
+                                                '/snapshots/', { replace: true });
     },
 
     courseSnapshot: function (courseId, studentId, exerciseId) {
@@ -139,40 +132,13 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         var student = codebrowser.model.Student.findOrCreate({ id: studentId });
 
         // Fetch student
-        student.fetch({
+        this.fetchModel(student, true, function () {
 
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
-
-                self.snapshotView.student = student;
-                fetchSynced();
-            },
-
-            // Student fetch failed
-            error: function () {
-
-                self.notFound();
-            }
-
+            self.snapshotView.student = student;
+            fetchSynced();
         });
 
         // Fetch snapshot collection
-        snapshotCollection.fetch({
-
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
-                fetchSynced();
-            },
-
-            // Snapshots fetch failed
-            error: function () {
-
-                self.notFound();
-            }
-        });
+        this.fetchModel(snapshotCollection, true, fetchSynced);
     }
 });

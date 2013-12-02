@@ -1,4 +1,4 @@
-describe('Base router', function () {
+describe('Root router', function () {
 
     beforeEach(function () {
 
@@ -7,21 +7,21 @@ describe('Base router', function () {
 
     it('catches an non-existent URL', function () {
 
-        spyOn(codebrowser.router.BaseRouter.prototype, 'notFound');
+        spyOn(codebrowser.router.RootRouter.prototype, 'pageNotFound');
 
-        var router = new codebrowser.router.BaseRouter();
+        var router = new codebrowser.router.RootRouter();
 
         Backbone.history.start();
         router.navigate('#/this/url/is/not/legit', true);
 
-        expect(codebrowser.router.BaseRouter.prototype.notFound).toHaveBeenCalled();
+        expect(codebrowser.router.RootRouter.prototype.pageNotFound).toHaveBeenCalled();
     });
 
     it('pushes error view to ViewController', function () {
 
         spyOn(codebrowser.controller.ViewController, 'push');
 
-        var router = new codebrowser.router.BaseRouter();
+        var router = new codebrowser.router.RootRouter();
 
         Backbone.history.start();
         router.navigate('#/this/url/is/not/valid', true);

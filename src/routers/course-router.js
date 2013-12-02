@@ -1,4 +1,4 @@
-codebrowser.router.CourseRouter = Backbone.Router.extend({
+codebrowser.router.CourseRouter = codebrowser.router.BaseRouter.extend({
 
     routes: {
 
@@ -17,17 +17,11 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     /* Actions */
 
-    notFound: function () {
-
-        var errorView = new codebrowser.view.NotFoundErrorView();
-        codebrowser.controller.ViewController.push(errorView, true);
-    },
-
     navigation: function (studentId) {
 
-        codebrowser.app.course.navigate('#/students/' +
-                                        studentId +
-                                        '/courses', { replace: true });
+        codebrowser.app.courseRouter.navigate('#/students/' +
+                                                studentId +
+                                                '/courses', { replace: true });
     },
 
     courses: function (studentId) {
@@ -36,30 +30,17 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
         // Wait for fetches to be in sync
         var fetchSynced = _.after(2, function () {
-            self.courseView.render();
-            codebrowser.controller.ViewController.push(self.courseView);
+
+            codebrowser.controller.ViewController.push(self.courseView, true);
         });
 
         var student = codebrowser.model.Student.findOrCreate({ id: studentId });
 
         // Fetch student
-        student.fetch({
+        this.fetchModel(student, true, function () {
 
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
-
-                self.courseView.student = student;
-                fetchSynced();
-            },
-
-            // Student fetch failed
-            error: function () {
-
-                self.notFound();
-            }
-
+            self.courseView.student = student;
+            fetchSynced();
         });
 
         var courseCollection = new codebrowser.collection.CourseCollection(null, { studentId: studentId });
@@ -67,21 +48,6 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         this.courseView.collection = courseCollection;
 
         // Fetch course collection
-        courseCollection.fetch({
-
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
-
-                fetchSynced();
-            },
-
-            // Courses fetch failed
-            error: function () {
-
-                self.notFound();
-            }
-        });
+        this.fetchModel(courseCollection, true, fetchSynced);
     }
 });

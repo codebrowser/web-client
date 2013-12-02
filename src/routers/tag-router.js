@@ -1,4 +1,4 @@
-codebrowser.router.TagRouter = Backbone.Router.extend({
+codebrowser.router.TagRouter = codebrowser.router.BaseRouter.extend({
 
     routes: {
 
@@ -23,20 +23,14 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
 
     /* Actions */
 
-    notFound: function () {
-
-        var errorView = new codebrowser.view.NotFoundErrorView();
-        codebrowser.controller.ViewController.push(errorView, true);
-    },
-
     navigation: function (tagNameId) {
 
-        codebrowser.app.tag.navigate('#/tagnames/' + tagNameId + '/tags', { replace: true });
+        codebrowser.app.tagRouter.navigate('#/tagnames/' + tagNameId + '/tags', { replace: true });
     },
 
     navigateToTagnames: function (tagCategoryId) {
 
-        codebrowser.app.tag.navigate('#/tagcategories/' + tagCategoryId + '/tagnames', { replace: true });
+        codebrowser.app.tagRouter.navigate('#/tagcategories/' + tagCategoryId + '/tagnames', { replace: true });
     },
 
     tagnames: function (tagCategoryId) {
@@ -50,7 +44,7 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
 
 
         if (tagCategoryId) {
-            
+
             snapshotTagNames = new codebrowser.collection.TagNameCollection(null, { tagCategoryId: tagCategoryId, onlySnapshotTags : true });
 
             exerciseAnswerTagNames = new codebrowser.collection.TagNameCollection(null, { tagCategoryId: tagCategoryId, onlyExerciseAnswerTags : true });
@@ -86,20 +80,19 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
                 self.tagNamesView.tagCategories = tagCategories;
             }
 
-            self.tagNamesView.render();
-            codebrowser.controller.ViewController.push(self.tagNamesView);
+            codebrowser.controller.ViewController.push(self.tagNamesView, true);
         });
 
         // Fetch snapshot tag names
-        this._fetchModel(snapshotTagNames, fetchSynced);
+        this.fetchModel(snapshotTagNames, false, fetchSynced);
 
         // Fetch tag names for normal tags
-        this._fetchModel(exerciseAnswerTagNames, fetchSynced);
+        this.fetchModel(exerciseAnswerTagNames, false, fetchSynced);
 
         // Fetch tag names that are not yet added to tag category when needed
         // Needed when showing tags inside a certain category
         if (unusedTagNames) {
-            this._fetchModel(unusedTagNames, fetchSynced);
+            this.fetchModel(unusedTagNames, false, fetchSynced);
         }
         else {
             fetchSynced();
@@ -118,7 +111,7 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
         // Fetch all tag categories when needed
         // Needed when all tags are shown
         if (tagCategories) {
-            this._fetchModel(tagCategories, fetchSynced);
+            this.fetchModel(tagCategories, false, fetchSynced);
         }
         else {
             fetchSynced();
@@ -127,10 +120,12 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
     },
 
     tagsForTagName: function (tagNameId) {
+
         this.tags({ tagNameId: tagNameId });
     },
 
     tagsForCategory: function (tagCategoryId, tagNameId) {
+
         this.tags({ tagNameId: tagNameId, tagCategoryId: tagCategoryId });
     },
 
@@ -157,19 +152,18 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
                 self.tagsView.tagCategory = tagCategory;
             }
 
-            self.tagsView.render();
-            codebrowser.controller.ViewController.push(self.tagsView);
+            codebrowser.controller.ViewController.push(self.tagsView, true);
         });
 
         // Fetch tag name
-        this._fetchModel(tagName, fetchSynced);
+        this.fetchModel(tagName, false, fetchSynced);
 
         // Fetch tags
-        this._fetchModel(tagCollection, fetchSynced);
+        this.fetchModel(tagCollection, false, fetchSynced);
 
         // Fetch tagCategory if needed
         if (tagCategory) {
-            this._fetchModel(tagCategory, fetchSynced);
+            this.fetchModel(tagCategory, false, fetchSynced);
         }
         else {
             fetchSynced();
@@ -188,30 +182,10 @@ codebrowser.router.TagRouter = Backbone.Router.extend({
             self.tagCategoriesView.collection = tagCategories;
             self.tagCategoriesView.tagCategories = tagCategories;
 
-            self.tagCategoriesView.render();
-            codebrowser.controller.ViewController.push(self.tagCategoriesView);
+            codebrowser.controller.ViewController.push(self.tagCategoriesView, true);
         });
 
         // Fetch tag names for normal tags
-        this._fetchModel(tagCategories, fetchSynced);
+        this.fetchModel(tagCategories, false, fetchSynced);
     },
-
-    _fetchModel: function (model, onSuccess) {
-
-        var self = this;
-
-        model.fetch({
-
-            cache: false,
-            expires: 0,
-
-            success: function () {
-                onSuccess();
-            },
-
-            error: function () {
-                self.notFound();
-            }
-        });
-    }
 });
