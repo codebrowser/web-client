@@ -1,4 +1,4 @@
-codebrowser.router.StudentGroupRouter = Backbone.Router.extend({
+codebrowser.router.StudentGroupRouter = codebrowser.router.BaseRouter.extend({
 
     routes: {
 
@@ -15,12 +15,6 @@ codebrowser.router.StudentGroupRouter = Backbone.Router.extend({
 
     /* Actions */
 
-    notFound: function () {
-
-        var errorView = new codebrowser.view.NotFoundErrorView();
-        codebrowser.controller.ViewController.push(errorView, true);
-    },
-
     studentGroups: function () {
 
         var self = this;
@@ -29,20 +23,9 @@ codebrowser.router.StudentGroupRouter = Backbone.Router.extend({
 
         this.studentGroupsView.collection = studentGroupCollection;
 
-        studentGroupCollection.fetch({
+        this.fetchModel(studentGroupCollection, true, function () {
 
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
-
-                codebrowser.controller.ViewController.push(self.studentGroupsView, true);
-            },
-
-            error: function () {
-
-                self.notFound();
-            }
+            codebrowser.controller.ViewController.push(self.studentGroupsView, true);
         });
     }
 });

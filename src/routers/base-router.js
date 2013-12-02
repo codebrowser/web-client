@@ -1,38 +1,27 @@
+/*
+ * Base type for all routers with common functionality.
+ */
+
 codebrowser.router.BaseRouter = Backbone.Router.extend({
 
-    routes: {
+    notFound: function () {
 
-        '':          'root',
-        '*notFound': 'notFound'
-
+        var errorView = new codebrowser.view.NotFoundErrorView();
+        codebrowser.controller.ViewController.push(errorView, true);
     },
 
-    /* Initialise */
-
-    initialize: function () {
-
-        this.rootView = new codebrowser.view.RootView();
-        this.errorView = new codebrowser.view.ErrorView({ model: { class: 'alert-error', message: 'Oops!' } });
-
-    },
-
-    /* Actions */
-
-    root: function () {
+    fetchModel: function (model, useCache, onSuccess) {
 
         var self = this;
 
-        var studentGroups = new codebrowser.collection.StudentGroupCollection();
+        model.fetch({
 
-        studentGroups.fetch({
+            cache: useCache,
+            expires: useCache ? config.cache.expires : 0,
 
-            cache: true,
-            expires: config.cache.expires,
+            success: function (model, response, options) {
 
-            success: function () {
-
-                self.rootView.showStudentGroups = studentGroups.size() > 0;
-                codebrowser.controller.ViewController.push(self.rootView, true);
+                onSuccess(model, response, options);
             },
 
             error: function () {
@@ -40,11 +29,5 @@ codebrowser.router.BaseRouter = Backbone.Router.extend({
                 self.notFound();
             }
         });
-    },
-
-    notFound: function () {
-
-        codebrowser.controller.ViewController.push(this.errorView, true);
-
     }
 });

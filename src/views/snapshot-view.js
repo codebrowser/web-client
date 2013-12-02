@@ -466,7 +466,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         if (this.courseRoute) {
-            codebrowser.app.snapshot.navigate('#/courses/' +
+            codebrowser.app.snapshotRouter.navigate('#/courses/' +
                 this.collection.courseId +
                 '/exercises/' +
                 this.collection.exerciseId +
@@ -478,7 +478,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                 file.id, { replace: !options ? options : options.replace });
         } else {
 
-            codebrowser.app.snapshot.navigate('#/students/' +
+            codebrowser.app.snapshotRouter.navigate('#/students/' +
                 this.collection.studentId +
                 '/courses/' +
                 this.collection.courseId +

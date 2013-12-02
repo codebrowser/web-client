@@ -1,4 +1,4 @@
-codebrowser.router.SelectRouter = Backbone.Router.extend({
+codebrowser.router.SelectRouter = codebrowser.router.BaseRouter.extend({
 
     routes: {
 
@@ -16,39 +16,21 @@ codebrowser.router.SelectRouter = Backbone.Router.extend({
 
     /* Actions */
 
-    notFound: function () {
-
-        var errorView = new codebrowser.view.NotFoundErrorView();
-        codebrowser.controller.ViewController.push(errorView, true);
-    },
-
     navigateToCourse: function (courseId) {
-        codebrowser.app.exercise.navigate('#/courses/' +
-                                          courseId +
-                                          '/select', { replace: true });
+
+        codebrowser.app.exerciseRouter.navigate('#/courses/' +
+                                                courseId +
+                                                '/select', { replace: true });
     },
 
     select: function (courseId) {
+
         var self = this;
         var course = codebrowser.model.Course.findOrCreate({ id: courseId });
-        course.fetch({
+        this.fetchModel(course, true, function () {
 
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
-
-                self.selectView.course = course;
-                self.selectView.render();
-                codebrowser.controller.ViewController.push(self.selectView);
-            },
-
-            // Student fetch failed
-            error: function () {
-
-                self.notFound();
-            }
-
+            self.selectView.course = course;
+            codebrowser.controller.ViewController.push(self.selectView, true);
         });
     }
 });
