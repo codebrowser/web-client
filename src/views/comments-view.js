@@ -11,7 +11,10 @@ codebrowser.view.CommentsView = Backbone.View.extend({
         'click [data-action="toggle-comment-edit"]': 'setCommentEditable',
         'blur .comment-text': 'updateComment',
         'click span.cnext': 'cNextPage',
-        'click span.cprev': 'cPrevPage'
+        'click span.cprev': 'cPrevPage',
+        'click [data-action="search"]': 'filterComments',
+        'keyup [data-id="query-string"]': 'filterComments',
+        'keypress [data-id="query-string"]': 'filterComments'
 
     },
 
@@ -78,7 +81,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
         event.preventDefault();
 
-        var confirmed = window.confirm('Are you sure?');
+        var confirmed = window.confirm('AAre you sure you want\nto delete this comment?');
 
         if (confirmed) {
 
@@ -126,23 +129,29 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
         event.preventDefault();
 
-        var commentId = $(event.target).data('id');
-        var $commentTextEl = $('.comment-text[data-id="' + commentId + '"]');
+        var id = $(event.target).data('id');
+        var comment = this.collection.get(id);
 
-        $commentTextEl.attr('contenteditable', true).focus();
+        var $commentTextEl = $('.comment-text[data-id="' + id + '"]');
+        var $textareaEl = this._createCommentTextarea(comment);
+
+        $commentTextEl.after($textareaEl);
+        $commentTextEl.remove();
+        $textareaEl.focus();
     },
 
     updateComment: function (event) {
 
         var $commentElement = $(event.target);
-        $commentElement.attr('contenteditable', false);
 
-        var commentId = $commentElement.data('id');
-        var commentText = $commentElement.html().trim();
+        var id = $commentElement.data('id');
+        var commentText = $commentElement.val().trim();
 
-        var comment = this.collection.get(commentId);
+        var comment = this.collection.get(id);
 
         comment.set({'comment': commentText});
+
+        this.render();
 
         // Update comment
         comment.save({
@@ -151,6 +160,22 @@ codebrowser.view.CommentsView = Backbone.View.extend({
                 throw new Error('Failed comment update.')
             }
         });
+    },
+
+    filterComments: function() {
+
+        if (!this.filterHelper) {
+
+            var filterOptions = {
+                'containerSelector': '#' + this.id,
+                'rowSelector': 'article',
+                'targetCellSelector': '.comment-text'
+            };
+
+            this.filterHelper = new codebrowser.helper.ListViewFilter(filterOptions);
+        }
+
+        this.filterHelper.filterList();
     },
 
     _markCommentsReadFlags: function () {
@@ -210,6 +235,16 @@ codebrowser.view.CommentsView = Backbone.View.extend({
                 throw new Error('Failed comment delete.')
             }
         });
+    },
+
+    _createCommentTextarea: function(comment) {
+
+        var $textAreaEl = $('<textarea>');
+        $textAreaEl.attr('data-id', comment.id);
+        $textAreaEl.addClass('comment-text');
+        $textAreaEl.val(comment.get('comment'));
+
+        return $textAreaEl;
     }
 });
 

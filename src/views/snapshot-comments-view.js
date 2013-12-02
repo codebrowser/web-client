@@ -3,19 +3,19 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
     id: 'snapshot-comments-container',
     template: Handlebars.templates.SnapshotCommentsContainer,
 
-    newCommentType: 'answer',
+    newCommentType: 'solution',
+
+    collection:  new codebrowser.collection.CommentCollection(),
 
     events: {
 
         'click [data-action="create-comment"]': 'createComment',
-        'click [data-action="answer-comment"]': 'answerComment',
+        'click [data-action="solution-comment"]': 'answerComment',
         'click [data-action="snapshot-comment"]': 'snapshotComment',
         'click span.next': 'nextPage',
         'click span.prev': 'prevPage'
 
     },
-
-    collection:  new codebrowser.collection.CommentCollection(),
 
     /* Initialise */
 
@@ -162,9 +162,9 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
         this._resetForm();
     },
 
-    answerComment: function () {
+    solutionComment: function () {
 
-        this.newCommentType = 'answer';
+        this.newCommentType = 'solution';
     },
 
     snapshotComment: function () {

@@ -25,9 +25,9 @@
             <label class='control-label' for='comment-type'>Comment on</label>
 
             <div class='controls btn-group' data-toggle='buttons-radio'>
-                <button name='comment-type' type='button' data-action='answer-comment' class='btn active' title='Comment on the entire solution'>
+                <button name='comment-type' type='button' data-action='solution-comment' class='btn active' title='Comment on the entire solution'>
                     <i class='icon-answer icon-gray'></i>
-                    answer
+                    solution
                 </button>
 
                 <button name='comment-type' type='button' data-action='snapshot-comment' class='btn' title='Comment on the current snapshot'>
