@@ -12,7 +12,31 @@
 
     {{/if}}
 
-    <h2>Comments ({{comments.length}})</h2>
+    <h2>Comments ({{totalElements}})</h2>
+
+    <div class = 'pagination'>
+
+        {{#unless firstPage}}
+            {{#if snapshotView}}
+                <span class='prev'> << prev </span>
+            {{else}}
+                <span class='cprev' href='./#/comments?page={{prevPage}}'> << prev </span>
+            {{/if}}
+        {{/unless}}
+
+        {{#unless lastPage}}
+            {{#if snapshotView}}
+                <span class='next'> next >> </span>
+            {{else}}
+                <span class='cnext' href='./#/comments?page={{nextPage}}'> next >> </span>
+            {{/if}}
+        {{/unless}}
+
+        {{#unless onlyOnePage}}
+            <span class='pull-right'> Page {{page}} of {{totalPages}} Pages </span>
+        {{/unless}}
+
+    </div>
 
     {{#comments}}
 
@@ -31,7 +55,7 @@
             </h3>
 
                 {{#if snapshot}}
-                    <p class='comment-text''>
+                    <p class='comment-text'>
                 {{else}}
                     <p class='comment-text' data-action='toggle-comment-edit' data-id='{{id}}'>
                 {{/if}}
@@ -75,6 +99,28 @@
 
     {{/comments}}
 
+    <div class = 'pagination'>
+    
+        {{#unless firstPage}}
+            {{#if snapshotView}}
+                <span class='prev'> << prev </span>
+            {{else}}
+                <span class='cprev'> << prev </span>
+            {{/if}}
+        {{/unless}}
 
+        {{#unless lastPage}}
+            {{#if snapshotView}}
+                <span class='next'> next >> </span>
+            {{else}}
+                <span class='cnext'> next >> </span>
+            {{/if}}
+        {{/unless}}
+
+        {{#unless onlyOnePage}}
+            <span class='pull-right'> Page {{page}} of {{totalPages}} Pages </span>
+        {{/unless}}
+
+    </div>
 
 </section>

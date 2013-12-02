@@ -9,7 +9,9 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
 
         'click [data-action="create-comment"]': 'createComment',
         'click [data-action="answer-comment"]': 'answerComment',
-        'click [data-action="snapshot-comment"]': 'snapshotComment'
+        'click [data-action="snapshot-comment"]': 'snapshotComment',
+        'click span.next': 'nextPage',
+        'click span.prev': 'prevPage'
 
     },
 
@@ -27,8 +29,10 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
     render: function () {
 
         var attributes = {
+
             username: Utils.getLocalStorageValue('username', 'AnonymousJack'),
-            comments: this.collection.toJSON()
+            comments: this.collection.toJSON(),
+
         };
 
         var output = $(this.template(attributes));
@@ -36,6 +40,18 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
         this.$el.html(output);
 
         this._renderCommentsView();
+    },
+
+    nextPage: function () {
+        
+        this.page += 1;
+        this.update(this.snapshot);
+    },
+    
+    prevPage: function () {
+
+        this.page -= 1;
+        this.update(this.snapshot);
     },
 
     /* Remove */
@@ -54,9 +70,15 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
 
         this.snapshot = snapshot;
 
+        if (this.page === undefined) {
+            this.page = 0;
+        }
+
         this.collection = new codebrowser.collection.CommentCollection(null, { studentId: this.snapshot.get('studentId'),
                                                                            courseId: this.snapshot.get('courseId'),
-                                                                           exerciseId: this.snapshot.get('exerciseId') });
+                                                                           exerciseId: this.snapshot.get('exerciseId'),
+                                                                           snapshotId: this.snapshot.get('id'),
+                                                                           page: this.page });
         var self = this;
 
         // Fetch comments
@@ -65,7 +87,14 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
             cache: false,
             expires: 0,
 
-            success: function () {
+            success: function (data, response) {
+
+                self.firstPage = response.firstPage;
+                self.lastPage = response.lastPage;
+                self.totalPages = response.totalPages;
+                self.nummberOfElements = response.numberOfElements;
+                self.totalElements = response.totalElements;
+                self.collection.reset(response.content);
 
                 self.render();
             },
@@ -121,7 +150,7 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
             success: function () {
 
                 self.collection.add(comment);
-                self._renderCommentsView();
+                self.update(self.snapshot);
             },
 
             error: function () {
@@ -155,12 +184,22 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
 
         this._removeCommentsView();
 
-        var currentSnapshotId = (this.snapshot) ? this.snapshot.id : 0;
-
         this.commentsView = new codebrowser.view.CommentsView({
+
             showBreadcrumb: false,
-            collection: this.collection.bySnapshotId(currentSnapshotId)
+            collection: this.collection,
         });
+
+        this.commentsView.firstPage = this.firstPage;
+        this.commentsView.lastPage = this.lastPage;
+        this.commentsView.totalPages = this.totalPages;
+        this.commentsView.numberOfElements = this.numberOfElements;
+        this.commentsView.totalElements = this.totalElements;
+        this.commentsView.page = parseInt(this.page, 10);
+        this.commentsView.prevPage = this.page > 0 ? parseInt(this.page, 10)-1 : 0;
+        this.commentsView.nextPage = this.page < this.totalPages-1 ? parseInt(this.page, 10)+1 : this.totalPages-1;
+        this.commentsView.onlyOnePage = this.firstPage && this.lastPage ? true : false;
+        this.commentsView.snapshotView = true;
         this.$el.append(this.commentsView.el);
 
         this.commentsView.render();

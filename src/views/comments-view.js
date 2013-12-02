@@ -10,12 +10,15 @@ codebrowser.view.CommentsView = Backbone.View.extend({
         'click [data-action="delete-comment"]': 'confirmDelete',
         'click [data-action="toggle-comment-edit"]': 'setCommentEditable',
         'blur .comment-text': 'updateComment',
+        'click span.cnext': 'cNextPage',
+        'click span.cprev': 'cPrevPage'
 
     },
 
     initialize: function (options) {
 
         if (options) {
+
             this.collection = options.collection;
             this.showBreadcrumb = options.showBreadcrumb;
         }
@@ -25,20 +28,49 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
     render: function () {
 
-        this._markCommentsReadFlags();
+        if (this.collection) {
+            this._markCommentsReadFlags();
+        }
 
         // View attributes
         var attributes = {
 
             showBreadcrumb: this.showBreadcrumb,
-            comments: this.collection.toJSON()
+            firstPage: this.firstPage,
+            lastPage: this.lastPage,
+            totalPages: this.totalPages,
+            numberOfElements: this.numberOfElements,
+            totalElements: this.totalElements,
+            page: parseInt(this.page, 10)+1,
+            prevPage: this.page > 0 ? parseInt(this.page, 10)-1 : 0,
+            nextPage: this.page < this.totalPages-1 ? parseInt(this.page, 10)+1 : this.totalPages-1,
+            onlyOnePage: this.firstPage && this.lastPage ? true : false,
+            snapshotView: this.snapshotView
 
         };
+
+        if (this.collection) {
+            attributes = _.extend(attributes, { comments : this.collection.toJSON() });
+        }
 
         // Template
         var output = this.template(attributes);
 
         this.$el.html(output);
+        this.delegateEvents();
+    
+    },
+
+    cNextPage: function () {
+
+        this.page += 1;
+        this.update();
+    },
+
+    cPrevPage: function () {
+
+        this.page -= 1;
+        this.update();
     },
 
     /* Actions */
@@ -53,6 +85,41 @@ codebrowser.view.CommentsView = Backbone.View.extend({
             var commentId = $(event.target).data('id');
             this._delete(commentId);
         }
+    },
+
+    update: function () {
+
+        var self = this;
+
+        if (this.page === undefined) {
+            this.page = 0;
+        }
+
+        this.collection = new codebrowser.collection.CommentCollection(null, { page: this.page });
+
+         // Fetch comments
+        this.collection.fetch({
+
+            cache: false,
+            expires: 0,
+
+            success: function (data, response) {
+
+                self.firstPage = response.firstPage;
+                self.lastPage = response.lastPage;
+                self.totalPages = response.totalPages;
+                self.nummberOfElements = response.numberOfElements;
+                self.totalElements = response.totalElements;
+                self.collection.reset(response.content);
+
+                self.render();
+            },
+
+            error: function () {
+
+                throw new Error('Failed comments fetch.');
+            }
+        });
     },
 
     setCommentEditable: function (event) {
@@ -134,10 +201,8 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
             success: function () {
 
-                // Remove from collection
-                self.collection.remove(comment);
+                self.update();
 
-                self.render();
             },
 
             error: function () {
