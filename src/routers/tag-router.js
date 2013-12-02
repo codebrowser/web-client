@@ -42,7 +42,6 @@ codebrowser.router.TagRouter = codebrowser.router.BaseRouter.extend({
         var tagCategory;
         var tagCategories;
 
-
         if (tagCategoryId) {
 
             snapshotTagNames = new codebrowser.collection.TagNameCollection(null, { tagCategoryId: tagCategoryId, onlySnapshotTags : true });
@@ -53,9 +52,7 @@ codebrowser.router.TagRouter = codebrowser.router.BaseRouter.extend({
 
             tagCategory = codebrowser.model.TagCategory.findOrCreate({ id : tagCategoryId });
 
-        }
-
-        else {
+        } else {
 
             snapshotTagNames = new codebrowser.collection.TagNameCollection(null, { onlySnapshotTags : true });
 
@@ -70,15 +67,9 @@ codebrowser.router.TagRouter = codebrowser.router.BaseRouter.extend({
 
             self.tagNamesView.snapshotTagNames = snapshotTagNames;
             self.tagNamesView.exerciseAnswerTagNames = exerciseAnswerTagNames;
-
-            if (tagCategoryId) {
-                self.tagNamesView.tagCategory = tagCategory;
-                self.tagNamesView.unusedTagNames = unusedTagNames;
-            }
-
-            if (tagCategories) {
-                self.tagNamesView.tagCategories = tagCategories;
-            }
+            self.tagNamesView.tagCategory = tagCategory;
+            self.tagNamesView.unusedTagNames = unusedTagNames;
+            self.tagNamesView.tagCategories = tagCategories;
 
             codebrowser.controller.ViewController.push(self.tagNamesView, true);
         });
@@ -147,10 +138,7 @@ codebrowser.router.TagRouter = codebrowser.router.BaseRouter.extend({
 
             self.tagsView.tagName = tagName;
             self.tagsView.collection = tagCollection;
-
-            if (options.tagCategoryId) {
-                self.tagsView.tagCategory = tagCategory;
-            }
+            self.tagsView.tagCategory = tagCategory;
 
             codebrowser.controller.ViewController.push(self.tagsView, true);
         });

@@ -29,19 +29,21 @@ codebrowser.router.CourseRouter = codebrowser.router.BaseRouter.extend({
         var self = this;
 
         // Wait for fetches to be in sync
-        var fetchSynced = _.after(2, function () {
+        var fetchSynced = _.after(studentId ? 2 : 1, function () {
 
             codebrowser.controller.ViewController.push(self.courseView, true);
         });
 
-        var student = codebrowser.model.Student.findOrCreate({ id: studentId });
+        if (studentId) {
+            var student = codebrowser.model.Student.findOrCreate({ id: studentId });
 
-        // Fetch student
-        this.fetchModel(student, true, function () {
+            // Fetch student
+            this.fetchModel(student, true, function () {
 
-            self.courseView.student = student;
-            fetchSynced();
-        });
+                self.courseView.student = student;
+                fetchSynced();
+            });
+        }
 
         var courseCollection = new codebrowser.collection.CourseCollection(null, { studentId: studentId });
 

@@ -9,8 +9,6 @@ casper.test.begin('Select view', function suite(test) {
         'courses/12':
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5},
 
-        'students': [],
-
         'studentgroups': []
     };
 
