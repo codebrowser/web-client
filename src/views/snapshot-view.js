@@ -13,16 +13,17 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         'click #toggleConceptBubbles': 'toggleConceptBubbles',
         'click #toggleConceptHeatmap': 'toggleConceptHeatmap',
-        'click #toggleTimeline': 'toggleTimeline',
-        'click #toggleBrowser':  'toggleBrowser',
-        'click #toggleTree':     'toggleTree',
-        'click #toggleData':     'toggleData',
-        'click #split':          'split',
-        'click #diff':           'diff',
-        'click #first':          'first',
-        'click #previous':       'previous',
-        'click #next':           'next',
-        'click #last':           'last'
+        'click #toggleTimeline':       'toggleTimeline',
+        'click #toggleBrowser':        'toggleBrowser',
+        'click #toggleTree':           'toggleTree',
+        'click #toggleData':           'toggleData',
+        'click #split':                'split',
+        'click #diff':                 'diff',
+        'click #first':                'first',
+        'click #previous':             'previous',
+        'click #next':                 'next',
+        'click #last':                 'last',
+        'click #startTour':            'startTour'
 
     },
 
@@ -535,6 +536,55 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         var file = snapshot.get('files').findWhere({ name: this.file.get('name') });
 
         this.navigate(snapshot, file);
-    }
+    },
 
+    startTour: function () {
+
+        var intro = introJs();
+
+        // Set elements and guide templates
+        intro.setOptions({
+            keyboardNavigation: false,
+            steps: [
+                {
+                    element: '#editor-container',
+                    intro: Handlebars.templates.SnapshotEditorIntro()
+                },
+                {
+                    element: 'a[href="#editor-settings"]',
+                    intro: Handlebars.templates.SnapshotEditorSettingsIntro()
+                },
+                {
+                    element: '#editor-modes',
+                    intro: Handlebars.templates.SnapshotEditorModesIntro()
+                },
+                {
+                    element: '#snapshot-navi',
+                    intro: Handlebars.templates.SnapshotNavigationIntro()
+                },
+                {
+                    element: '#toggleTimeline',
+                    intro: Handlebars.templates.SnapshotTimelineIntro()
+                },
+                {
+                    element: '#toggleTree',
+                    intro: Handlebars.templates.SnapshotTreeIntro()
+                },
+                {
+                    element: '#toggleData',
+                    intro: Handlebars.templates.SnapshotDataIntro()
+                },
+                {
+                    element: '#toggleConcepts',
+                    intro: Handlebars.templates.SnapshotConceptsBubbleIntro()
+                },
+                {
+                    element: '#toggleConceptHeatmap',
+                    intro: Handlebars.templates.SnapshotConceptsHeatmapIntro()
+                }
+            ]
+        });
+
+        intro.start();
+    }
 });

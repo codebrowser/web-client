@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 
             src: {
 
-                files: ['Gruntfile.js', 'config/*.js', 'src/**/*.js', 'src/templates/*.template'],
+                files: ['Gruntfile.js', 'config/*.js', 'src/**/*.js', 'src/templates/**/*.template'],
                 tasks: ['jshint:src', 'build'],
 
             },
@@ -29,7 +29,7 @@ module.exports = function (grunt) {
 
                 files: {
 
-                    'static/assets/js/codebrowser-templates.js': 'src/templates/*.template'
+                    'static/assets/js/codebrowser-templates.js': 'src/templates/**/*.template'
 
                 },
 

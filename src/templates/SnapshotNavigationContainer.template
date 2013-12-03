@@ -1,14 +1,20 @@
 <div class='row'>
 
-    <div class='span2'>
+    <div id='editor-modes' class='span2'>
 
-        <button id='toggleBrowser' type='button' class='btn' data-toggle='button' title='Show file list'><i class='icon-folder icon-gray'></i></button>
-        <button id='split' type='button' class='btn' data-toggle='button'><i class='icon-split-editor icon-gray' title='Show side-by-side comparison of file contents'></i></button>
-        <button id='diff' type='button' class='btn' data-toggle='button' title='Highlight changed lines (BLUE: inserted, RED: deleted, GREEN: modified)'><i class='icon-diff icon-gray'></i></button>
+        <button id='toggleBrowser' type='button' class='btn' data-toggle='button' title='Show file list'>
+            <i class='icon-folder icon-gray'></i>
+        </button>
+        <button id='split' type='button' class='btn' data-toggle='button'>
+            <i class='icon-split-editor icon-gray' title='Show side-by-side comparison of file contents'></i>
+        </button>
+        <button id='diff' type='button' class='btn' data-toggle='button' title='Highlight changed lines (BLUE: inserted, RED: deleted, GREEN: modified)'>
+            <i class='icon-diff icon-gray'></i>
+        </button>
 
     </div>
 
-    <div id='visualization-settings' class='span6'>
+    <div id='visualization-settings' class='span4'>
 
         <button id='toggleTimeline' class='btn' title='Show timeline'>
             <i class='icon-time icon-gray'></i>
@@ -28,7 +34,13 @@
 
     </div>
 
-    <div class='span4 pull-right'>
+    <div class='span2'>
+        <button class='btn' id='startTour' title='Start a tour'>
+            <i class='icon-globe icon-gray'></i>
+        </button>
+    </div>
+
+    <div id='snapshot-navi' class='span4 pull-right'>
 
         <div class='row'>
 
