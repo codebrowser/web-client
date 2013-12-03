@@ -33,7 +33,7 @@ codebrowser.router.CommentRouter = codebrowser.router.BaseRouter.extend({
 
         var commentCollection;
 
-        commentCollection = new codebrowser.collection.CommentCollection(null, { 'page' : this.page === true ? this.page : page });
+        commentCollection = new codebrowser.collection.CommentCollection(null, { 'page' : page });
 
         commentCollection.fetch({
 
@@ -43,22 +43,17 @@ codebrowser.router.CommentRouter = codebrowser.router.BaseRouter.extend({
 
             success: function (data, response) {
 
-                // Get pagination info from Page and add comments as collection
-                self.firstPage = response.firstPage;
-                self.lastPage = response.lastPage;
-                self.totalPages = response.totalPages;
-                self.nummberOfElements = response.numberOfElements;
-                self.totalElements = response.totalElements;
+                // add comments as collection
                 commentCollection.reset(response.content);
 
                 // Render after comments have been fetched
                 self.commentsView.page = page;
                 self.commentsView.collection = commentCollection;
-                self.commentsView.firstPage = self.firstPage;
-                self.commentsView.lastPage = self.lastPage;
-                self.commentsView.totalPages = self.totalPages;
-                self.commentsView.numberOfElements = self.numberOfElements;
-                self.commentsView.totalElements = self.totalElements;
+                self.commentsView.firstPage = response.firstPage;
+                self.commentsView.lastPage = response.lastPage;
+                self.commentsView.totalPages = response.totalPages;
+                self.commentsView.numberOfElements = response.numberOfElements;
+                self.commentsView.totalElements = response.totalElements;
 
                 codebrowser.controller.ViewController.push(self.commentsView, true);
             },
