@@ -1,0 +1,6 @@
+<strong>Show concepts heatmap</strong>
+
+<p>
+    Shows all concepts on given solution.
+    Dark coloured cells are snapshots where value is high.
+</p>

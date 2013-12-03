@@ -1,0 +1,11 @@
+<strong>Show timeline</strong>
+
+<p>
+    Shows the amount of change and time elapsed between snapshots.
+</p>
+
+<ul>
+    <li><i style="color:grey">Grey</i> circle if code won't compile.</li>
+    <li>Amount of failing tests in <i style="color:red">red</i></li>
+    <li>Passing tests in <i style="color:green">green</i></li>
+</ul>

@@ -1,0 +1,21 @@
+<strong>Snapshot editor modes</strong>
+
+<p>
+    <i class="icon-folder icon-gray"></i>
+    Show snapshot file list and tags
+<p>
+
+<p>
+    <i class="icon-split-editor icon-gray"></i>
+    You can split the editor in half and see previous and current snapshots code side-by-side.
+<p>
+
+<p>
+    <i class="icon-diff icon-gray"></i>
+    Toggle diff to see changed lines:
+    <ul>
+        <li><i style='color:green'>Green</i> is new inserted line</li>
+        <li><i style='color:red'>Red</i> deleted line</li>
+        <li><i style='color:blue'>Blue</i> modified line</li>
+    </ul>
+</p>
