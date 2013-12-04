@@ -1247,6 +1247,13 @@ table.double-list {
 
 }
 
+#comments-container .prev, .next, .cprev, .cnext {
+
+    cursor: hand;
+    cursor: pointer;
+
+}
+
 
 #comments-container .comment-controls {
 
