@@ -10,7 +10,7 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
     events: {
 
         'click [data-action="create-comment"]': 'createComment',
-        'click [data-action="solution-comment"]': 'answerComment',
+        'click [data-action="solution-comment"]': 'solutionComment',
         'click [data-action="snapshot-comment"]': 'snapshotComment',
         'click span.next': 'nextPage',
         'click span.prev': 'prevPage'
@@ -43,11 +43,11 @@ codebrowser.view.SnapshotCommentsView = Backbone.View.extend({
     },
 
     nextPage: function () {
-        
+
         this.page += 1;
         this.update(this.snapshot);
     },
-    
+
     prevPage: function () {
 
         this.page -= 1;

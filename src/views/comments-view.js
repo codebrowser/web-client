@@ -11,10 +11,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
         'click [data-action="toggle-comment-edit"]': 'setCommentEditable',
         'blur .comment-text': 'updateComment',
         'click span.cnext': 'cNextPage',
-        'click span.cprev': 'cPrevPage',
-        'click [data-action="search"]': 'filterComments',
-        'keyup [data-id="query-string"]': 'filterComments',
-        'keypress [data-id="query-string"]': 'filterComments'
+        'click span.cprev': 'cPrevPage'
 
     },
 
@@ -34,7 +31,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
         if (localStorage.getItem('config.comments') === 'false') {
             throw new Error('Your backend does not support comments.');
         }
-    
+
         if (this.collection) {
             this._markCommentsReadFlags();
         }
@@ -65,7 +62,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
         this.$el.html(output);
         this.delegateEvents();
-    
+
     },
 
     cNextPage: function () {
@@ -83,14 +80,12 @@ codebrowser.view.CommentsView = Backbone.View.extend({
     /* Actions */
     confirmDelete: function (event) {
 
-        event.preventDefault();
-
-        var confirmed = window.confirm('AAre you sure you want\nto delete this comment?');
+        var confirmed = window.confirm('Are you sure you want\nto delete this comment?');
 
         if (confirmed) {
 
-            var commentId = $(event.target).data('id');
-            this._delete(commentId);
+            var id = this._getEventTargetDataId(event);
+            this._delete(id);
         }
     },
 
@@ -131,9 +126,8 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
     setCommentEditable: function (event) {
 
-        event.preventDefault();
+        var id = this._getEventTargetDataId(event);
 
-        var id = $(event.target).data('id');
         var comment = this.collection.get(id);
 
         var $commentTextEl = $('.comment-text[data-id="' + id + '"]');
@@ -164,22 +158,6 @@ codebrowser.view.CommentsView = Backbone.View.extend({
                 throw new Error('Failed comment update.')
             }
         });
-    },
-
-    filterComments: function() {
-
-        if (!this.filterHelper) {
-
-            var filterOptions = {
-                'containerSelector': '#' + this.id,
-                'rowSelector': 'article',
-                'targetCellSelector': '.comment-text'
-            };
-
-            this.filterHelper = new codebrowser.helper.ListViewFilter(filterOptions);
-        }
-
-        this.filterHelper.filterList();
     },
 
     _markCommentsReadFlags: function () {
@@ -241,7 +219,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
         });
     },
 
-    _createCommentTextarea: function(comment) {
+    _createCommentTextarea: function (comment) {
 
         var $textAreaEl = $('<textarea>');
         $textAreaEl.attr('data-id', comment.id);
@@ -249,6 +227,13 @@ codebrowser.view.CommentsView = Backbone.View.extend({
         $textAreaEl.val(comment.get('comment'));
 
         return $textAreaEl;
+    },
+
+    _getEventTargetDataId: function (event) {
+
+        // event.target can be button element or it's child i element
+        var id = $(event.target).data('id') || $(event.target).parent().data('id');
+        return id;
     }
 });
 

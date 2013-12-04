@@ -13,20 +13,7 @@
     {{/if}}
 
     <h2>
-
         Comments ({{totalElements}})
-
-        <!--
-        <span class="pull-right">
-            <div class="input-append">
-                <input type="text" class="span2" placeholder="Search" data-id="query-string" />
-                <button class="btn" data-action="search">
-                    <i class="icon-search"></i>
-                </button>
-            </div>
-        </span>
-        -->
-
     </h2>
 
     <div class = 'pagination'>
@@ -94,12 +81,12 @@
 
                 <span class='pull-right'>
 
-                    <button class='btn btn-mini' data-toggle='tooltip' title='Edit this comment'>
-                        <i class='icon-edit' data-action='toggle-comment-edit' data-id='{{id}}'></i>
-                        </button>
+                    <button class='btn btn-mini' data-action='toggle-comment-edit' data-id='{{id}}' data-toggle='tooltip' title='Edit this comment'>
+                        <i class='icon-edit'> </i>
+                    </button>
 
-                    <button class='btn btn-mini' data-toggle='tooltip' title='Delete this comment'>
-                        <i class='icon-remove' data-action='delete-comment' data-id='{{id}}'></i>
+                    <button class='btn btn-mini' data-action='delete-comment' data-id='{{id}}' data-toggle='tooltip' title='Delete this comment'>
+                        <i class='icon-remove'> </i>
                     </button>
 
                 </span>
