@@ -110,7 +110,7 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .data(concepts).enter()
             .append('g')
             .attr('class', 'concept')
-            .attr('transform', function(d, i ) { return 'translate(5, ' + ((i * (rectHeight + 2)) + 13) + ')'; })
+            .attr('transform', function(d, i ) { return 'translate(5, ' + ((i * rectHeight) + (i * 2) + rectHeight/2 + 4) + ')'; })
             .append('text')
             .attr('fill', 'rgb(0,0,0)')
             .text(function(d) { return d });
@@ -138,6 +138,7 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .attr('class', function(d, i) { return 'snapshotlabel_' + (i + 1)})
             .attr('fill', 'rgb(0,0,0)')
             .style('font-weight', function(d, i) { return i === index ? 'bold' : 'normal' })
+            .style('opacity', function(d, i) { return i === index ? 1 : 0 })
             .text(function(d, i) { return i + 1 });
 
         // jshint -W083
@@ -177,22 +178,22 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
                 // highlight row labels on mouseover
                 .on('mouseover', function(thisData) {
                     changeConceptLabelWeight(thisData, 'bold');
-                    changeSnapshotLabelWeight(this, 'bold');
+                    changeSnapshotLabelOpacity(this, 1);
                 })
                 .on('mouseout', function(thisData) {
                     changeConceptLabelWeight(thisData, 'normal');
-                    changeSnapshotLabelWeight(this, 'normal');
+                    changeSnapshotLabelOpacity(this, 0);
                 })
                 .on('click', function() {
                     var snapshotIndex = parseInt($(this).attr('class').substr(9), 10) - 1;
                     self.parentView.navigateToIndex(snapshotIndex);
                 });
 
-            var changeSnapshotLabelWeight = function(element, weight) {
+            var changeSnapshotLabelOpacity = function(element, opacity) {
                 var snapshotIndex = parseInt(element.className.baseVal.substr(9), 10);
                 if (snapshotIndex !== self.lastIndex + 1) {
                     self.svg.selectAll('.snapshotlabel_' + snapshotIndex)
-                        .style('font-weight', weight);
+                        .style('opacity', opacity);
                 }
             };
 
@@ -220,13 +221,20 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .duration(1000)
             .style('stroke', 'rgba(90,90,90,0.9)');
 
-        // remove bolding from last snapshot label
+        // remove bolding from and fade away last snapshot label
         this.svg.selectAll('.snapshotlabel_' + (this.lastIndex + 1))
+            .transition()
+            .duration(1000)
+            .style('opacity', 0)
             .style('font-weight', 'normal');
 
         // add bolding to current snapshot label
         this.svg.selectAll('.snapshotlabel_' + (snapshotIndex + 1))
+            .transition()
+            .duration(1000)
+            .style('opacity', 1)
             .style('font-weight', 'bold');
+
 
         this.lastIndex = snapshotIndex;
 
