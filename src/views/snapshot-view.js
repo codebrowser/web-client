@@ -575,7 +575,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                     intro: Handlebars.templates.SnapshotDataIntro()
                 },
                 {
-                    element: '#toggleConcepts',
+                    element: '#toggleConceptBubbles',
                     intro: Handlebars.templates.SnapshotConceptsBubbleIntro()
                 },
                 {

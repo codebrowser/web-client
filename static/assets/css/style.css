@@ -291,7 +291,11 @@ ul.selection a:hover {
 /* Navigation */
 
 nav {
+
     height: 40px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+
 }
 
 /* Structure */
@@ -1324,7 +1328,7 @@ table.double-list {
     left: 0;
     width: 100%;
     text-align: center;
-    
+
     z-index: 55;
 }
 
@@ -1338,7 +1342,7 @@ table.double-list {
     background-image: linear-gradient(to bottom, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);
 }
 
-.add-to-categories .down-scroll { 
+.add-to-categories .down-scroll {
     bottom: 0;
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgba(153,153,153,1)), color-stop(1, rgba(153,153,153,0)));
     background-image: -o-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(153,153,153,0) 100%);

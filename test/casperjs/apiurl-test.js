@@ -76,7 +76,11 @@ casper.test.begin('API URL setting', 17, function suite(test) {
 
             'http://new.api.url/path/to/students': [],
 
-            'http://new.api.url/path/to/studentgroups': []
+            'http://new.api.url/path/to/studentgroups': [],
+
+            'http://new.api.url/path/to/tagnames': [],
+            'http://new.api.url/path/to/tagcategories': [],
+            'http://new.api.url/path/to/comments\\?page=0&size=1': []
         };
 
         this.clickLabel('Save', 'button');
