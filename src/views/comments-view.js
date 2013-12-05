@@ -11,7 +11,8 @@ codebrowser.view.CommentsView = Backbone.View.extend({
         'click [data-action="toggle-comment-edit"]': 'setCommentEditable',
         'blur .comment-text': 'updateComment',
         'click span.cnext': 'cNextPage',
-        'click span.cprev': 'cPrevPage'
+        'click span.cprev': 'cPrevPage',
+        'click [data-action="search"]': 'searchComments'
 
     },
 
@@ -49,7 +50,8 @@ codebrowser.view.CommentsView = Backbone.View.extend({
             prevPage: this.page > 0 ? parseInt(this.page, 10)-1 : 0,
             nextPage: this.page < this.totalPages-1 ? parseInt(this.page, 10)+1 : this.totalPages-1,
             onlyOnePage: this.firstPage && this.lastPage ? true : false,
-            snapshotView: this.snapshotView
+            snapshotView: this.snapshotView,
+            query: this.query,
 
         };
 
@@ -62,7 +64,6 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
         this.$el.html(output);
         this.delegateEvents();
-
     },
 
     cNextPage: function () {
@@ -97,7 +98,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
             this.page = 0;
         }
 
-        this.collection = new codebrowser.collection.CommentCollection(null, { page: this.page });
+        this.collection = new codebrowser.collection.CommentCollection(null, { page: this.page, query: this.query });
 
          // Fetch comments
         this.collection.fetch({
@@ -156,6 +157,48 @@ codebrowser.view.CommentsView = Backbone.View.extend({
             error: function () {
 
                 throw new Error('Failed comment update.')
+            }
+        });
+    },
+
+    searchComments: function(event) {
+
+        event.preventDefault();
+
+        var query = $('body').find('input[data-id="query-string"]').val().trim();
+
+        var self = this;
+
+        var commentCollection = new codebrowser.collection.CommentCollection(null, { query : query });
+
+        commentCollection.fetch({
+
+            cache: false,
+            expires: 0,
+            dataType: 'json',
+
+            success: function (data, response) {
+
+                // Add comments as collection
+                commentCollection.reset(response.content);
+
+                // Render after comments have been fetched
+                self.page = 0;
+                self.collection = commentCollection;
+                self.firstPage = response.firstPage;
+                self.lastPage = response.lastPage;
+                self.totalPages = response.totalPages;
+                self.numberOfElements = response.numberOfElements;
+                self.totalElements = response.totalElements;
+                self.query = query;
+
+                self.render();
+
+                $('[data-id="query-string"]').focus();
+            },
+
+            error: function () {
+                self.notFound();
             }
         });
     },

@@ -1381,3 +1381,7 @@ table.double-list {
 #downloadTagListJson {
     float: left;
 }
+
+.pagination {
+    clear: both;
+}

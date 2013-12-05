@@ -12,9 +12,22 @@
 
     {{/if}}
 
-    <h2>
-        Comments ({{totalElements}})
-    </h2>
+    <div>
+        <h2>
+            Comments{{#if query}} — Search results for "{{query}}"{{/if}} ({{totalElements}})
+
+            <span class="pull-right">
+                <div class="input-append">
+                    <form>
+                        <input type="text" class="span2" placeholder="Search" data-id="query-string" />
+                        <button type="submit" class="btn" data-action="search" title="Search text in comments">
+                            <i class="icon-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </span>
+        </h2>
+    </div>
 
     <div class = 'pagination'>
 

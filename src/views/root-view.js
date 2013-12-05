@@ -16,7 +16,6 @@ codebrowser.view.RootView = Backbone.View.extend({
 
         }
 
-        console.log(attributes);
         var output = this.template(attributes);
         this.$el.html(output);
 

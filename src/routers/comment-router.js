@@ -31,36 +31,24 @@ codebrowser.router.CommentRouter = codebrowser.router.BaseRouter.extend({
 
         var self = this;
 
-        var commentCollection;
+        var commentCollection = new codebrowser.collection.CommentCollection(null, { 'page' : page });
 
-        commentCollection = new codebrowser.collection.CommentCollection(null, { 'page' : page });
+        this.fetchModel(commentCollection, false, function (data, response) {
 
-        commentCollection.fetch({
+            // add comments as collection
+            commentCollection.reset(response.content);
 
-            cache: false,
-            expires: 0,
-            dataType: 'json',
+            // Render after comments have been fetched
+            self.commentsView.page = page;
+            self.commentsView.collection = commentCollection;
+            self.commentsView.firstPage = response.firstPage;
+            self.commentsView.lastPage = response.lastPage;
+            self.commentsView.totalPages = response.totalPages;
+            self.commentsView.numberOfElements = response.numberOfElements;
+            self.commentsView.totalElements = response.totalElements;
+            self.commentsView.query = undefined;
 
-            success: function (data, response) {
-
-                // add comments as collection
-                commentCollection.reset(response.content);
-
-                // Render after comments have been fetched
-                self.commentsView.page = page;
-                self.commentsView.collection = commentCollection;
-                self.commentsView.firstPage = response.firstPage;
-                self.commentsView.lastPage = response.lastPage;
-                self.commentsView.totalPages = response.totalPages;
-                self.commentsView.numberOfElements = response.numberOfElements;
-                self.commentsView.totalElements = response.totalElements;
-
-                codebrowser.controller.ViewController.push(self.commentsView, true);
-            },
-
-            error: function () {
-                self.notFound();
-            }
+            codebrowser.controller.ViewController.push(self.commentsView, true);
         });
     }
 });

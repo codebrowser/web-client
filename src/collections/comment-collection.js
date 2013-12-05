@@ -18,7 +18,7 @@ codebrowser.collection.CommentCollection = Backbone.Collection.extend({
         if (this.studentId && this.courseId && this.exerciseId && this.snapshotId) {
 
             if (this.page === undefined) {
-                
+
                 this.page = 0;
             }
 
@@ -39,12 +39,16 @@ codebrowser.collection.CommentCollection = Backbone.Collection.extend({
 
         else {
 
-            if ( this.page >= 0) {
+            var url = config.api.main.root + 'comments?';
+            url += 'page=' + (this.page !== undefined ? this.page : 0);
+            url += '&size=' + this.pagesize;
 
-                return config.api.main.root + 'comments?page='+this.page+'&size='+this.pagesize;
+            if (this.query !== undefined) {
+
+                url += '&query=' + this.query;
             }
 
-            return config.api.main.root + 'comments?page='+0+'&size='+this.pagesize;
+            return url;
         }
     },
 
@@ -59,6 +63,7 @@ codebrowser.collection.CommentCollection = Backbone.Collection.extend({
             this.exerciseId = options.exerciseId;
             this.snapshotId = options.snapshotId;
             this.page = options.page;
+            this.query = options.query;
         }
     },
 
