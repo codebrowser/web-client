@@ -1,3 +1,4 @@
+
 casper.test.begin('API URL setting', 17, function suite(test) {
 
     mockData = {
