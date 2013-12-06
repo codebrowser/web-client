@@ -223,7 +223,7 @@ module.exports = function (grunt) {
                 'src/raphael/*.js'],
             options: {
 
-                vendor: ['static/assets/js/jquery-2.0.0.min.js',
+                vendor: ['static/assets/js/jquery-2.0.3.min.js',
                     'static/assets/js/d3.v3.min.js',
                     'static/assets/js/moment.min.js',
                     'static/assets/js/underscore-min.js',
