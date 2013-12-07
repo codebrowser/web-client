@@ -28,11 +28,6 @@ var codebrowser = {
             codebrowser.controller.ViewController.push(errorView, true);
         }
 
-        var backendChecked = localStorage.getItem('backendChecked');
-        if (!backendChecked) {
-            Utils.checkBackendCapabilities();
-        }
-
         $('#navigation-container').html((this.navigation = new codebrowser.view.NavigationView()).render().el);
 
         // Initialise footer

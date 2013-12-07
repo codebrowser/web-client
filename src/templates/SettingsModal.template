@@ -1,9 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+<div id="modal-dialog" role="dialog" aria-hidden="true">
 
-</body>
-</html>
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" id="closeButton" class="close" aria-hidden="true" title="Close the settings dialog without saving any changes">×</button>
+            <h3 id="myModalLabel">Settings</h3>
+        </div>
+
+        <div class="modal-body inline">
+            <label for="apiUrl">Server URL</label>
+            <input id="apiUrl" type="text" value="{{apiUrl}}" title="URL of the backend that provides the data for Code Browser"/>
+            <button id="applyButton" class="btn btn-primary">Apply</button>
+
+            {{#if applied}}
+            <div id="capability-report" class="text-center">
+            {{else}}
+            <div id="capability-report" class="text-center" style="display:none;">
+            {{/if}}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Check status</th>
+                            <th>Enabled</th>
+                        </tr>
+                    </thead>
+                    {{#each capabilities}}
+                    <tr>
+                        <td>{{ this.name }}</td>
+                        <td>
+                            {{#if this.checked}}
+                                {{#if this.status}}
+                                <i class="fa fa-2x fa-check" title="Verified"></i>
+                                {{else}}
+                                <i class="fa fa-2x fa-warning"></i>
+                                {{/if}}
+                            {{else}}
+                            <i class="fa fa-2x fa-question-circle" title="Not checked yet"></i>
+                            {{/if}}
+                        </td>
+                        <td>
+                            {{#if this.status}}
+                            <input class="toggleEnabled" type="checkbox" data-index="{{@index}}" checked>
+                            {{else}}
+                            <input class="toggleEnabled" type="checkbox" data-index="{{@index}}">
+                            {{/if}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </table>
+
+                <button id="checkButton" class="btn btn-small">Check back-end capabilities</button>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button id="cancelButton" class="btn" aria-hidden="true" title="Close the settings dialog without saving any changes">Cancel</button>
+            {{#if applied}}
+            <button id="saveButton" class="btn btn-primary" data-action="save" title="Apply new settings and close the dialog">Save</button>
+            {{else}}
+            <button id="saveButton" class="btn btn-primary" data-action="save" title="Apply new settings and close the dialog" disabled>Save</button>
+            {{/if}}
+        </div>
+
+    </div>
+
+</div>

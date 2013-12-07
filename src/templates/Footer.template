@@ -1,22 +1,3 @@
-<div id='settings-modal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+<i id="settingsModalButton" class="icon-wrench icon-gray pull-left" title="Change Code Browser settings"></i>
 
-    <div class='modal-header'>
-        <button type='button' class='close' data-dismiss='modal' aria-hidden='true' title='Close the settings dialog without saving any changes'>×</button>
-        <h3 id='myModalLabel'>Settings</h3>
-    </div>
-
-    <div class='modal-body inline'>
-        <label for='apiUrl'>Server URL</label>
-        <input id='apiUrl' type='text' value='{{apiUrl}}' title='URL of the backend that provides the data for Code Browser'/>
-    </div>
-
-    <div class='modal-footer'>
-        <button class='btn' data-dismiss='modal' aria-hidden='true' title='Close the settings dialog without saving any changes'>Cancel</button>
-        <button class='btn btn-primary' data-action='save' title='Apply new settings and close the dialog'>Save</button>
-    </div>
-
-</div>
-
-<i class='icon-wrench icon-gray pull-left' data-toggle='modal' data-target='#settings-modal' title='Change Code Browser settings'></i>
-
-<p>Open source project by the Department of Computer Science, University of Helsinki - <a href='http://github.com/codebrowser/web-client' target='_blank'>View source on GitHub</a></p>
+<p>Open source project by the Department of Computer Science, University of Helsinki - <a href="http://github.com/codebrowser/web-client" target="_blank">View source on GitHub</a></p>

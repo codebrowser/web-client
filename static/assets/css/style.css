@@ -3,7 +3,7 @@
 @font-face {
 
     font-family: 'LiberationMono';
-    src: url('../font/liberation-mono/LiberationMono-Regular-webfont.woff') format('woff');
+    src: url('../fonts/liberation-mono/LiberationMono-Regular-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 
@@ -12,7 +12,7 @@
 @font-face {
 
     font-family: 'LiberationMono';
-    src: url('../font/liberation-mono/LiberationMono-Italic-webfont.woff') format('woff');
+    src: url('../fonts/liberation-mono/LiberationMono-Italic-webfont.woff') format('woff');
     font-weight: normal;
     font-style: italic;
 
@@ -21,7 +21,7 @@
 @font-face {
 
     font-family: 'LiberationMono';
-    src: url('../font/liberation-mono/LiberationMono-Bold-webfont.woff') format('woff');
+    src: url('../fonts/liberation-mono/LiberationMono-Bold-webfont.woff') format('woff');
     font-weight: bold;
     font-style: normal;
 
@@ -30,7 +30,7 @@
 @font-face {
 
     font-family: 'LiberationMono';
-    src: url('../font/liberation-mono/LiberationMono-BoldItalic-webfont.woff') format('woff');
+    src: url('../fonts/liberation-mono/LiberationMono-BoldItalic-webfont.woff') format('woff');
     font-weight: bold;
     font-style: italic;
 
@@ -336,9 +336,61 @@ nav {
 
 }
 
-#footer-container #settings-modal input {
+#settings-modal input {
 
-    width: 95%;
+    width: 85%;
+
+}
+
+#settings-modal #applyButton {
+
+    margin-bottom: 10px;
+
+}
+
+#settings-modal #capability-report {
+
+    margin-top: 10px;
+
+}
+
+#settings-modal #capability-report table {
+
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+
+}
+
+#settings-modal #capability-report th {
+
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+
+}
+
+#settings-modal #capability-report td:nth-child(2) {
+
+    text-align: center;
+
+}
+#settings-modal .fa-check {
+
+    color: #009700;
+
+}
+
+#settings-modal .fa-warning {
+
+    color: #db0511;
+
+}
+
+#settings-modal .fa-question-circle {
+
+    color: rgba(106, 106, 107, 0.98);
 
 }
 

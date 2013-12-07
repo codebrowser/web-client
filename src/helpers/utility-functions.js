@@ -1,6 +1,7 @@
 /*jshint unused: false */
 
 var Utils = {
+
     getLocalStorageValue: function(name, defaultValue) {
 
         if (localStorage.getItem(name) === null) {
@@ -31,77 +32,6 @@ var Utils = {
         });
 
         return { children: data };
-    },
-
-    checkBackendCapabilities: function () {
-
-        var apiRoot = config.api.main.root;
-
-        $.ajax({
-
-            url: apiRoot+'tagnames',
-            async: false,
-            type: 'HEAD',
-
-            success: function (response, status) {
-                console.log(status);
-                if (status === 'success') {
-
-                    localStorage.setItem('config.tagnames', true);
-                }
-            }
-
-        });
-
-        $.ajax({
-
-            url: apiRoot+'tagcategories',
-            async: false,
-            type: 'HEAD',
-
-            success: function (response, status) {
-                console.log(status);
-                if (status === 'success') {
-
-                    localStorage.setItem('config.tagcategories', true);
-                }
-            }
-
-        });
-
-        $.ajax({
-
-            url: apiRoot+'comments?page=0&size=1',
-            async: false,
-            type: 'HEAD',
-
-            success: function (response, status) {
-                console.log(status);
-                if (status === 'success') {
-
-                    localStorage.setItem('config.comments', true);
-                }
-            }
-
-        });
-
-        $.ajax({
-
-            url: apiRoot+'studentgroups',
-            async: false,
-            type: 'HEAD',
-
-            success: function (data, status, response) {
-                console.log(status);
-                console.log(response.getResponseHeader('Allow'));
-                if (status === 'success') {
-
-                    localStorage.setItem('config.studentgroups', true);
-                }
-            }
-
-        });
-
     }
 
 };

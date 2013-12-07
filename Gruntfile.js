@@ -11,14 +11,14 @@ module.exports = function (grunt) {
             src: {
 
                 files: ['Gruntfile.js', 'config/*.js', 'src/**/*.js', 'src/templates/**/*.template'],
-                tasks: ['jshint:src', 'build'],
+                tasks: ['jshint:src', 'build']
 
             },
 
             test: {
 
                 files: ['test/config/config.js', 'test/helpers/*.js', 'test/casperjs/*.js', 'test/spec/**/*-spec.js'],
-                tasks: ['jshint:test', 'jshint:spec', 'jshint:casperjs'],
+                tasks: ['jshint:test', 'jshint:spec', 'jshint:casperjs']
 
             }
         },
@@ -167,7 +167,7 @@ module.exports = function (grunt) {
 
             src: {
 
-                src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js'],
+                src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js']
 
             },
 
@@ -176,7 +176,7 @@ module.exports = function (grunt) {
                 src: ['test/config/config.js', 'test/helpers/*.js'],
                 options: {
 
-                    jshintrc: 'test/jshint.json',
+                    jshintrc: 'test/jshint.json'
 
                 }
             },
@@ -186,7 +186,7 @@ module.exports = function (grunt) {
                 src: 'test/spec/**/*.js',
                 options: {
 
-                    jshintrc: 'test/spec/jshint.json',
+                    jshintrc: 'test/spec/jshint.json'
 
                 }
             },
@@ -196,7 +196,7 @@ module.exports = function (grunt) {
                 src: ['test/casperjs/*.js', '!test/casperjs/tests-concat.js'],
                 options: {
 
-                    jshintrc: 'test/casperjs/jshint.json',
+                    jshintrc: 'test/casperjs/jshint.json'
 
                 }
             },
@@ -223,7 +223,9 @@ module.exports = function (grunt) {
                 'src/raphael/*.js'],
             options: {
 
-                vendor: ['static/assets/js/jquery-2.0.3.min.js',
+                vendor: [
+                    'static/assets/js/jquery-2.0.3.min.js',
+                    'static/assets/bootstrap/js/bootstrap.min.js',
                     'static/assets/js/d3.v3.min.js',
                     'static/assets/js/moment.min.js',
                     'static/assets/js/underscore-min.js',
@@ -236,7 +238,8 @@ module.exports = function (grunt) {
                     'static/assets/js/difflib-min.js',
                     'static/assets/js/raphael-min.js',
                     'static/assets/js/codebrowser-templates-min.js',
-                    'node_modules/sinon/pkg/sinon-1.7.3.js'],
+                    'node_modules/sinon/pkg/sinon-1.7.3.js'
+                ],
                 specs: 'test/spec/**/*-spec.js',
                 template: require('grunt-template-jasmine-istanbul'),
                 templateOptions: {
