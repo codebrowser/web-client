@@ -568,11 +568,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             steps: [
                 {
                     element: '#editor-container',
-                    intro: Handlebars.templates.SnapshotEditorIntro()
+                    intro: Handlebars.templates.SnapshotEditorIntro(),
+                    position: 'right'
                 },
                 {
                     element: 'a[href="#editor-settings"]',
-                    intro: Handlebars.templates.SnapshotEditorSettingsIntro()
+                    intro: Handlebars.templates.SnapshotEditorSettingsIntro(),
+                    position: 'left'
                 },
                 {
                     element: '#editor-modes',
