@@ -9,7 +9,6 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
         'click #closeButton': 'onCancelButton',
         'click #checkButton': 'checkCapabilities',
         'click .toggleEnabled': 'toggleCapability',
-        'change #apiUrl': 'apply',
         'keyup #apiUrl': 'onKeyUp',
         'click #applyButton': 'showCapabilityCheck'
     },
@@ -21,7 +20,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
             {
                 name: 'Comments',
                 testUrl: 'comments',
-                storageKey: 'config.comment',
+                storageKey: 'config.comments',
                 checked: false
             },
             {
@@ -86,7 +85,10 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
     showCapabilityCheck: function() {
 
         var self = this;
+        this.attributes.apiUrl = $('#apiUrl').val();
         this.attributes.applied = true;
+        this.clearCapabilities();
+
         $('#capability-report').slideDown(function() {
             self.render();
         });
@@ -107,13 +109,6 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
         this.initialize();
         this.$el.modal('hide');
         this.render();
-
-    },
-
-    apply: function() {
-
-        this.attributes.apiUrl = $('#apiUrl').val();
-        this.clearCapabilities();
 
     },
 

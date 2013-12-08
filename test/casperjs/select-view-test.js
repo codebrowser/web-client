@@ -3,7 +3,7 @@ casper.test.begin('Select view', function suite(test) {
     mockData = {
         'tagnames': [],
         'tagcategories': [],
-        'comments\\?page=0&size=1': [],
+        'comments': [],
         'courses': [
             {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}

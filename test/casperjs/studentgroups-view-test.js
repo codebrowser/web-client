@@ -3,7 +3,7 @@ casper.test.begin('Student groups view', 12, function suite(test) {
     mockData = {
         'tagnames': [],
         'tagcategories': [],
-        'comments\\?page=0&size=1': [],
+        'comments': [],
         'studentgroups': [
             { id: 101, name: 'group 1', students: [{}, {}]},
             { id: 102, name: 'group 2', students: [{}, {}, {}]},

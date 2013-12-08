@@ -4,7 +4,7 @@ casper.test.begin('API URL setting', 17, function suite(test) {
     mockData = {
         'tagnames': [],
         'tagcategories': [],
-        'comments\\?page=0&size=1': [],
+        'comments': [],
         'courses': [
             {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
@@ -40,7 +40,8 @@ casper.test.begin('API URL setting', 17, function suite(test) {
 
     casper.then(function() {
 
-        test.assertNotVisible('#settings-modal', 'settings dialog is not visible');
+        test.assertDoesntExist('#settings-modal', 'settings dialog is not visible');
+
     });
 
     casper.then(function() {
@@ -81,9 +82,10 @@ casper.test.begin('API URL setting', 17, function suite(test) {
 
             'http://new.api.url/path/to/tagnames': [],
             'http://new.api.url/path/to/tagcategories': [],
-            'http://new.api.url/path/to/comments\\?page=0&size=1': []
+            'http://new.api.url/path/to/comments': []
         };
 
+        this.clickLabel('Apply', 'button');
         this.clickLabel('Save', 'button');
         this.waitForSelector('#root-container');
     });

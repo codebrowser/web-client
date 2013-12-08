@@ -2,7 +2,7 @@ casper.test.begin('Tag category test', 14, function suite(test) {
 
     mockData = {
         'tagnames': [],
-        'comments\\?page=0&size=1': [],
+        'comments': [],
         'tagcategories': [
             {id: 61, name: 'c1', tagnames: [{}]},
             {id: 62, name: 'c2', tagnames: [{}, {}, {}]},

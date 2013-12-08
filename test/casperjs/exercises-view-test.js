@@ -3,7 +3,7 @@ casper.test.begin('Exercises view (course exercises)', 13, function suite(test) 
     mockData =  {
         'tagnames': [],
         'tagcategories': [],
-        'comments\\?page=0&size=1': [],
+        'comments': [],
         'courses': [
             {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
@@ -119,7 +119,7 @@ casper.test.begin('Exercises view (student-course exercises)', 6, function suite
     mockData =  {
         'tagnames': [],
         'tagcategories': [],
-        'comments\\?page=0&size=1': [],
+        'comments': [],
         'courses/11':
             {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
 
@@ -193,7 +193,7 @@ casper.test.begin('Exercises view (course-student exercises)', 6, function suite
     mockData = {
         'tagnames': [],
         'tagcategories': [],
-        'comments\\?page=0&size=1': [],
+        'comments': [],
         'courses': [
             {id: 11, name: 'course 1', exercises: [{}, {}], amountOfStudents: 4},
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
