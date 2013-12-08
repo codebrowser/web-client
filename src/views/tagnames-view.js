@@ -63,7 +63,7 @@ codebrowser.view.TagNamesView = Backbone.View.extend({
 
             var filterOptions = {
 
-                'rowSelector' : '.double-list-left table tbody tr, .double-list-right table tbody tr',
+                'rowSelector' : '.triple-list table tbody tr, .double-list-left table tbody tr, .double-list-right table tbody tr',
                 'containerSelector' : '#' + this.id
             };
 
