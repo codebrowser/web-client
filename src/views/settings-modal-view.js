@@ -112,9 +112,12 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    onKeyUp: function() {
+    onKeyUp: function(event) {
 
-        if (this.attributes.applied === true){
+        if (event.keyCode === 13) { // user pressed enter
+            this.showCapabilityCheck();
+        }
+        else if (this.attributes.applied === true){
             $('#capability-report').slideUp();
         }
 
