@@ -22,4 +22,13 @@
       	<li><a href="./#/comments">Comments</a></li>
       {{/if}}
     </ul>
+
+    {{#if tourEnabled}}
+
+        <button class='btn pull-right' id='startTour' title='Start a tour'>
+            <i class='icon-info-sign icon-gray'></i> Help
+        </button>
+
+    {{/if}}
 </nav>
+

@@ -14,7 +14,7 @@
 
     </div>
 
-    <div id='visualization-settings' class='span4'>
+    <div id='visualization-settings' class='span6'>
 
         <button id='toggleTimeline' class='btn' title='Show timeline'>
             <i class='icon-time icon-gray'></i>
@@ -34,11 +34,6 @@
 
     </div>
 
-    <div class='span2'>
-        <button class='btn' id='startTour' title='Start a tour'>
-            <i class='icon-globe icon-gray'></i>
-        </button>
-    </div>
 
     <div id='snapshot-navi' class='span4 pull-right'>
 

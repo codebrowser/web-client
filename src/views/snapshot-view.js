@@ -22,8 +22,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         'click #first':                'first',
         'click #previous':             'previous',
         'click #next':                 'next',
-        'click #last':                 'last',
-        'click #startTour':            'startTour'
+        'click #last':                 'last'
 
     },
 
@@ -63,6 +62,17 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         // Bind keydown
         $(document).keydown($.proxy(this.keydown, this));
+
+
+        // Enable tour button on navigation view
+        if (codebrowser && codebrowser.navigation) {
+
+            var self = this;
+
+            codebrowser.navigation.enableTour(function() {
+                self.startTour();
+            });
+        }
     },
 
     _initializeVisualizations: function() {
@@ -141,6 +151,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         if (localStorage.getItem('config.comments') === 'true') {
             this.snapshotCommentsView.remove();
         }
+
+        // Disable tour button on navigation view
+        codebrowser.navigation.disableTour();
 
         Backbone.View.prototype.remove.call(this);
     },
@@ -471,6 +484,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     navigate: function (snapshot, file, options) {
 
+        // Reset introJs tour if necessary
+        this.resetTour();
+
         // Use first file if non specified
         if (!file) {
             file = snapshot.get('files').first();
@@ -543,6 +559,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     startTour: function () {
 
+        var self = this;
         var intro = introJs();
 
         // Set elements and guide templates
@@ -588,6 +605,26 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             ]
         });
 
+        // Set tour in progess flag
+        this.tourInProgress = true;
+
+        // Register callbacks
+        intro.onexit(function() {
+            self.tourInProgress = false;
+        });
+        intro.oncomplete(function() {
+            self.tourInProgress = false;
+        });
+
         intro.start();
+    },
+
+    resetTour: function () {
+
+        if (this.tourInProgress === true) {
+
+            this.tourInProgress = false;
+            introJs().exit();
+        }
     }
 });
