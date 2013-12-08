@@ -235,7 +235,7 @@ codebrowser.view.SnapshotsConceptBubbleView = Backbone.View.extend({
         data.select('text')
             .transition().delay(1000).duration(1000)
             .style('opacity', 1)
-            .text(function(d) { return d.name.substring(0, ((d.r / 3) - 1)); });
+            .text(function(d) { return d.name ? d.name.substring(0, ((d.r / 3) - 1)) : ''; });
 
 
         /*** Node removal ***/
