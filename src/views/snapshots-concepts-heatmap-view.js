@@ -101,7 +101,7 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
         var snapshots = this.concepts.snapshots;
         var concepts = this.concepts.concepts;
         var widthOffset;
-        var heightOffset = 30;
+        var heightOffset = 5;
         var rectWidth;
         var rectHeight = Math.floor((self.height - heightOffset)/concepts.length) - 2;
 
@@ -110,7 +110,7 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .data(concepts).enter()
             .append('g')
             .attr('class', 'concept')
-            .attr('transform', function(d, i ) { return 'translate(5, ' + ((i * rectHeight) + (i * 2) + rectHeight/2 + 4) + ')'; })
+            .attr('transform', function(d, i ) { return 'translate(5, ' + ((i * rectHeight) + rectHeight/2 + 4) + ')'; })
             .append('text')
             .attr('fill', 'rgb(0,0,0)')
             .text(function(d) { return d });
@@ -131,8 +131,8 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
             .append('g')
             .attr('class', 'snapshot-index')
             .attr('transform', function(d, i ) {
-                var xOffset = i < 9 ? 5 : 9;
-                return 'translate(' + ((i * rectWidth) + ((rectWidth/2) - xOffset) + widthOffset) + ',' + (self.height - heightOffset + 15) + ')'; // lots of magic here
+                var xOffset = i < 9 ? 5 : 9; // offset for two-digit labels
+                return 'translate(' + ((i * rectWidth) + ((rectWidth/2) - xOffset) + widthOffset) + ',' + (self.height - heightOffset) + ')';
             })
             .append('text')
             .attr('class', function(d, i) { return 'snapshotlabel_' + (i + 1)})
@@ -152,15 +152,13 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
                 .append('svg:rect')
                 .attr('class', 'snapshot_' + (snapshotIndex + 1))
                 .attr('x', (snapshotIndex * rectWidth) + widthOffset)
-                .attr('y', function(d, i) { return (i * (rectHeight + 2)) + 1; })
-                .attr('rx', 10)
-                .attr('ry', 10)
+                .attr('y', function(d, i) { return (i * (rectHeight) + 2); })
                 .attr('width', rectWidth)
                 .attr('height', rectHeight)
                 .style('stroke', function() {
                     return snapshotIndex === index ? 'rgba(90,90,90,0.9)' : 'rgba(90,90,90,0.4)';
                 })
-                .style('stroke-width', 2);
+                .style('stroke-width', 1);
 
             // color rectangles to represent concept size
             this.svg.selectAll('.snapshot_' + (snapshotIndex + 1))
@@ -209,16 +207,12 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
 
     _updateHeatmap: function(snapshotIndex) {
 
-        // fade out old column hilighting
+        // old column hilighting
         this.svg.selectAll('.snapshot_' + (this.lastIndex + 1))
-            .transition()
-            .duration(1000)
             .style('stroke', 'rgba(90,90,90,0.4)');
 
-        // fade in new column hilighting
+        // new column hilighting
         this.svg.selectAll('.snapshot_' + (snapshotIndex + 1))
-            .transition()
-            .duration(1000)
             .style('stroke', 'rgba(90,90,90,0.9)');
 
         // remove bolding from and fade away last snapshot label
