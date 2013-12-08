@@ -20,28 +20,39 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
             {
                 name: 'Comments',
                 testUrl: 'comments',
-                storageKey: 'config.comments',
-                checked: false
+                testMethod: 'GET',
+                storageKey: 'config.comments'
             },
             {
                 name: 'Tags',
                 testUrl: 'tagnames',
-                storageKey: 'config.tagnames',
-                checked: false
+                testMethod: 'HEAD',
+                storageKey: 'config.tagnames'
             },
             {
                 name: 'Tag categories',
                 testUrl: 'tagcategories',
-                storageKey: 'config.tagcategories',
-                checked: false
+                testMethod: 'HEAD',
+                storageKey: 'config.tagcategories'
             },
             {
                 name: 'Student groups',
                 testUrl: 'studentgroups',
-                storageKey: 'config.studentgroups',
-                checked: false
+                testMethod: 'HEAD',
+                storageKey: 'config.studentgroups'
+            },
+            {
+                name: 'Concepts',
+                testUrl: ['students', 'courses', 'exercises', 'concepts'],
+                testMethod: 'recursive',
+                storageKey: 'config.concepts'
             }
         ];
+
+        capabilities.forEach(function(capability) {
+            capability.error = 'Not checked yet';
+            capability.checked = false;
+        });
 
         this.attributes = {
 
@@ -159,6 +170,18 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     checkCapability: function(capability) {
 
+        if (capability.testMethod === 'recursive') {
+            this.recursiveCheck(capability);
+        }
+        else {
+            this.simpleCheck(capability);
+        }
+
+
+    },
+
+    simpleCheck: function(capability) {
+
         var self = this;
         var apiRoot = this.attributes.apiUrl;
 
@@ -166,7 +189,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
             async: false,
             url: apiRoot + capability.testUrl,
-            type: capability.testUrl === 'comments' ? 'GET' : 'HEAD',
+            type: capability.testMethod,
 
             success: function () {
 
@@ -187,7 +210,64 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
             }
 
         });
+    },
 
+    recursiveCheck: function(capability) {
+
+        var self = this;
+        var url = this.attributes.apiUrl;
+
+        var breakLoop = false;
+
+        capability.testUrl.forEach(function(urlPart, index) {
+
+            if (!breakLoop) {
+
+                url += index === 0 ? urlPart : '/' + urlPart;
+
+                $.ajax({
+
+                    async: false,
+                    url: url,
+                    type: 'GET',
+
+                    success: function (data) {
+
+                        if (index === capability.testUrl.length - 1) {
+                            localStorage.setItem(capability.storageKey, true);
+                            capability.status = true;
+                            capability.checked = true;
+                            self.render();
+                        }
+                        else {
+                            if (data.length > 0) {
+
+                                url += '/' + data[0].id;
+                            }
+                            else {
+                                capability.status = false;
+                                capability.checked = false;
+                                capability.error = 'Back-end didn\'t have enough data to test this feature. URL ' + url + 'returned an empty response';
+                            }
+
+                        }
+
+                    },
+
+                    error: function() {
+
+                        localStorage.setItem(capability.storageKey, false);
+                        capability.status = false;
+                        capability.checked = true;
+                        capability.error = 'GET-request to ' + url + ' failed!';
+                        self.render();
+                        breakLoop = true;
+
+                    }
+
+                });
+            }
+        })
     }
 
 });

@@ -10,9 +10,14 @@ casper.test.begin('API URL setting', 17, function suite(test) {
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
         ],
 
-        'students': [],
+        'studentgroups': [],
 
-        'studentgroups': []
+        'students': [{id: 0}],
+        'students/0': [{id: 0}],
+        'students/0/courses': [{id: 0}],
+        'students/0/courses/0/exercises': [{id: 0}],
+        'students/0/courses/0/exercises/0/concepts': [{id: 0}]
+
     };
 
     casper.start('http://localhost:8000');

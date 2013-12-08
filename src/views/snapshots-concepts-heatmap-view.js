@@ -1,8 +1,11 @@
+
 codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
 
     id: 'snapshots-concept-heatmap-container',
 
-    isActive: Utils.getLocalStorageValue('showConceptHeatmap', false) === 'true',
+    isDisabled: true,
+
+    isActive: false,
 
     format: undefined,
 
@@ -13,6 +16,9 @@ codebrowser.view.SnapshotsConceptHeatmapView = Backbone.View.extend({
     initialize: function(options) {
 
         this.parentView = options.parentView;
+
+        this.isDisabled = Utils.getLocalStorageValue('config.concepts', false) === 'false';
+        this.isActive = !this.isDisabled && Utils.getLocalStorageValue('showConceptHeatmap', false) === 'true';
 
     },
 

@@ -1,8 +1,11 @@
+
 codebrowser.view.SnapshotsConceptBubbleView = Backbone.View.extend({
 
     id: 'snapshots-concept-bubbles-container',
 
-    isActive: Utils.getLocalStorageValue('showConcepts', false) === 'true',
+    isDisabled: true,
+
+    isActive: false,
 
     // concept container (bubble) diameter
     diameter: 400,
@@ -14,6 +17,9 @@ codebrowser.view.SnapshotsConceptBubbleView = Backbone.View.extend({
 
     initialize: function() {
 
+        this.isDisabled = Utils.getLocalStorageValue('config.concepts', false) === 'false';
+        this.isActive = !this.isDisabled && Utils.getLocalStorageValue('showConceptBubbles', false) === 'true';
+
         this.format = d3.format(',d');
         this.color = d3.scale.category20c();
 
@@ -24,7 +30,7 @@ codebrowser.view.SnapshotsConceptBubbleView = Backbone.View.extend({
         this.isActive = !this.isActive;
 
         // Store state
-        localStorage.setItem('showConcepts', this.isActive);
+        localStorage.setItem('showConceptBubbles', this.isActive);
 
         this.$el.slideToggle();
 

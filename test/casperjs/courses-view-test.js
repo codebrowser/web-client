@@ -9,7 +9,14 @@ casper.test.begin('Courses view (all courses)', 13, function suite(test) {
             {id: 12, name: 'course 2', exercises: [{}, {}, {}], amountOfStudents: 5}
         ],
 
-        'studentgroups': []
+        'studentgroups': [],
+
+        'students': [{id: 0}],
+        'students/0': [{id: 0}],
+        'students/0/courses': [{id: 0}],
+        'students/0/courses/0/exercises': [{id: 0}],
+        'students/0/courses/0/exercises/0/concepts': [{id: 0}]
+
     };
 
     casper.start('http://localhost:8000');
@@ -91,7 +98,13 @@ casper.test.begin('Courses view (student courses)', 10, function suite(test) {
             {id: 14, name: 'course 4', exercises: [{}, {}, {}, {}], amountOfStudents: 7}
         ],
 
-        'studentgroups': []
+        'studentgroups': [],
+
+        'students/21': [{id: 0}],
+        'students/21/courses': [{id: 0}],
+        'students/21/courses/0/exercises': [{id: 0}],
+        'students/21/courses/0/exercises/0/concepts': [{id: 0}]
+
     };
 
     casper.start('http://localhost:8000');

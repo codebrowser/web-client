@@ -215,6 +215,9 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             if (this.visualizations.hasOwnProperty(key) && visualization.isActive) {
                 $(visualization.buttonSelector, navigationContainerOutput).addClass('active');
             }
+            if (this.visualizations.hasOwnProperty(key) && visualization.isDisabled) {
+                $(visualization.buttonSelector, navigationContainerOutput).prop('disabled', true );
+            }
         }
     },
 

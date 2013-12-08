@@ -33,10 +33,10 @@
                                 {{#if this.status}}
                                 <i class="fa fa-2x fa-check" title="Verified"></i>
                                 {{else}}
-                                <i class="fa fa-2x fa-warning"></i>
+                                <i class="fa fa-2x fa-warning" title="{{ this.error }}"></i>
                                 {{/if}}
                             {{else}}
-                            <i class="fa fa-2x fa-question-circle" title="Not checked yet"></i>
+                            <i class="fa fa-2x fa-question-circle" title="{{ this.error }}"></i>
                             {{/if}}
                         </td>
                         <td>

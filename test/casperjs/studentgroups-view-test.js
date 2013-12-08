@@ -7,7 +7,14 @@ casper.test.begin('Student groups view', 12, function suite(test) {
         'studentgroups': [
             { id: 101, name: 'group 1', students: [{}, {}]},
             { id: 102, name: 'group 2', students: [{}, {}, {}]},
-        ]
+        ],
+
+        'students': [{id: 0}],
+        'students/0': [{id: 0}],
+        'students/0/courses': [{id: 0}],
+        'students/0/courses/0/exercises': [{id: 0}],
+        'students/0/courses/0/exercises/0/concepts': [{id: 0}]
+
     };
 
     casper.start('http://localhost:8000');

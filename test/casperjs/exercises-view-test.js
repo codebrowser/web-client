@@ -26,7 +26,14 @@ casper.test.begin('Exercises view (course exercises)', 13, function suite(test) 
             { id: 34, name: 'exc 4'}
         ],
 
-        'studentgroups': []
+        'studentgroups': [],
+
+        'students': [{id: 0}],
+        'students/0': [{id: 0}],
+        'students/0/courses': [{id: 0}],
+        'students/0/courses/0/exercises': [{id: 0}],
+        'students/0/courses/0/exercises/0/concepts': [{id: 0}]
+
     };
 
     casper.start('http://localhost:8000');
@@ -142,7 +149,10 @@ casper.test.begin('Exercises view (student-course exercises)', 6, function suite
             {id: 32, name: 'exc 2'}
         ],
 
-        'studentgroups': []
+        'studentgroups': [],
+
+        'students/21/courses/11/exercises/31/concepts': [{id: 0}]
+
     };
 
     casper.start('http://localhost:8000');
@@ -221,7 +231,13 @@ casper.test.begin('Exercises view (course-student exercises)', 6, function suite
             {id: 32, name: 'exc 2'}
         ],
 
-        'studentgroups': []
+        'studentgroups': [],
+
+        'students/21/courses': [{id: 0}],
+        'students/21/courses/0': [{id: 0}],
+        'students/21/courses/0/exercises': [{id: 0}],
+        'students/21/courses/0/exercises/0/concepts': [{id: 0}]
+
     };
 
     casper.start('http://localhost:8000');

@@ -10,6 +10,13 @@ casper.test.begin('List view filter', 3, function suite(test) {
         ],
 
         'studentgroups': [],
+
+        'students': [{id: 0}],
+        'students/0': [{id: 0}],
+        'students/0/courses': [{id: 0}],
+        'students/0/courses/0/exercises': [{id: 0}],
+        'students/0/courses/0/exercises/0/concepts': [{id: 0}]
+
     };
 
     casper.start('http://localhost:8000');

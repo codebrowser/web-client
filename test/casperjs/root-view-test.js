@@ -1,10 +1,18 @@
 casper.test.begin('Root view', 7, function suite(test) {
 
     mockData = {
+
         'tagnames': [],
         'tagcategories': [],
         'comments': [],
         'studentgroups': [],
+
+        'students': [{id: 0}],
+        'students/0': [{id: 0}],
+        'students/0/courses': [{id: 0}],
+        'students/0/courses/0/exercises': [{id: 0}],
+        'students/0/courses/0/exercises/0/concepts': [{id: 0}],
+
     };
 
     casper.start('http://localhost:8000');
@@ -34,6 +42,12 @@ casper.test.begin('Root view (with student groups)', 1, function suite(test) {
         'tagcategories': [],
         'comments': [],
         'studentgroups': [{}],
+
+        'students': [{id: 0}],
+        'students/0': [{id: 0}],
+        'students/0/courses': [{id: 0}],
+        'students/0/courses/0/exercises': [{id: 0}],
+        'students/0/courses/0/exercises/0/concepts': [{id: 0}]
     };
 
     casper.start('http://localhost:8000');
