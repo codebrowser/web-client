@@ -94,13 +94,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
         var self = this;
 
-        if (this.page === undefined) {
-            this.page = 0;
-        }
-
-        this.collection = new codebrowser.collection.CommentCollection(null, { page: this.page, query: this.query });
-
-         // Fetch comments
+        // Re-fetch comment collection using same options (snapshot, page, query etc)
         this.collection.fetch({
 
             cache: false,
@@ -108,12 +102,14 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
             success: function (data, response) {
 
+                self.collection.reset(response.content);
+
+                self.page = response.page;
                 self.firstPage = response.firstPage;
                 self.lastPage = response.lastPage;
                 self.totalPages = response.totalPages;
-                self.nummberOfElements = response.numberOfElements;
+                self.numberOfElements = response.numberOfElements;
                 self.totalElements = response.totalElements;
-                self.collection.reset(response.content);
 
                 self.render();
             },
@@ -169,22 +165,21 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
         var self = this;
 
-        var commentCollection = new codebrowser.collection.CommentCollection(null, { query : query });
+        // Re-fetch with same options (snapshot, page etc); only change search string.
+        this.collection.query = query;
 
-        commentCollection.fetch({
+        this.collection.fetch({
 
             cache: false,
             expires: 0,
-            dataType: 'json',
 
             success: function (data, response) {
 
                 // Add comments as collection
-                commentCollection.reset(response.content);
+                self.collection.reset(response.content);
 
                 // Render after comments have been fetched
                 self.page = 0;
-                self.collection = commentCollection;
                 self.firstPage = response.firstPage;
                 self.lastPage = response.lastPage;
                 self.totalPages = response.totalPages;
@@ -198,7 +193,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
             },
 
             error: function () {
-                self.notFound();
+                throw new Error('Failed comments fetch.');
             }
         });
     },
@@ -225,6 +220,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
     },
 
     _getCommentsRead: function () {
+
         var commentsRead = localStorage.getItem('commentsRead');
 
         if (commentsRead === null) {
@@ -237,6 +233,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
     },
 
     _setCommentsRead: function (commentsRead) {
+
         localStorage.setItem('commentsRead', JSON.stringify(commentsRead));
     },
 
@@ -257,7 +254,7 @@ codebrowser.view.CommentsView = Backbone.View.extend({
 
             error: function () {
 
-                throw new Error('Failed comment delete.')
+                throw new Error('Failed comment delete.');
             }
         });
     },

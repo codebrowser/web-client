@@ -8,20 +8,16 @@ codebrowser.collection.CommentCollection = Backbone.Collection.extend({
     model: codebrowser.model.Comment,
 
     comparator: function(comment) {
+
         // comments by timestamp in descending order
         return -comment.get('createdAt');
     },
 
     url: function () {
 
-        /* Fetch comments for given course, student and exercise */
         if (this.studentId && this.courseId && this.exerciseId && this.snapshotId) {
 
-            if (this.page === undefined) {
-
-                this.page = 0;
-            }
-
+            // Comments for given course, student, exercise and snapshot
             return config.api.main.root +
                'students/' +
                this.studentId +
@@ -31,24 +27,12 @@ codebrowser.collection.CommentCollection = Backbone.Collection.extend({
                this.exerciseId +
                '/snapshots/' +
                this.snapshotId +
-               '/comments?page='+
-               this.page+
-               '&size='+
-               this.pagesize;
-        }
+               '/comments'+
+               this._getQueryString();
+        } else {
 
-        else {
-
-            var url = config.api.main.root + 'comments?';
-            url += 'page=' + (this.page !== undefined ? this.page : 0);
-            url += '&size=' + this.pagesize;
-
-            if (this.query !== undefined) {
-
-                url += '&query=' + this.query;
-            }
-
-            return url;
+            // All comments
+            return config.api.main.root + 'comments' + this._getQueryString();
         }
     },
 
@@ -67,6 +51,21 @@ codebrowser.collection.CommentCollection = Backbone.Collection.extend({
         }
     },
 
+    /* Configure pagination and optional search string */
+
+    _getQueryString: function() {
+
+        var q = '?page=' + (this.page !== undefined ? this.page : 0);
+        q += '&size=' + config.commentsView.pageSize;
+
+        if (this.query !== undefined && this.query !== '') {
+
+            q += '&query=' + encodeURIComponent(this.query);
+        }
+
+        return q;
+    }
+
     /* Filtering currently done in backend, needed only if filtering should be done in frontend
 
     bySnapshotId: function (id) {
@@ -82,5 +81,4 @@ codebrowser.collection.CommentCollection = Backbone.Collection.extend({
 
         return new codebrowser.collection.CommentCollection(filtered);
     },*/
-
 });

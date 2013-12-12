@@ -63,6 +63,14 @@ var config = {
 
     },
 
+    /* Comment view configuration */
+
+    commentsView: {
+
+        pageSize: 10
+
+    },
+
     /* Ace editor */
 
     editor: {
