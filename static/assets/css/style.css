@@ -94,6 +94,12 @@ a .icon-gray:hover {
     background-position: center;
 }
 
+.icon-bubble {
+
+    background-image: url('../img/bubble.png');
+    background-position: center;
+}
+
 /* Responsiveness - Width */
 
 @media screen and (min-width: 1200px) {

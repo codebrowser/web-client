@@ -26,7 +26,7 @@
             <i class='icon-ok icon-gray'></i>
         </button>
         <button id='toggleConceptBubbles' class='btn' title='Show concept bubble chart'>
-            <img src="assets/img/bubble-icon.png">
+            <i class='icon-bubble icon-gray'></i>
         </button>
         <button id='toggleConceptHeatmap' class='btn' title='Show concept heat map'>
             <i class='icon-fire icon-gray'></i>
