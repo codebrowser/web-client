@@ -1,0 +1,138 @@
+<section>
+
+    {{#if showBreadcrumb}}
+
+        <ul class='breadcrumb'>
+
+            <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+
+            <li class='active'>Comments</li>
+
+        </ul>
+
+    {{/if}}
+
+    <div>
+        <h2>
+            Comments{{#if query}} — Search results for "{{query}}"{{/if}} ({{totalElements}})
+
+            <span class="pull-right">
+                <div class="input-append">
+                    <form>
+                        <input type="text" class="span2" placeholder="Search" data-id="query-string" />
+                        <button type="submit" class="btn" data-action="search" title="Search text in comments">
+                            <i class="icon-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </span>
+        </h2>
+    </div>
+
+    <div class = 'pagination'>
+
+        {{#unless firstPage}}
+            {{#if snapshotView}}
+                <span class='prev'> << prev </span>
+            {{else}}
+                <span class='cprev' href='./#/comments?page={{prevPage}}'> << prev </span>
+            {{/if}}
+        {{/unless}}
+
+        {{#unless lastPage}}
+            {{#if snapshotView}}
+                <span class='next'> next >> </span>
+            {{else}}
+                <span class='cnext' href='./#/comments?page={{nextPage}}'> next >> </span>
+            {{/if}}
+        {{/unless}}
+
+        {{#unless onlyOnePage}}
+            <span class='pull-right'> Page {{page}} of {{totalPages}} Pages </span>
+        {{/unless}}
+
+    </div>
+
+    {{#comments}}
+
+        {{#if isRead}}
+            <article>
+        {{else}}
+            <article class='new'>
+        {{/if}}
+
+
+            <h3>
+                <strong>{{username}}</strong>
+                <span class='pull-right'>
+                    {{#date createdAt}}{{/date}}
+                </span>
+            </h3>
+
+
+            <p class='comment-text' data-action='toggle-comment-edit' data-id='{{id}}'>
+
+                {{breaklines comment}}
+
+            </p>
+
+            <p class='comment-controls'>
+
+                {{#if snapshot}}
+
+                      <a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}/snapshots/{{snapshot.id}}'>
+                          <i class='icon-snapshot icon-gray icon-intext'></i> {{course.name}} / {{exercise.name}}
+                      </a>
+
+                  {{else}}
+
+                      <a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}'>
+                          <i class='icon-answer icon-gray icon-intext'/> {{course.name}} / {{exercise.name}}
+                      </a>
+
+                {{/if}}
+
+                <span class='pull-right'>
+
+                    <button class='btn btn-mini' data-action='toggle-comment-edit' data-id='{{id}}' data-toggle='tooltip' title='Edit this comment'>
+                        <i class='icon-edit'> </i>
+                    </button>
+
+                    <button class='btn btn-mini' data-action='delete-comment' data-id='{{id}}' data-toggle='tooltip' title='Delete this comment'>
+                        <i class='icon-remove'> </i>
+                    </button>
+
+                </span>
+            </p>
+
+
+
+        </article>
+
+    {{/comments}}
+
+    <div class = 'pagination'>
+
+        {{#unless firstPage}}
+            {{#if snapshotView}}
+                <span class='prev'> << prev </span>
+            {{else}}
+                <span class='cprev'> << prev </span>
+            {{/if}}
+        {{/unless}}
+
+        {{#unless lastPage}}
+            {{#if snapshotView}}
+                <span class='next'> next >> </span>
+            {{else}}
+                <span class='cnext'> next >> </span>
+            {{/if}}
+        {{/unless}}
+
+        {{#unless onlyOnePage}}
+            <span class='pull-right'> Page {{page}} of {{totalPages}} Pages </span>
+        {{/unless}}
+
+    </div>
+
+</section>

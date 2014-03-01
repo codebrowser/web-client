@@ -1,0 +1,30 @@
+<section>
+
+    <ul class='breadcrumb'>
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+
+
+        {{#if course}}
+            <li><a href='./#/courses'>Courses</a> <span class='divider'>/</span></li>
+            <li><a href='./#/courses/{{course.id}}'>{{course.name}}</a> <span class='divider'>/</span></li>
+        {{/if}}
+
+        <li class='active'>Select</li>
+    </ul>
+
+    <h2>{{#if course}} {{course.name}} — {{/if}} Select view mode</h2>
+
+    <table class='table table-hover'>
+
+        <tbody>
+
+            <ul class="nav nav-tabs nav-stacked selection">
+                <li class='link'><a href='./#/courses/{{course.id}}/students'>View students of the course</a></td>
+                <li class='link'><a href='./#/courses/{{course.id}}/exercises'>View exercises of the course</a></td>
+            </ul>
+
+        </tbody>
+
+    </table>
+
+</section>

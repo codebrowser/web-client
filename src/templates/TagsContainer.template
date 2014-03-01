@@ -1,0 +1,56 @@
+<section>
+
+    <ul class='breadcrumb'>
+
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+
+        {{#if tagCategory}}
+            <li><a href='/#/tagcategories'>Tag categories</a><span class='divider'>/</span></li>
+            <li><a href='/#/tagcategories/{{tagCategory.id}}/tagnames'>{{tagCategory.name}}</a><span class='divider'>/</span></li>
+        {{/if}}
+
+        <li class='active'>Tags</li>
+
+    </ul>
+
+    <h2>Tags — {{tagNameText}} ({{tags.length}})</h2>
+
+    <table class='table table-hover'>
+
+        <thead>
+            <tr>
+                <th>#</th>
+                    <th>Tagged answer or snapshot</th>
+                <th>Student</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {{#tags}}
+
+                <tr>
+
+                    <td class='index'>{{index @index}}</td>
+
+                    {{#if snapshot}}
+
+                        <td class='link'><a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}/snapshots/{{snapshot.id}}'><i class='icon-snapshot icon-gray icon-intext'/> {{course.name}} / {{exercise.name}} (Snapshot)</a></td>
+
+                    {{else}}
+
+                        <td class='link'><a href='./#/students/{{student.id}}/courses/{{course.id}}/exercises/{{exercise.id}}'><i class='icon-answer icon-gray icon-intext'/> {{course.name}} / {{exercise.name}}</a></td>
+
+                    {{/if}}
+
+                    <td class='link'><a href="./#/students/{{student.id}}">{{student.name}}</a></td>
+
+                </tr>
+
+            {{/tags}}
+
+        </tbody>
+
+    </table>
+
+</section>

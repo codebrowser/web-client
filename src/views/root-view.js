@@ -7,9 +7,18 @@ codebrowser.view.RootView = Backbone.View.extend({
 
     render: function () {
 
-        // Template
-        var output = this.template();
+        var attributes = {
 
+            showStudentGroups : this.showStudentGroups,
+            showTags : this.showTags === 'true' ? true: false,
+            showTagCategories : this.showTagCategories === 'true' ? true: false,
+            showComments : this.showComments === 'true' ? true: false
+
+        }
+
+        var output = this.template(attributes);
         this.$el.html(output);
+
+        return this;
     }
 });

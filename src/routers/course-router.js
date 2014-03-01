@@ -1,4 +1,4 @@
-codebrowser.router.CourseRouter = Backbone.Router.extend({
+codebrowser.router.CourseRouter = codebrowser.router.BaseRouter.extend({
 
     routes: {
 
@@ -17,17 +17,11 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
 
     /* Actions */
 
-    notFound: function () {
-
-        var errorView = new codebrowser.view.NotFoundErrorView();
-        codebrowser.controller.ViewController.push(errorView, true);
-    },
-
     navigation: function (studentId) {
 
-        codebrowser.app.course.navigate('#/students/' +
-                                        studentId +
-                                        '/courses', { replace: true });
+        codebrowser.app.courseRouter.navigate('#/students/' +
+                                                studentId +
+                                                '/courses', { replace: true });
     },
 
     courses: function (studentId) {
@@ -35,53 +29,27 @@ codebrowser.router.CourseRouter = Backbone.Router.extend({
         var self = this;
 
         // Wait for fetches to be in sync
-        var fetchSynced = _.after(2, function () {
-            self.courseView.render();
-            codebrowser.controller.ViewController.push(self.courseView);
+        var fetchSynced = _.after(studentId ? 2 : 1, function () {
+
+            codebrowser.controller.ViewController.push(self.courseView, true);
         });
 
-        var student = codebrowser.model.Student.findOrCreate({ id: studentId });
+        if (studentId) {
+            var student = codebrowser.model.Student.findOrCreate({ id: studentId });
 
-        // Fetch student
-        student.fetch({
-
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
+            // Fetch student
+            this.fetchModel(student, true, function () {
 
                 self.courseView.student = student;
                 fetchSynced();
-            },
-
-            // Student fetch failed
-            error: function () {
-
-                self.notFound();
-            }
-
-        });
+            });
+        }
 
         var courseCollection = new codebrowser.collection.CourseCollection(null, { studentId: studentId });
 
         this.courseView.collection = courseCollection;
 
         // Fetch course collection
-        courseCollection.fetch({
-
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
-
-                fetchSynced();
-            },
-
-            // Courses fetch failed
-            error: function () {
-
-                self.notFound();
-            }
-        });
+        this.fetchModel(courseCollection, true, fetchSynced);
     }
 });

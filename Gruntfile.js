@@ -10,15 +10,15 @@ module.exports = function (grunt) {
 
             src: {
 
-                files: ['Gruntfile.js', 'config/*.js', 'src/**/*.js', 'src/templates/*.template'],
-                tasks: ['jshint:src', 'build'],
+                files: ['Gruntfile.js', 'config/*.js', 'src/**/*.js', 'src/templates/**/*.template'],
+                tasks: ['jshint:src', 'build']
 
             },
 
             test: {
 
-                files: ['test/config/config.js', 'test/casperjs/*.js', 'test/spec/**/*-spec.js'],
-                tasks: ['jshint:test', 'jshint:spec', 'jshint:casperjs'],
+                files: ['test/config/config.js', 'test/helpers/*.js', 'test/casperjs/*.js', 'test/spec/**/*-spec.js'],
+                tasks: ['jshint:test', 'jshint:spec', 'jshint:casperjs']
 
             }
         },
@@ -29,7 +29,7 @@ module.exports = function (grunt) {
 
                 files: {
 
-                    'static/assets/js/codebrowser-templates.js': 'src/templates/*.template'
+                    'static/assets/js/codebrowser-templates.js': 'src/templates/**/*.template'
 
                 },
 
@@ -45,6 +45,7 @@ module.exports = function (grunt) {
                         var filename = file.split('.')[0];
 
                         return filename;
+
                     }
                 }
             }
@@ -55,14 +56,16 @@ module.exports = function (grunt) {
             dist: {
 
                 src: ['config/*.js',
-                      'src/app.js',
-                      'src/helpers/*.js',
-                      'src/models/*.js',
-                      'src/collections/*.js',
-                      'src/views/*.js',
-                      'src/controllers/*.js',
-                      'src/routers/*.js'],
+                    'src/app.js',
+                    'src/helpers/*.js',
+                    'src/models/*.js',
+                    'src/collections/*.js',
+                    'src/views/*.js',
+                    'src/controllers/*.js',
+                    'src/routers/*.js',
+                    'src/raphael/*.js'],
                 dest: 'static/assets/js/codebrowser.js',
+
                 options: {
 
                     separator: ';\n\n'
@@ -73,13 +76,20 @@ module.exports = function (grunt) {
             handlebars: {
 
                 src: ['static/assets/js/codebrowser-templates.js',
-                      'static/assets/js/codebrowser.js'],
+                    'static/assets/js/codebrowser.js'],
                 dest: 'static/assets/js/codebrowser.js',
                 options: {
 
                     separator: ';\n\n'
 
                 }
+            },
+
+            tests: {
+
+                src: ['test/casperjs/*js', '!test/casperjs/tests-concat.js'],
+                dest: 'test/casperjs/tests-concat.js'
+
             }
         },
 
@@ -104,22 +114,69 @@ module.exports = function (grunt) {
 
         jshint: {
 
-            src: {
+            srcXml: {
 
                 src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js'],
                 options: {
 
-                    jshintrc: 'jshint.json'
+                    force: true,
+                    reporter: 'jslint',
+                    reporterOutput: 'test_out/jshint/jslint_src-report.xml'
 
                 }
             },
 
-            test: {
+            testXml: {
 
-                src: 'test/config/config.js',
+                src: ['test/config/config.js', 'test/helpers/*.js'],
                 options: {
 
-                    jshintrc: 'jshint.json'
+                    jshintrc: 'test/jshint.json',
+                    force: true,
+                    reporter: 'jslint',
+                    reporterOutput: 'test_out/jshint/jslint_test-report.xml'
+
+                }
+            },
+
+            specXml: {
+
+                src: 'test/spec/**/*.js',
+                options: {
+
+                    jshintrc: 'test/spec/jshint.json',
+                    force: true,
+                    reporter: 'jslint',
+                    reporterOutput: 'test_out/jshint/jslint_spec-report.xml'
+
+                }
+            },
+
+            casperjsXml: {
+
+                src: ['test/casperjs/*.js', '!test/casperjs/tests-concat.js'],
+                options: {
+
+                    jshintrc: 'test/casperjs/jshint.json',
+                    force: true,
+                    reporter: 'jslint',
+                    reporterOutput: 'test_out/jshint/jslint_casperjs-report.xml'
+
+                }
+            },
+
+            src: {
+
+                src: ['Gruntfile.js', 'web.js', 'config/*.js', 'src/**/*.js']
+
+            },
+
+            test: {
+
+                src: ['test/config/config.js', 'test/helpers/*.js'],
+                options: {
+
+                    jshintrc: 'test/jshint.json'
 
                 }
             },
@@ -136,11 +193,17 @@ module.exports = function (grunt) {
 
             casperjs: {
 
-                src: 'test/casperjs/*.js',
+                src: ['test/casperjs/*.js', '!test/casperjs/tests-concat.js'],
                 options: {
 
                     jshintrc: 'test/casperjs/jshint.json'
+
                 }
+            },
+
+            options: {
+
+                jshintrc: 'jshint.json'
 
             }
         },
@@ -148,36 +211,53 @@ module.exports = function (grunt) {
         jasmine: {
 
             src: ['config/*.js',
-                  'test/config/*.js',
-                  'src/app.js',
-                  'src/helpers/*.js',
-                  'src/models/*.js',
-                  'src/collections/*.js',
-                  'src/views/*.js',
-                  'src/controllers/*.js',
-                  'src/routers/*.js'],
+                'test/config/*.js',
+                'test/helpers/fakeserver.js',
+                'src/app.js',
+                'src/helpers/*.js',
+                'src/models/*.js',
+                'src/collections/*.js',
+                'src/views/*.js',
+                'src/controllers/*.js',
+                'src/routers/*.js',
+                'src/raphael/*.js'],
             options: {
 
-                vendor: ['static/assets/js/jquery-2.0.0.min.js',
-                         'static/assets/js/moment.min.js',
-                         'static/assets/js/underscore-min.js',
-                         'static/assets/js/backbone-min.js',
-                         'static/assets/js/backbone-relational-min.js',
-                         'static/assets/js/backbone.fetch-cache.min.js',
-                         'static/assets/js/handlebars.runtime-min.js',
-                         'static/assets/js/spin.min.js',
-                         'static/assets/js/ace/ace.js',
-                         'static/assets/js/difflib-min.js',
-                         'static/assets/js/raphael-min.js',
-                         'static/assets/js/codebrowser-templates-min.js'],
+                vendor: [
+                    'static/assets/js/jquery-2.0.3.min.js',
+                    'static/assets/bootstrap/js/bootstrap.min.js',
+                    'static/assets/js/d3.v3.min.js',
+                    'static/assets/js/moment.min.js',
+                    'static/assets/js/underscore-min.js',
+                    'static/assets/js/backbone-min.js',
+                    'static/assets/js/backbone-relational-min.js',
+                    'static/assets/js/backbone.fetch-cache.min.js',
+                    'static/assets/js/handlebars.runtime-min.js',
+                    'static/assets/js/spin.min.js',
+                    'static/assets/js/ace/ace.js',
+                    'static/assets/js/difflib-min.js',
+                    'static/assets/js/raphael-min.js',
+                    'static/assets/js/codebrowser-templates-min.js',
+                    'node_modules/sinon/pkg/sinon-1.7.3.js'
+                ],
                 specs: 'test/spec/**/*-spec.js',
                 template: require('grunt-template-jasmine-istanbul'),
                 templateOptions: {
 
                     coverage: 'test/coverage/coverage.json',
-                    report: 'test/coverage/'
+                    report: {
+                        type: 'cobertura',
+                        options: {
+                            dir: 'test_out/cobertura/'
+                        }
+                    }
 
-                }
+                },
+                junit: {
+                    path: 'test_out/junit/'
+                },
+                keepRunner: true
+
             }
         },
 
@@ -195,13 +275,16 @@ module.exports = function (grunt) {
 
         casperjs: {
 
-            files: ['test/casperjs/*.js']
+            files: ['test/casperjs/tests-concat.js'],
+            options: {
+                includes: ['test/config/config.js', 'test/helpers/fakeserver.js'],
+                xunit: 'test_out/casperjs_report.xml'
+            }
 
         }
     });
 
     /* Load tasks */
-
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-contrib-concat');
@@ -212,9 +295,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-casperjs');
 
     /* Register tasks */
-
     grunt.registerTask('test', ['jshint', 'jasmine']);
-    grunt.registerTask('integration-test', ['connect', 'casperjs']);
-    grunt.registerTask('build', ['jshint','handlebars', 'concat', 'uglify']);
-    grunt.registerTask('default', ['test', 'integration-test', 'build']);
+    grunt.registerTask('integration-test', ['concat:tests', 'connect', 'casperjs']);
+    grunt.registerTask('build', ['jshint','handlebars', 'concat:dist', 'concat:handlebars', 'uglify']);
+    grunt.registerTask('default', ['test', 'build']);
 }

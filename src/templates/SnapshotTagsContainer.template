@@ -1,30 +1,82 @@
-<header>
+<section>
 
-    <h1><i class='icon-tags icon-gray'></i> Tags</h1>
+    <header>
 
-</header>
+        <h1><i class='icon-tags icon-gray'></i> Tags</h1>
 
-{{#if tags}}
+    </header>
 
-    <ul>
+    {{#if tags}}
 
-        {{#tags}}
+        <ul>
 
-            <li>{{text}} <button type='button' data-action='delete' data-id='{{id}}' class='delete'>×</button></li>
+            {{#tags}}
 
-        {{/tags}}
+                {{#unless snapshot}}
 
-    </ul>
+                    <li>{{tagName.name}} <button type='button' data-action='delete' data-id='{{id}}' class='delete' title='Remove this tag'>×</button></li>
 
-{{/if}}
+                {{/unless}}
 
-<div class='input-append'>
+            {{/tags}}
 
-    <form>
+        </ul>
 
-        <input type='text' data-id='tag' id='appendedInputButton' placeholder='New tag…'>
-        <button type='submit' data-action='create' class='btn'>+</button>
+    {{/if}}
 
-    </form>
+    <div class='input-append'>
 
-</div>
+        <form>
+
+            <input type='text' data-id='tag' placeholder='New tag…'>
+
+            <button title='Add new tag to this solution' type='submit' data-action='create-tag' class='btn'>+</button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<section>
+    <header>
+
+        <h1><i class='icon-tags icon-gray'></i> Tags (Snapshot)</h1>
+
+    </header>
+
+    {{#if tags}}
+
+        <ul>
+
+            {{#tags}}
+
+                {{#if snapshot}}
+
+                    {{#if visible}}
+
+                        <li>{{tagName.name}}<button type='button' data-action='delete' data-id='{{id}}' class='delete' title='Remove this tag'>×</button></li>
+
+                    {{/if}}
+
+                {{/if}}
+
+            {{/tags}}
+
+        </ul>
+
+    {{/if}}
+
+    <div class='input-append'>
+
+        <form>
+
+            <input type='text' data-id='snapshot-tag' placeholder='New snapshot tag…'>
+
+            <button title='Add new tag to this snapshot' type='submit' data-action='create-snapshot-tag' class='btn'>+</button>
+
+        </form>
+
+    </div>
+
+</section>

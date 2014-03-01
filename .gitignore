@@ -10,6 +10,10 @@
 
 .grunt/
 _SpecRunner.html
-test/coverage/
+test_out/
 nbproject/
 node_modules/
+.idea/
+static/assets/js/codebrowser*.js
+test/coverage/coverage.json
+test/casperjs/tests-concat.js

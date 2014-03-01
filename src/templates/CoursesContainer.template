@@ -13,7 +13,19 @@
 
     </ul>
 
-    <h2>{{#if studentId}} {{student.name}} — {{/if}} Courses ({{courses.length}})</h2>
+    <h2>
+        {{#if studentId}} {{student.name}} — {{/if}} Courses ({{courses.length}})
+
+        <span class="pull-right">
+            <div class="input-append">
+                <input type="text" class="span2" placeholder="Search" data-id="query-string" />
+                <button class="btn" data-action="search" title="Search for courses">
+                    <i class="icon-search"></i>
+                </button>
+            </div>
+        </span>
+
+    </h2>
 
     <table class='table table-hover'>
 
@@ -22,6 +34,7 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Exercises</th>
+                {{#unless studentId}}<th>Students</th>{{/unless}}
             </tr>
         </thead>
 
@@ -39,11 +52,13 @@
 
                     {{else}}
 
-                        <td class='link'><a href='./#/courses/{{id}}/exercises'>{{name}}</a></td>
+                        <td class='link'><a href='./#/courses/{{id}}/'>{{name}}</a></td>
 
                     {{/if}}
 
                     <td>{{exercises.length}}</td>
+
+                    <td>{{#unless ../studentId}}{{amountOfStudents}}{{/unless}}</td>
 
                 </tr>
 

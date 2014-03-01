@@ -6,7 +6,25 @@
 
     <ul class='nav nav-tabs nav-stacked selection'>
         <li><a href='./#/students'>Students</a></li>
+
+        {{#if showStudentGroups}}
+            <li><a href='./#/studentgroups'>Student groups</a></li>
+        {{/if}}
+
         <li><a href='./#/courses'>Courses</a></li>
+
+        {{#if showTags}}
+            <li><a href='./#/tagnames'>Tags</a></li>
+        {{/if}}
+
+        {{#if showTagCategories}}
+            <li><a href='./#/tagcategories'>Tag categories</a></li>
+        {{/if}}
+
+        {{#if showComments}}
+            <li><a href='./#/comments'>Comments</a></li>
+        {{/if}}
+
     </ul>
 
 </section>

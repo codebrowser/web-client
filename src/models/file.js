@@ -4,6 +4,7 @@
 
 codebrowser.model.File = Backbone.RelationalModel.extend({
 
+    totalLines : null,
     content: '',
 
     urlRoot: function () {
@@ -20,7 +21,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
                '/files';
     },
 
-    getContent: function () {
+    getContent: function () {
 
         var ignoreEmptyLines = localStorage.getItem(config.storage.setting.editor.ignoreEmptyLines);
         var content = this.content;
@@ -39,7 +40,15 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
         return content;
     },
 
-    lines: function () {
+    lines: function (amount) {
+
+        if (amount) {
+            this.totalLines = amount;
+        }
+
+        if (this.totalLines) {
+            return this.totalLines;
+        }
 
         return this.getContent().split('\n').length;
     },
@@ -59,7 +68,7 @@ codebrowser.model.File = Backbone.RelationalModel.extend({
     fetchContent: function (callback) {
 
         // Return content
-        if (this.content.length !== 0) {
+        if (this.content.length !== 0) {
 
             callback(this.getContent(), null);
 

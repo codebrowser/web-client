@@ -2,6 +2,22 @@ describe('Exercise router', function () {
 
     beforeEach(function () {
 
+        createFakeServer({
+            'courses/1': 404,
+            'courses/-6666': 404,
+            'courses/662': 404,
+            'courses/662/exercises': 404,
+            'courses/123': 404,
+            'courses/123/exercises': 404,
+            'students/336': 404,
+            'students/336/courses/1/exercises': 404,
+            'students/372': 404,
+            'students/372/courses/1/exercises': 404,
+            'students/-9999': 404,
+            'students/-9999/courses/-6666/exercises': 404,
+            'students/-6666': 404,
+        });
+
         Backbone.history.stop();
     });
 
@@ -41,17 +57,30 @@ describe('Exercise router', function () {
         expect(codebrowser.router.ExerciseRouter.prototype.courseExercises).toHaveBeenCalled();
     });
 
-    it('navigates to course exercises with correct URL', function () {
+    it('navigates to student exercises with correct IDs', function () {
 
-        spyOn(codebrowser.router.ExerciseRouter.prototype, 'navigateToCourseExercises');
+        spyOn(codebrowser.router.ExerciseRouter.prototype, 'navigateToStudentExercises');
 
         var router = new codebrowser.router.ExerciseRouter();
 
         Backbone.history.start();
-        router.navigate('#/courses/1', true);
+        router.navigate('#/courses/1/students/372', true);
 
-        expect(codebrowser.router.ExerciseRouter.prototype.navigateToCourseExercises).toHaveBeenCalled();
+        expect(codebrowser.router.ExerciseRouter.prototype.navigateToStudentExercises).toHaveBeenCalled();
     });
+
+    it('calls studentExercises function with correct URL', function () {
+
+        spyOn(codebrowser.router.ExerciseRouter.prototype, 'studentExercises');
+
+        var router = new codebrowser.router.ExerciseRouter();
+
+        Backbone.history.start();
+        router.navigate('#/courses/1/students/372/exercises/', true);
+
+        expect(codebrowser.router.ExerciseRouter.prototype.studentExercises).toHaveBeenCalled();
+    });
+
 
     it('catches an non-existent URL', function () {
 
@@ -62,7 +91,7 @@ describe('Exercise router', function () {
         Backbone.history.start();
         router.navigate('#/students/-9999/courses/-6666/exercises');
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.router.ExerciseRouter.prototype.notFound).toHaveBeenCalled();
@@ -78,7 +107,7 @@ describe('Exercise router', function () {
         Backbone.history.start();
         router.navigate('#/courses/662/exercises', true);
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.controller.ViewController.push).toHaveBeenCalled();

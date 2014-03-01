@@ -1,0 +1,34 @@
+<nav class='navbar navbar-default' role='navigation'>
+    <ul class="nav navbar-nav">
+      <li><a href="./#">Home</a></li>
+
+      <li><a href="./#/students">Students</a></li>
+
+      {{#if showStudentgroups}}
+      	<li><a href="./#/studentgroups">Tags</a></li>
+      {{/if}}
+
+      <li><a href="./#/courses">Courses</a></li>
+
+      {{#if showTags}}
+      	<li><a href="./#/tagnames">Tags</a></li>
+      {{/if}}
+
+      {{#if showTagCategories}}
+      	<li><a href="./#/tagcategories">Tag categories</a></li>
+      {{/if}}
+
+      {{#if showComments}}
+      	<li><a href="./#/comments">Comments</a></li>
+      {{/if}}
+    </ul>
+
+    {{#if tourEnabled}}
+
+        <button class='btn pull-right' id='startTour' title='Start a tour'>
+            <i class='icon-info-sign icon-gray'></i> Help
+        </button>
+
+    {{/if}}
+</nav>
+

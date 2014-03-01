@@ -6,14 +6,51 @@
         {{#if course}}
             <li><a href='./#/courses'>Courses</a> <span class='divider'>/</span></li>
             <li><a href='./#/courses/{{course.id}}'>{{course.name}}</a> <span class='divider'>/</span></li>
+        {{/if}}
+
+        {{#if exercise}}
             <li><a href='./#/courses/{{course.id}}/exercises'>Exercises</a> <span class='divider'>/</span></li>
             <li><a href='./#/courses/{{course.id}}/exercises/{{exercise.id}}'>{{exercise.name}}</a> <span class='divider'>/</span></li>
+        {{/if}}
+
+        {{#if studentGroup}}
+            <li><a href='./#/studentgroups'>Student groups</a> <span class='divider'>/</span></li>
+            <li><a href='./#/studentgroups/{{studentGroup.id}}/students'>{{studentGroup.name}}</a> <span class='divider'>/</span></li>
         {{/if}}
 
         <li class='active'>Students</li>
     </ul>
 
-    <h2>{{#if course}} {{course.name}} — {{exercise.name}} — {{/if}} Students ({{students.length}})</h2>
+
+    <h2>
+        {{#if studentGroup}}
+
+            {{studentGroup.name}} — Students ({{students.length}})
+
+        {{else}}
+            {{#if exercise}}
+
+                {{#if course}} {{course.name}} — {{exercise.name}} — {{/if}} Students ({{students.length}})
+
+            {{else}}
+
+                {{#if course}} {{course.name}} — {{/if}} Students ({{students.length}})
+
+            {{/if}}
+
+        {{/if}}
+
+        <span class="pull-right">
+            <div class="input-append">
+                <input type="text" class="span2" placeholder="Search" data-id="query-string" />
+                <button class="btn" data-action="search" title="Search for students">
+                    <i class="icon-search"></i>
+                </button>
+            </div>
+        </span>
+
+    </h2>
+
 
     <table class='table table-hover'>
 
@@ -40,7 +77,15 @@
 
                     {{#if ../course}}
 
-                        <td class='link'><a href='./#/courses/{{../../course.id}}/exercises/{{../../exercise.id}}/students/{{id}}/snapshots'>{{name}}</a></td>
+                        {{#if ../../exercise}}
+
+                            <td class='link'><a href='./#/courses/{{../../../course.id}}/exercises/{{../../../exercise.id}}/students/{{id}}/snapshots'>{{name}}</a></td>
+
+                        {{else}}
+
+                            <td class='link'><a href='./#/courses/{{../../../course.id}}/students/{{id}}'>{{name}}</a></td>
+
+                        {{/if}}
 
                     {{else}}
 
@@ -49,7 +94,9 @@
                     {{/if}}
 
                     {{#unless ../course}}
+
                         <td>{{courses.length}}</td>
+                        
                     {{/unless}}
 
                 </tr>

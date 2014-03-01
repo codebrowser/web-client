@@ -1,6 +1,7 @@
 codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     id: 'snapshots-timeline-container',
+    className: 'visualization-container',
 
     template: {
 
@@ -8,29 +9,26 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     },
 
-    /* Absolute width */
+    isActive: Utils.getLocalStorageValue('showTimeline', true) === 'true',
 
+    /* Absolute width */
     width: 0,
 
-    /* Snapshot elements */
-
-    snapshotElements: [],
+    /* X coordinates of snapshot elements */
+    snapshotPositions: [],
 
     /* Pointer */
-
     pointerSetOffsetX: 0,
 
-    /* Scroll */
-
     scroll: null,
-
-    /* Dragging */
 
     dragging: false,
 
     /* Initialise */
 
     initialize: function (options) {
+
+
 
         this.parentView = options.parentView;
 
@@ -46,6 +44,17 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         // Bottom container
         this.bottomContainer = $('<div>');
         this.$el.append(this.bottomContainer);
+    },
+
+    toggle: function() {
+
+        this.isActive = !this.isActive;
+
+        // Store state
+        localStorage.setItem('showTimeline', this.isActive);
+
+        this.$el.slideToggle();
+
     },
 
     getViewX: function () {
@@ -144,21 +153,21 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     focus: function () {
 
-        // Cx of the current snapshot element
-        var cx = this.snapshotElements[this.currentSnapshotIndex].attr('cx');
+        // Center of the current snapshot element
+        var cx = this.snapshotPositions[this.currentSnapshotIndex];
 
         // Make previous snapshot element visible
         if (this.currentSnapshotIndex !== 0) {
 
-            if (!this.isVisible(this.snapshotElements[this.currentSnapshotIndex - 1].attr('cx'))) {
+            if (!this.isVisible(this.snapshotPositions[this.currentSnapshotIndex - 1])) {
                 this.centerOn(cx);
             }
         }
 
         // Make next snapshot element visible
-        if (this.currentSnapshotIndex !== this.snapshotElements.length - 1) {
+        if (this.currentSnapshotIndex !== this.snapshotPositions.length - 1) {
 
-            if (!this.isVisible(this.snapshotElements[this.currentSnapshotIndex + 1].attr('cx'))) {
+            if (!this.isVisible(this.snapshotPositions[this.currentSnapshotIndex + 1])) {
                 this.centerOn(cx);
             }
         }
@@ -170,7 +179,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var viewWidth = $(this.paper.canvas).width();
 
         // Can't move dx to left
-        if ((viewX + dx) < 0 && dx < 0) {
+        if ((viewX + dx) < 0 && dx < 0) {
 
             // Move by remainder, but don't go under 0
             this.setViewBox(Math.max(0, 0 - viewX));
@@ -274,8 +283,22 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         $(snapshotArea.node).attr('class', 'area');
 
         // Snapshot element
-        var snapshotElement = this.paper.circle(x, y, radius);
-        $(snapshotElement.node).attr('class', 'snapshot');
+        // When test data is available, a pie chart is drawn. Otherwise we draw a circle.
+        var snapshotElement;
+        if (snapshot.attributes.percentageOfTestsPassing == null) {
+            snapshotElement = this.paper.circle(x, y, radius);
+        }
+        else {
+            snapshotElement = this.paper.pieChart(x, y, radius, [snapshot.attributes.percentageOfTestsPassing, 100 - snapshot.attributes.percentageOfTestsPassing]);
+        }
+
+        //If snapshot does not compile, css class is added
+        if(snapshot.attributes.compiles) {
+            $(snapshotElement.node).attr('class', 'snapshot');
+        }
+        else {
+            $(snapshotElement.node).attr('class', 'snapshot not-compiles');
+        }
 
         // Render weight for the snapshot
         this.renderSnapshotWeight(index, x, y);
@@ -398,9 +421,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     render: function () {
 
-        var min = this.collection.getMinDuration();
-
-        // 10 minute max
+        // Limit minimum to 1 minute and maximum to 5 minutes
+        var min = Math.min(60000, this.collection.getMinDuration());
         var max = Math.min(300000, this.collection.getMaxDuration());
 
         // Clear paper
@@ -414,6 +436,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var x = 0;
 
         var self = this;
+
+        this.snapshotPositions = [];
 
         this.collection.each(function (snapshot, index) {
 
@@ -451,8 +475,8 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
             self.renderDuration(previousSnapshot, snapshot, x, y, radius, distance);
 
             // Render snapshot
-            var snapshotElement = self.renderSnapshot(snapshot, index, x, y, radius);
-            self.snapshotElements.push(snapshotElement);
+            self.renderSnapshot(snapshot, index, x, y, radius);
+            self.snapshotPositions.push(x);
 
             // Current snapshot
             if (index === self.currentSnapshotIndex) {
@@ -535,10 +559,10 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         }
 
         // Rendering finished
-        if (this.snapshotElements.length === this.collection.length) {
+        if (this.snapshotPositions.length === this.collection.length) {
 
-            // Cx of the current snapshot element
-            var cx = this.snapshotElements[this.currentSnapshotIndex].attr('cx');
+            // Center of the current snapshot element
+            var cx = this.snapshotPositions[this.currentSnapshotIndex];
 
             this.render();
             this.centerOn(cx);
@@ -589,7 +613,7 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         this.stopScroll();
     },
 
-    dragOver: function (element) {
+    dragOver: function (element) {
 
         // Snapshot element
         if (element.data('snapshot')) {

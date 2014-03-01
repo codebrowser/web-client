@@ -8,9 +8,12 @@
         <!-- CSS -->
         <link rel='stylesheet' href='../assets/bootstrap/css/bootstrap.min.css'>
         <link rel='stylesheet' href='../assets/css/style.css'>
+        <link rel='stylesheet' href='../assets/css/slider.css'>
+        <link rel='stylesheet' href='../assets/css/introjs.css'>
+        <link rel='stylesheet' href='../assets/css/font-awesome.min.css'>
 
         <!-- JS -->
-        <script src='../assets/js/jquery-2.0.0.min.js'></script>
+        <script src='../assets/js/jquery-2.0.3.min.js'></script>
         <script src='../assets/js/moment.min.js'></script>
         <script src='../assets/js/underscore-min.js'></script>
         <script src='../assets/js/backbone-min.js'></script>
@@ -21,17 +24,35 @@
         <script src='../assets/js/ace/ace.js'></script>
         <script src='../assets/js/difflib-min.js'></script>
         <script src='../assets/js/raphael-min.js'></script>
+        <script src='../assets/js/d3.v3.min.js'></script>
         <script src='../assets/bootstrap/js/bootstrap.min.js'></script>
+        <script src='../assets/js/bootstrap-slider.js'></script>
+        <script src='../assets/js/FileSaver.js'></script>
+        <script src='../assets/js/intro.js'></script>
         <script src='../assets/js/codebrowser.js'></script>
 
     </head>
     <body>
 
-        <div class='container'>
+        <div id='main-container' class='container'>
 
-            <header id='brand'>
+            <header class="row">
 
-                <h1>Code Browser</h1>
+                <div class="span4">
+
+                    <div id='brand'>
+
+                        <a href="./"><h1>Code Browser</h1></a>
+
+                    </div>
+
+                </div>
+
+                <div class="span8 pull-right">
+
+                    <div id='navigation-container'></div>
+
+                </div>
 
             </header>
 
@@ -43,11 +64,7 @@
 
             </div>
 
-            <footer id='footer'>
-
-                <p>Open source project by the Department of Computer Science, University of Helsinki - <a href='http://github.com/codebrowser/web-client' target='_blank'>View source on GitHub</a></p>
-
-            </footer>
+            <footer id='footer-container'></footer>
 
         </div>
 

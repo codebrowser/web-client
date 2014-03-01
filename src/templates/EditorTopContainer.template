@@ -12,7 +12,7 @@
 
                data-original-title='
 
-                    <time>{{date previous.snapshot.snapshotTime}} –</time>
+                    <time>{{date previous.snapshot.snapshotTime}}</time>
                     <time>{{date snapshot.snapshotTime}}</time>
 
                '
@@ -27,7 +27,7 @@
                   <dt>Insert</dt>
                   <dd>{{difference.insert}} {{pluralize difference.insert 'line'}}</dd>
 
-                  <dt>Replace</dt>
+                  <dt>Modify</dt>
                   <dd>{{difference.replace}} {{pluralize difference.replace 'line'}}</dd>
 
                   <dt>Delete</dt>
@@ -35,7 +35,7 @@
 
                 </dl>
 
-            '><i class='icon-info-sign icon-gray'></i></a>
+            '><i class='icon-info-sign icon-gray' title='Show snapshot statistics'></i></a>
 
         </span>
 

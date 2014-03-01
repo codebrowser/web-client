@@ -1,4 +1,4 @@
-codebrowser.router.SnapshotRouter = Backbone.Router.extend({
+codebrowser.router.SnapshotRouter = codebrowser.router.BaseRouter.extend({
 
     routes: {
 
@@ -6,6 +6,9 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots(/)':                           'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId(/)':               'snapshot',
         'students/:studentId/courses/:courseId/exercises/:exerciseId/snapshots/:snapshotId/files/:fileId(/)': 'snapshot',
+
+        'courses/:courseId/students/:studentId/exercises/:exerciseId(/)':                                     'courseNavigation',
+        'courses/:courseId/students/:studentId/exercises/:exerciseId/snapshots(/)':                           'courseSnapshot',
 
         'courses/:courseId/exercises/:exerciseId/students/:studentId(/)':                                     'navigation',
         'courses/:courseId/exercises/:exerciseId/students/:studentId/snapshots(/)':                           'navigation',
@@ -35,16 +38,24 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
     /* Actions */
 
-    notFound: function () {
-
-        var errorView = new codebrowser.view.NotFoundErrorView();
-
-        codebrowser.controller.ViewController.push(errorView, true);
-    },
-
     navigation: function (courseId, exerciseId, studentId, snapshotId, fileId) {
 
         this.snapshot(studentId, courseId, exerciseId, snapshotId, fileId, { courseRoute: true });
+    },
+
+    courseNavigation: function (courseId, exerciseId, studentId) {
+
+        codebrowser.app.snapshotRouter.navigate('#/courses/' +
+                                                courseId +
+                                                '/students/' +
+                                                studentId +
+                                                '/exercises/' +
+                                                exerciseId +
+                                                '/snapshots/', { replace: true });
+    },
+
+    courseSnapshot: function (courseId, studentId, exerciseId) {
+        this.snapshot(studentId, courseId, exerciseId, null, null, null, { courseRoute: true});
     },
 
     snapshot: function (studentId, courseId, exerciseId, snapshotId, fileId, options) {
@@ -103,7 +114,7 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
             // No file ID specified, navigate to first file
             if (!fileId) {
 
-                self.snapshotView.navigate(snapshot, null);
+                self.snapshotView.navigate(snapshot, null, { replace: true });
 
                 return;
             }
@@ -115,48 +126,19 @@ codebrowser.router.SnapshotRouter = Backbone.Router.extend({
 
                 return;
             }
-
             self.snapshotView.update(snapshot, fileId);
         });
 
         var student = codebrowser.model.Student.findOrCreate({ id: studentId });
 
         // Fetch student
-        student.fetch({
+        this.fetchModel(student, true, function () {
 
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
-
-                self.snapshotView.student = student;
-                fetchSynced();
-            },
-
-            // Student fetch failed
-            error: function () {
-
-                self.notFound();
-            }
-
+            self.snapshotView.student = student;
+            fetchSynced();
         });
 
         // Fetch snapshot collection
-        snapshotCollection.fetch({
-
-            cache: true,
-            expires: config.cache.expires,
-
-            success: function () {
-
-                fetchSynced();
-            },
-
-            // Snapshots fetch failed
-            error: function () {
-
-                self.notFound();
-            }
-        });
+        this.fetchModel(snapshotCollection, true, fetchSynced);
     }
 });

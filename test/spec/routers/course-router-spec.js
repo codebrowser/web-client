@@ -2,6 +2,13 @@ describe('Course router', function () {
 
     beforeEach(function () {
 
+        createFakeServer({
+            'students': [],
+            'courses': [],
+            'students/-9999': 404,
+            'students/-9999/courses': 404,
+        });
+
         Backbone.history.stop();
     });
 
@@ -38,7 +45,7 @@ describe('Course router', function () {
         Backbone.history.start();
         router.navigate('#/students/-9999/courses');
 
-        waits(2000);
+        waits(config.test.async.waitDuration);
 
         runs(function () {
             expect(codebrowser.router.CourseRouter.prototype.notFound).toHaveBeenCalled();

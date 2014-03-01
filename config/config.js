@@ -42,7 +42,7 @@ var config = {
 
         main: {
 
-            root: 'http://t-avihavai.users.cs.helsinki.fi/cb-back/app/'
+            root: localStorage.getItem('config.apiUrl') ? localStorage.getItem('config.apiUrl') : 'http://t-jamikarv.users.cs.helsinki.fi/codebrowser/app/'
 
         }
     },
@@ -60,6 +60,14 @@ var config = {
     view: {
 
         container: '#container'
+
+    },
+
+    /* Comment view configuration */
+
+    commentsView: {
+
+        pageSize: 10
 
     },
 

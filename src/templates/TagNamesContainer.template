@@ -1,0 +1,159 @@
+<section>
+
+    <ul class='breadcrumb'>
+
+        <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+
+        {{#if tagCategory}}
+
+            <li><a href='./#/tagcategories'>Tag categories</a><span class='divider'>/</span></li>
+            <li class='active'>{{tagCategory.name}}</li>
+
+        {{else}}
+            <li class='active'>Tags</li>
+        {{/if}}
+
+        
+
+    </ul>
+
+    <button id="downloadTagListJson" class="btn" title="Download list of tags in JSON format">Export tags as JSON</button>
+
+    <span class="pull-left add-message"></span>
+
+    <span class="pull-right">
+        <div class="input-append">
+            <input type="text" class="span2" placeholder="Search" data-id="query-string" />
+            <button class="btn" data-action="search" title="Search for tags">
+                <i class="icon-search"></i>
+            </button>
+        </div>
+    </span>
+
+    {{#if tagCategories}}
+        <div class="add-to-categories">
+            <div class="category-list">
+                <div class="scroll up-scroll"><i class='icon-arrow-up'></i></div>
+                {{#tagCategories}}
+                    <p class="tag-category" id='{{id}}'>{{name}}</p>
+                {{/tagCategories}}
+                <div class="scroll down-scroll"><i class='icon-arrow-down'></i></div>
+            </div>
+        </div>
+    {{/if}}
+
+    <table class='double-list'>
+
+        <tr>
+
+            {{#if unusedTagNames}}
+                <td class='double-list triple-list'>
+
+                    <h2>Unused tags ({{unusedTagNames.length}})</h2>
+
+                    <table class='table table-hover'>
+
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tag</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {{#unusedTagNames}}
+                                <tr>
+                                    <td class='index'>{{index @index}}</td>
+                                    <td class='link'><a href='./#/tagcategories/{{../../tagCategory.id}}/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td><span class='button button-add' id='{{id}}' data-action="add-to-category" title='Add tag to category'>+</span></td>
+                                </tr>
+                            {{/unusedTagNames}}
+                        </tbody>
+
+                    </table>
+                </td>
+            {{/if}}
+
+            <td class='double-list-left'>
+
+                <h2>Tags ({{exerciseAnswerTagNames.length}})</h2>
+
+                <table class='table table-hover'>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tag</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {{#exerciseAnswerTagNames}}
+
+                            <tr>
+
+                                <td class='index'>{{index @index}}</td>
+
+                                {{#if ../tagCategory}}
+                                    <td class='link'><a href='./#/tagcategories/{{../../tagCategory.id}}/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td><button type='button' data-action='delete-from-category' data-id='{{id}}' class='delete' title='Remove tag from category'>×</button></td>
+                                {{else}}
+                                    <td class='link' draggable='true' id='{{id}}'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td>{{tags.length}}</td>
+                                {{/if}}
+
+                            </tr>
+
+                        {{/exerciseAnswerTagNames}}
+
+                    </tbody>
+
+                </table>
+
+            </td>
+
+            <td class='double-list-right'>
+
+                <h2>Snapshot tags ({{snapshotTagNames.length}})</h2>
+
+                <table class='table table-hover'>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tag</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {{#snapshotTagNames}}
+
+                            <tr>
+
+                                <td class='index'>{{index @index}}</td>
+
+                                {{#if ../tagCategory}}
+                                    <td class='link'><a href='./#/tagcategories/{{../../tagCategory.id}}/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td><button type='button' data-action='delete-from-category' data-id='{{id}}' class='delete'>×</button></td>
+                                {{else}}
+                                    <td class='link' draggable='true' id='{{id}}'><a href='./#/tagnames/{{id}}/tags'>{{name}}</a></td>
+                                    <td>{{tags.length}}</td>
+                                {{/if}}
+
+                            </tr>
+
+                        {{/snapshotTagNames}}
+
+                    </tbody>
+
+                </table>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+</section>

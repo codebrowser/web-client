@@ -28,12 +28,21 @@ var codebrowser = {
             codebrowser.controller.ViewController.push(errorView, true);
         }
 
+        $('#navigation-container').html((this.navigation = new codebrowser.view.NavigationView()).render().el);
+
+        // Initialise footer
+        $('#footer-container').html((this.footer = new codebrowser.view.FooterView()).render().el);
+
         // Initialise routers
-        codebrowser.app.base = new codebrowser.router.BaseRouter();
-        codebrowser.app.student = new codebrowser.router.StudentRouter();
-        codebrowser.app.course = new codebrowser.router.CourseRouter();
-        codebrowser.app.exercise = new codebrowser.router.ExerciseRouter();
-        codebrowser.app.snapshot = new codebrowser.router.SnapshotRouter();
+        codebrowser.app.rootRouter = new codebrowser.router.RootRouter();
+        codebrowser.app.studentRouter = new codebrowser.router.StudentRouter();
+        codebrowser.app.studentGroupRouter = new codebrowser.router.StudentGroupRouter();
+        codebrowser.app.courseRouter = new codebrowser.router.CourseRouter();
+        codebrowser.app.exerciseRouter = new codebrowser.router.ExerciseRouter();
+        codebrowser.app.snapshotRouter = new codebrowser.router.SnapshotRouter();
+        codebrowser.app.tagRouter = new codebrowser.router.TagRouter();
+        codebrowser.app.selectRouter = new codebrowser.router.SelectRouter();
+        codebrowser.app.commentRouter = new codebrowser.router.CommentRouter();
 
         // History
         Backbone.history.start();

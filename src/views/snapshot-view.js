@@ -11,23 +11,28 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     events: {
 
-        'click #toggleBrowser': 'toggleBrowser',
-        'click #split':         'split',
-        'click #diff':          'diff',
-        'click #first':         'first',
-        'click #previous':      'previous',
-        'click #next':          'next',
-        'click #last':          'last'
+        'click #toggleConceptBubbles': 'toggleConceptBubbles',
+        'click #toggleConceptHeatmap': 'toggleConceptHeatmap',
+        'click #toggleTimeline':       'toggleTimeline',
+        'click #toggleBrowser':        'toggleBrowser',
+        'click #toggleTree':           'toggleTree',
+        'click #toggleData':           'toggleData',
+        'click #split':                'split',
+        'click #diff':                 'diff',
+        'click #first':                'first',
+        'click #previous':             'previous',
+        'click #next':                 'next',
+        'click #last':                 'last'
 
     },
 
     /* Routing */
-
     courseRoute: false,
 
     /* Browser */
-
     browser: true,
+
+    visualizations: null,
 
     /* Initialise */
 
@@ -40,13 +45,66 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationbarContainer = $('<div>', { id: 'navigation-bar-container' });
         this.$el.append(this.navigationbarContainer);
 
-        // Timeline
-        this.snapshotsTimelineView = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
-        this.$el.append(this.snapshotsTimelineView.el);
+        this.visualizations = this._initializeVisualizations();
+
+        // Snapshot slider
+        this.snapshotSliderContainer = $('<div>', { id: 'snapshot-slider-container' });
+        this.$el.append(this.snapshotSliderContainer);
 
         // Navigation
         this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
         this.$el.append(this.navigationContainer);
+
+        this._initializeContentContainer();
+
+        // Bind resize
+        $(window).resize($.proxy(this.resize, this));
+
+        // Bind keydown
+        $(document).keydown($.proxy(this.keydown, this));
+
+
+        // Enable tour button on navigation view
+        if (codebrowser && codebrowser.navigation) {
+
+            var self = this;
+
+            codebrowser.navigation.enableTour(function() {
+                self.startTour();
+            });
+        }
+    },
+
+    _initializeVisualizations: function() {
+
+        var visualizations = {};
+
+        visualizations.timeline = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
+        visualizations.tree = new codebrowser.view.SnapshotsTreeView({ parentView: this });
+        visualizations.data = new codebrowser.view.SnapshotsDataView({ parentView: this });
+        visualizations.conceptBubbles = new codebrowser.view.SnapshotsConceptBubbleView({ parentView: this });
+        visualizations.conceptHeatmap = new codebrowser.view.SnapshotsConceptHeatmapView({ parentView: this });
+
+        visualizations.timeline.buttonSelector = '#toggleTimeline';
+        visualizations.tree.buttonSelector = '#toggleTree';
+        visualizations.data.buttonSelector = '#toggleData';
+        visualizations.conceptBubbles.buttonSelector = '#toggleConceptBubbles';
+        visualizations.conceptHeatmap.buttonSelector = '#toggleConceptHeatmap';
+
+        for (var key in visualizations) {
+            if (visualizations.hasOwnProperty(key)) {
+                var visualization = visualizations[key];
+                if (!visualization.isActive) {
+                    visualization.$el.hide();
+                }
+                this.$el.append(visualization.el);
+            }
+        }
+
+        return visualizations;
+    },
+
+    _initializeContentContainer: function() {
 
         // Content container
         var contentContainer = $('<div>', { id: 'snapshot-content-container' });
@@ -59,13 +117,14 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.editorView = new codebrowser.view.EditorView();
         contentContainer.append(this.editorView.el);
 
+        // Comments
+        if (localStorage.getItem('config.comments') === 'true') {
+
+            this.snapshotCommentsView = new codebrowser.view.SnapshotCommentsView();
+            contentContainer.append(this.snapshotCommentsView.el);
+        }
+
         this.$el.append(contentContainer);
-
-        // Bind resize
-        $(window).resize($.proxy(this.resize, this));
-
-        // Bind keydown
-        $(document).keydown($.proxy(this.keydown, this));
     },
 
     /* Remove */
@@ -78,14 +137,23 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Unbind keydown
         $(document).off('keydown', this.keydown);
 
-        // Remove timeline
-        this.snapshotsTimelineView.remove();
-
-        // Remove browser view
-        this.snapshotBrowserView.remove();
+        // Visualizations teardown
+        for (var visualization in this.visualizations) {
+            if (this.visualizations.hasOwnProperty(visualization)) {
+                this.visualizations[visualization].remove();
+            }
+        }
 
         // Remove editor
         this.editorView.remove();
+
+        // Comment view
+        if (localStorage.getItem('config.comments') === 'true') {
+            this.snapshotCommentsView.remove();
+        }
+
+        // Disable tour button on navigation view
+        codebrowser.navigation.disableTour();
 
         Backbone.View.prototype.remove.call(this);
     },
@@ -97,22 +165,30 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Index of the current model
         var index = this.collection.indexOf(this.model);
 
+        this.renderNavigationBar(index);
+        this.renderNavigation(index);
+
+        this.renderSnapshotSlider(index);
+    },
+
+    renderNavigation: function(index) {
+
         // View attributes
         var attributes = {
-
             current: index + 1,
             total: this.collection.length
-
-        }
-
-        // Template for navigation bar container
-        var navigationbarContainerOutput = $(this.template.navigationbarContainer(_.extend(this.model.toJSON(),
-                                            { exercise: this.collection.at(index).get('exercise').toJSON(),
-                                              student:  this.student.toJSON(),
-                                              courseRoute: this.courseRoute })));
+        };
 
         // Template for navigation container
         var navigationContainerOutput = $(this.template.navigationContainer(attributes));
+
+        this.renderButtons(navigationContainerOutput, index);
+
+        // Update navigation container
+        this.navigationContainer.html(navigationContainerOutput);
+    },
+
+    renderButtons: function (navigationContainerOutput, index) {
 
         // Browser is enabled, set toggleBrowser button as active
         if (this.browser) {
@@ -146,11 +222,45 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             $('#last', navigationContainerOutput).attr('disabled', true);
         }
 
+        // Visualization toggle buttons
+        for (var key in this.visualizations) {
+            var visualization = this.visualizations[key];
+            if (this.visualizations.hasOwnProperty(key) && visualization.isActive) {
+                $(visualization.buttonSelector, navigationContainerOutput).addClass('active');
+            }
+            if (this.visualizations.hasOwnProperty(key) && visualization.isDisabled) {
+                $(visualization.buttonSelector, navigationContainerOutput).prop('disabled', true );
+            }
+        }
+    },
+
+    renderNavigationBar: function(index) {
+
+        // Template for navigation bar container
+        var navigationbarContainerOutput = $(this.template.navigationbarContainer(_.extend(
+            this.model.toJSON(),
+            {
+                exercise: this.collection.at(index).get('exercise').toJSON(),
+                student:  this.student.toJSON(),
+                courseRoute: this.courseRoute
+            }
+        )));
+
         // Update navigation bar container
         this.navigationbarContainer.html(navigationbarContainerOutput);
+    },
 
-        // Update navigation container
-        this.navigationContainer.html(navigationContainerOutput);
+    renderSnapshotSlider: function(index) {
+
+        var that = this;
+
+        this.snapshotSlider = new codebrowser.helper.SnapshotSlider(index, this.collection.size(), function(i) {
+            that.navigateToIndex(i);
+        });
+
+        this.snapshotSliderContainer.html( this.snapshotSlider.$html );
+
+        this.snapshotSlider.rendered();
     },
 
     /* Update */
@@ -164,19 +274,14 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             this.toggleBrowser(null, localStorage.getItem(config.storage.view.SnapshotView.browser) === 'true');
         }
 
-        // Previous snapshot
         var index = this.collection.indexOf(snapshot);
-        var previousSnapshot = this.collection.at(index - 1);
 
-        // First snapshot
-        if (!previousSnapshot) {
-
-            // Use the current snapshot as the previous
-            previousSnapshot = this.model;
-        }
+        // Previous snapshot, use the current snapshot as the previous, if no previous available
+        var previousSnapshot = !this.collection.at(index - 1) ? this.model : this.collection.at(index - 1);
 
         // Determine current file
         this.file = this.model.get('files').get(fileId);
+
         var filename = this.file.get('name');
 
         // Determine previous file if it exists
@@ -185,16 +290,46 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         // Show view if necessary
         this.$el.show();
 
-        // Update timeline
-        this.snapshotsTimelineView.update(this.collection, index, filename, this.courseRoute);
+        this.updateVisualizations(index, filename);
 
         // Update editor
-        this.editorView.update(previousFile || this.file, this.file);
+        var backendFile = this.collection.at(index).get('files').findWhere({ name: filename }).attributes.diffs;
+        this.editorView.update(previousFile || this.file, this.file, backendFile);
 
         // Update browser
         this.snapshotBrowserView.update(this.model, this.file, this.courseRoute);
 
+        // Update comments view
+        if (localStorage.getItem('config.comments') === 'true') {
+            this.snapshotCommentsView.update(this.model);
+        }
+
         this.render();
+    },
+
+    updateVisualizations: function (index, filename) {
+
+        var visualizations = this.visualizations;
+
+        if (visualizations.timeline.isActive) {
+            visualizations.timeline.update(this.collection, index, filename, this.courseRoute);
+        }
+
+        if (visualizations.tree.isActive) {
+            visualizations.tree.update(this.collection, index, filename, this.courseRoute);
+        }
+
+        if (visualizations.data.isActive) {
+            visualizations.data.update(this.collection, index);
+        }
+
+        if (visualizations.conceptBubbles.isActive) {
+            visualizations.conceptBubbles.update(this.model);
+        }
+
+        if (visualizations.conceptHeatmap.isActive) {
+            visualizations.conceptHeatmap.update(this.model, index);
+        }
     },
 
     /* Events */
@@ -206,7 +341,12 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     didResize: function () {
 
-        this.snapshotsTimelineView.didResize();
+        if (this.visualizations.timeline.isActive) {
+            this.visualizations.timeline.didResize();
+        }
+        if (this.visualizations.tree.isActive) {
+            this.visualizations.tree.didResize();
+        }
         this.editorView.didResize();
     },
 
@@ -241,7 +381,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
 
         // Enable browser
-        if (this.browser) {
+        if (this.browser) {
 
             // Move editor view
             this.editorView.$el.css('margin-left', this.snapshotBrowserView.$el.width() + 30);
@@ -260,6 +400,75 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.editorView.didResize();
     },
 
+    toggleTimeline: function () {
+
+        $(this.visualizations.timeline.buttonSelector).toggleClass('active');
+
+        this.visualizations.timeline.toggle();
+
+        if (this.visualizations.tree.isActive && this.visualizations.timeline.isActive) {
+            this.toggleTree();
+        }
+
+        if (this.visualizations.timeline.isActive) {
+            this.visualizations.timeline.update(this.collection, this.collection.indexOf(this.model), this.file.get('name'), this.courseRoute);
+        }
+    },
+
+    toggleTree: function () {
+
+        $(this.visualizations.tree.buttonSelector).toggleClass('active');
+
+        this.visualizations.tree.toggle();
+
+        if (this.visualizations.tree.isActive && this.visualizations.timeline.isActive) {
+            this.toggleTimeline();
+        }
+
+        if (this.visualizations.tree.isActive) {
+            this.visualizations.tree.update(this.collection, this.collection.indexOf(this.model), this.file.get('name'), this.courseRoute);
+        }
+    },
+
+    toggleData: function () {
+
+        $(this.visualizations.data.buttonSelector).toggleClass('active');
+
+        this.visualizations.data.toggle();
+
+        // Update Data view
+        if (this.visualizations.data.isActive) {
+            this.visualizations.data.update(
+                this.collection,
+                this.collection.indexOf(this.model)
+            );
+        }
+    },
+
+    toggleConceptBubbles: function () {
+
+        $(this.visualizations.conceptBubbles.buttonSelector).toggleClass('active');
+
+        this.visualizations.conceptBubbles.toggle();
+
+        // Update Concepts view
+        if (this.visualizations.conceptBubbles.isActive) {
+            this.visualizations.conceptBubbles.update(this.model);
+        }
+    },
+
+    toggleConceptHeatmap: function () {
+
+        $(this.visualizations.conceptHeatmap.buttonSelector).toggleClass('active');
+
+        this.visualizations.conceptHeatmap.toggle();
+
+        // Update Concepts view
+        if (this.visualizations.conceptHeatmap.isActive) {
+            this.visualizations.conceptHeatmap.update(this.model);
+        }
+    },
+
     split: function () {
 
         this.editorView.toggleSplit();
@@ -275,78 +484,149 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
     navigate: function (snapshot, file, options) {
 
+        // Reset introJs tour if necessary
+        this.resetTour();
+
         // Use first file if non specified
         if (!file) {
             file = snapshot.get('files').first();
         }
 
         if (this.courseRoute) {
-            codebrowser.app.snapshot.navigate('#/courses/' +
-                                              this.collection.courseId +
-                                              '/exercises/' +
-                                              this.collection.exerciseId +
-                                              '/students/' +
-                                              this.collection.studentId +
-                                              '/snapshots/' +
-                                              snapshot.id +
-                                              '/files/' +
-                                              file.id, { replace: !options ? options : options.replace });
+            codebrowser.app.snapshotRouter.navigate('#/courses/' +
+                this.collection.courseId +
+                '/exercises/' +
+                this.collection.exerciseId +
+                '/students/' +
+                this.collection.studentId +
+                '/snapshots/' +
+                snapshot.id +
+                '/files/' +
+                file.id, { replace: !options ? options : options.replace });
         } else {
 
-            codebrowser.app.snapshot.navigate('#/students/' +
-                                              this.collection.studentId +
-                                              '/courses/' +
-                                              this.collection.courseId +
-                                              '/exercises/' +
-                                              this.collection.exerciseId +
-                                              '/snapshots/' +
-                                              snapshot.id +
-                                              '/files/' +
-                                              file.id, { replace: !options ? options : options.replace });
+            codebrowser.app.snapshotRouter.navigate('#/students/' +
+                this.collection.studentId +
+                '/courses/' +
+                this.collection.courseId +
+                '/exercises/' +
+                this.collection.exerciseId +
+                '/snapshots/' +
+                snapshot.id +
+                '/files/' +
+                file.id, { replace: !options ? options : options.replace });
         }
     },
 
     first: function () {
 
-        var first = this.collection.first();
-        var file = first.get('files').findWhere({ name: this.file.get('name') });
-
-        this.navigate(first, file);
+        this.navigateToIndex(0);
     },
 
     previous: function () {
 
         var index = this.collection.indexOf(this.model);
-        var previous = this.collection.at(index - 1);
 
-        if (!previous) {
-            return;
-        }
-
-        var file = previous.get('files').findWhere({ name: this.file.get('name') });
-
-        this.navigate(previous, file);
+        this.navigateToIndex(index - 1);
     },
 
     next: function () {
 
         var index = this.collection.indexOf(this.model);
-        var next = this.collection.at(index + 1);
 
-        if (!next) {
-            return;
-        }
-
-        var file = next.get('files').findWhere({ name: this.file.get('name') });
-
-        this.navigate(next, file);
+        this.navigateToIndex(index + 1);
     },
 
     last: function () {
 
-        var last = this.collection.last();
-        var file = last.get('files').findWhere({ name: this.file.get('name') });
+        var last = this.collection.size() - 1;
 
-        this.navigate(last, file);
+        this.navigateToIndex(last);
+    },
+
+    navigateToIndex: function(index) {
+
+        var snapshot = this.collection.at(index);
+
+        if (!snapshot) {
+            return;
+        }
+
+        var file = snapshot.get('files').findWhere({ name: this.file.get('name') });
+
+        this.navigate(snapshot, file);
+    },
+
+    startTour: function () {
+
+        var self = this;
+        var intro = introJs();
+
+        // Set elements and guide templates
+        intro.setOptions({
+            keyboardNavigation: false,
+            steps: [
+                {
+                    element: '#editor-container',
+                    intro: Handlebars.templates.SnapshotEditorIntro(),
+                    position: 'right'
+                },
+                {
+                    element: 'a[href="#editor-settings"]',
+                    intro: Handlebars.templates.SnapshotEditorSettingsIntro(),
+                    position: 'left'
+                },
+                {
+                    element: '#editor-modes',
+                    intro: Handlebars.templates.SnapshotEditorModesIntro()
+                },
+                {
+                    element: '#snapshot-navi',
+                    intro: Handlebars.templates.SnapshotNavigationIntro()
+                },
+                {
+                    element: '#toggleTimeline',
+                    intro: Handlebars.templates.SnapshotTimelineIntro()
+                },
+                {
+                    element: '#toggleTree',
+                    intro: Handlebars.templates.SnapshotTreeIntro()
+                },
+                {
+                    element: '#toggleData',
+                    intro: Handlebars.templates.SnapshotDataIntro()
+                },
+                {
+                    element: '#toggleConceptBubbles',
+                    intro: Handlebars.templates.SnapshotConceptsBubbleIntro()
+                },
+                {
+                    element: '#toggleConceptHeatmap',
+                    intro: Handlebars.templates.SnapshotConceptsHeatmapIntro()
+                }
+            ]
+        });
+
+        // Set tour in progess flag
+        this.tourInProgress = true;
+
+        // Register callbacks
+        intro.onexit(function() {
+            self.tourInProgress = false;
+        });
+        intro.oncomplete(function() {
+            self.tourInProgress = false;
+        });
+
+        intro.start();
+    },
+
+    resetTour: function () {
+
+        if (this.tourInProgress === true) {
+
+            this.tourInProgress = false;
+            introJs().exit();
+        }
     }
 });

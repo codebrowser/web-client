@@ -3,14 +3,27 @@
     <ul class='breadcrumb'>
 
         <li><a href='./'>Home</a> <span class='divider'>/</span></li>
+        {{#if viewPath}}
+            {{#if courseId}}
+                <li><a href='./#/courses/'>Courses</a> <span class='divider'>/</span></li>
+                <li><a href='./#/courses/{{courseId}}'>{{course.name}}</a> <span class='divider'>/</span></li>
+            {{/if}}
+            {{#if studentId}}
+                <li><a href='./#/courses/{{courseId}}/students/'>Students</a> <span class='divider'>/</span></li>
+                <li><a href='./#/courses/{{courseId}}/students/{{studentId}}/'>{{student.name}}</a> <span class='divider'>/</span></li>
+            {{/if}}
 
-        {{#if studentId}}
-            <li><a href='./#/students'>Students</a> <span class='divider'>/</span></li>
-            <li><a href='./#/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
+        {{else}}
+
+            {{#if studentId}}
+                <li><a href='./#/students'>Students</a> <span class='divider'>/</span></li>
+                <li><a href='./#/students/{{studentId}}'>{{student.name}}</a> <span class='divider'>/</span></li>
+            {{/if}}
+
+            <li><a href='./#/{{#if studentId}}students/{{studentId}}/{{/if}}courses'>Courses</a> <span class='divider'>/</span></li>
+            <li><a href='./#/{{#if studentId}}students/{{studentId}}/{{/if}}courses/{{courseId}}'>{{course.name}}</a> <span class='divider'>/</span></li>
+
         {{/if}}
-
-        <li><a href='./#/{{#if studentId}}students/{{studentId}}/{{/if}}courses'>Courses</a> <span class='divider'>/</span></li>
-        <li><a href='./#/{{#if studentId}}students/{{studentId}}/{{/if}}courses/{{courseId}}'>{{course.name}}</a> <span class='divider'>/</span></li>
         <li class='active'>Exercises</li>
 
     </ul>
@@ -36,7 +49,15 @@
 
                     {{#if ../studentId}}
 
-                        <td class='link'><a href='./#/students/{{../../studentId}}/courses/{{../../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></td>
+                        {{#if ../../viewPath}}
+
+                            <td class='link'><a href='./#/courses/{{../../../courseId}}/students/{{../../../studentId}}/exercises/{{id}}/snapshots'>{{name}}</a></td>
+
+                        {{else}}
+
+                            <td class='link'><a href='./#/students/{{../../../studentId}}/courses/{{../../../courseId}}/exercises/{{id}}/snapshots'>{{name}}</a></td>
+
+                        {{/if}}
 
                     {{else}}
 

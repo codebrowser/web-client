@@ -8,6 +8,7 @@
     "expr": true,
     "immed": true,
     "indent": 4,
+    "jquery": true,
     "newcap": true,
     "quotmark": "single",
     "trailing": true,
@@ -17,10 +18,12 @@
     "globals": {
 
         "ace": true,
+        "afterEach": true,
         "Backbone": true,
         "beforeEach": true,
         "codebrowser": true,
         "config": true,
+        "createFakeServer": true,
         "describe": true,
         "document": true,
         "expect": true,
@@ -29,6 +32,7 @@
         "jasmine": true,
         "localStorage": true,
         "runs": true,
+        "sinon": true,
         "spyOn": true,
         "waits": true,
         "waitsFor": true

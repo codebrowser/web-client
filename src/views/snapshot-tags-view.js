@@ -5,7 +5,8 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
     events: {
 
-        'click [data-action="create"]': 'create',
+        'click [data-action="create-tag"]': 'createTag',
+        'click [data-action="create-snapshot-tag"]': 'createSnapshotTag',
         'click [data-action="delete"]': 'delete'
 
     },
@@ -23,8 +24,24 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
     render: function () {
 
+        var self = this;
+
+        var showSnapshotTags;
+
+        this.collection.each(function(tag) {
+
+            var visible = !tag.get('snapshot') || tag.get('snapshot').id === self.snapshot.id;
+            tag.set('visible', visible);
+            showSnapshotTags |= tag.get('snapshot') && visible;
+        });
+
         // Template
-        var output = $(this.template({ tags: this.collection.toJSON() }));
+        var context = { tags: this.collection.toJSON() };
+        if (showSnapshotTags) {
+            context.showSnapshotTags = true;
+        }
+
+        var output = $(this.template(context));
 
         this.$el.html(output);
     },
@@ -48,8 +65,8 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
         // Fetch tags
         this.collection.fetch({
 
-            cache: true,
-            expires: 120,
+            cache: false,
+            expires: 0,
 
             success: function () {
 
@@ -65,30 +82,50 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
 
     /* Actions */
 
-    create: function (event) {
+    createTag: function (event, snapshotTag) {
 
         event.preventDefault();
 
-        var text = $('[data-id="tag"]', this.$el).val().trim();
+        var text;
+        if (snapshotTag) {
+            text = $('[data-id="snapshot-tag"]', this.$el).val().trim();
+        } else {
+            text = $('[data-id="tag"]', this.$el).val().trim();
+        }
 
         if (!text) {
             return;
         }
 
-        // New tag
-        var tag = new codebrowser.model.Tag(null, { studentId: this.snapshot.get('studentId'),
-                                                    courseId: this.snapshot.get('courseId'),
-                                                    exerciseId: this.snapshot.get('exerciseId') });
-
         var self = this;
 
+        // Create new tag name if necessary.
+        var tagName = codebrowser.model.TagName.findOrCreate({ name : text });
+
+        // Create new tag
+        var attribs = { tagName: tagName,
+                        student: { id: self.snapshot.get('studentId') },
+                        course: { id: self.snapshot.get('courseId') },
+                        exercise: { id: self.snapshot.get('exerciseId') }};
+        if (snapshotTag) {
+            attribs.snapshot = { id: self.snapshot.id };
+        }
+
+        var tag = new codebrowser.model.Tag(attribs);
+
         // Save tag
-        tag.save({ text: text }, {
+        tag.save({ tagName: tagName }, {
 
             success: function () {
 
-                // Add to collection
                 self.collection.add(tag, { at: 0 });
+                if (snapshotTag) {
+                    $('[data-id="snapshot-tag"]').focus();
+                }
+                else {
+                    $('[data-id="tag"]').focus();
+                }
+                
             },
 
             error: function () {
@@ -96,6 +133,10 @@ codebrowser.view.SnapshotTagsView = Backbone.View.extend({
                 throw new Error('Failed tag save.');
             }
         });
+    },
+
+    createSnapshotTag: function (event) {
+        this.createTag(event, true);
     },
 
     'delete': function (event) {

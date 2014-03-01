@@ -1,0 +1,13 @@
+<strong>Show file timeline</strong>
+
+<p>
+    Size of the circle shows the file size in given snapshot.
+    Type of modification is shown at the border:
+    <ul>
+        <li><i style='color:green'>Green</i> - new lines</li>
+        <li><i style='color:red'>Red</i> - deleted lines</li>
+        <li><i style='color:blue'>Blue</i> - modified lines</li>
+    </ul>
+</p>
+
+

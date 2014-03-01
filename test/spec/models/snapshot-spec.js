@@ -1,12 +1,35 @@
 describe('Snapshot', function () {
 
-    var students = new codebrowser.collection.StudentCollection();
-    students.fetch({ async: false });
-
     var missingAttributesError = 'Attributes studentId, courseId and exerciseId are required to fetch a snapshot.';
-    var snapshot;
+    var students, snapshot;
 
     beforeEach(function () {
+
+        createFakeServer({
+            'students': [
+                { id: 21, name: 'student 1', courses: [
+                    {id: 11, name: 'course 1', exercises: [{ id: 31, name: 'exc 1'}], amountOfStudents: 1}
+                ]}
+            ],
+
+            'students/21/courses/11/exercises/31/snapshots': [
+                {
+                    id: 41,
+                    name: 'ss1',
+                    type: 'EVENT',
+                    snapshotTime: 1371210876758,
+                    files: [{id: 51, name: 'file1.java', filesize: 99}],
+                    exercise: { id: 31, name: 'exc 1'},
+                    course: {id: 11, name: 'course 1'},
+                    tests: [],
+                    compiles: true,
+                    percentageOfTestsPassing: 66
+                }
+            ]
+        });
+
+        students = new codebrowser.collection.StudentCollection();
+        students.fetch({ async: false });
 
         // Reset store
         Backbone.Relational.store.reset();

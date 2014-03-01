@@ -13,8 +13,12 @@ codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
         this.$el.append(this.snapshotFilesView.el);
 
         // Tags
-        this.snapshotTagsView = new codebrowser.view.SnapshotTagsView();
-        this.$el.append(this.snapshotTagsView.el);
+        if (localStorage.getItem('config.tagnames') === 'true') {
+           
+            this.snapshotTagsView = new codebrowser.view.SnapshotTagsView();
+            this.$el.append(this.snapshotTagsView.el);
+        }
+
     },
 
     /* Remove */
@@ -25,7 +29,10 @@ codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
         this.snapshotFilesView.remove();
 
         // Remove tags view
-        this.snapshotTagsView.remove();
+        if (localStorage.getItem('config.tagnames') === 'true') {
+
+            this.snapshotTagsView.remove();
+        }
 
         Backbone.View.prototype.remove.call(this);
     },
@@ -38,6 +45,10 @@ codebrowser.view.SnapshotBrowserView = Backbone.View.extend({
         this.snapshotFilesView.update(snapshot, file, courseRoute);
 
         // Update tags view
-        this.snapshotTagsView.update(snapshot);
+        if (localStorage.getItem('config.tagnames') === 'true') {
+        
+            this.snapshotTagsView.update(snapshot);
+        }
+
     }
 });
