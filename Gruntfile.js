@@ -220,7 +220,8 @@ module.exports = function (grunt) {
                 'src/views/*.js',
                 'src/controllers/*.js',
                 'src/routers/*.js',
-                'src/raphael/*.js'],
+                'src/raphael/*.js',
+                'src/templates/**/*.template'],
             options: {
 
                 vendor: [
