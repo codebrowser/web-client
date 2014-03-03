@@ -118,11 +118,11 @@ function program17(depth0,data) {
   if (stack2 = helpers.id) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = (depth0 && depth0.id); stack2 = typeof stack2 === functionType ? stack2.call(depth0, {hash:{},data:data}) : stack2; }
   buffer += escapeExpression(stack2)
-    + "' data-toggle='tooltip' title='Edit this comment'>\n                        <i class='icon-edit'> </i>\n                    </button>\n\n                    <button class='btn btn-mini' data-action='delete-comment' data-id='";
+    + "' data-toggle='tooltip' title='Edit this comment'>\n                        <i class='icon-edit icon-gray'> </i>\n                    </button>\n\n                    <button class='btn btn-mini' data-action='delete-comment' data-id='";
   if (stack2 = helpers.id) { stack2 = stack2.call(depth0, {hash:{},data:data}); }
   else { stack2 = (depth0 && depth0.id); stack2 = typeof stack2 === functionType ? stack2.call(depth0, {hash:{},data:data}) : stack2; }
   buffer += escapeExpression(stack2)
-    + "' data-toggle='tooltip' title='Delete this comment'>\n                        <i class='icon-remove'> </i>\n                    </button>\n\n                </span>\n            </p>\n\n\n\n        </article>\n\n    ";
+    + "' data-toggle='tooltip' title='Delete this comment'>\n                        <i class='icon-remove icon-gray'> </i>\n                    </button>\n\n                </span>\n            </p>\n\n\n\n        </article>\n\n    ";
   return buffer;
   }
 function program18(depth0,data) {

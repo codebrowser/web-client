@@ -95,11 +95,11 @@
                 <span class='pull-right'>
 
                     <button class='btn btn-mini' data-action='toggle-comment-edit' data-id='{{id}}' data-toggle='tooltip' title='Edit this comment'>
-                        <i class='icon-edit'> </i>
+                        <i class='icon-edit icon-gray'> </i>
                     </button>
 
                     <button class='btn btn-mini' data-action='delete-comment' data-id='{{id}}' data-toggle='tooltip' title='Delete this comment'>
-                        <i class='icon-remove'> </i>
+                        <i class='icon-remove icon-gray'> </i>
                     </button>
 
                 </span>
