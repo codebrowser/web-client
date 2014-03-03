@@ -6,7 +6,6 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
     circle,
     chart = this.set();
 
-
     //Draw a sector
     function sector(cx, cy, r, startAngle, endAngle, params) {
 
@@ -18,7 +17,6 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
         return paper.path(['M', cx, cy, 'L', x1, y1, 'A', r, r, 1, +(endAngle - startAngle > 180), 1, x2, y2, 'z']).attr(params);
 
     }
-
 
     var angle = -90,
         total = 0,
@@ -33,7 +31,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
 
         var value = values[i];
 
-        if(value === 100) {
+        if (value === 100) {
 
             circle = paper.circle(cx, cy, r);
             circle.attr('fill', colors[i]);
@@ -43,7 +41,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
             return chart;
         }
 
-        if(value === 0) {
+        if (value === 0) {
 
             continue;
         }
@@ -65,6 +63,4 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
     }
 
     return chart;
-
-
 }
