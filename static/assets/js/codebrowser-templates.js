@@ -676,7 +676,7 @@ function program7(depth0,data) {
 function program9(depth0,data) {
   
   
-  return "\r\n\r\n        <button class='btn pull-right' id='startTour' title='Start a tour'>\r\n            <i class='icon-info-sign icon-gray'></i> Help\r\n        </button>\r\n\r\n    ";
+  return "\r\n\r\n        <button class='btn btn-small pull-right' id='startTour' title='Start a tour'>\r\n            <i class='icon-question-sign icon-gray'></i>\r\n        </button>\r\n\r\n    ";
   }
 
   buffer += "<nav class='navbar navbar-default' role='navigation'>\r\n    <ul class=\"nav navbar-nav\">\r\n      <li><a href=\"./#\">Home</a></li>\r\n\r\n      <li><a href=\"./#/students\">Students</a></li>\r\n\r\n      ";
