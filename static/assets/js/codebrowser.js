@@ -5893,7 +5893,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         'click #toggleTimeline':       'toggleTimeline',
         'click #toggleBrowser':        'toggleBrowser',
         'click #toggleTree':           'toggleTree',
-        'click #toggleTestData':           'toggleTestData',
+        'click #toggleTestOutput':       'toggleTestOutput',
         'click #split':                'split',
         'click #diff':                 'diff',
         'click #first':                'first',
@@ -5954,13 +5954,13 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         visualizations.timeline = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
         visualizations.tree = new codebrowser.view.SnapshotsTreeView({ parentView: this });
-        visualizations.testData = new codebrowser.view.SnapshotsDataView({ parentView: this });
+        visualizations.testOutput = new codebrowser.view.SnapshotsDataView({ parentView: this });
         visualizations.conceptBubbles = new codebrowser.view.SnapshotsConceptBubbleView({ parentView: this });
         visualizations.conceptHeatmap = new codebrowser.view.SnapshotsConceptHeatmapView({ parentView: this });
 
         visualizations.timeline.buttonSelector = '#toggleTimeline';
         visualizations.tree.buttonSelector = '#toggleTree';
-        visualizations.testData.buttonSelector = '#toggleTestData';
+        visualizations.testOutput.buttonSelector = '#toggleTestOutput';
         visualizations.conceptBubbles.buttonSelector = '#toggleConceptBubbles';
         visualizations.conceptHeatmap.buttonSelector = '#toggleConceptHeatmap';
 
@@ -6192,8 +6192,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             visualizations.tree.update(this.collection, index, filename, this.courseRoute);
         }
 
-        if (visualizations.testData.isActive) {
-            visualizations.testData.update(this.collection, index);
+        if (visualizations.testOutput.isActive) {
+            visualizations.testOutput.update(this.collection, index);
         }
 
         if (visualizations.conceptBubbles.isActive) {
@@ -6303,15 +6303,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
     },
 
-    toggleTestData: function () {
+    toggleTestOutput: function () {
 
-        $(this.visualizations.testData.buttonSelector).toggleClass('active');
+        $(this.visualizations.testOutput.buttonSelector).toggleClass('active');
 
-        this.visualizations.testData.toggle();
+        this.visualizations.testOutput.toggle();
 
         // Update Data view
-        if (this.visualizations.testData.isActive) {
-            this.visualizations.testData.update(
+        if (this.visualizations.testOutput.isActive) {
+            this.visualizations.testOutput.update(
                 this.collection,
                 this.collection.indexOf(this.model)
             );
@@ -6466,7 +6466,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                     intro: Handlebars.templates.SnapshotTreeIntro()
                 },
                 {
-                    element: '#toggleTestData',
+                    element: '#toggleTestOutput',
                     intro: Handlebars.templates.SnapshotDataIntro()
                 },
                 {

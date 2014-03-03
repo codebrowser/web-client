@@ -22,7 +22,7 @@
         <button id='toggleTree' class='btn'>
             <i class='icon-tree icon-gray' title='Show timelines for each file'></i>
         </button>
-        <button id='toggleTestData' class='btn' title='Show test results and output'>
+        <button id='toggleTestOutput' class='btn' title='Show test results and output'>
             <i class='icon-ok icon-gray'></i>
         </button>
         <button id='toggleConceptBubbles' class='btn' title='Show concept bubble chart'>
