@@ -126,6 +126,7 @@ codebrowser.router.SnapshotRouter = codebrowser.router.BaseRouter.extend({
 
                 return;
             }
+
             self.snapshotView.update(snapshot, fileId);
         });
 

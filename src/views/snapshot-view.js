@@ -16,7 +16,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         'click #toggleTimeline':       'toggleTimeline',
         'click #toggleBrowser':        'toggleBrowser',
         'click #toggleTree':           'toggleTree',
-        'click #toggleData':           'toggleData',
+        'click #toggleTestData':           'toggleTestData',
         'click #split':                'split',
         'click #diff':                 'diff',
         'click #first':                'first',
@@ -46,10 +46,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.$el.append(this.navigationbarContainer);
 
         this.visualizations = this._initializeVisualizations();
-
-        // Snapshot slider
-        this.snapshotSliderContainer = $('<div>', { id: 'snapshot-slider-container' });
-        this.$el.append(this.snapshotSliderContainer);
 
         // Navigation
         this.navigationContainer = $('<div>', { id: 'snapshot-navigation-container' });
@@ -81,19 +77,20 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
 
         visualizations.timeline = new codebrowser.view.SnapshotsTimelineView({ parentView: this });
         visualizations.tree = new codebrowser.view.SnapshotsTreeView({ parentView: this });
-        visualizations.data = new codebrowser.view.SnapshotsDataView({ parentView: this });
+        visualizations.testData = new codebrowser.view.SnapshotsDataView({ parentView: this });
         visualizations.conceptBubbles = new codebrowser.view.SnapshotsConceptBubbleView({ parentView: this });
         visualizations.conceptHeatmap = new codebrowser.view.SnapshotsConceptHeatmapView({ parentView: this });
 
         visualizations.timeline.buttonSelector = '#toggleTimeline';
         visualizations.tree.buttonSelector = '#toggleTree';
-        visualizations.data.buttonSelector = '#toggleData';
+        visualizations.testData.buttonSelector = '#toggleTestData';
         visualizations.conceptBubbles.buttonSelector = '#toggleConceptBubbles';
         visualizations.conceptHeatmap.buttonSelector = '#toggleConceptHeatmap';
 
         for (var key in visualizations) {
             if (visualizations.hasOwnProperty(key)) {
                 var visualization = visualizations[key];
+
                 if (!visualization.isActive) {
                     visualization.$el.hide();
                 }
@@ -168,7 +165,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.renderNavigationBar(index);
         this.renderNavigation(index);
 
-        this.renderSnapshotSlider(index);
     },
 
     renderNavigation: function(index) {
@@ -319,8 +315,8 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
             visualizations.tree.update(this.collection, index, filename, this.courseRoute);
         }
 
-        if (visualizations.data.isActive) {
-            visualizations.data.update(this.collection, index);
+        if (visualizations.testData.isActive) {
+            visualizations.testData.update(this.collection, index);
         }
 
         if (visualizations.conceptBubbles.isActive) {
@@ -430,15 +426,15 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         }
     },
 
-    toggleData: function () {
+    toggleTestData: function () {
 
-        $(this.visualizations.data.buttonSelector).toggleClass('active');
+        $(this.visualizations.testData.buttonSelector).toggleClass('active');
 
-        this.visualizations.data.toggle();
+        this.visualizations.testData.toggle();
 
         // Update Data view
-        if (this.visualizations.data.isActive) {
-            this.visualizations.data.update(
+        if (this.visualizations.testData.isActive) {
+            this.visualizations.testData.update(
                 this.collection,
                 this.collection.indexOf(this.model)
             );
@@ -593,7 +589,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
                     intro: Handlebars.templates.SnapshotTreeIntro()
                 },
                 {
-                    element: '#toggleData',
+                    element: '#toggleTestData',
                     intro: Handlebars.templates.SnapshotDataIntro()
                 },
                 {
