@@ -16,7 +16,7 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         'click #toggleTimeline':       'toggleTimeline',
         'click #toggleBrowser':        'toggleBrowser',
         'click #toggleTree':           'toggleTree',
-        'click #toggleTestOutput':       'toggleTestOutput',
+        'click #toggleTestOutput':     'toggleTestOutput',
         'click #split':                'split',
         'click #diff':                 'diff',
         'click #first':                'first',
