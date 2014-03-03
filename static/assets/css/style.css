@@ -1243,9 +1243,9 @@ table.double-list {
     margin-bottom: 12px;
     padding: 6px 15px;
     background: #fff;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
-    border-radius: 25px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.1);
 
 }
@@ -1253,42 +1253,6 @@ table.double-list {
 #comments-container article.new {
 
    border: 1px solid rgb(70, 136, 71);
-
-}
-
-#comments-container article.new:after {
-
-    border-color: transparent rgb(70, 136, 71);
-}
-
-#comments-container article:after {
-
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 20px 16px 20px 0;
-    border-color: transparent #fff;
-    display: block;
-    width: 0;
-    z-index: 1;
-    left: -16px;
-    top: 27px;
-    display: block;
-
-}
-
-#comments-container article:before {
-
-    content: '';
-    position: absolute;
-    border-style: solid;
-    border-width: 20px 16px 20px 0;
-    border-color: transparent rgba(0, 0, 0, 0.1);
-    display: block;
-    width: 0;
-    z-index: 0;
-    left: -17px;
-    top: 27px;
 
 }
 
