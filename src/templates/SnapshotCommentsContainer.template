@@ -1,15 +1,15 @@
 <section id='snapshot-comment-form'>
 
-    <div class="accordion-heading">
+    <div class='accordion-heading'>
 
-      <a class="accordion-toggle" data-toggle="collapse" href="#postComment">
+      <a class='accordion-toggle' data-toggle='collapse' href='#postComment'>
         <i class='icon-comment icon-gray'></i> Post a comment
       </a>
 
     </div>
 
-    <div id="postComment" class="accordion-body collapse">
-      <div class="accordion-inner">
+    <div id='postComment' class='accordion-body collapse'>
+      <div class='accordion-inner'>
 
         <form class='form-horizontal'>
 
