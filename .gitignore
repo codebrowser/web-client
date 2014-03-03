@@ -12,5 +12,5 @@
 .idea/
 nbproject/
 node_modules/
-test/casperjs/tests-concat.js
 test/coverage/
+tmp/
