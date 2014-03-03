@@ -246,19 +246,6 @@ codebrowser.view.SnapshotView = Backbone.View.extend({
         this.navigationbarContainer.html(navigationbarContainerOutput);
     },
 
-    renderSnapshotSlider: function(index) {
-
-        var that = this;
-
-        this.snapshotSlider = new codebrowser.helper.SnapshotSlider(index, this.collection.size(), function(i) {
-            that.navigateToIndex(i);
-        });
-
-        this.snapshotSliderContainer.html( this.snapshotSlider.$html );
-
-        this.snapshotSlider.rendered();
-    },
-
     /* Update */
 
     update: function (snapshot, fileId) {
