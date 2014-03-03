@@ -9,10 +9,10 @@
 # Project
 
 .grunt/
+.idea/
 _SpecRunner.html
-test_out/
 nbproject/
 node_modules/
-.idea/
-test/coverage/coverage.json
 test/casperjs/tests-concat.js
+test/coverage/coverage.json
+test_out/
