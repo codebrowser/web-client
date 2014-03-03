@@ -5,8 +5,8 @@
 
     "dependencies": {
 
-        "node-static": "0.6.9",
-        "mustache": "0.7.2"
+        "node-static": "0.7.3",
+        "mustache": "0.8.1"
 
     },
 
