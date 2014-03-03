@@ -19,21 +19,21 @@
 
     "globals": {
 
-        "_": true,
         "ace": true,
         "Backbone": true,
         "codebrowser": true,
         "config": true,
+        "d3": true,
         "difflib": true,
         "editor": true,
         "Handlebars": true,
+        "introJs": true,
         "moment": true,
         "Raphael": true,
+        "saveAs": true,
         "Spinner": true,
         "Utils": true,
-        "d3": true,
-        "saveAs": true,
-        "introJs": true
+        "_": true
 
     }
 }

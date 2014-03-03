@@ -17,12 +17,12 @@
 
     "globals": {
 
+        "$": true,
+        "Backbone": true,
         "casper": true,
         "config": true,
-        "Backbone": true,
-        "RegExp": true,
-        "$": true,
-        "mockData": true
+        "mockData": true,
+        "RegExp": true
 
     }
 }

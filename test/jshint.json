@@ -22,10 +22,10 @@
         "afterEach": true,
         "Backbone": true,
         "beforeEach": true,
+        "casper": true,
         "config": true,
         "jasmine": true,
-        "sinon": true,
-        "casper": true
+        "sinon": true
 
     }
 }
