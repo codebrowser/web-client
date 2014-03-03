@@ -9859,9 +9859,13 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
             continue;
         }
 
+        circle = paper.circle(cx, cy, r).attr({'stroke-width': 0.4});
+        circle.toBack();
+        chart.push(circle);
+
         var angleplus = 360 * value / 100,
                 color = colors[i],
-                p = sector(cx, cy, r, angle, angle + angleplus, {fill: color, stroke: '#000', 'stroke-width': 0.5});
+                p = sector(cx, cy, r, angle, angle + angleplus, {fill: color, stroke: '#000', 'stroke-width': 0});
 
         p.toBack();
 
@@ -9871,6 +9875,6 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
     }
 
     return chart;
-    
+
 
 }
