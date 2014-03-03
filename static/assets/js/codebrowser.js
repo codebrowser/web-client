@@ -7081,8 +7081,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     initialize: function (options) {
 
-
-
         this.parentView = options.parentView;
 
         // Hide view until needed
@@ -7340,16 +7338,14 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var snapshotElement;
         if (snapshot.attributes.percentageOfTestsPassing == null) {
             snapshotElement = this.paper.circle(x, y, radius);
-        }
-        else {
+        } else {
             snapshotElement = this.paper.pieChart(x, y, radius, [snapshot.attributes.percentageOfTestsPassing, 100 - snapshot.attributes.percentageOfTestsPassing]);
         }
 
-        //If snapshot does not compile, css class is added
+        // If snapshot does not compile, css class is added
         if(snapshot.attributes.compiles) {
             $(snapshotElement.node).attr('class', 'snapshot');
-        }
-        else {
+        } else {
             $(snapshotElement.node).attr('class', 'snapshot not-compiles');
         }
 
@@ -9858,6 +9854,11 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
 
             continue;
         }
+
+        circle = paper.circle(cx, cy, r);
+        $(circle.node).attr('class', 'snapshot-with-test-results');
+        circle.toBack();
+        chart.push(circle);
 
         var angleplus = 360 * value / 100,
                 color = colors[i],

@@ -530,6 +530,12 @@ nav {
 
 }
 
+.visualization-container .snapshot-with-test-results {
+
+    stroke: #53666f;
+
+}
+
 .visualization-container .area.snapshot.selected {
 
     stroke-width: 2;

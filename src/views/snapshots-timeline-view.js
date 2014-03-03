@@ -28,8 +28,6 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
 
     initialize: function (options) {
 
-
-
         this.parentView = options.parentView;
 
         // Hide view until needed
@@ -287,16 +285,14 @@ codebrowser.view.SnapshotsTimelineView = Backbone.View.extend({
         var snapshotElement;
         if (snapshot.attributes.percentageOfTestsPassing == null) {
             snapshotElement = this.paper.circle(x, y, radius);
-        }
-        else {
+        } else {
             snapshotElement = this.paper.pieChart(x, y, radius, [snapshot.attributes.percentageOfTestsPassing, 100 - snapshot.attributes.percentageOfTestsPassing]);
         }
 
-        //If snapshot does not compile, css class is added
+        // If snapshot does not compile, css class is added
         if(snapshot.attributes.compiles) {
             $(snapshotElement.node).attr('class', 'snapshot');
-        }
-        else {
+        } else {
             $(snapshotElement.node).attr('class', 'snapshot not-compiles');
         }
 
