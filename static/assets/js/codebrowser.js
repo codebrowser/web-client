@@ -5034,7 +5034,15 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
     id: 'settings-modal',
     className: 'modal fade hide',
     template: Handlebars.templates.SettingsModal,
+
+    attributes: {
+
+        'data-backdrop': 'false'
+
+    },
+
     events: {
+
         'click #saveButton': 'updateApiUrl',
         'click #cancelButton': 'onCancelButton',
         'click #closeButton': 'onCancelButton',
@@ -5042,8 +5050,8 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
         'click .toggleEnabled': 'toggleCapability',
         'keyup #apiUrl': 'onKeyUp',
         'click #applyButton': 'showCapabilityCheck'
-    },
 
+    },
 
     initialize: function() {
 
