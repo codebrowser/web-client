@@ -1,60 +1,63 @@
 <section id='snapshot-comment-form'>
 
-    <header>
+    <div class="accordion-heading">
 
-        <h1>
-            <i class='icon-comment icon-gray'></i> Post a comment
-        </h1>
+      <a class="accordion-toggle" data-toggle="collapse" href="#postComment">
+        <i class='icon-comment icon-gray'></i> Post a comment
+      </a>
 
-    </header>
+    </div>
 
-    <form class='form-horizontal'>
+    <div id="postComment" class="accordion-body collapse">
+      <div class="accordion-inner">
 
+        <form class='form-horizontal'>
 
-        <div class='control-group'>
+            <div class='control-group'>
 
-            <label class='control-label' for='comment-username'>Username</label>
+                <label class='control-label' for='comment-username'>Username</label>
 
-            <div class='controls'>
-                <input type='text' data-id='comment-username' placeholder='Username' value='{{username}}' title='Name that will be shown to other users'>
+                <div class='controls'>
+                    <input type='text' data-id='comment-username' placeholder='Username' value='{{username}}' title='Name that will be shown to other users'>
+                </div>
             </div>
-        </div>
 
-        <div class='control-group'>
+            <div class='control-group'>
 
-            <label class='control-label' for='comment-type'>Comment on</label>
+                <label class='control-label' for='comment-type'>Comment on</label>
 
-            <div class='controls btn-group' data-toggle='buttons-radio'>
-                <button name='comment-type' type='button' data-action='solution-comment' class='btn active' title='Comment on the entire solution'>
-                    <i class='icon-answer icon-gray'></i>
-                    solution
-                </button>
+                <div class='controls btn-group' data-toggle='buttons-radio'>
+                    <button name='comment-type' type='button' data-action='solution-comment' class='btn active' title='Comment on the entire solution'>
+                        <i class='icon-answer icon-gray'></i>
+                        solution
+                    </button>
 
-                <button name='comment-type' type='button' data-action='snapshot-comment' class='btn' title='Comment on the current snapshot'>
-                    <i class='icon-snapshot icon-gray'></i>
-                    snapshot
-                </button>
+                    <button name='comment-type' type='button' data-action='snapshot-comment' class='btn' title='Comment on the current snapshot'>
+                        <i class='icon-snapshot icon-gray'></i>
+                        snapshot
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <div class='control-group'>
+            <div class='control-group'>
 
-            <label class='control-label' for='comment-text'>Comment</label>
+                <label class='control-label' for='comment-text'>Comment</label>
 
-            <div class='controls'>
-                <textarea rows='8' data-id='comment-text'></textarea>
+                <div class='controls'>
+                    <textarea rows='8' data-id='comment-text'></textarea>
+                </div>
             </div>
-        </div>
 
-        <div class='control-group'>
+            <div class='control-group'>
 
-            <div class='controls'>
-                <button type='submit' class='btn btn-primary' data-action='create-comment' class='Submit comment'>Submit</button>
+                <div class='controls'>
+                    <button type='submit' class='btn btn-primary' data-action='create-comment' class='Submit comment'>Submit</button>
+                </div>
             </div>
-        </div>
 
-    </form>
+        </form>
 
+      </div>
+    </div>
 
 </section>
-
