@@ -22,7 +22,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
 
     var angle = -90,
         total = 0,
-        colors = ['#ADE8A5', '#FF9999', '#228BE0', '#FFFFFF'];
+        colors = ['#C5FFBF', '#FABEB6', '#228BE0', '#FFFFFF'];
 
     for (var j = 0; j < values.length; j++) {
 
@@ -48,13 +48,9 @@ Raphael.fn.pieChart = function (cx, cy, r, values) {
             continue;
         }
 
-        circle = paper.circle(cx, cy, r).attr({'stroke-width': 0.4});
-        circle.toBack();
-        chart.push(circle);
-
         var angleplus = 360 * value / 100,
                 color = colors[i],
-                p = sector(cx, cy, r, angle, angle + angleplus, {fill: color, stroke: '#000', 'stroke-width': 0});
+                p = sector(cx, cy, r, angle, angle + angleplus, {fill: color, 'stroke-width': 0});
 
         p.toBack();
 
