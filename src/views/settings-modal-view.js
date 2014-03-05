@@ -22,7 +22,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    initialize: function() {
+    initialize: function () {
 
         var capabilities = [
             {
@@ -95,13 +95,13 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    show: function() {
+    show: function () {
 
         this.$el.modal('show');
 
     },
 
-    showCapabilityCheck: function() {
+    showCapabilityCheck: function () {
 
         var self = this;
         this.attributes.apiUrl = $('#apiUrl').val();
@@ -123,7 +123,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    onCancelButton: function() {
+    onCancelButton: function () {
 
         this.initialize();
         this.$el.modal('hide');
@@ -131,7 +131,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    onKeyUp: function(event) {
+    onKeyUp: function (event) {
 
         if (event.keyCode === 13) { // user pressed enter
             this.showCapabilityCheck();
@@ -142,7 +142,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    toggleCapability: function(ev) {
+    toggleCapability: function (ev) {
 
         var index = $(ev.target).data('index');
         var capability = this.attributes.capabilities[index];
@@ -152,9 +152,9 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    clearCapabilities: function() {
+    clearCapabilities: function () {
 
-        this.attributes.capabilities.forEach(function(capability) {
+        this.attributes.capabilities.forEach( function(capability) {
             capability.checked = false;
             capability.enabled = false;
         });
@@ -163,12 +163,12 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    checkCapabilities: function() {
+    checkCapabilities: function () {
 
         var self = this;
         this.clearCapabilities();
         this.render();
-        this.attributes.capabilities.forEach(function(capability) {
+        this.attributes.capabilities.forEach( function(capability) {
             self.checkCapability(capability);
         });
 
@@ -176,7 +176,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    checkCapability: function(capability) {
+    checkCapability: function (capability) {
 
         if (capability.testMethod === 'recursive') {
             this.recursiveCheck(capability);
@@ -188,7 +188,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
     },
 
-    simpleCheck: function(capability) {
+    simpleCheck: function (capability) {
 
         var self = this;
         var apiRoot = this.attributes.apiUrl;
@@ -208,7 +208,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
             },
 
-            error: function() {
+            error: function () {
 
                 localStorage.setItem(capability.storageKey, false);
                 capability.status = false;
@@ -220,14 +220,14 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
         });
     },
 
-    recursiveCheck: function(capability) {
+    recursiveCheck: function (capability) {
 
         var self = this;
         var url = this.attributes.apiUrl;
 
         var breakLoop = false;
 
-        capability.testUrl.forEach(function(urlPart, index) {
+        capability.testUrl.forEach( function(urlPart, index) {
 
             if (!breakLoop) {
 
@@ -262,7 +262,7 @@ codebrowser.view.SettingsModalView = Backbone.View.extend({
 
                     },
 
-                    error: function() {
+                    error: function () {
 
                         localStorage.setItem(capability.storageKey, false);
                         capability.status = false;
