@@ -24,7 +24,20 @@ codebrowser.router.RootRouter = codebrowser.router.BaseRouter.extend({
         this.rootView.showTagCategories = localStorage.getItem('config.tagcategories');
         this.rootView.showComments = localStorage.getItem('config.comments');
 
-        codebrowser.controller.ViewController.push(this.rootView, true);
+        if (this.rootView.showStudentGroups === true) {
+            var self = this;
+
+            var studentGroups = new codebrowser.collection.StudentGroupCollection();
+
+            this.fetchModel(studentGroups, true, function() {
+
+                self.rootView.showStudentGroups = studentGroups.size() > 0;
+                codebrowser.controller.ViewController.push(self.rootView, true);
+            });
+        } else {
+            codebrowser.controller.ViewController.push(this.rootView, true);
+        }
+
     },
 
     pageNotFound: function () {
