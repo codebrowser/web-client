@@ -25,6 +25,7 @@ codebrowser.router.RootRouter = codebrowser.router.BaseRouter.extend({
         this.rootView.showComments = localStorage.getItem('config.comments');
 
         if (this.rootView.showStudentGroups === true) {
+
             var self = this;
 
             var studentGroups = new codebrowser.collection.StudentGroupCollection();
@@ -34,7 +35,9 @@ codebrowser.router.RootRouter = codebrowser.router.BaseRouter.extend({
                 self.rootView.showStudentGroups = studentGroups.size() > 0;
                 codebrowser.controller.ViewController.push(self.rootView, true);
             });
+
         } else {
+
             codebrowser.controller.ViewController.push(this.rootView, true);
         }
 
