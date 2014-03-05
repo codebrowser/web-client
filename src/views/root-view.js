@@ -9,10 +9,10 @@ codebrowser.view.RootView = Backbone.View.extend({
 
         var attributes = {
 
-            showStudentGroups : this.showStudentGroups,
-            showTags : this.showTags === 'true' ? true: false,
-            showTagCategories : this.showTagCategories === 'true' ? true: false,
-            showComments : this.showComments === 'true' ? true: false
+            showStudentGroups : this.showStudentGroups === 'true' ? true : false,
+            showTags : this.showTags === 'true' ? true : false,
+            showTagCategories : this.showTagCategories === 'true' ? true : false,
+            showComments : this.showComments === 'true' ? true : false
 
         }
 
