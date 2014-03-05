@@ -25,7 +25,7 @@ casper.test.begin('Root view', 7, function suite(test) {
         test.assertTruthy(this.getHTML().indexOf('<a href="./#/comments">') !== -1, 'has a correct link to comments');
         test.assertTruthy(this.getHTML().indexOf('<a href="./#/tagnames">') !== -1, 'has a correct link to tag list');
         test.assertTruthy(this.getHTML().indexOf('<a href="./#/tagcategories">') !== -1, 'has a correct link to tag categories');
-        test.assertTruthy(this.getHTML().indexOf('<a href="./#/studentgroups">') === -1, 'does not have link to student groups');
+        test.assertTruthy(this.getHTML().indexOf('<a href="./#/studentgroups">') !== -1, 'has a correct link to student groups');
     });
 
     casper.run(function() {
