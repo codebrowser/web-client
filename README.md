@@ -81,7 +81,7 @@ The component has since then been extended in a Software Engineering Lab project
 - Timo Ahlberg ([zekyll](https://github.com/zekyll))
 - Jonne Airaksinen ([synyker](https://github.com/synyker))
 - Jami Karvanen ([jametsi](https://github.com/jametsi))
-- Krista Longi
+- Krista Longi ([klongi](https://github.com/klongi))
 - Riku Niittymäki ([rikniitt](https://github.com/rikniitt))
 
 Instructors for both the summer project and the Software Engineering Lab project were
