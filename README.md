@@ -78,11 +78,11 @@ original authors of the web-client component were
 
 The component has since then been extended in a Software Engineering Lab project by
 
-- Timo Ahlberg
-- Jonne Airaksinen
-- Jami Karvanen
+- Timo Ahlberg ([zekyll](https://github.com/zekyll))
+- Jonne Airaksinen ([synyker](https://github.com/synyker))
+- Jami Karvanen ([jametsi](https://github.com/jametsi))
 - Krista Longi
-- Riku Niittymäki
+- Riku Niittymäki ([rikniitt](https://github.com/rikniitt))
 
 Instructors for both the summer project and the Software Engineering Lab project were
 
